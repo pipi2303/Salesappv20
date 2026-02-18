@@ -1,0 +1,400 @@
+import React from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/app/components/ui/dialog';
+import { Card, CardContent } from '@/app/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
+import { Progress } from '@/app/components/ui/progress';
+import { Badge } from '@/app/components/ui/badge';
+import {
+  TrendingUp,
+  X,
+  Building2,
+  Stethoscope,
+  CheckCircle2,
+  BarChart3,
+  TrendingDown,
+  Package
+} from 'lucide-react';
+
+interface MonthlyDealsData {
+  month: string;
+  target: number;
+  actual: number;
+  progress: number;
+}
+
+interface DealsDetailDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  employeeName: string;
+  year?: number;
+}
+
+export function DealsDetailDialog({ 
+  open, 
+  onOpenChange, 
+  employeeName,
+  year = 2025 
+}: DealsDetailDialogProps) {
+  
+  // Mock Data - Hospital Segment (Monthly)
+  const hospitalDeals: MonthlyDealsData[] = [
+    { month: 'Jan', target: 3, actual: 3, progress: 100 },
+    { month: 'Feb', target: 3, actual: 2, progress: 67 },
+    { month: 'Mar', target: 4, actual: 4, progress: 100 },
+    { month: 'Apr', target: 4, actual: 5, progress: 125 },
+    { month: 'May', target: 3, actual: 3, progress: 100 },
+    { month: 'Jun', target: 4, actual: 3, progress: 75 },
+    { month: 'Jul', target: 3, actual: 2, progress: 67 },
+    { month: 'Aug', target: 4, actual: 3, progress: 75 },
+    { month: 'Sep', target: 3, actual: 2, progress: 67 },
+    { month: 'Oct', target: 4, actual: 2, progress: 50 },
+    { month: 'Nov', target: 3, actual: 1, progress: 33 },
+    { month: 'Dec', target: 4, actual: 1, progress: 25 }
+  ];
+
+  // Mock Data - Retail Segment (Monthly)
+  const retailDeals: MonthlyDealsData[] = [
+    { month: 'Jan', target: 5, actual: 6, progress: 120 },
+    { month: 'Feb', target: 4, actual: 4, progress: 100 },
+    { month: 'Mar', target: 5, actual: 5, progress: 100 },
+    { month: 'Apr', target: 6, actual: 7, progress: 117 },
+    { month: 'May', target: 5, actual: 5, progress: 100 },
+    { month: 'Jun', target: 6, actual: 5, progress: 83 },
+    { month: 'Jul', target: 5, actual: 4, progress: 80 },
+    { month: 'Aug', target: 6, actual: 5, progress: 83 },
+    { month: 'Sep', target: 5, actual: 4, progress: 80 },
+    { month: 'Oct', target: 6, actual: 3, progress: 50 },
+    { month: 'Nov', target: 5, actual: 2, progress: 40 },
+    { month: 'Dec', target: 6, actual: 2, progress: 33 }
+  ];
+
+  // Mock Data - IntraDoc Segment (Monthly)
+  const intradocDeals: MonthlyDealsData[] = [
+    { month: 'Jan', target: 4, actual: 5, progress: 125 },
+    { month: 'Feb', target: 3, actual: 3, progress: 100 },
+    { month: 'Mar', target: 4, actual: 4, progress: 100 },
+    { month: 'Apr', target: 5, actual: 6, progress: 120 },
+    { month: 'May', target: 4, actual: 4, progress: 100 },
+    { month: 'Jun', target: 5, actual: 4, progress: 80 },
+    { month: 'Jul', target: 4, actual: 3, progress: 75 },
+    { month: 'Aug', target: 5, actual: 4, progress: 80 },
+    { month: 'Sep', target: 4, actual: 3, progress: 75 },
+    { month: 'Oct', target: 5, actual: 2, progress: 40 },
+    { month: 'Nov', target: 4, actual: 2, progress: 50 },
+    { month: 'Dec', target: 5, actual: 1, progress: 20 }
+  ];
+
+  // Calculate totals
+  const hospitalTotal = {
+    target: hospitalDeals.reduce((sum, m) => sum + m.target, 0),
+    actual: hospitalDeals.reduce((sum, m) => sum + m.actual, 0)
+  };
+  hospitalTotal.progress = (hospitalTotal.actual / hospitalTotal.target) * 100;
+
+  const retailTotal = {
+    target: retailDeals.reduce((sum, m) => sum + m.target, 0),
+    actual: retailDeals.reduce((sum, m) => sum + m.actual, 0)
+  };
+  retailTotal.progress = (retailTotal.actual / retailTotal.target) * 100;
+
+  const intradocTotal = {
+    target: intradocDeals.reduce((sum, m) => sum + m.target, 0),
+    actual: intradocDeals.reduce((sum, m) => sum + m.actual, 0)
+  };
+  intradocTotal.progress = (intradocTotal.actual / intradocTotal.target) * 100;
+
+  const grandTotal = {
+    target: hospitalTotal.target + retailTotal.target + intradocTotal.target,
+    actual: hospitalTotal.actual + retailTotal.actual + intradocTotal.actual
+  };
+  grandTotal.progress = (grandTotal.actual / grandTotal.target) * 100;
+
+  // Helper function to calculate gap between actual and target
+  const calculateGap = (actual: number, target: number): number => {
+    return actual - target;
+  };
+
+  // Helper function to format deals gap display (Short/Surplus)
+  const formatDealsGap = (gap: number): { label: string; value: string; isPositive: boolean } => {
+    const absGap = Math.abs(gap);
+    const formattedValue = `${absGap} deals`;
+    
+    if (gap < 0) {
+      return {
+        label: 'Short',
+        value: formattedValue,
+        isPositive: false
+      };
+    } else {
+      return {
+        label: 'Surplus',
+        value: formattedValue,
+        isPositive: true
+      };
+    }
+  };
+
+  const getProgressColor = (progress: number) => {
+    if (progress >= 100) return 'border-green-500 bg-green-50';
+    if (progress >= 90) return 'border-blue-500 bg-blue-50';
+    if (progress >= 70) return 'border-yellow-500 bg-yellow-50';
+    return 'border-red-500 bg-red-50';
+  };
+
+  const getProgressBadge = (progress: number) => {
+    if (progress >= 100) return <Badge className="bg-green-600 text-white">Achieved</Badge>;
+    if (progress >= 90) return <Badge className="bg-blue-600 text-white">On Track</Badge>;
+    if (progress >= 70) return <Badge className="bg-yellow-600 text-white">Behind</Badge>;
+    return <Badge variant="destructive">Critical</Badge>;
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-full max-w-[800px] max-h-[85vh] overflow-y-auto p-0">
+        <DialogHeader className="sticky top-0 bg-white z-10 pb-4 pt-6 px-6 border-b border-gray-200">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <DialogTitle className="text-xl flex items-center gap-2">
+                <TrendingUp className="w-6 h-6 text-blue-600" />
+                Deals Breakdown - {employeeName}
+              </DialogTitle>
+              <DialogDescription>
+                Year to Date (YTD) {year} - Target vs Actual Deals Performance
+              </DialogDescription>
+            </div>
+            <button
+              onClick={() => onOpenChange(false)}
+              className="ml-4 rounded-full p-1.5 hover:bg-gray-100 transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500 hover:text-gray-700" />
+            </button>
+          </div>
+        </DialogHeader>
+
+        <div className="px-6 pb-6">
+          {/* Grand Total Summary - Compact 3 cards */}
+          <div className="grid grid-cols-3 gap-3 mb-4 mt-4">
+            {/* Total Deals */}
+            <Card className="border-2 border-blue-400 bg-gradient-to-br from-blue-50 to-cyan-50">
+              <CardContent className="p-4">
+                <div className="text-xs font-semibold text-gray-600 mb-1">Total Deals YTD</div>
+                <div className="text-2xl font-bold text-blue-600 mb-1">
+                  {grandTotal.actual} deals
+                </div>
+                <div className="text-xs text-gray-600 space-y-0.5 mb-2">
+                  <div>Target: {grandTotal.target} deals</div>
+                  {(() => {
+                    const gap = calculateGap(grandTotal.actual, grandTotal.target);
+                    const { label, value, isPositive } = formatDealsGap(gap);
+                    return (
+                      <div className={`font-semibold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                        {label}: {value}
+                      </div>
+                    );
+                  })()}
+                </div>
+                <Progress value={grandTotal.progress} className="h-1.5 mb-1" />
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold">{grandTotal.progress.toFixed(1)}%</span>
+                  {getProgressBadge(grandTotal.progress)}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Hospital Segment */}
+            <Card className="border-2 border-indigo-400 bg-gradient-to-br from-indigo-50 to-purple-50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-1 mb-1">
+                  <Building2 className="w-3.5 h-3.5 text-indigo-600" />
+                  <div className="text-xs font-semibold text-gray-600">Hospital Segment</div>
+                </div>
+                <div className="text-xl font-bold text-indigo-600 mb-1">
+                  {hospitalTotal.actual} deals
+                </div>
+                <div className="text-xs text-gray-600 space-y-0.5 mb-2">
+                  <div>Target: {hospitalTotal.target} deals</div>
+                  {(() => {
+                    const gap = calculateGap(hospitalTotal.actual, hospitalTotal.target);
+                    const { label, value, isPositive } = formatDealsGap(gap);
+                    return (
+                      <div className={`font-semibold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                        {label}: {value}
+                      </div>
+                    );
+                  })()}
+                </div>
+                <Progress value={hospitalTotal.progress} className="h-1.5 mb-1" />
+                <div className="text-xs font-semibold">{hospitalTotal.progress.toFixed(1)}%</div>
+              </CardContent>
+            </Card>
+
+            {/* Retail Segment */}
+            <Card className="border-2 border-emerald-400 bg-gradient-to-br from-emerald-50 to-teal-50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-1 mb-1">
+                  <Stethoscope className="w-3.5 h-3.5 text-emerald-600" />
+                  <div className="text-xs font-semibold text-gray-600">Retail Segment</div>
+                </div>
+                <div className="text-xl font-bold text-emerald-600 mb-1">
+                  {retailTotal.actual} deals
+                </div>
+                <div className="text-xs text-gray-600 space-y-0.5 mb-2">
+                  <div>Target: {retailTotal.target} deals</div>
+                  {(() => {
+                    const gap = calculateGap(retailTotal.actual, retailTotal.target);
+                    const { label, value, isPositive } = formatDealsGap(gap);
+                    return (
+                      <div className={`font-semibold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                        {label}: {value}
+                      </div>
+                    );
+                  })()}
+                </div>
+                <Progress value={retailTotal.progress} className="h-1.5 mb-1" />
+                <div className="text-xs font-semibold">{retailTotal.progress.toFixed(1)}%</div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Segment Breakdown Tabs */}
+          <Tabs defaultValue="hospital" className="w-full">
+            <TabsList className="grid grid-cols-3 w-full max-w-2xl mb-4">
+              <TabsTrigger value="hospital" className="gap-2 text-sm">
+                <Building2 className="w-4 h-4" />
+                Hospital Segment
+              </TabsTrigger>
+              <TabsTrigger value="retail" className="gap-2 text-sm">
+                <Stethoscope className="w-4 h-4" />
+                IntraClinic
+              </TabsTrigger>
+              <TabsTrigger value="intradoc" className="gap-2 text-sm">
+                <Package className="w-4 h-4" />
+                IntraDoc
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Hospital Monthly View */}
+            <TabsContent value="hospital" className="space-y-4">
+              <div className="p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
+                <h3 className="font-semibold flex items-center gap-2 mb-3">
+                  <Building2 className="w-4 h-4 text-indigo-600" />
+                  Hospital Segment - Monthly Deals {year}
+                </h3>
+                
+                {/* Monthly Cards - 4 columns */}
+                <div className="grid grid-cols-4 gap-2">
+                  {hospitalDeals.map((month, index) => {
+                    const gap = month.actual - month.target;
+                    const isPositive = gap >= 0;
+                    
+                    return (
+                      <Card key={index} className={`border ${getProgressColor(month.progress)}`}>
+                        <CardContent className="p-3">
+                          <div className="text-xs font-semibold text-gray-600 mb-2">{month.month}</div>
+                          
+                          <div className="space-y-1">
+                            <div className="text-sm font-bold text-indigo-600">
+                              {month.actual} deals
+                            </div>
+                            <div className="text-xs text-gray-600">
+                              of {month.target} deals
+                            </div>
+                            <div className={`text-xs font-semibold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                              {isPositive ? 'Surplus' : 'Short'}: {Math.abs(gap)}
+                            </div>
+                            <Progress value={month.progress} className="h-1.5" />
+                            <div className="text-xs font-semibold text-center">{month.progress.toFixed(0)}%</div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Retail Monthly View */}
+            <TabsContent value="retail" className="space-y-4">
+              <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
+                <h3 className="font-semibold flex items-center gap-2 mb-3">
+                  <Stethoscope className="w-4 h-4 text-emerald-600" />
+                  IntraClinic - Monthly Deals {year}
+                </h3>
+                
+                {/* Monthly Cards - 4 columns */}
+                <div className="grid grid-cols-4 gap-2">
+                  {retailDeals.map((month, index) => {
+                    const gap = month.actual - month.target;
+                    const isPositive = gap >= 0;
+                    
+                    return (
+                      <Card key={index} className={`border ${getProgressColor(month.progress)}`}>
+                        <CardContent className="p-3">
+                          <div className="text-xs font-semibold text-gray-600 mb-2">{month.month}</div>
+                          
+                          <div className="space-y-1">
+                            <div className="text-sm font-bold text-emerald-600">
+                              {month.actual} deals
+                            </div>
+                            <div className="text-xs text-gray-600">
+                              of {month.target} deals
+                            </div>
+                            <div className={`text-xs font-semibold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                              {isPositive ? 'Surplus' : 'Short'}: {Math.abs(gap)}
+                            </div>
+                            <Progress value={month.progress} className="h-1.5" />
+                            <div className="text-xs font-semibold text-center">{month.progress.toFixed(0)}%</div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* IntraDoc Monthly View */}
+            <TabsContent value="intradoc" className="space-y-4">
+              <div className="p-4 bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg border border-gray-200">
+                <h3 className="font-semibold flex items-center gap-2 mb-3">
+                  <Package className="w-4 h-4 text-gray-600" />
+                  IntraDoc - Monthly Deals {year}
+                </h3>
+                
+                {/* Monthly Cards - 4 columns */}
+                <div className="grid grid-cols-4 gap-2">
+                  {intradocDeals.map((month, index) => {
+                    const gap = month.actual - month.target;
+                    const isPositive = gap >= 0;
+                    
+                    return (
+                      <Card key={index} className={`border ${getProgressColor(month.progress)}`}>
+                        <CardContent className="p-3">
+                          <div className="text-xs font-semibold text-gray-600 mb-2">{month.month}</div>
+                          
+                          <div className="space-y-1">
+                            <div className="text-sm font-bold text-gray-600">
+                              {month.actual} deals
+                            </div>
+                            <div className="text-xs text-gray-600">
+                              of {month.target} deals
+                            </div>
+                            <div className={`text-xs font-semibold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                              {isPositive ? 'Surplus' : 'Short'}: {Math.abs(gap)}
+                            </div>
+                            <Progress value={month.progress} className="h-1.5" />
+                            <div className="text-xs font-semibold text-center">{month.progress.toFixed(0)}%</div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

@@ -1,0 +1,696 @@
+import React, { useState, useEffect } from 'react';
+import { Plus, Search, Filter, Package, DollarSign, Edit, Trash2, Star, AlertCircle, Check, RefreshCw } from 'lucide-react';
+import { Button } from '@/app/components/ui/button';
+import { Input } from '@/app/components/ui/input';
+import { Badge } from '@/app/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/app/components/ui/tabs';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/app/components/ui/tooltip';
+import { toast } from 'sonner';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { formatCurrency } from '@/utils/formatters';
+import { productsApi } from '@/services/api';
+import { ProductFormModal } from '@/app/components/forms/ProductForm';
+import { ProposalBuilder, ProposalFloatingButton } from '@/app/components/ProposalBuilder';
+
+// API disabled - app runs 100% in browser with localStorage
+
+interface ProposalItem {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  quantity: number;
+  description: string;
+  features: string[];
+  proposalType?: 'teknis'; // Add proposal type for technical proposals
+}
+
+export function ProductCatalog() {
+  const { user } = useAuth();
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [showForm, setShowForm] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+  
+  // Proposal state
+  const [proposalItems, setProposalItems] = useState<ProposalItem[]>([]);
+  const [showProposal, setShowProposal] = useState(false);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      console.log('🔄 Fetching products from API...');
+      
+      const result = await productsApi.getAll();
+      
+      if (result.success && result.data) {
+        console.log(`✅ Loaded ${result.data.length} products`);
+        setProducts(result.data);
+        if (result.data.length > 0) {
+          toast.success(`Berhasil memuat ${result.data.length} produk`);
+        }
+      } else {
+        console.error('❌ API Error:', result.error);
+        toast.error(result.error || 'Failed to load products');
+      }
+    } catch (error: any) {
+      console.error('❌ Error fetching products:', error);
+      console.error('Error details:', error.message);
+      toast.error(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePopulateData = async () => {
+    try {
+      setLoading(true);
+      toast.info('Memuat data dummy...');
+      
+      // Populate dummy products data directly to localStorage
+      const dummyProducts = [
+        {
+          id: crypto.randomUUID(),
+          name: 'HMS Enterprise',
+          category: 'Hospital Management System',
+          description: 'Sistem manajemen rumah sakit komprehensif dengan fitur telemedicine, EMR, radiologi, dan laboratorium.',
+          price: 500000000,
+          stock: 100,
+          sold: 15,
+          features: ['Telemedicine', 'EMR', 'Radiologi', 'Laboratorium', 'PACS', 'LIS', 'Billing System', 'Pharmacy System'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'HMS Professional',
+          category: 'Hospital Management System',
+          description: 'Sistem manajemen rumah sakit profesional dengan fitur EMR, PACS, dan LIS untuk RS tipe B dan C.',
+          price: 300000000,
+          stock: 150,
+          sold: 23,
+          features: ['EMR', 'PACS', 'LIS', 'Billing System', 'Inventory Management', 'Reporting Dashboard'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'Intradoc Pro',
+          category: 'Document Management',
+          description: 'Sistem manajemen dokumen profesional untuk manajemen dokumen medis dan administrasi rumah sakit.',
+          price: 100000000,
+          stock: 200,
+          sold: 34,
+          features: ['Manajemen Dokumen Medis', 'Manajemen Dokumen Administrasi', 'E-Signature', 'Audit Trail', 'Version Control'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'Telemedicine Module',
+          category: 'Telemedicine',
+          description: 'Sistem telemedicine untuk konsultasi jarak jauh antara dokter dan pasien dengan video call HD.',
+          price: 50000000,
+          stock: 250,
+          sold: 42,
+          features: ['Video Call HD', 'Chat Dokter-Pasien', 'Resep Digital', 'Monitoring Pasien', 'Payment Gateway'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'EMR Standalone',
+          category: 'Electronic Medical Record',
+          description: 'Sistem catatan medis elektronik standalone untuk manajemen data pasien dan rekam medis.',
+          price: 150000000,
+          stock: 180,
+          sold: 28,
+          features: ['Manajemen Data Pasien', 'Rekam Medis Digital', 'SOAP Notes', 'ICD-10 Integration', 'CPPT'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'Radiologi PACS',
+          category: 'Radiology',
+          description: 'Sistem PACS untuk manajemen dan analisis gambar radiologi dengan DICOM viewer.',
+          price: 200000000,
+          stock: 120,
+          sold: 18,
+          features: ['DICOM Viewer', 'Image Storage', 'Worklist Management', '3D Reconstruction', 'Teleradiology'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'Laboratory LIS',
+          category: 'Laboratory',
+          description: 'Sistem informasi laboratorium untuk manajemen pemeriksaan dan hasil lab dengan auto-interface.',
+          price: 100000000,
+          stock: 160,
+          sold: 31,
+          features: ['Order Management', 'Result Entry', 'Auto-Interface', 'Quality Control', 'Report Generation'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'Pharmacy Module',
+          category: 'Pharmacy Management',
+          description: 'Sistem manajemen farmasi untuk inventory obat, dispensing, dan interaksi obat.',
+          price: 80000000,
+          stock: 190,
+          sold: 26,
+          features: ['Inventory Management', 'Dispensing', 'Drug Interaction Check', 'Expired Date Alert', 'Stock Opname'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'Billing System',
+          category: 'Finance & Billing',
+          description: 'Sistem billing komprehensif dengan integrasi BPJS, asuransi, dan payment gateway.',
+          price: 120000000,
+          stock: 140,
+          sold: 37,
+          features: ['BPJS Integration', 'Insurance Claims', 'Payment Gateway', 'Invoice Generation', 'Financial Reports'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'Mobile App HMS',
+          category: 'Mobile Application',
+          description: 'Aplikasi mobile untuk pasien: jadwal dokter, booking appointment, dan telemedicine.',
+          price: 75000000,
+          stock: 220,
+          sold: 45,
+          features: ['Jadwal Dokter', 'Online Booking', 'Telemedicine', 'Medical Records', 'Push Notifications'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'Nurse Station Module',
+          category: 'Nursing Management',
+          description: 'Sistem untuk nurse station: vital signs monitoring, medication administration, dan care plan.',
+          price: 90000000,
+          stock: 170,
+          sold: 22,
+          features: ['Vital Signs Entry', 'Medication Administration', 'Care Plan', 'Nursing Notes', 'Handover Report'],
+        },
+        {
+          id: crypto.randomUUID(),
+          name: 'Inventory Management',
+          category: 'Inventory & Supply Chain',
+          description: 'Sistem manajemen inventory untuk medical supplies, alkes, dan asset management.',
+          price: 85000000,
+          stock: 130,
+          sold: 19,
+          features: ['Stock Management', 'Purchase Order', 'Vendor Management', 'Asset Tracking', 'Reorder Point Alert'],
+        },
+      ];
+      
+      // Save to localStorage
+      localStorage.setItem('sales_monitoring_products', JSON.stringify(dummyProducts));
+      
+      console.log(`✅ Populated ${dummyProducts.length} products to localStorage`);
+      toast.success(`Berhasil populate ${dummyProducts.length} produk healthcare!`);
+      
+      // Refresh products list
+      await fetchProducts();
+    } catch (error: any) {
+      console.error('❌ Error populating data:', error);
+      toast.error(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAdd = () => {
+    setSelectedProduct(null);
+    setShowForm(true);
+  };
+
+  const handleEdit = (product: any) => {
+    setSelectedProduct(product);
+    setShowForm(true);
+  };
+
+  const handleDelete = async (product: any) => {
+    if (!confirm(`Apakah Anda yakin ingin menghapus produk "${product.name}"?`)) {
+      return;
+    }
+
+    try {
+      setDeleteLoading(product.id);
+      
+      const result = await productsApi.delete(product.id);
+      
+      if (result.success) {
+        toast.success('Product berhasil dihapus!');
+        fetchProducts();
+      } else {
+        toast.error(result.error || 'Gagal menghapus product');
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      toast.error('Terjadi kesalahan saat menghapus product');
+    } finally {
+      setDeleteLoading(null);
+    }
+  };
+
+  const handleFormSuccess = () => {
+    setShowForm(false);
+    setSelectedProduct(null);
+    fetchProducts();
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01544e]"></div>
+      </div>
+    );
+  }
+
+  const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
+
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const stats = {
+    totalProducts: products.length,
+    totalSold: products.reduce((sum, p) => sum + (p.sold || 0), 0),
+    totalRevenue: products.reduce((sum, p) => sum + (p.price * (p.sold || 0)), 0),
+    bestSeller: products.length > 0 
+      ? products.reduce((prev, current) => ((current.sold || 0) > (prev.sold || 0)) ? current : prev)
+      : { name: '-', description: '-', sold: 0, price: 0, features: [] }
+  };
+
+  // Format revenue menggunakan utility function standar
+  const formatRevenue = (amount: number) => {
+    return formatCurrency(amount);
+  };
+
+  const handleAddToProposal = (product: any) => {
+    const existingItem = proposalItems.find(item => item.id === product.id);
+    if (existingItem) {
+      setProposalItems(proposalItems.map(item => 
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+      ));
+      toast.success(`Quantity ${product.name} ditambah menjadi ${existingItem.quantity + 1}`);
+    } else {
+      const newItem = {
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        price: product.price,
+        quantity: 1,
+        description: product.description,
+        features: product.features || [],
+      };
+      setProposalItems([...proposalItems, newItem]);
+      toast.success(`${product.name} ditambahkan ke proposal`);
+    }
+    console.log('Proposal items updated:', proposalItems.length + 1);
+  };
+
+  const handleAddToProposalTeknis = (product: any) => {
+    const existingItem = proposalItems.find(item => item.id === product.id);
+    if (existingItem) {
+      setProposalItems(proposalItems.map(item => 
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+      ));
+      toast.success(`Quantity ${product.name} ditambah ke Proposal Teknis menjadi ${existingItem.quantity + 1}`);
+    } else {
+      const newItem = {
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        price: product.price,
+        quantity: 1,
+        description: product.description,
+        features: product.features || [],
+        proposalType: 'teknis', // Mark as technical proposal
+      };
+      setProposalItems([...proposalItems, newItem]);
+      toast.success(`${product.name} ditambahkan ke Proposal Teknis`);
+    }
+    console.log('Technical proposal items updated:', proposalItems.length + 1);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-[#01544e]">
+            Katalog Produk
+          </h1>
+          <p className="text-gray-600 mt-1">Jelajahi dan kelola semua produk & layanan</p>
+        </div>
+        <div className="flex gap-2">
+          <Button 
+            onClick={handlePopulateData}
+            variant="outline"
+            className="gap-2"
+          >
+            <RefreshCw className="h-4 w-4" />
+            Load 18 Data Baru
+          </Button>
+          <Button 
+            onClick={handleAdd}
+            className="bg-[#01544e] hover:bg-[#023d39] text-white gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Tambah Product
+          </Button>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <TooltipProvider>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center">
+                  <Package className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Total Products</p>
+                  <p className="text-2xl font-bold text-gray-900">{products.length}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                  <Plus className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Total Terjual</p>
+                  <p className="text-2xl font-bold">{stats.totalSold}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center">
+                  <DollarSign className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Total Revenue</p>
+                  <p className="text-xl font-bold">{formatRevenue(stats.totalRevenue)}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+                  <Star className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Best Seller</p>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <p className="text-sm font-bold line-clamp-2 cursor-help">{stats.bestSeller.name}</p>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs">{stats.bestSeller.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </TooltipProvider>
+
+      {/* Search & Filter */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                placeholder="Cari produk atau layanan..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Button 
+              onClick={fetchProducts}
+              variant="outline"
+              className="gap-2"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Refresh
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Products */}
+      {products.length === 0 ? (
+        <Card className="py-12">
+          <CardContent>
+            <div className="text-center">
+              <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Belum Ada Produk</h3>
+              <p className="text-gray-600 mb-6">Mulai tambahkan produk pertama Anda</p>
+              <Button 
+                onClick={handleAdd}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Tambah Product
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
+          <TabsList className="h-11">
+            {categories.map(category => (
+              <TabsTrigger key={category} value={category} className="text-sm">
+                {category === 'all' ? 'Semua' : category}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          <TabsContent value={selectedCategory} className="space-y-4 mt-6">
+            {filteredProducts.length === 0 ? (
+              <Card className="py-12">
+                <CardContent>
+                  <div className="text-center">
+                    <AlertCircle className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Tidak Ada Hasil</h3>
+                    <p className="text-gray-600">Tidak ada produk yang cocok dengan pencarian Anda</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredProducts.map((product) => (
+                  <Card key={product.id} className="hover:shadow-xl transition-all group overflow-hidden flex flex-col">
+                    {/* Product Image/Icon */}
+                    <div className="h-48 bg-[#01544e] flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all"></div>
+                      <Package className="h-24 w-24 text-white/80 group-hover:scale-110 transition-transform" />
+                      <Badge className="absolute top-4 right-4 bg-white/90 text-[#01544e]">
+                        {product.sold || 0} Terjual
+                      </Badge>
+                    </div>
+
+                    <CardContent className="p-6 flex flex-col flex-1">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <Badge className="mb-2 bg-[#e6f2f1] text-[#01544e]">{product.category}</Badge>
+                          <h3 className="text-xl font-bold text-gray-900 line-clamp-2">{product.name}</h3>
+                        </div>
+                      </div>
+
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">{product.description}</p>
+
+                      <div className="space-y-2 mb-4">
+                        {(product.features || []).slice(0, 3).map((feature: string, index: number) => (
+                          <div key={index} className="flex items-center gap-2 text-sm text-gray-700">
+                            <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                            <span className="line-clamp-1">{feature}</span>
+                          </div>
+                        ))}
+                        {(product.features || []).length > 3 && (
+                          <p className="text-xs text-gray-500 ml-6">+{product.features.length - 3} fitur lainnya</p>
+                        )}
+                      </div>
+
+                      {/* Spacer untuk mendorong tombol ke bawah */}
+                      <div className="flex-1"></div>
+
+                      <div className="pt-4 border-t mt-auto">
+                        <div className="flex items-center justify-between mb-4">
+                          <div>
+                            <p className="text-xs text-gray-500">Harga Mulai</p>
+                            <p className="text-2xl font-bold text-indigo-600">
+                              {formatCurrency(product.price)}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-gray-500">Stock</p>
+                            <p className="text-lg font-semibold text-green-600">{product.stock || 0}</p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          {/* Primary Actions - 2 tombol proposal */}
+                          <div className="grid grid-cols-2 gap-2">
+                            <Button 
+                              className={`text-white text-xs ${
+                                proposalItems.some(item => item.id === product.id && item.proposalType === 'teknis')
+                                  ? 'bg-gray-400 cursor-not-allowed opacity-60'
+                                  : 'bg-[#01544e] hover:bg-[#023d39]'
+                              }`}
+                              onClick={() => handleAddToProposalTeknis(product)}
+                              disabled={proposalItems.some(item => item.id === product.id && item.proposalType === 'teknis')}
+                            >
+                              <Plus className="h-3.5 w-3.5 mr-1" />
+                              Proposal Teknis
+                            </Button>
+                            <Button 
+                              className={`text-white text-xs ${
+                                proposalItems.some(item => item.id === product.id && !item.proposalType)
+                                  ? 'bg-gray-400 cursor-not-allowed opacity-60'
+                                  : 'bg-[#01544e] hover:bg-[#023d39]'
+                              }`}
+                              onClick={() => handleAddToProposal(product)}
+                              disabled={proposalItems.some(item => item.id === product.id && !item.proposalType)}
+                            >
+                              <Plus className="h-3.5 w-3.5 mr-1" />
+                              Proposal
+                            </Button>
+                          </div>
+                          
+                          {/* Secondary Actions - Edit & Delete */}
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEdit(product)}
+                              className="flex-1"
+                            >
+                              <Edit className="h-4 w-4 mr-2" />
+                              Edit
+                            </Button>
+                            <Button 
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleDelete(product)}
+                              disabled={deleteLoading === product.id}
+                              className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              {deleteLoading === product.id ? (
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
+                              ) : (
+                                <>
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Hapus
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+      )}
+
+      {/* Best Seller Highlight */}
+      {products.length > 0 && stats.bestSeller.sold > 0 && (
+        <Card className="bg-[#01544e] text-white">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Star className="h-6 w-6" />
+              Produk Terlaris Bulan Ini
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-2xl font-bold mb-2">{stats.bestSeller.name}</h3>
+                <p className="text-white/80 mb-4">{stats.bestSeller.description}</p>
+                <div className="flex items-center gap-4">
+                  <div>
+                    <p className="text-sm text-white/80">Total Terjual</p>
+                    <p className="text-3xl font-bold">{stats.bestSeller.sold}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-white/80">Revenue</p>
+                    <p className="text-2xl font-bold">Rp {((stats.bestSeller.price * stats.bestSeller.sold) / 1000).toFixed(0)}K</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm text-white/80 mb-2">Fitur Unggulan:</p>
+                {(stats.bestSeller.features || []).slice(0, 6).map((feature: string, index: number) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <Check className="h-4 w-4 flex-shrink-0" />
+                    <span className="text-sm">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Product Form Modal */}
+      {showForm && (
+        <ProductFormModal
+          product={selectedProduct}
+          onClose={() => {
+            setShowForm(false);
+            setSelectedProduct(null);
+          }}
+          onSuccess={handleFormSuccess}
+        />
+      )}
+
+      {/* Proposal Builder */}
+      <ProposalBuilder
+        isOpen={showProposal}
+        items={proposalItems}
+        onClose={() => setShowProposal(false)}
+        onUpdateQuantity={(id, quantity) => {
+          setProposalItems(proposalItems.map(item =>
+            item.id === id ? { ...item, quantity } : item
+          ));
+        }}
+        onRemoveItem={(id) => {
+          setProposalItems(proposalItems.filter(item => item.id !== id));
+        }}
+        onClearAll={() => {
+          if (confirm('Hapus semua item dari proposal?')) {
+            setProposalItems([]);
+            setShowProposal(false);
+          }
+        }}
+      />
+      
+      {/* Floating Button */}
+      <ProposalFloatingButton
+        itemCount={proposalItems.length}
+        onClick={() => setShowProposal(true)}
+      />
+    </div>
+  );
+}
