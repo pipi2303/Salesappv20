@@ -10,6 +10,7 @@ import { leadsApi, contractsApi, salesTeamApi } from '@/services/api';
 import { toast } from 'sonner';
 import { SalesKPICards } from '@/app/components/SalesKPICards';
 import { formatCurrency, formatNumber } from '@/utils/formatters';
+import { TeamKPICards } from '@/app/components/TeamKPICards';
 
 // Dialogs
 import { SalesExecutiveDialog } from '@/app/components/dialogs/SalesExecutiveDialog';
@@ -17,10 +18,11 @@ import { DirectorDetailDialog } from '@/app/components/dialogs/DirectorDetailDia
 import { AreaManagerDetailDialog } from '@/app/components/dialogs/AreaManagerDetailDialog';
 import { SalesManagerDetailDialog } from '@/app/components/dialogs/SalesManagerDetailDialog';
 import { RevenueBreakdownDialog } from '@/app/components/dialogs/RevenueBreakdownDialog';
+import { AccountManagerDetailDialog } from '@/app/components/dialogs/AccountManagerDetailDialog';
 
 // Data
 import { teamHierarchy, monthlyData, productPerformance, regionalData, conversionFunnel } from '@/app/data/teamHierarchyData';
-import { TeamMember, Manager, AreaManager, Director, SalesExecutive } from '@/app/components/dialogs/sales-dialog-types';
+import { TeamMember, Manager, AreaManager, Director, SalesExecutive, Note } from '@/app/components/dialogs/sales-dialog-types';
 
 export function SalesReports() {
   const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
@@ -30,14 +32,42 @@ export function SalesReports() {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('Jan - 26');
   const [expandedManagers, setExpandedManagers] = useState<string[]>([]);
   const [selectedManager, setSelectedManager] = useState<string | null>(null);
+  const [expandedAreaManagers, setExpandedAreaManagers] = useState<string[]>([]);
+  const [expandedSalesManagerTeams, setExpandedSalesManagerTeams] = useState<string[]>([]);
   
   // Selection States
   const [selectedDirector, setSelectedDirector] = useState<Director | null>(null);
   const [selectedAreaManager, setSelectedAreaManager] = useState<AreaManager | null>(null);
   const [selectedSalesManager, setSelectedSalesManager] = useState<Manager | null>(null);
   const [selectedSalesExecutive, setSelectedSalesExecutive] = useState<SalesExecutive | null>(null);
+  const [selectedAccountManager, setSelectedAccountManager] = useState<TeamMember | null>(null);
   const [selectedMemberForRevenue, setSelectedMemberForRevenue] = useState<TeamMember | null>(null);
   const [revenueBreakdownTab, setRevenueBreakdownTab] = useState<'hospital' | 'retail' | 'intradoc'>('hospital');
+
+  // Dialog Functional States
+  const [dialogAiTab, setDialogAiTab] = useState('insights');
+  const [dialogPeriodFilter, setDialogPeriodFilter] = useState('monthly');
+  const [dialogSelectedPeriod, setDialogSelectedPeriod] = useState('Jan - 26');
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [newNote, setNewNote] = useState('');
+
+  const handleAddNote = () => {
+    if (newNote.trim()) {
+      const note: Note = {
+        id: Date.now().toString(),
+        text: newNote,
+        timestamp: new Date()
+      };
+      setNotes([note, ...notes]);
+      setNewNote('');
+      toast.success('Note added successfully');
+    }
+  };
+
+  const handleDeleteNote = (id: string) => {
+    setNotes(notes.filter(n => n.id !== id));
+    toast.success('Note deleted');
+  };
 
   const [stats, setStats] = useState({
     totalRevenue: 0,
@@ -106,6 +136,20 @@ export function SalesReports() {
   const toggleManagerExpand = (managerId: string) => {
     setExpandedManagers(prev =>
       prev.includes(managerId) ? prev.filter(id => id !== managerId) : [...prev, managerId]
+    );
+  };
+
+  const toggleAreaManagerExpand = (amId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpandedAreaManagers(prev =>
+      prev.includes(amId) ? prev.filter(id => id !== amId) : [...prev, amId]
+    );
+  };
+
+  const toggleSalesManagerTeam = (mgrId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpandedSalesManagerTeams(prev =>
+      prev.includes(mgrId) ? prev.filter(id => id !== mgrId) : [...prev, mgrId]
     );
   };
 
@@ -230,16 +274,140 @@ export function SalesReports() {
               </div>
 
               {/* Area Managers */}
-              <div className="ml-6 space-y-4">
+              <div className="ml-6 space-y-3">
                 {teamHierarchy.areaManagers.map(am => (
-                  <div key={am.id} className="border border-gray-300 rounded-lg p-4 bg-white hover:border-[#01544e] transition-all cursor-pointer" onClick={() => setSelectedAreaManager(am)}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3"><div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center font-bold text-[#01544e]">{am.avatar}</div><div><h4 className="font-bold text-[#01544e]">{am.name}</h4><p className="text-sm text-gray-600">{am.position}</p></div></div>
-                      <div className="text-right"><div className="text-xl font-bold text-green-600">{formatCurrency(am.achievement)}</div><div className="text-sm font-semibold text-[#01544e]">{am.performance.toFixed(1)}%</div></div>
+                  <div key={am.id}>
+                    {/* Area Manager Card */}
+                    <div
+                      className={`border rounded-lg p-4 bg-white transition-all cursor-pointer ${expandedAreaManagers.includes(am.id) ? 'border-[#01544e] shadow-md' : 'border-gray-300 hover:border-[#01544e]'}`}
+                      onClick={() => setSelectedAreaManager(am)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center font-bold text-[#01544e]">{am.avatar}</div>
+                          <div>
+                            <h4 className="font-bold text-[#01544e]">{am.name}</h4>
+                            <p className="text-sm text-gray-600">{am.position}</p>
+                            <p className="text-xs text-gray-400">{am.managers.length} Manager • {am.managers.reduce((s, m) => s + m.team.length, 0)} Team</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="text-right">
+                            <div className="text-xl font-bold text-green-600">{formatCurrency(am.achievement)}</div>
+                            <div className="text-sm font-semibold text-[#01544e]">{am.performance.toFixed(1)}%</div>
+                          </div>
+                          <button
+                            onClick={(e) => toggleAreaManagerExpand(am.id, e)}
+                            className="h-8 w-8 rounded-full bg-[#e6f2f1] hover:bg-[#01544e] hover:text-white flex items-center justify-center text-[#01544e] transition-all"
+                          >
+                            {expandedAreaManagers.includes(am.id) ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                          </button>
+                        </div>
+                      </div>
                     </div>
+
+                    {/* Sales Managers under this Area Manager */}
+                    {expandedAreaManagers.includes(am.id) && (
+                      <div className="ml-8 mt-2 space-y-2 border-l-2 border-[#01544e]/30 pl-4">
+                        {am.managers.map(mgr => (
+                          <div key={mgr.id}>
+                            {/* Sales Manager Card */}
+                            <div
+                              className={`border rounded-lg p-3 bg-gradient-to-r from-[#f0faf9] to-white transition-all cursor-pointer ${expandedSalesManagerTeams.includes(mgr.id) ? 'border-[#01544e]/60 shadow-sm' : 'border-[#01544e]/20 hover:border-[#01544e]/60'}`}
+                              onClick={() => setSelectedSalesManager(mgr)}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                  <div className="h-10 w-10 rounded-full bg-[#01544e]/10 flex items-center justify-center font-bold text-[#01544e] text-sm">{mgr.avatar}</div>
+                                  <div>
+                                    <h5 className="font-semibold text-[#01544e]">{mgr.name}</h5>
+                                    <p className="text-xs text-gray-500">{mgr.position}</p>
+                                    <p className="text-xs text-gray-400">{mgr.team.length} Sales Executive</p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                  <div className="text-right">
+                                    <div className="text-base font-bold text-green-600">{formatCurrency(mgr.achievement)}</div>
+                                    <div className="text-xs font-semibold text-[#01544e]">{mgr.performance.toFixed(1)}%</div>
+                                  </div>
+                                  <button
+                                    onClick={(e) => toggleSalesManagerTeam(mgr.id, e)}
+                                    className="h-7 w-7 rounded-full bg-[#01544e]/10 hover:bg-[#01544e] hover:text-white flex items-center justify-center text-[#01544e] transition-all"
+                                  >
+                                    {expandedSalesManagerTeams.includes(mgr.id) ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+                                  </button>
+                                </div>
+                              </div>
+                              {/* KPI Cards for Sales Manager */}
+                              <TeamKPICards member={mgr} size="sm" />
+                            </div>
+
+                            {/* Team Members under this Sales Manager */}
+                            {expandedSalesManagerTeams.includes(mgr.id) && (
+                              <div className="ml-8 mt-1 space-y-2 border-l-2 border-gray-200 pl-3">
+                                {mgr.team.map(member => (
+                                  <div
+                                    key={member.id}
+                                    className="border border-gray-100 rounded-lg p-3 bg-white hover:border-[#01544e]/40 hover:bg-[#f9fffe] transition-all cursor-pointer"
+                                    onClick={() => setSelectedSalesExecutive(member as SalesExecutive)}
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-2">
+                                        <div className={`h-8 w-8 rounded-full flex items-center justify-center font-bold text-xs text-white ${member.performance >= 90 ? 'bg-green-500' : member.performance >= 85 ? 'bg-yellow-500' : 'bg-red-400'}`}>{member.avatar}</div>
+                                        <div>
+                                          <p className="text-sm font-semibold text-gray-800">{member.name}</p>
+                                          <p className="text-xs text-gray-400">{member.position}</p>
+                                        </div>
+                                      </div>
+                                      <div className="text-right">
+                                        <div className="text-sm font-bold text-green-600">{formatCurrency(member.achievement)}</div>
+                                        <div className={`text-xs font-semibold ${member.performance >= 90 ? 'text-green-600' : member.performance >= 85 ? 'text-yellow-600' : 'text-red-500'}`}>
+                                          {member.performance.toFixed(1)}% • {member.totalDeals} deals
+                                        </div>
+                                      </div>
+                                    </div>
+                                    {/* KPI Cards for Sales Executive */}
+                                    <TeamKPICards member={member} size="sm" />
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
+
+              {/* Account Managers */}
+              {teamHierarchy.accountManagers && teamHierarchy.accountManagers.length > 0 && (
+                <div className="mt-6">
+                  <div className="flex items-center gap-2 mb-3 px-2">
+                    <Users className="h-5 w-5 text-purple-600" />
+                    <h3 className="font-bold text-purple-900">Account Managers</h3>
+                  </div>
+                  <div className="ml-6 space-y-4">
+                    {teamHierarchy.accountManagers.map(acm => (
+                      <div key={acm.id} className="border-2 border-purple-300 rounded-lg p-4 bg-gradient-to-r from-purple-50 to-white hover:border-purple-500 transition-all cursor-pointer" onClick={() => setSelectedAccountManager(acm)}>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center font-bold text-white">{acm.avatar}</div>
+                            <div>
+                              <h4 className="font-bold text-purple-900">{acm.name}</h4>
+                              <p className="text-sm text-purple-700">{acm.position}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xl font-bold text-green-600">{formatCurrency(acm.achievement)}</div>
+                            <div className="text-sm font-semibold text-purple-900">{acm.performance.toFixed(1)}% • {acm.totalDeals} Accounts</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -296,39 +464,80 @@ export function SalesReports() {
       <DirectorDetailDialog 
         selectedDirector={selectedDirector} 
         onClose={() => setSelectedDirector(null)} 
-        periodFilter="monthly" 
-        selectedPeriod={selectedPeriod} 
-        onPeriodFilterChange={() => {}} 
-        aiTab="insights" 
-        onAiTabChange={() => {}} 
+        periodFilter={dialogPeriodFilter} 
+        selectedPeriod={dialogSelectedPeriod} 
+        onPeriodFilterChange={(filter, period) => {
+          setDialogPeriodFilter(filter);
+          setDialogSelectedPeriod(period);
+        }} 
+        aiTab={dialogAiTab} 
+        onAiTabChange={setDialogAiTab} 
       />
       
       <AreaManagerDetailDialog 
         selectedAreaManager={selectedAreaManager} 
         onClose={() => setSelectedAreaManager(null)} 
-        periodFilter="monthly" 
-        selectedPeriod={selectedPeriod} 
-        onPeriodFilterChange={() => {}} 
-        aiTab="insights" 
-        onAiTabChange={() => {}} 
+        periodFilter={dialogPeriodFilter} 
+        selectedPeriod={dialogSelectedPeriod} 
+        onPeriodFilterChange={(filter, period) => {
+          setDialogPeriodFilter(filter);
+          setDialogSelectedPeriod(period);
+        }} 
+        notes={notes}
+        newNote={newNote}
+        onNewNoteChange={setNewNote}
+        onAddNote={handleAddNote}
+        onDeleteNote={handleDeleteNote}
       />
 
       <SalesManagerDetailDialog 
         selectedManager={selectedSalesManager} 
         onClose={() => setSelectedSalesManager(null)} 
-        periodFilter="monthly" 
-        selectedPeriod={selectedPeriod} 
-        onPeriodFilterChange={() => {}} 
-        aiTab="insights" 
-        onAiTabChange={() => {}} 
+        periodFilter={dialogPeriodFilter} 
+        selectedPeriod={dialogSelectedPeriod} 
+        onPeriodFilterChange={(filter, period) => {
+          setDialogPeriodFilter(filter);
+          setDialogSelectedPeriod(period);
+        }} 
+        notes={notes}
+        newNote={newNote}
+        onNewNoteChange={setNewNote}
+        onAddNote={handleAddNote}
+        onDeleteNote={handleDeleteNote}
       />
 
       <SalesExecutiveDialog 
         selectedExecutive={selectedSalesExecutive} 
         onClose={() => setSelectedSalesExecutive(null)} 
-        periodFilter="monthly" 
-        selectedPeriod={selectedPeriod} 
-        onPeriodFilterChange={() => {}} 
+        periodFilter={dialogPeriodFilter} 
+        selectedPeriod={dialogSelectedPeriod} 
+        onPeriodFilterChange={(filter, period) => {
+          setDialogPeriodFilter(filter);
+          setDialogSelectedPeriod(period);
+        }} 
+        notes={notes}
+        newNote={newNote}
+        onNewNoteChange={setNewNote}
+        onAddNote={handleAddNote}
+        onDeleteNote={handleDeleteNote}
+      />
+
+      <AccountManagerDetailDialog 
+        selectedAccountManager={selectedAccountManager} 
+        onClose={() => setSelectedAccountManager(null)} 
+        periodFilter={dialogPeriodFilter} 
+        selectedPeriod={dialogSelectedPeriod} 
+        onPeriodFilterChange={(filter, period) => {
+          setDialogPeriodFilter(filter);
+          setDialogSelectedPeriod(period);
+        }} 
+        notes={notes}
+        newNote={newNote}
+        onNewNoteChange={setNewNote}
+        onAddNote={handleAddNote}
+        onDeleteNote={handleDeleteNote}
+        aiTab={dialogAiTab}
+        onAiTabChange={setDialogAiTab}
       />
 
       <RevenueBreakdownDialog 

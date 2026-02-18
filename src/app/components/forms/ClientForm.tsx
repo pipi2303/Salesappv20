@@ -3,7 +3,12 @@ import { toast } from 'sonner';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { 
   X, Hospital, FileText, Shield, User, Building2, 
-  ChevronUp, ChevronDown, Clipboard, CreditCard, Info, Save 
+  ChevronUp, ChevronDown, Clipboard, CreditCard, Info, Save, Percent,
+  Clock, Send, CheckCircle, CalendarDays, Wallet, Package, Layers, AlertCircle,
+  Globe, MapPin, Phone, Mail, Tag, Hash, Link,
+  Activity, FileCheck, Stethoscope, Monitor, Users, Bed,
+  UserCircle, Briefcase, MessageSquare, Fingerprint, ExternalLink, FileSignature,
+  Database, ShieldCheck, Server, Cloud, Cpu
 } from 'lucide-react';
 import { 
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription 
@@ -18,10 +23,7 @@ import {
   Tooltip, TooltipContent, TooltipProvider, TooltipTrigger 
 } from '@/app/components/ui/tooltip';
 import { Button } from '@/app/components/ui/button';
-import { publicAnonKey } from '/utils/supabase/info';
-
-// Mock API URL - using localStorage only
-const API_URL = 'https://mock-project-id.supabase.co/functions/v1/make-server-67367fc1';
+import { clientsApi } from '@/services/api';
 
 interface ClientFormProps {
   client: any;
@@ -39,7 +41,9 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
     teknis: false,
     pic: false,
     subscription: false,
+    discount: false,
     legal: false,
+    komunikasi: false,
   });
 
   const [formData, setFormData] = React.useState({
@@ -69,6 +73,10 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
     paket_aktif: '',
     modul_tambahan: '',
     status_kontrak: '',
+    status_subscription: '', // NEW FIELD
+    discount: 0, // NEW FIELD
+    discount_status: '', // NEW FIELD
+    discount_approval_status: '', // NEW FIELD
     tanggal_mulai_langganan: '',
     tanggal_habis_kontrak: '',
     total_nilai_kontrak: '',
@@ -107,6 +115,9 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
         paket_aktif: client.paket_aktif || '',
         modul_tambahan: client.modul_tambahan || '',
         status_kontrak: client.status_kontrak || '',
+        status_subscription: client.status_subscription || '', // NEW FIELD
+        discount: client.discount || 0, // NEW FIELD
+        discount_status: client.discount_status || '', // NEW FIELD
         tanggal_mulai_langganan: client.tanggal_mulai_langganan || '',
         tanggal_habis_kontrak: client.tanggal_habis_kontrak || '',
         total_nilai_kontrak: client.total_nilai_kontrak || '',
@@ -134,26 +145,17 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
       return;
     }
 
+    if (formData.discount > 20 && formData.discount_approval_status !== 'approved') {
+      toast.error('Diskon di atas 20% memerlukan persetujuan atasan sebelum data dapat disimpan.');
+      return;
+    }
+
     try {
       setLoading(true);
       
-      const url = client 
-        ? `${API_URL}/clients/${client.id}`
-        : `${API_URL}/clients`;
-      
-      const method = client ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.accessToken || publicAnonKey}`,
-          'apikey': publicAnonKey,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
+      const result = client 
+        ? await clientsApi.update(client.id, formData)
+        : await clientsApi.create(formData);
       
       if (result.success) {
         toast.success(client ? 'Data client berhasil diupdate!' : 'Data client berhasil ditambahkan!');
@@ -174,6 +176,26 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
       ...prev,
       [section]: !prev[section]
     }));
+  };
+
+  const handleRequestApproval = () => {
+    if (formData.discount <= 20) {
+      toast.info('Diskon di bawah 20% tidak memerlukan persetujuan khusus.');
+      return;
+    }
+    
+    setFormData(prev => ({ ...prev, discount_approval_status: 'pending' }));
+    toast.info(`Permintaan persetujuan diskon ${formData.discount}% telah dikirim ke Manager & Director via Email.`);
+    
+    // Simulate approval after 4 seconds
+    setTimeout(() => {
+      setFormData(prev => ({ 
+        ...prev, 
+        discount_approval_status: 'approved',
+        discount_status: 'Approved by Director'
+      }));
+      toast.success(`Diskon ${formData.discount}% telah DISETUJUI oleh Director!`);
+    }, 4000);
   };
 
   return (
@@ -269,17 +291,20 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
           <div className="px-6 py-5 space-y-4 overflow-y-auto flex-1 text-gray-900">
             
             {/* SECTION 1: Informasi Dasar */}
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-100 overflow-hidden">
+            <div className="bg-white rounded-xl border border-emerald-100 overflow-hidden shadow-sm">
               <button
                 type="button"
                 onClick={() => toggleSection('dasar')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-emerald-100/50 hover:bg-emerald-100 transition-colors"
+                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 transition-colors border-b border-emerald-100"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center">
-                    <Building2 className="w-4 h-4 text-white" />
+                  <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-200">
+                    <Building2 className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-emerald-900">Informasi Dasar</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-emerald-900 leading-none">Informasi Dasar</h3>
+                    <p className="text-[10px] text-emerald-700 mt-1 uppercase tracking-wider font-semibold opacity-70">IDENTITAS & DATA KONTAK UTAMA</p>
+                  </div>
                 </div>
                 {expandedSections.dasar ? (
                   <ChevronUp className="w-5 h-5 text-emerald-600" />
@@ -289,140 +314,183 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
               </button>
               
               {expandedSections.dasar && (
-                <div className="p-5 pt-4 grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                      <Clipboard className="w-4 h-4 text-emerald-600" />
-                      ID Client
-                    </Label>
-                    <Input
-                      name="id_customer"
-                      value={formData.id_customer}
-                      onChange={handleChange}
-                      placeholder="CUST-2025-001"
-                      className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
-                    />
+                <div className="p-6 space-y-8">
+                  {/* Sub-section: Identitas */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+                      <Tag className="w-4 h-4 text-emerald-600" />
+                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Identitas Client</h4>
+                    </div>
+                    
+                    <div className="grid grid-cols-6 gap-4">
+                      <div className="col-span-2 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Hash className="w-3.5 h-3.5 text-emerald-500" />
+                          ID Client
+                        </Label>
+                        <Input
+                          name="id_customer"
+                          value={formData.id_customer}
+                          onChange={handleChange}
+                          placeholder="CUST-2025-001"
+                          className="bg-gray-50/50 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 h-11 font-mono text-xs"
+                        />
+                      </div>
+
+                      <div className="col-span-4 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          Nama Entitas <span className="text-red-500 font-black">*</span>
+                        </Label>
+                        <Input
+                          name="nama_entitas"
+                          value={formData.nama_entitas}
+                          onChange={handleChange}
+                          required
+                          placeholder="RS Harapan Sehat"
+                          className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-11 text-base font-medium"
+                        />
+                      </div>
+
+                      <div className="col-span-3 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700">
+                          Kategori Client <span className="text-red-500">*</span>
+                        </Label>
+                        <Select
+                          value={formData.kategori_client}
+                          onValueChange={(value) => setFormData(prev => ({ ...prev, kategori_client: value }))}
+                        >
+                          <SelectTrigger className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-11">
+                            <SelectValue placeholder="Pilih kategori" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Rumah Sakit">🏥 Rumah Sakit</SelectItem>
+                            <SelectItem value="Puskesmas">🏢 Puskesmas</SelectItem>
+                            <SelectItem value="Klinik">🩺 Klinik</SelectItem>
+                            <SelectItem value="Praktek Dokter Pribadi">👨‍⚕️ Praktek Dokter Pribadi</SelectItem>
+                            <SelectItem value="Faskes Lainnya">🏗️ Faskes Lainnya</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="col-span-3 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <User className="w-3.5 h-3.5 text-emerald-500" />
+                          Pemilik / Yayasan
+                        </Label>
+                        <Input
+                          name="owner"
+                          value={formData.owner}
+                          onChange={handleChange}
+                          placeholder="Nama pemilik atau yayasan"
+                          className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-11"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">
-                      Nama Entitas <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      name="nama_entitas"
-                      value={formData.nama_entitas}
-                      onChange={handleChange}
-                      required
-                      placeholder="RS Harapan Sehat"
-                      className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
-                    />
-                  </div>
+                  {/* Sub-section: Lokasi & Kontak */}
+                  <div className="space-y-4 pt-2">
+                    <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+                      <MapPin className="w-4 h-4 text-emerald-600" />
+                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Lokasi & Kontak</h4>
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">
-                      Kategori Client <span className="text-red-500">*</span>
-                    </Label>
-                    <Select
-                      value={formData.kategori_client}
-                      onValueChange={(value) => setFormData(prev => ({ ...prev, kategori_client: value }))}
-                    >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500">
-                        <SelectValue placeholder="Pilih kategori" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Rumah Sakit">Rumah Sakit</SelectItem>
-                        <SelectItem value="Puskesmas">Puskesmas</SelectItem>
-                        <SelectItem value="Klinik">Klinik</SelectItem>
-                        <SelectItem value="Praktek Dokter Pribadi">Praktek Dokter Pribadi</SelectItem>
-                        <SelectItem value="Faskes Lainnya">Faskes Lainnya</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                    <div className="grid grid-cols-6 gap-4">
+                      <div className="col-span-6 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700">Alamat Lengkap</Label>
+                        <textarea
+                          name="alamat_lengkap"
+                          value={formData.alamat_lengkap}
+                          onChange={handleChange}
+                          rows={2}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm bg-white transition-all"
+                          placeholder="Jl. Sudirman Kav. 52, Jakarta Pusat 10210"
+                        />
+                      </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Pemilik</Label>
-                    <Input
-                      name="owner"
-                      value={formData.owner}
-                      onChange={handleChange}
-                      placeholder="Nama pemilik/yayasan"
-                      className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
-                    />
-                  </div>
+                      <div className="col-span-3 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <MapPin className="w-3.5 h-3.5 text-emerald-500" />
+                          Koordinat GPS
+                        </Label>
+                        <Input
+                          name="koordinat_gps"
+                          value={formData.koordinat_gps}
+                          onChange={handleChange}
+                          placeholder="-6.2088, 106.8456"
+                          className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-11"
+                        />
+                      </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Email Resmi</Label>
-                    <Input
-                      type="email"
-                      name="email_resmi"
-                      value={formData.email_resmi}
-                      onChange={handleChange}
-                      placeholder="info@rsharapansehat.com"
-                      className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
-                    />
-                  </div>
+                      <div className="col-span-3 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Phone className="w-3.5 h-3.5 text-emerald-500" />
+                          Nomor Telepon
+                        </Label>
+                        <Input
+                          type="tel"
+                          name="nomor_telepon"
+                          value={formData.nomor_telepon}
+                          onChange={handleChange}
+                          placeholder="021-5551234"
+                          className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-11"
+                        />
+                      </div>
 
-                  <div className="space-y-2 col-span-2">
-                    <Label className="text-sm font-semibold text-gray-700">Alamat Lengkap</Label>
-                    <textarea
-                      name="alamat_lengkap"
-                      value={formData.alamat_lengkap}
-                      onChange={handleChange}
-                      rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm bg-white"
-                      placeholder="Jl. Sudirman Kav. 52, Jakarta Pusat 10210"
-                    />
-                  </div>
+                      <div className="col-span-3 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Mail className="w-3.5 h-3.5 text-emerald-500" />
+                          Email Resmi
+                        </Label>
+                        <Input
+                          type="email"
+                          name="email_resmi"
+                          value={formData.email_resmi}
+                          onChange={handleChange}
+                          placeholder="info@rsharapansehat.com"
+                          className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-11"
+                        />
+                      </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Koordinat GPS</Label>
-                    <Input
-                      name="koordinat_gps"
-                      value={formData.koordinat_gps}
-                      onChange={handleChange}
-                      placeholder="-6.2088, 106.8456"
-                      className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Nomor Telepon</Label>
-                    <Input
-                      type="tel"
-                      name="nomor_telepon"
-                      value={formData.nomor_telepon}
-                      onChange={handleChange}
-                      placeholder="021-5551234"
-                      className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Website</Label>
-                    <Input
-                      name="website"
-                      value={formData.website}
-                      onChange={handleChange}
-                      placeholder="https://www.rsharapansehat.com"
-                      className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
-                    />
+                      <div className="col-span-3 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Globe className="w-3.5 h-3.5 text-emerald-500" />
+                          Website
+                        </Label>
+                        <div className="relative">
+                          <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                            <Link className="w-3.5 h-3.5 text-gray-400" />
+                          </div>
+                          <Input
+                            name="website"
+                            value={formData.website}
+                            onChange={handleChange}
+                            placeholder="www.rsharapansehat.com"
+                            className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-11 pl-10"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
 
             {/* SECTION 2: Profiling Teknis & Regulasi */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 overflow-hidden">
+            <div className="bg-white rounded-xl border border-blue-100 overflow-hidden shadow-sm">
               <button
                 type="button"
                 onClick={() => toggleSection('teknis')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-blue-100/50 hover:bg-blue-100 transition-colors"
+                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition-colors border-b border-blue-100"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                    <FileText className="w-4 h-4 text-white" />
+                  <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-200">
+                    <Stethoscope className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-blue-900">Profiling Teknis & Regulasi</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-blue-900 leading-none">Profiling Teknis & Regulasi</h3>
+                    <p className="text-[10px] text-blue-700 mt-1 uppercase tracking-wider font-semibold opacity-70">INTEGRASI SATUSEHAT & INFRASTRUKTUR IT</p>
+                  </div>
                 </div>
                 {expandedSections.teknis ? (
                   <ChevronUp className="w-5 h-5 text-blue-600" />
@@ -432,97 +500,149 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
               </button>
               
               {expandedSections.teknis && (
-                <div className="p-5 pt-4 grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">ID SatuSehat</Label>
-                    <Input
-                      name="id_satusehat"
-                      value={formData.id_satusehat}
-                      onChange={handleChange}
-                      placeholder="RSU-DKI-001-2023"
-                      className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                    />
+                <div className="p-6 space-y-8">
+                  {/* Sub-section: Kepatuhan Regulasi */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+                      <ShieldCheck className="w-4 h-4 text-blue-600" />
+                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Kepatuhan Regulasi (SatuSehat)</h4>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Cloud className="w-3.5 h-3.5 text-blue-500" />
+                          ID SatuSehat (Organization ID)
+                        </Label>
+                        <Input
+                          name="id_satusehat"
+                          value={formData.id_satusehat}
+                          onChange={handleChange}
+                          placeholder="RSU-DKI-001-2023"
+                          className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500 h-11 font-mono text-xs"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Activity className="w-3.5 h-3.5 text-blue-500" />
+                          ID Faskes BPJS
+                        </Label>
+                        <Input
+                          name="id_faskes_bpjs"
+                          value={formData.id_faskes_bpjs}
+                          onChange={handleChange}
+                          placeholder="0112R001"
+                          className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500 h-11 font-mono text-xs"
+                        />
+                      </div>
+
+                      <div className="col-span-2 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
+                          Status Akreditasi
+                        </Label>
+                        <Select
+                          value={formData.status_akreditasi}
+                          onValueChange={(value) => setFormData(prev => ({ ...prev, status_akreditasi: value }))}
+                        >
+                          <SelectTrigger className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500 h-11">
+                            <SelectValue placeholder="Pilih status akreditasi" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Paripurna">🌟 Paripurna (Bintang 5)</SelectItem>
+                            <SelectItem value="Utama">✨ Utama (Bintang 4)</SelectItem>
+                            <SelectItem value="Madya">⭐ Madya (Bintang 3)</SelectItem>
+                            <SelectItem value="Dasar">🔸 Dasar</SelectItem>
+                            <SelectItem value="Belum Terakreditasi">❌ Belum Terakreditasi</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">ID Faskes BPJS</Label>
-                    <Input
-                      name="id_faskes_bpjs"
-                      value={formData.id_faskes_bpjs}
-                      onChange={handleChange}
-                      placeholder="0112R001"
-                      className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                    />
-                  </div>
+                  {/* Sub-section: Kapasitas & Sistem */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+                      <Cpu className="w-4 h-4 text-blue-600" />
+                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Kapasitas & Sistem Eksisting</h4>
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Status Akreditasi</Label>
-                    <Select
-                      value={formData.status_akreditasi}
-                      onValueChange={(value) => setFormData(prev => ({ ...prev, status_akreditasi: value }))}
-                    >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500">
-                        <SelectValue placeholder="Pilih akreditasi" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Paripurna">Paripurna</SelectItem>
-                        <SelectItem value="Utama">Utama</SelectItem>
-                        <SelectItem value="Madya">Madya</SelectItem>
-                        <SelectItem value="Dasar">Dasar</SelectItem>
-                        <SelectItem value="Belum Terakreditasi">Belum Terakreditasi</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                    <div className="grid grid-cols-2 gap-5">
+                      <div className="space-y-2 col-span-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Server className="w-3.5 h-3.5 text-blue-500" />
+                          Sistem Lama / Eksisting (SIMRS)
+                        </Label>
+                        <Input
+                          name="sistem_lama"
+                          value={formData.sistem_lama}
+                          onChange={handleChange}
+                          placeholder="Contoh: Vendor X / Manual (Paper-based)"
+                          className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500 h-11"
+                        />
+                      </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Sistem Lama</Label>
-                    <Input
-                      name="sistem_lama"
-                      value={formData.sistem_lama}
-                      onChange={handleChange}
-                      placeholder="SIMRS Legacy/Manual"
-                      className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                    />
-                  </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Users className="w-3.5 h-3.5 text-blue-500" />
+                          Volume Pasien Rata-rata
+                        </Label>
+                        <div className="relative">
+                          <Input
+                            type="number"
+                            name="volume_pasien"
+                            value={formData.volume_pasien}
+                            onChange={handleChange}
+                            placeholder="1500"
+                            className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500 h-11 pr-24"
+                          />
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400 bg-gray-50 px-2 py-1 rounded border border-gray-200 uppercase pointer-events-none">
+                            Kunj/Bln
+                          </div>
+                        </div>
+                      </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Volume Pasien</Label>
-                    <Input
-                      name="volume_pasien"
-                      value={formData.volume_pasien}
-                      onChange={handleChange}
-                      placeholder="1500 pasien/bulan"
-                      className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Jumlah Tempat Tidur</Label>
-                    <Input
-                      type="number"
-                      name="jumlah_tempat_tidur"
-                      value={formData.jumlah_tempat_tidur}
-                      onChange={handleChange}
-                      placeholder="200"
-                      className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                    />
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Bed className="w-3.5 h-3.5 text-blue-500" />
+                          Kapasitas Tempat Tidur
+                        </Label>
+                        <div className="relative">
+                          <Input
+                            type="number"
+                            name="jumlah_tempat_tidur"
+                            value={formData.jumlah_tempat_tidur}
+                            onChange={handleChange}
+                            placeholder="100"
+                            className="bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500 h-11 pr-16"
+                          />
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400 bg-gray-50 px-2 py-1 rounded border border-gray-200 uppercase pointer-events-none">
+                            TT
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
 
             {/* SECTION 3: Data Pengambil Keputusan (Decision Maker) */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100 overflow-hidden">
+            <div className="bg-white rounded-xl border border-purple-100 overflow-hidden shadow-sm">
               <button
                 type="button"
                 onClick={() => toggleSection('pic')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-purple-100/50 hover:bg-purple-100 transition-colors"
+                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 transition-colors border-b border-purple-100"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center">
-                    <User className="w-4 h-4 text-white" />
+                  <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-200">
+                    <UserCircle className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-purple-900">Data Pengambil Keputusan</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-purple-900 leading-none">Data Pengambil Keputusan</h3>
+                    <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">PROFIL PIC & STATUS RELASI BISNIS</p>
+                  </div>
                 </div>
                 {expandedSections.pic ? (
                   <ChevronUp className="w-5 h-5 text-purple-600" />
@@ -532,108 +652,128 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
               </button>
               
               {expandedSections.pic && (
-                <div className="p-5 pt-4 grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Nama PIC</Label>
-                    <Input
-                      name="nama_pic"
-                      value={formData.nama_pic}
-                      onChange={handleChange}
-                      placeholder="dr. Ahmad Direktur"
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Jabatan PIC</Label>
-                    <Input
-                      name="jabatan_pic"
-                      value={formData.jabatan_pic}
-                      onChange={handleChange}
-                      placeholder="Direktur Utama"
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">WhatsApp PIC</Label>
-                    <Input
-                      type="tel"
-                      name="whatsapp_pic"
-                      value={formData.whatsapp_pic}
-                      onChange={handleChange}
-                      placeholder="+62 812-3456-7890"
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-1.5">
-                      <Label className="text-sm font-semibold text-gray-700">Status Hubungan</Label>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button type="button" className="inline-flex items-center justify-center">
-                              <Info className="h-4 w-4 text-gray-400 hover:text-gray-600 cursor-help" />
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent 
-                            side="top" 
-                            className="max-w-[280px] text-xs bg-gray-900 text-white px-3 py-2 rounded-md shadow-lg"
-                          >
-                            <div className="space-y-2">
-                              <div>
-                                <span className="font-semibold">Active Client:</span>
-                                <p className="text-gray-300">Has On-Going Contract with INTRAMEDIKA</p>
-                              </div>
-                              <div>
-                                <span className="font-semibold">Hot:</span>
-                                <p className="text-gray-300">Strong Opportunity : Upside & Forecast</p>
-                              </div>
-                              <div>
-                                <span className="font-semibold">Warm:</span>
-                                <p className="text-gray-300">Active Pipeline</p>
-                              </div>
-                              <div>
-                                <span className="font-semibold">Cold:</span>
-                                <p className="text-gray-300">No Recent Opportunity or ever had Project with INTRAMEDIKA</p>
-                              </div>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                <div className="p-6 space-y-6">
+                  <div className="grid grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <UserCircle className="w-3.5 h-3.5 text-purple-500" />
+                        Nama Lengkap PIC
+                      </Label>
+                      <Input
+                        name="nama_pic"
+                        value={formData.nama_pic}
+                        onChange={handleChange}
+                        placeholder="dr. Ahmad Direktur"
+                        className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500 h-11"
+                      />
                     </div>
-                    <Select
-                      value={formData.status_hubungan}
-                      onValueChange={(value) => setFormData(prev => ({ ...prev, status_hubungan: value }))}
-                    >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500">
-                        <SelectValue placeholder="Pilih status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Active Client">Active Client</SelectItem>
-                        <SelectItem value="Hot">Hot</SelectItem>
-                        <SelectItem value="Warm">Warm</SelectItem>
-                        <SelectItem value="Cold">Cold</SelectItem>
-                      </SelectContent>
-                    </Select>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <Briefcase className="w-3.5 h-3.5 text-purple-500" />
+                        Jabatan Strategis
+                      </Label>
+                      <Input
+                        name="jabatan_pic"
+                        value={formData.jabatan_pic}
+                        onChange={handleChange}
+                        placeholder="Direktur Utama / Owner"
+                        className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500 h-11"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <MessageSquare className="w-3.5 h-3.5 text-purple-500" />
+                        Nomor WhatsApp
+                      </Label>
+                      <Input
+                        type="tel"
+                        name="whatsapp_pic"
+                        value={formData.whatsapp_pic}
+                        onChange={handleChange}
+                        placeholder="+62 812-3456-7890"
+                        className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500 h-11"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                          <Activity className="w-3.5 h-3.5 text-purple-500" />
+                          Status Hubungan
+                        </Label>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button type="button" className="inline-flex items-center justify-center">
+                                <Info className="h-3.5 w-3.5 text-gray-400 hover:text-gray-600 cursor-help" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent 
+                              side="top" 
+                              className="max-w-[300px] text-[11px] bg-slate-900 text-slate-100 p-3 rounded-xl shadow-2xl border border-slate-700 leading-relaxed"
+                            >
+                              <div className="space-y-2.5">
+                                <div className="pb-1 border-b border-slate-700">
+                                  <p className="font-black text-purple-400 uppercase tracking-tighter">Klasifikasi Pipeline</p>
+                                </div>
+                                <div className="flex gap-2">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1 shrink-0" />
+                                  <p><span className="font-bold text-emerald-400">Active Client:</span> Memiliki kontrak berjalan yang aktif.</p>
+                                </div>
+                                <div className="flex gap-2">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1 shrink-0" />
+                                  <p><span className="font-bold text-orange-400">Hot:</span> Peluang kuat (Upside & Forecast).</p>
+                                </div>
+                                <div className="flex gap-2">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1 shrink-0" />
+                                  <p><span className="font-bold text-blue-400">Warm:</span> Pipeline aktif dalam tahap negosiasi.</p>
+                                </div>
+                                <div className="flex gap-2">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1 shrink-0" />
+                                  <p><span className="font-bold text-slate-400">Cold:</span> Tidak ada peluang baru atau proyek lama.</p>
+                                </div>
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <Select
+                        value={formData.status_hubungan}
+                        onValueChange={(value) => setFormData(prev => ({ ...prev, status_hubungan: value }))}
+                      >
+                        <SelectTrigger className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500 h-11">
+                          <SelectValue placeholder="Pilih status relasi" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Active Client"><span className="flex items-center gap-2">🤝 Active Client</span></SelectItem>
+                          <SelectItem value="Hot"><span className="flex items-center gap-2">🔥 Hot Opportunity</span></SelectItem>
+                          <SelectItem value="Warm"><span className="flex items-center gap-2">🌤️ Warm Pipeline</span></SelectItem>
+                          <SelectItem value="Cold"><span className="flex items-center gap-2">❄️ Cold Leads</span></SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
 
             {/* SECTION 4: Status Subscription */}
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl border border-amber-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl border border-amber-100 overflow-hidden shadow-sm">
               <button
                 type="button"
                 onClick={() => toggleSection('subscription')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-amber-100/50 hover:bg-amber-100 transition-colors"
+                className="w-full flex items-center justify-between px-5 py-4 bg-white/50 hover:bg-white transition-colors border-b border-amber-100"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-amber-600 flex items-center justify-center">
-                    <CreditCard className="w-4 h-4 text-white" />
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-200">
+                    <CreditCard className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-amber-900">Status Subscription</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-amber-900 leading-none">Status Subscription</h3>
+                    <p className="text-[10px] text-amber-700 mt-1 uppercase tracking-wider font-semibold opacity-70">DETAIL PAKET & KONTRAK LANGGANAN</p>
+                  </div>
                 </div>
                 {expandedSections.subscription ? (
                   <ChevronUp className="w-5 h-5 text-amber-600" />
@@ -643,152 +783,286 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
               </button>
               
               {expandedSections.subscription && (
-                <div className="p-5 pt-4 grid grid-cols-2 gap-4">
+                <div className="p-6 pt-5 grid grid-cols-2 gap-x-6 gap-y-5">
                   <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Paket Aktif</Label>
+                    <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                      <Package className="w-4 h-4 text-amber-600" />
+                      Paket Aktif
+                    </Label>
                     <Select
                       value={formData.paket_aktif}
                       onValueChange={(value) => setFormData(prev => ({ ...prev, paket_aktif: value }))}
                     >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500">
+                      <SelectTrigger className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500 h-11">
                         <SelectValue placeholder="Pilih paket" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Lite">Lite</SelectItem>
-                        <SelectItem value="Standard">Standard</SelectItem>
-                        <SelectItem value="Premium">Premium</SelectItem>
-                        <SelectItem value="Enterprise">Enterprise</SelectItem>
-                        <SelectItem value="Custom">Custom</SelectItem>
+                        <SelectItem value="Lite"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-slate-400" /> Lite</span></SelectItem>
+                        <SelectItem value="Standard"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-400" /> Standard</span></SelectItem>
+                        <SelectItem value="Premium"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-amber-400" /> Premium</span></SelectItem>
+                        <SelectItem value="Enterprise"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-purple-500" /> Enterprise</span></SelectItem>
+                        <SelectItem value="Custom"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500" /> Custom</span></SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Status Kontrak</Label>
+                    <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${
+                        formData.status_subscription === 'Paid' ? 'bg-emerald-500' :
+                        formData.status_subscription === 'Trial' ? 'bg-blue-500' :
+                        'bg-red-500'
+                      } animate-pulse`} />
+                      Status Subscription
+                    </Label>
+                    <Select
+                      value={formData.status_subscription}
+                      onValueChange={(value) => setFormData(prev => ({ ...prev, status_subscription: value }))}
+                    >
+                      <SelectTrigger className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500 h-11">
+                        <SelectValue placeholder="Pilih status sub" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Trial">Trial Period</SelectItem>
+                        <SelectItem value="Paid">Active Subscription</SelectItem>
+                        <SelectItem value="Churned">Churned / Lost</SelectItem>
+                        <SelectItem value="Expired">Expired</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-amber-600" />
+                      Status Kontrak
+                    </Label>
                     <Select
                       value={formData.status_kontrak}
                       onValueChange={(value) => setFormData(prev => ({ ...prev, status_kontrak: value }))}
                     >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500">
+                      <SelectTrigger className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500 h-11">
                         <SelectValue placeholder="Pilih status" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Active">Active</SelectItem>
-                        <SelectItem value="Grace Period">Grace Period</SelectItem>
-                        <SelectItem value="Suspended">Suspended</SelectItem>
-                        <SelectItem value="Terminated">Terminated</SelectItem>
-                        <SelectItem value="Pending Renewal">Pending Renewal</SelectItem>
+                        <SelectItem value="Active"><span className="flex items-center gap-2">✅ Active</span></SelectItem>
+                        <SelectItem value="Grace Period"><span className="flex items-center gap-2">⏳ Grace Period</span></SelectItem>
+                        <SelectItem value="Suspended"><span className="flex items-center gap-2">🚫 Suspended</span></SelectItem>
+                        <SelectItem value="Terminated"><span className="flex items-center gap-2">💀 Terminated</span></SelectItem>
+                        <SelectItem value="Pending Renewal"><span className="flex items-center gap-2">🔄 Pending Renewal</span></SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Tanggal Mulai</Label>
-                    <Input
-                      type="date"
-                      name="tanggal_mulai_langganan"
-                      value={formData.tanggal_mulai_langganan}
-                      onChange={handleChange}
-                      className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500"
-                    />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                      <Label className="text-[11px] font-bold text-gray-500 uppercase flex items-center gap-1">
+                        <CalendarDays className="w-3 h-3" />
+                        Mulai
+                      </Label>
+                      <Input
+                        type="date"
+                        name="tanggal_mulai_langganan"
+                        value={formData.tanggal_mulai_langganan}
+                        onChange={handleChange}
+                        className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500 h-11 text-xs"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[11px] font-bold text-gray-500 uppercase flex items-center gap-1">
+                        <CalendarDays className="w-3 h-3" />
+                        Habis
+                      </Label>
+                      <Input
+                        type="date"
+                        name="tanggal_habis_kontrak"
+                        value={formData.tanggal_habis_kontrak}
+                        onChange={handleChange}
+                        className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500 h-11 text-xs"
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Habis Kontrak</Label>
-                    <Input
-                      type="date"
-                      name="tanggal_habis_kontrak"
-                      value={formData.tanggal_habis_kontrak}
-                      onChange={handleChange}
-                      className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500"
-                    />
+                    <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                      <Wallet className="w-4 h-4 text-amber-600" />
+                      Total Nilai Kontrak
+                    </Label>
+                    <div className="relative">
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-400">Rp</div>
+                      <Input
+                        type="number"
+                        name="total_nilai_kontrak"
+                        value={formData.total_nilai_kontrak}
+                        onChange={handleChange}
+                        placeholder="150000000"
+                        className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500 h-11 pl-10 font-mono text-base"
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Total Nilai Kontrak (Rp)</Label>
-                    <Input
-                      type="number"
-                      name="total_nilai_kontrak"
-                      value={formData.total_nilai_kontrak}
-                      onChange={handleChange}
-                      placeholder="150000000"
-                      className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Modul Tambahan</Label>
+                    <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                      Modul Tambahan
+                    </Label>
                     <Input
                       name="modul_tambahan"
                       value={formData.modul_tambahan}
                       onChange={handleChange}
                       placeholder="LIS, RIS, PACS"
-                      className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500"
+                      className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500 h-11"
                     />
+                  </div>
+
+                  <div className="space-y-2 col-span-2 bg-gradient-to-r from-amber-50 to-orange-50 p-5 rounded-2xl border-2 border-amber-200/50 shadow-inner">
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="text-sm font-bold text-amber-900 flex items-center gap-2">
+                        <Percent className="w-4 h-4" />
+                        Diskon Negosiasi Khusus
+                      </Label>
+                      {formData.discount > 20 && (
+                        <Badge variant="outline" className={`${
+                          formData.discount_approval_status === 'approved' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' :
+                          formData.discount_approval_status === 'pending' ? 'bg-amber-100 text-amber-700 border-amber-200' :
+                          'bg-red-100 text-red-700 border-red-200'
+                        } text-[10px] px-2 py-0.5 font-bold shadow-sm`}>
+                          {formData.discount_approval_status === 'approved' ? 'APPROVED' :
+                           formData.discount_approval_status === 'pending' ? 'WAITING APPROVAL' :
+                           'REQUIRES APPROVAL'}
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex gap-4 items-start">
+                      <div className="relative w-1/4">
+                        <Input
+                          type="number"
+                          name="discount"
+                          value={formData.discount}
+                          onChange={handleChange}
+                          placeholder="0"
+                          disabled={formData.discount_approval_status === 'pending' || formData.discount_approval_status === 'approved'}
+                          className="bg-white border-gray-300 focus:border-amber-500 focus:ring-amber-500 pr-10 h-12 text-lg font-bold"
+                        />
+                        <Percent className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      </div>
+                      
+                      {formData.discount > 20 && formData.discount_approval_status !== 'approved' && (
+                        <Button
+                          type="button"
+                          onClick={handleRequestApproval}
+                          disabled={formData.discount_approval_status === 'pending'}
+                          className="flex-1 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-black h-12 text-sm shadow-lg shadow-orange-200 border-none"
+                        >
+                          {formData.discount_approval_status === 'pending' ? (
+                            <>
+                              <Clock className="w-4 h-4 mr-2 animate-spin" />
+                              MENUNGGU PERSETUJUAN...
+                            </>
+                          ) : (
+                            <>
+                              <Send className="w-4 h-4 mr-2" />
+                              MINTA APPROVAL MANAGER
+                            </>
+                          )}
+                        </Button>
+                      )}
+
+                      {formData.discount_approval_status === 'approved' && (
+                        <div className="flex-1 flex items-center justify-center gap-2 text-emerald-700 font-black text-sm h-12 px-3 bg-emerald-50 rounded-xl border-2 border-emerald-200 shadow-sm animate-in fade-in zoom-in duration-300">
+                          <CheckCircle className="w-5 h-5" />
+                          DISKON TELAH DISETUJUI
+                        </div>
+                      )}
+                    </div>
+                    {formData.discount > 20 && formData.discount_approval_status === '' && (
+                      <p className="text-[11px] text-orange-700 mt-3 flex items-center gap-1.5 bg-orange-100/50 p-2 rounded-lg font-medium">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        Diskon di atas 20% memerlukan validasi sistem sebelum data dapat difinalisasi.
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
             </div>
 
             {/* SECTION 5: Dokumen & Legal */}
-            <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm mb-6">
               <button
                 type="button"
                 onClick={() => toggleSection('legal')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-gray-100/50 hover:bg-gray-100 transition-colors"
+                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-slate-50 to-gray-50 hover:from-slate-100 hover:to-gray-100 transition-colors border-b border-slate-200"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-gray-600 flex items-center justify-center">
-                    <Shield className="w-4 h-4 text-white" />
+                  <div className="w-10 h-10 rounded-xl bg-slate-700 flex items-center justify-center shadow-lg shadow-slate-200">
+                    <Shield className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-gray-900">Dokumen & Legal</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-slate-900 leading-none">Dokumen & Legal</h3>
+                    <p className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider font-semibold opacity-70">VERIFIKASI NPWP & ADMINISTRASI KONTRAK</p>
+                  </div>
                 </div>
                 {expandedSections.legal ? (
-                  <ChevronUp className="w-5 h-5 text-gray-600" />
+                  <ChevronUp className="w-5 h-5 text-slate-500" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-600" />
+                  <ChevronDown className="w-5 h-5 text-slate-500" />
                 )}
               </button>
               
               {expandedSections.legal && (
-                <div className="p-5 pt-4 grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">NPWP Faskes</Label>
-                    <Input
-                      name="npwp_faskes"
-                      value={formData.npwp_faskes}
-                      onChange={handleChange}
-                      placeholder="01.234.567.8-012.000"
-                      className="bg-white border-gray-300 focus:border-gray-500 focus:ring-gray-500"
-                    />
-                  </div>
+                <div className="p-6 space-y-6">
+                  <div className="grid grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <Fingerprint className="w-3.5 h-3.5 text-slate-500" />
+                        Nomor NPWP Faskes
+                      </Label>
+                      <Input
+                        name="npwp_faskes"
+                        value={formData.npwp_faskes}
+                        onChange={handleChange}
+                        placeholder="01.234.567.8-012.000"
+                        className="bg-white border-gray-300 focus:border-slate-500 focus:ring-slate-500 h-11 font-mono text-xs"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-gray-700">Status E-Sign</Label>
-                    <Select
-                      value={formData.status_esign}
-                      onValueChange={(value) => setFormData(prev => ({ ...prev, status_esign: value }))}
-                    >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-gray-500 focus:ring-gray-500">
-                        <SelectValue placeholder="Pilih status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Sudah Aktif">Sudah Aktif</SelectItem>
-                        <SelectItem value="Proses Registrasi">Proses Registrasi</SelectItem>
-                        <SelectItem value="Belum Ada">Belum Ada</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <FileSignature className="w-3.5 h-3.5 text-slate-500" />
+                        Status Aktivasi E-Sign
+                      </Label>
+                      <Select
+                        value={formData.status_esign}
+                        onValueChange={(value) => setFormData(prev => ({ ...prev, status_esign: value }))}
+                      >
+                        <SelectTrigger className="bg-white border-gray-300 focus:border-slate-500 focus:ring-slate-500 h-11">
+                          <SelectValue placeholder="Pilih status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Sudah Aktif">✅ Sudah Aktif</SelectItem>
+                          <SelectItem value="Proses Registrasi">⏳ Proses Registrasi</SelectItem>
+                          <SelectItem value="Belum Ada">❌ Belum Ada</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                  <div className="space-y-2 col-span-2">
-                    <Label className="text-sm font-semibold text-gray-700">Link File Kontrak (Digital)</Label>
-                    <Input
-                      name="file_kontrak_digital"
-                      value={formData.file_kontrak_digital}
-                      onChange={handleChange}
-                      placeholder="https://drive.google.com/..."
-                      className="bg-white border-gray-300 focus:border-gray-500 focus:ring-gray-500"
-                    />
+                    <div className="space-y-2 col-span-2">
+                      <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+                        Link Dokumen Kontrak (Digital)
+                      </Label>
+                      <div className="relative">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                          <Link className="w-3.5 h-3.5 text-slate-400" />
+                        </div>
+                        <Input
+                          name="file_kontrak_digital"
+                          value={formData.file_kontrak_digital}
+                          onChange={handleChange}
+                          placeholder="https://drive.google.com/file/d/..."
+                          className="bg-white border-gray-300 focus:border-slate-500 focus:ring-slate-500 h-11 pl-10 text-xs text-blue-600 underline"
+                        />
+                      </div>
+                      <p className="text-[10px] text-slate-400 italic">Pastikan akses file sudah diatur ke 'Anyone with the link' untuk kemudahan review.</p>
+                    </div>
                   </div>
                 </div>
               )}

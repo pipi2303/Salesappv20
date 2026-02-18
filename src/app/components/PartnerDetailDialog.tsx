@@ -140,7 +140,10 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
               <div className="h-10 w-10 rounded-lg bg-purple-600 flex items-center justify-center">
                 <Building2 className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Profil Identitas Partner</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Profil Identitas Partner</h3>
+                <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">PROFIL PERUSAHAAN & KLASIFIKASI</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-x-6 gap-y-4">
               <div className="bg-white rounded-lg p-4">
@@ -188,7 +191,10 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
               <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
                 <Users className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Kontak & Relasi Bisnis</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Kontak & Relasi Bisnis</h3>
+                <p className="text-[10px] text-blue-700 mt-1 uppercase tracking-wider font-semibold opacity-70">STAKEHOLDERS & REACHABILITY</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">
@@ -236,7 +242,10 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
               <div className="h-10 w-10 rounded-lg bg-amber-600 flex items-center justify-center">
                 <FileText className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Aspek Legal & Kemitraan</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Aspek Legal & Kemitraan</h3>
+                <p className="text-[10px] text-amber-700 mt-1 uppercase tracking-wider font-semibold opacity-70">CONTRACT COMPLIANCE & VALIDITY</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">
@@ -295,7 +304,10 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
               <div className="h-10 w-10 rounded-lg bg-green-600 flex items-center justify-center">
                 <Code className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Integrasi Teknis & API</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Integrasi Teknis & API</h3>
+                <p className="text-[10px] text-green-700 mt-1 uppercase tracking-wider font-semibold opacity-70">TECHNICAL STACK & CONNECTIVITY</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">
@@ -345,7 +357,10 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
               <div className="h-10 w-10 rounded-lg bg-pink-600 flex items-center justify-center">
                 <DollarSign className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Skema Komisi & Finansial</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Skema Komisi & Finansial</h3>
+                <p className="text-[10px] text-pink-700 mt-1 uppercase tracking-wider font-semibold opacity-70">REVENUE SHARE & PERFORMANCE</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">

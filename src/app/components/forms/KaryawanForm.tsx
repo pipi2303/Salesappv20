@@ -181,7 +181,10 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                   <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-purple-900">Informasi Pribadi</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-purple-900 leading-none">Informasi Pribadi</h3>
+                    <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">IDENTITAS & DATA KONTAK PERSONAL</p>
+                  </div>
                 </div>
                 {expandedSections.pribadi ? (
                   <ChevronUp className="w-5 h-5 text-purple-600" />
@@ -309,7 +312,10 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                   <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-blue-900">Status Kepegawaian</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-blue-900 leading-none">Status Kepegawaian</h3>
+                    <p className="text-[10px] text-blue-700 mt-1 uppercase tracking-wider font-semibold opacity-70">STRUKTUR ORGANISASI & JABATAN</p>
+                  </div>
                 </div>
                 {expandedSections.kepegawaian ? (
                   <ChevronUp className="w-5 h-5 text-blue-600" />
@@ -423,7 +429,10 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                   <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-emerald-900">Finansial & Administrasi Pajak</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-emerald-900 leading-none">Finansial & Administrasi Pajak</h3>
+                    <p className="text-[10px] text-emerald-700 mt-1 uppercase tracking-wider font-semibold opacity-70">PAYROLL & COMPLIANCE DATA</p>
+                  </div>
                 </div>
                 {expandedSections.finansial ? (
                   <ChevronUp className="w-5 h-5 text-emerald-600" />
@@ -503,7 +512,10 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                   <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-red-900">Keamanan Data & Akses Sistem</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-red-900 leading-none">Keamanan Data & Akses Sistem</h3>
+                    <p className="text-[10px] text-red-700 mt-1 uppercase tracking-wider font-semibold opacity-70">NDA & CREDENTIAL ACCESS</p>
+                  </div>
                 </div>
                 {expandedSections.keamanan ? (
                   <ChevronUp className="w-5 h-5 text-red-600" />

@@ -299,22 +299,34 @@ export function SalesTeam() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 lg:w-[700px] h-11">
-          <TabsTrigger value="karyawan" className="gap-2 text-sm">
-            <Users className="h-4.5 w-4.5" />
-            Sales Representative
+        <TabsList className="grid w-full grid-cols-4 lg:w-[850px] h-14 bg-gray-100/50 p-1">
+          <TabsTrigger value="karyawan" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700">
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              <span className="font-bold text-sm">Sales Representative</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">TIM INTERNAL</span>
           </TabsTrigger>
-          <TabsTrigger value="client" className="gap-2 text-sm">
-            <Building2 className="h-4.5 w-4.5" />
-            Client
+          <TabsTrigger value="client" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700">
+            <div className="flex items-center gap-2">
+              <Building2 className="h-4 w-4" />
+              <span className="font-bold text-sm">Client</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">FASKES & INSTITUSI</span>
           </TabsTrigger>
-          <TabsTrigger value="partner" className="gap-2 text-sm">
-            <Handshake className="h-4.5 w-4.5" />
-            Partner
+          <TabsTrigger value="partner" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700">
+            <div className="flex items-center gap-2">
+              <Handshake className="h-4 w-4" />
+              <span className="font-bold text-sm">Partner</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">RESELLER & VENDOR</span>
           </TabsTrigger>
-          <TabsTrigger value="ai-insights" className="gap-2 text-sm bg-gradient-to-r from-[#01544e]/10 to-[#023d39]/10">
-            <Sparkles className="h-4.5 w-4.5" />
-            AI Insights
+          <TabsTrigger value="ai-insights" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4" />
+              <span className="font-bold text-sm">AI Insights</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PREDIKSI & ANALITIK</span>
           </TabsTrigger>
         </TabsList>
 
@@ -553,7 +565,7 @@ export function SalesTeam() {
                 className="gap-2 bg-emerald-600 hover:bg-emerald-700"
               >
                 <Plus className="h-4 w-4" />
-                Tambah Client
+                Tambah Client Baru
               </Button>
             </div>
           </div>

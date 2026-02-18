@@ -361,7 +361,7 @@ export function AreaManagerDetailDialog({
                   />
                   <Button
                     onClick={onAddNote}
-                    disabled={!newNote.trim()}
+                    disabled={!newNote?.trim()}
                     className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-6"
                   >
                     <Send className="h-4 w-4" />

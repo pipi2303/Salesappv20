@@ -142,7 +142,10 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               <div className="h-10 w-10 rounded-lg bg-[#01544e] flex items-center justify-center">
                 <User className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Informasi Pribadi</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Informasi Pribadi</h3>
+                <p className="text-[10px] text-teal-700 mt-1 uppercase tracking-wider font-semibold opacity-70">IDENTITAS & DATA KONTAK PERSONAL</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-x-6 gap-y-4">
               <div className="bg-white rounded-lg p-4">
@@ -181,7 +184,10 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               <div className="h-10 w-10 rounded-lg bg-emerald-600 flex items-center justify-center">
                 <Mail className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Kontak</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Kontak</h3>
+                <p className="text-[10px] text-emerald-700 mt-1 uppercase tracking-wider font-semibold opacity-70">SALES REPRESENTATIVE REACHABILITY</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">
@@ -220,7 +226,10 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
                 <Briefcase className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Informasi Kepegawaian</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Informasi Kepegawaian</h3>
+                <p className="text-[10px] text-blue-700 mt-1 uppercase tracking-wider font-semibold opacity-70">STRUKTUR ORGANISASI & JABATAN</p>
+              </div>
             </div>
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-white rounded-lg p-4">
@@ -286,7 +295,10 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               <div className="h-10 w-10 rounded-lg bg-purple-600 flex items-center justify-center">
                 <CreditCard className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Informasi Keuangan & BPJS</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Informasi Keuangan & BPJS</h3>
+                <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">PAYROLL & COMPLIANCE DATA</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">
@@ -343,7 +355,10 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               <div className="h-10 w-10 rounded-lg bg-orange-600 flex items-center justify-center">
                 <FileText className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Informasi Tambahan</h3>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 leading-none">Informasi Tambahan</h3>
+                <p className="text-[10px] text-orange-700 mt-1 uppercase tracking-wider font-semibold opacity-70">NDA & CREDENTIAL ACCESS</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">

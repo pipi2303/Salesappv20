@@ -266,7 +266,10 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                   <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
                     <Building2 className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-teal-900">Profil Identitas Partner</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-teal-900 leading-none">Profil Identitas Partner</h3>
+                    <p className="text-[10px] text-teal-700 mt-1 uppercase tracking-wider font-semibold opacity-70">DATA LEGAL & IDENTITAS PERUSAHAAN</p>
+                  </div>
                 </div>
                 {expandedSections.profil ? (
                   <ChevronUp className="w-5 h-5 text-teal-600" />
@@ -351,7 +354,10 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                   <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
                     <Users className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-blue-900">Kontak & Relasi Bisnis</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-blue-900 leading-none">Kontak & Relasi Bisnis</h3>
+                    <p className="text-[10px] text-blue-700 mt-1 uppercase tracking-wider font-semibold opacity-70">DATA PIC & ALAMAT KORESPONDENSI</p>
+                  </div>
                 </div>
                 {expandedSections.kontak ? (
                   <ChevronUp className="w-5 h-5 text-blue-600" />
@@ -420,7 +426,10 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                   <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center">
                     <Shield className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-purple-900">Legal & Kemitraan</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-purple-900 leading-none">Legal & Kemitraan</h3>
+                    <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">STATUS MOU & LEVEL PARTNERSHIP</p>
+                  </div>
                 </div>
                 {expandedSections.legal ? (
                   <ChevronUp className="w-5 h-5 text-purple-600" />
@@ -514,7 +523,10 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                   <div className="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center">
                     <Zap className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-orange-900">Integrasi Teknis</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-orange-900 leading-none">Integrasi Teknis</h3>
+                    <p className="text-[10px] text-orange-700 mt-1 uppercase tracking-wider font-semibold opacity-70">API ENDPOINT & SLA REQUIREMENTS</p>
+                  </div>
                 </div>
                 {expandedSections.teknis ? (
                   <ChevronUp className="w-5 h-5 text-orange-600" />
@@ -590,7 +602,10 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                   <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center">
                     <DollarSign className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-green-900">Komisi & Finansial</h3>
+                  <div className="text-left">
+                    <h3 className="text-base font-bold text-green-900 leading-none">Komisi & Finansial</h3>
+                    <p className="text-[10px] text-green-700 mt-1 uppercase tracking-wider font-semibold opacity-70">REVENUE SHARE & PAYMENT DATA</p>
+                  </div>
                 </div>
                 {expandedSections.finansial ? (
                   <ChevronUp className="w-5 h-5 text-green-600" />

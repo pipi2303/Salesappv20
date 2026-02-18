@@ -46,10 +46,10 @@ export const teamHierarchy: Director = {
           forecast: 990000000,
           team: [
             { id: 'tm-001', name: 'Andi Saputra', position: 'Senior Sales Executive', avatar: 'AS', email: 'andi.saputra@company.com', achievement: 320000000, target: 350000000, performance: 91.4, totalDeals: 11, pipelineValue: 580000000, upside: 140000000, strongUpside: 120000000, forecast: 205000000 },
-            { id: 'tm-002', name: 'Siti Nurhaliza', position: 'Sales Executive', avatar: 'SN', email: 'siti.nurhaliza@company.com', achievement: 280000000, target: 300000000, performance: 93.3, totalDeals: 9 },
-            { id: 'tm-003', name: 'Dedi Kurniawan', position: 'Sales Executive', avatar: 'DK', email: 'dedi.kurniawan@company.com', achievement: 310000000, target: 330000000, performance: 93.9, totalDeals: 10 },
-            { id: 'tm-004', name: 'Maya Sari', position: 'Junior Sales Executive', avatar: 'MS', email: 'maya.sari@company.com', achievement: 295000000, target: 340000000, performance: 86.8, totalDeals: 11 },
-            { id: 'tm-005', name: 'Rudi Hermawan', position: 'Junior Sales Executive', avatar: 'RH', email: 'rudi.hermawan@company.com', achievement: 295000000, target: 330000000, performance: 89.4, totalDeals: 11 }
+            { id: 'tm-002', name: 'Siti Nurhaliza', position: 'Sales Executive', avatar: 'SN', email: 'siti.nurhaliza@company.com', achievement: 280000000, target: 300000000, performance: 93.3, totalDeals: 9, pipelineValue: 504000000, upside: 123000000, strongUpside: 105000000, forecast: 182000000 },
+            { id: 'tm-003', name: 'Dedi Kurniawan', position: 'Sales Executive', avatar: 'DK', email: 'dedi.kurniawan@company.com', achievement: 310000000, target: 330000000, performance: 93.9, totalDeals: 10, pipelineValue: 558000000, upside: 136000000, strongUpside: 116000000, forecast: 202000000 },
+            { id: 'tm-004', name: 'Maya Sari', position: 'Junior Sales Executive', avatar: 'MS', email: 'maya.sari@company.com', achievement: 295000000, target: 340000000, performance: 86.8, totalDeals: 11, pipelineValue: 531000000, upside: 130000000, strongUpside: 110000000, forecast: 192000000 },
+            { id: 'tm-005', name: 'Rudi Hermawan', position: 'Junior Sales Executive', avatar: 'RH', email: 'rudi.hermawan@company.com', achievement: 295000000, target: 330000000, performance: 89.4, totalDeals: 11, pipelineValue: 531000000, upside: 130000000, strongUpside: 110000000, forecast: 192000000 }
           ]
         },
         {
@@ -62,12 +62,16 @@ export const teamHierarchy: Director = {
           target: 1650000000,
           performance: 87.9,
           totalDeals: 48,
+          pipelineValue: 2620000000,
+          upside: 642000000,
+          strongUpside: 543000000,
+          forecast: 958000000,
           team: [
-            { id: 'tm-006', name: 'Agus Wibowo', position: 'Senior Sales Executive', avatar: 'AW', email: 'agus.wibowo@company.com', achievement: 310000000, target: 340000000, performance: 91.2, totalDeals: 10 },
-            { id: 'tm-007', name: 'Linda Kusuma', position: 'Sales Executive', avatar: 'LK', email: 'linda.kusuma@company.com', achievement: 285000000, target: 320000000, performance: 89.1, totalDeals: 9 },
-            { id: 'tm-008', name: 'Hendra Gunawan', position: 'Sales Executive', avatar: 'HG', email: 'hendra.gunawan@company.com', achievement: 290000000, target: 330000000, performance: 87.9, totalDeals: 10 },
-            { id: 'tm-009', name: 'Fitri Handayani', position: 'Junior Sales Executive', avatar: 'FH', email: 'fitri.handayani@company.com', achievement: 275000000, target: 330000000, performance: 83.3, totalDeals: 9 },
-            { id: 'tm-010', name: 'Budi Santoso', position: 'Junior Sales Executive', avatar: 'BS', email: 'budi.santoso@company.com', achievement: 290000000, target: 330000000, performance: 87.9, totalDeals: 10 }
+            { id: 'tm-006', name: 'Agus Wibowo', position: 'Senior Sales Executive', avatar: 'AW', email: 'agus.wibowo@company.com', achievement: 310000000, target: 340000000, performance: 91.2, totalDeals: 10, pipelineValue: 558000000, upside: 136000000, strongUpside: 116000000, forecast: 202000000 },
+            { id: 'tm-007', name: 'Linda Kusuma', position: 'Sales Executive', avatar: 'LK', email: 'linda.kusuma@company.com', achievement: 285000000, target: 320000000, performance: 89.1, totalDeals: 9, pipelineValue: 513000000, upside: 125000000, strongUpside: 107000000, forecast: 185000000 },
+            { id: 'tm-008', name: 'Hendra Gunawan', position: 'Sales Executive', avatar: 'HG', email: 'hendra.gunawan@company.com', achievement: 290000000, target: 330000000, performance: 87.9, totalDeals: 10, pipelineValue: 522000000, upside: 127000000, strongUpside: 109000000, forecast: 189000000 },
+            { id: 'tm-009', name: 'Fitri Handayani', position: 'Junior Sales Executive', avatar: 'FH', email: 'fitri.handayani@company.com', achievement: 275000000, target: 330000000, performance: 83.3, totalDeals: 9, pipelineValue: 495000000, upside: 121000000, strongUpside: 103000000, forecast: 179000000 },
+            { id: 'tm-010', name: 'Budi Santoso', position: 'Junior Sales Executive', avatar: 'BS', email: 'budi.santoso@company.com', achievement: 290000000, target: 330000000, performance: 87.9, totalDeals: 10, pipelineValue: 522000000, upside: 127000000, strongUpside: 109000000, forecast: 189000000 }
           ]
         }
       ]
@@ -82,6 +86,10 @@ export const teamHierarchy: Director = {
       target: 1700000000,
       performance: 91.2,
       totalDeals: 56,
+      pipelineValue: 2790000000,
+      upside: 682000000,
+      strongUpside: 578000000,
+      forecast: 1008000000,
       managers: [
         {
           id: 'mgr-003',
@@ -93,12 +101,16 @@ export const teamHierarchy: Director = {
           target: 1700000000,
           performance: 91.2,
           totalDeals: 56,
+          pipelineValue: 2790000000,
+          upside: 682000000,
+          strongUpside: 578000000,
+          forecast: 1008000000,
           team: [
-            { id: 'tm-011', name: 'Cahya Pratama', position: 'Senior Sales Executive', avatar: 'CP', email: 'cahya.pratama@company.com', achievement: 330000000, target: 350000000, performance: 94.3, totalDeals: 12 },
-            { id: 'tm-012', name: 'Rina Marlina', position: 'Sales Executive', avatar: 'RM', email: 'rina.marlina@company.com', achievement: 310000000, target: 340000000, performance: 91.2, totalDeals: 11 },
-            { id: 'tm-013', name: 'Irfan Hakim', position: 'Sales Executive', avatar: 'IH', email: 'irfan.hakim@company.com', achievement: 305000000, target: 340000000, performance: 89.7, totalDeals: 11 },
-            { id: 'tm-014', name: 'Nurul Aisyah', position: 'Junior Sales Executive', avatar: 'NA', email: 'nurul.aisyah@company.com', achievement: 300000000, target: 335000000, performance: 89.6, totalDeals: 11 },
-            { id: 'tm-015', name: 'Tono Sugiarto', position: 'Junior Sales Executive', avatar: 'TS', email: 'tono.sugiarto@company.com', achievement: 305000000, target: 335000000, performance: 91.0, totalDeals: 11 }
+            { id: 'tm-011', name: 'Cahya Pratama', position: 'Senior Sales Executive', avatar: 'CP', email: 'cahya.pratama@company.com', achievement: 330000000, target: 350000000, performance: 94.3, totalDeals: 12, pipelineValue: 594000000, upside: 145000000, strongUpside: 124000000, forecast: 215000000 },
+            { id: 'tm-012', name: 'Rina Marlina', position: 'Sales Executive', avatar: 'RM', email: 'rina.marlina@company.com', achievement: 310000000, target: 340000000, performance: 91.2, totalDeals: 11, pipelineValue: 558000000, upside: 136000000, strongUpside: 116000000, forecast: 202000000 },
+            { id: 'tm-013', name: 'Irfan Hakim', position: 'Sales Executive', avatar: 'IH', email: 'irfan.hakim@company.com', achievement: 305000000, target: 340000000, performance: 89.7, totalDeals: 11, pipelineValue: 549000000, upside: 134000000, strongUpside: 114000000, forecast: 198000000 },
+            { id: 'tm-014', name: 'Nurul Aisyah', position: 'Junior Sales Executive', avatar: 'NA', email: 'nurul.aisyah@company.com', achievement: 300000000, target: 335000000, performance: 89.6, totalDeals: 11, pipelineValue: 540000000, upside: 132000000, strongUpside: 112000000, forecast: 195000000 },
+            { id: 'tm-015', name: 'Tono Sugiarto', position: 'Junior Sales Executive', avatar: 'TS', email: 'tono.sugiarto@company.com', achievement: 305000000, target: 335000000, performance: 91.0, totalDeals: 11, pipelineValue: 549000000, upside: 134000000, strongUpside: 114000000, forecast: 198000000 }
           ]
         }
       ]
@@ -114,7 +126,11 @@ export const teamHierarchy: Director = {
       achievement: 850000000,
       target: 950000000,
       performance: 89.5,
-      totalDeals: 12
+      totalDeals: 12,
+      pipelineValue: 1530000000,
+      upside: 374000000,
+      strongUpside: 318000000,
+      forecast: 553000000
     },
     {
       id: 'acm-002',
@@ -125,7 +141,11 @@ export const teamHierarchy: Director = {
       achievement: 920000000,
       target: 1000000000,
       performance: 92.0,
-      totalDeals: 15
+      totalDeals: 15,
+      pipelineValue: 1656000000,
+      upside: 405000000,
+      strongUpside: 344000000,
+      forecast: 598000000
     }
   ]
 };
