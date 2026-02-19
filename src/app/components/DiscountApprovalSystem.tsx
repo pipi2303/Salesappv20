@@ -46,6 +46,7 @@ import { toast } from 'sonner';
 import { formatCurrency, formatDate } from '@/utils/formatters';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Legend, AreaChart, Area, ComposedChart, Line } from 'recharts';
 import { motion, AnimatePresence } from 'motion/react';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 interface DiscountRequest {
   id: string;
@@ -108,6 +109,36 @@ export function DiscountApprovalSystem() {
   // Conditional Approval State
   const [isConditionalOpen, setIsConditionalOpen] = useState(false);
   const [conditionNote, setConditionNote] = useState('');
+
+  // New Request Form State
+  const [newRequestData, setNewRequestData] = useState({
+    productId: 'prod1',
+    basePrice: 500000000,
+    discountPercent: 15,
+    attachments: [] as File[],
+  });
+
+  const productCatalog = {
+    prod1: { name: 'Enterprise Health Suite', hpp: 200000000, defaultPrice: 500000000 },
+    prod2: { name: 'Radiology Imaging System', hpp: 400000000, defaultPrice: 800000000 },
+    prod3: { name: 'Lab Management Module', hpp: 150000000, defaultPrice: 300000000 },
+    prod4: { name: 'Custom Support Package', hpp: 60000000, defaultPrice: 100000000 },
+  };
+
+  const calculatedMargin = useMemo(() => {
+    const product = productCatalog[newRequestData.productId as keyof typeof productCatalog];
+    const discountAmount = newRequestData.basePrice * (newRequestData.discountPercent / 100);
+    const finalPrice = newRequestData.basePrice - discountAmount;
+    const margin = ((finalPrice - product.hpp) / finalPrice) * 100;
+    const originalMargin = ((newRequestData.basePrice - product.hpp) / newRequestData.basePrice) * 100;
+    
+    return {
+      current: Math.round(margin * 10) / 10,
+      original: Math.round(originalMargin * 10) / 10,
+      impact: Math.round((margin - originalMargin) * 10) / 10,
+      level: newRequestData.discountPercent <= 10 ? 1 : newRequestData.discountPercent <= 20 ? 2 : newRequestData.discountPercent <= 30 ? 3 : 4
+    };
+  }, [newRequestData.productId, newRequestData.basePrice, newRequestData.discountPercent]);
 
   // Dummy data
   const [discountRequests, setDiscountRequests] = useState<DiscountRequest[]>([
@@ -585,6 +616,174 @@ export function DiscountApprovalSystem() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* New Request Dialog */}
+      <Dialog open={showRequestDialog} onOpenChange={setShowRequestDialog}>
+        <DialogContent className="max-w-4xl p-0 overflow-hidden border-none rounded-2xl shadow-2xl bg-white">
+          <VisuallyHidden>
+            <DialogTitle>New Discount Request</DialogTitle>
+            <DialogDescription>Submit a new discount approval request for a client opportunity</DialogDescription>
+          </VisuallyHidden>
+
+          <div className="bg-[#01544e] p-8 text-white relative shrink-0">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -mr-24 -mt-24 blur-2xl" />
+            <div className="relative z-10 space-y-2">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-white/20 px-3 py-1 rounded-full text-white">New Submission</span>
+              <h2 className="text-3xl font-black uppercase tracking-tight text-white mt-4">Draft Request</h2>
+              <p className="text-white/70 text-sm font-medium italic">Sistem akan otomatis menentukan Level Persetujuan berdasarkan besaran diskon.</p>
+            </div>
+          </div>
+
+          <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8 bg-white max-h-[70vh] overflow-y-auto">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Client / Hospital Name</Label>
+                <Select>
+                  <SelectTrigger className="h-12 border-gray-200">
+                    <SelectValue placeholder="Pilih Klien..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="client1">RS Pondok Indah</SelectItem>
+                    <SelectItem value="client2">RS Medistra</SelectItem>
+                    <SelectItem value="client3">Klinik Prodia Pusat</SelectItem>
+                    <SelectItem value="client4">PT Kimia Farma Tbk</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Product Line</Label>
+                <Select 
+                  value={newRequestData.productId} 
+                  onValueChange={(val) => setNewRequestData({
+                    ...newRequestData, 
+                    productId: val, 
+                    basePrice: productCatalog[val as keyof typeof productCatalog].defaultPrice
+                  })}
+                >
+                  <SelectTrigger className="h-12 border-gray-200">
+                    <SelectValue placeholder="Pilih Produk..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(productCatalog).map(([id, p]) => (
+                      <SelectItem key={id} value={id}>{p.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Base Price (IDR)</Label>
+                  <Input 
+                    type="number" 
+                    placeholder="Original Price" 
+                    className="h-12 border-gray-200" 
+                    value={newRequestData.basePrice}
+                    onChange={(e) => setNewRequestData({...newRequestData, basePrice: parseFloat(e.target.value) || 0})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Discount %</Label>
+                  <Input 
+                    type="number" 
+                    placeholder="%" 
+                    className="h-12 border-gray-200" 
+                    value={newRequestData.discountPercent}
+                    onChange={(e) => setNewRequestData({...newRequestData, discountPercent: parseFloat(e.target.value) || 0})}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Supporting Documents (Competitor Price, etc.)</Label>
+                <div className="border-2 border-dashed border-gray-100 rounded-xl p-6 text-center space-y-3 hover:border-[#01544e]/30 transition-colors cursor-pointer relative group">
+                  <input 
+                    type="file" 
+                    multiple 
+                    className="absolute inset-0 opacity-0 cursor-pointer" 
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setNewRequestData({...newRequestData, attachments: [...newRequestData.attachments, ...Array.from(e.target.files)]});
+                        toast.success(`${e.target.files.length} file(s) attached`);
+                      }
+                    }}
+                  />
+                  <div className="mx-auto h-10 w-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-[#01544e]/10 group-hover:text-[#01544e] transition-colors">
+                    <Plus className="h-5 w-5" />
+                  </div>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Click to upload or drag files</p>
+                </div>
+                {newRequestData.attachments.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {newRequestData.attachments.map((file, i) => (
+                      <Badge key={i} variant="secondary" className="gap-2 px-3 py-1 bg-gray-100 border-none text-[10px] font-bold uppercase tracking-widest">
+                        <FileText className="h-3 w-3" /> {file.name.length > 15 ? file.name.substring(0, 12) + '...' : file.name}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="p-6 bg-[#f8fafc] rounded-2xl border border-gray-100 space-y-6">
+                <div className="flex items-center justify-between">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-[#01544e]">Discount Requested (%)</Label>
+                  <span className="text-2xl font-black text-rose-600">{newRequestData.discountPercent}%</span>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-gray-400">
+                    <span>Proposed Margin</span>
+                    <span className={`font-black ${calculatedMargin.current < 25 ? 'text-rose-600' : calculatedMargin.current < 40 ? 'text-amber-600' : 'text-emerald-600'}`}>
+                      {calculatedMargin.current}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-500 ${calculatedMargin.current < 25 ? 'bg-rose-500' : calculatedMargin.current < 40 ? 'bg-amber-500' : 'bg-emerald-500'}`} 
+                      style={{ width: `${Math.max(0, Math.min(100, calculatedMargin.current))}%` }} 
+                    />
+                  </div>
+                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
+                    <span>Impact: {calculatedMargin.impact}%</span>
+                    <span>Original: {calculatedMargin.original}%</span>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-gray-200 flex items-center justify-between">
+                  <div>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Required Level</p>
+                    <p className="text-sm font-black text-[#01544e]">
+                      Level {calculatedMargin.level}: {approvalPolicies.find(p => p.level === calculatedMargin.level)?.roleName}
+                    </p>
+                  </div>
+                  <Badge className="bg-[#01544e] text-white px-3 py-1 font-bold">AUTO-ROUTING</Badge>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Business Justification</Label>
+                <Textarea placeholder="Berikan alasan mendetail mengapa diskon ini diperlukan..." className="min-h-[100px] border-gray-200 text-gray-900" />
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-gray-50 border-t flex justify-end gap-3 shrink-0">
+            <Button variant="outline" onClick={() => setShowRequestDialog(false)} className="h-12 px-8 font-bold border-gray-200 uppercase tracking-widest text-xs">Cancel</Button>
+            <Button 
+              className="bg-[#01544e] hover:bg-[#028076] text-white h-12 px-10 font-bold shadow-lg shadow-emerald-900/20 uppercase tracking-widest text-xs"
+              onClick={() => {
+                toast.success('Discount request submitted successfully!');
+                setShowRequestDialog(false);
+              }}
+            >
+              Submit Request
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Detail Dialog */}
       <Dialog open={showDetailDialog} onOpenChange={setShowDetailDialog}>
