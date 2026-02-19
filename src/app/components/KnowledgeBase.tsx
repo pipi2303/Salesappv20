@@ -20,199 +20,239 @@ export function KnowledgeBase() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight uppercase bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-          Knowledge Base
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Product documentation, sales playbooks, training materials & competitive analysis library
-        </p>
+    <div className="space-y-8 pb-10">
+      {/* Premium Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#01544e] via-[#028076] to-[#01544e] bg-clip-text text-transparent">
+            KNOWLEDGE BASE
+          </h1>
+          <p className="text-gray-500 font-medium flex items-center gap-2 mt-2">
+            <Book className="h-4 w-4 text-[#01544e]" />
+            Pusat dokumentasi produk, panduan penjualan, dan analisis kompetitif.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button variant="outline" className="border-gray-200 text-gray-600 font-bold uppercase tracking-wider text-xs px-4">
+            <Download className="h-4 w-4 mr-2" /> Export
+          </Button>
+          <Button className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 shadow-lg shadow-[#01544e]/20">
+            <Plus className="h-4 w-4 mr-2" /> Upload Content
+          </Button>
+        </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Articles</CardTitle>
-            <Book className="h-4 w-4 text-muted-foreground" />
+      <div className="grid gap-6 md:grid-cols-4">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Articles</CardTitle>
+            <Book className="h-4 w-4 text-[#01544e]" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{articles.length}</div>
-            <p className="text-xs text-muted-foreground">Knowledge items</p>
+          <CardContent className="pt-4">
+            <div className="text-3xl font-black text-gray-900">{articles.length}</div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Items available</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Views</CardTitle>
-            <Eye className="h-4 w-4 text-blue-500" />
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Views</CardTitle>
+            <Eye className="h-4 w-4 text-[#01544e]" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{articles.reduce((sum, a) => sum + a.views, 0)}</div>
-            <p className="text-xs text-muted-foreground">All time</p>
+          <CardContent className="pt-4">
+            <div className="text-3xl font-black text-[#01544e]">{articles.reduce((sum, a) => sum + a.views, 0)}</div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">All time reach</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Rating</CardTitle>
-            <Star className="h-4 w-4 text-yellow-500" />
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Avg Rating</CardTitle>
+            <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{(articles.reduce((sum, a) => sum + a.rating, 0) / articles.length).toFixed(1)}</div>
-            <p className="text-xs text-muted-foreground">Out of 5</p>
+          <CardContent className="pt-4">
+            <div className="text-3xl font-black text-amber-600">{(articles.reduce((sum, a) => sum + a.rating, 0) / articles.length).toFixed(1)}</div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Sales satisfaction</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Categories</CardTitle>
-            <FileText className="h-4 w-4 text-purple-500" />
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Active Topics</CardTitle>
+            <FileText className="h-4 w-4 text-[#01544e]" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">6</div>
-            <p className="text-xs text-muted-foreground">Different topics</p>
+          <CardContent className="pt-4">
+            <div className="text-3xl font-black text-gray-900">6</div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Categorized domains</p>
           </CardContent>
         </Card>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="all" className="flex flex-col items-center py-3">
-            <span className="font-medium">All</span>
-            <span className="text-xs text-muted-foreground">All content</span>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-5">
+          <TabsTrigger value="all" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Semua</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest group-data-[state=active]:text-[#01544e]/70">Library</span>
           </TabsTrigger>
-          <TabsTrigger value="documents" className="flex flex-col items-center py-3">
-            <span className="font-medium">Documents</span>
-            <span className="text-xs text-muted-foreground">PDFs & guides</span>
+          <TabsTrigger value="documents" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Dokumen</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">PDF & Guides</span>
           </TabsTrigger>
-          <TabsTrigger value="videos" className="flex flex-col items-center py-3">
-            <span className="font-medium">Videos</span>
-            <span className="text-xs text-muted-foreground">Training videos</span>
+          <TabsTrigger value="videos" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Video</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Training</span>
           </TabsTrigger>
-          <TabsTrigger value="faq" className="flex flex-col items-center py-3">
-            <span className="font-medium">FAQ</span>
-            <span className="text-xs text-muted-foreground">Common questions</span>
+          <TabsTrigger value="faq" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">FAQ</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Solusi Cepat</span>
           </TabsTrigger>
-          <TabsTrigger value="upload" className="flex flex-col items-center py-3">
-            <span className="font-medium">Upload</span>
-            <span className="text-xs text-muted-foreground">Add content</span>
+          <TabsTrigger value="upload" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Internal</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Contributor</span>
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all" className="space-y-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search knowledge base..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-10" />
+        <TabsContent value="all" className="space-y-6">
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+            <div className="relative flex-1 w-full max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input 
+                placeholder="Cari dokumentasi atau panduan..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 bg-gray-50 border-gray-200 focus:bg-white transition-all"
+              />
+            </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {articles.map((article) => (
-              <Card key={article.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-2">
-                    {article.type === 'document' && <FileText className="h-10 w-10 text-indigo-500" />}
-                    {article.type === 'video' && <Video className="h-10 w-10 text-purple-500" />}
-                    {article.type === 'faq' && <HelpCircle className="h-10 w-10 text-pink-500" />}
-                    <Badge variant="outline">{article.category}</Badge>
+              <Card key={article.id} className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
+                <CardHeader className="pb-4">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-[#e6f2f1] transition-colors">
+                      {article.type === 'document' && <FileText className="h-8 w-8 text-[#01544e]" />}
+                      {article.type === 'video' && <Video className="h-8 w-8 text-[#01544e]" />}
+                      {article.type === 'faq' && <HelpCircle className="h-8 w-8 text-[#01544e]" />}
+                    </div>
+                    <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest border-gray-200">
+                      {article.category}
+                    </Badge>
                   </div>
-                  <CardTitle className="text-lg leading-tight">{article.title}</CardTitle>
+                  <CardTitle className="text-xl font-black text-gray-900 leading-tight group-hover:text-[#01544e] transition-colors">
+                    {article.title}
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-1">
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                      <span>{article.views} views</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                      <span>{article.rating}</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" className="flex-1"><Eye className="h-3 w-3 mr-1" />View</Button>
-                    <Button variant="outline" size="sm"><Download className="h-3 w-3" /></Button>
-                    <Button variant="outline" size="sm"><ThumbsUp className="h-3 w-3" /></Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="documents" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {articles.filter(a => a.type === 'document').map((article) => (
-              <Card key={article.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-2">
-                    <FileText className="h-10 w-10 text-indigo-500" />
-                    <Badge variant="outline">{article.category}</Badge>
-                  </div>
-                  <CardTitle className="text-lg leading-tight">{article.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between text-sm mb-3">
-                    <div className="flex items-center gap-1">
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                      <span>{article.views} views</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                      <span>{article.rating}</span>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm" className="w-full"><Download className="h-3 w-3 mr-2" />Download PDF</Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="videos" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            {articles.filter(a => a.type === 'video').map((article) => (
-              <Card key={article.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-2">
-                    <Video className="h-10 w-10 text-purple-500" />
-                    <Badge variant="outline">{article.category}</Badge>
-                  </div>
-                  <CardTitle className="text-lg leading-tight">{article.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between text-sm mb-3">
-                    <div className="flex items-center gap-1">
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                      <span>{article.views} views</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                      <span>{article.rating}</span>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm" className="w-full"><Video className="h-3 w-3 mr-2" />Watch Video</Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="faq" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Frequently Asked Questions</CardTitle>
-              <CardDescription>Common questions and answers</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {articles.filter(a => a.type === 'faq').map((article) => (
-                  <div key={article.id} className="p-4 border rounded-lg hover:bg-accent/50 transition-colors cursor-pointer">
-                    <div className="flex items-start gap-3">
-                      <HelpCircle className="h-6 w-6 text-pink-500 flex-shrink-0" />
-                      <div className="flex-1">
-                        <h3 className="font-semibold mb-1">{article.title}</h3>
-                        <p className="text-sm text-muted-foreground">Click to view answers and solutions</p>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <Eye className="h-3.5 w-3.5 text-gray-400" />
+                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{article.views} Views</span>
                       </div>
-                      <div className="flex items-center gap-1 text-sm">
-                        <Eye className="h-4 w-4 text-muted-foreground" />
+                      <div className="flex items-center gap-1.5">
+                        <Star className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
+                        <span className="text-[10px] font-black text-gray-900 uppercase tracking-widest">{article.rating}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 pt-2">
+                    <Button variant="outline" className="flex-1 font-bold text-[10px] uppercase tracking-widest border-gray-200 h-10">
+                      <Eye className="h-4 w-4 mr-2" /> View
+                    </Button>
+                    <Button variant="outline" className="font-bold border-gray-200 h-10 w-10 p-0">
+                      <Download className="h-4 w-4 text-[#01544e]" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="documents" className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {articles.filter(a => a.type === 'document').map((article) => (
+              <Card key={article.id} className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
+                <CardHeader className="pb-4">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-[#e6f2f1] transition-colors">
+                      <FileText className="h-8 w-8 text-[#01544e]" />
+                    </div>
+                    <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest border-gray-200">{article.category}</Badge>
+                  </div>
+                  <CardTitle className="text-xl font-black text-gray-900 leading-tight group-hover:text-[#01544e] transition-colors">{article.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
+                    <div className="flex items-center gap-1.5">
+                      <Eye className="h-3.5 w-3.5" />
+                      <span>{article.views} views</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-amber-500">
+                      <Star className="h-3.5 w-3.5 fill-amber-500" />
+                      <span className="text-gray-900">{article.rating}</span>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="w-full font-bold text-[10px] uppercase tracking-widest border-gray-200 h-10">
+                    <Download className="h-4 w-4 mr-2 text-[#01544e]" /> Download PDF
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="videos" className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-2">
+            {articles.filter(a => a.type === 'video').map((article) => (
+              <Card key={article.id} className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
+                <CardHeader className="pb-4">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-[#e6f2f1] transition-colors">
+                      <Video className="h-8 w-8 text-[#01544e]" />
+                    </div>
+                    <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest border-gray-200">{article.category}</Badge>
+                  </div>
+                  <CardTitle className="text-xl font-black text-gray-900 leading-tight group-hover:text-[#01544e] transition-colors">{article.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
+                    <div className="flex items-center gap-1.5">
+                      <Eye className="h-3.5 w-3.5" />
+                      <span>{article.views} views</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-amber-500">
+                      <Star className="h-3.5 w-3.5 fill-amber-500" />
+                      <span className="text-gray-900">{article.rating}</span>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="w-full font-bold text-[10px] uppercase tracking-widest border-gray-200 h-10">
+                    <Video className="h-4 w-4 mr-2 text-[#01544e]" /> Watch Video
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="faq" className="space-y-6">
+          <Card className="border-gray-100 shadow-sm overflow-hidden">
+            <CardHeader className="bg-gray-50/50 border-b border-gray-100 p-6">
+              <CardTitle className="text-xl font-black text-gray-900 uppercase tracking-tight">Frequently Asked Questions</CardTitle>
+              <CardDescription className="text-xs font-bold uppercase tracking-widest text-gray-400">Solusi cepat untuk pertanyaan umum tim sales</CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                {articles.filter(a => a.type === 'faq').map((article) => (
+                  <div key={article.id} className="p-5 bg-white border border-gray-100 rounded-2xl hover:border-[#01544e]/30 hover:shadow-lg transition-all cursor-pointer group">
+                    <div className="flex items-start gap-4">
+                      <div className="p-2.5 bg-gray-50 rounded-xl group-hover:bg-[#e6f2f1] transition-colors shrink-0">
+                        <HelpCircle className="h-6 w-6 text-[#01544e]" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-black text-gray-900 uppercase tracking-tight group-hover:text-[#01544e] transition-colors mb-1">{article.title}</h3>
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Klik untuk melihat detail solusi dan panduan</p>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-3 py-1 rounded-full">
+                        <Eye className="h-3 w-3" />
                         <span>{article.views}</span>
                       </div>
                     </div>
@@ -223,18 +263,24 @@ export function KnowledgeBase() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="upload" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Upload Knowledge Content</CardTitle>
-              <CardDescription>Add new documents, videos, or FAQ entries</CardDescription>
+        <TabsContent value="upload" className="space-y-6">
+          <Card className="border-gray-100 shadow-sm overflow-hidden">
+            <CardHeader className="bg-gray-50/50 border-b border-gray-100 p-6">
+              <CardTitle className="text-xl font-black text-gray-900 uppercase tracking-tight">Upload Knowledge Content</CardTitle>
+              <CardDescription className="text-xs font-bold uppercase tracking-widest text-gray-400">Kontribusi konten baru ke sistem pusat</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <Plus className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Add New Content</h3>
-                <p className="text-sm text-muted-foreground mb-4">Upload files or create new knowledge articles</p>
-                <Button><Plus className="h-4 w-4 mr-2" />Upload Content</Button>
+            <CardContent className="p-12">
+              <div className="text-center max-w-sm mx-auto space-y-6">
+                <div className="h-24 w-24 rounded-full bg-gray-50 flex items-center justify-center mx-auto border-4 border-white shadow-xl group hover:bg-[#e6f2f1] transition-all">
+                  <Plus className="h-10 w-10 text-gray-300 group-hover:text-[#01544e] transition-colors" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight">Kontribusi Materi Baru</h3>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">Unggah file PDF panduan, video pelatihan, atau entri FAQ untuk membantu performa tim sales.</p>
+                </div>
+                <Button className="bg-[#01544e] hover:bg-[#028076] text-white h-12 px-8 font-bold uppercase tracking-widest text-xs shadow-lg shadow-emerald-900/20 w-full">
+                  <Plus className="h-4 w-4 mr-2" /> Upload Materi Baru
+                </Button>
               </div>
             </CardContent>
           </Card>
