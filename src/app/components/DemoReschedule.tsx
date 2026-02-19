@@ -93,7 +93,7 @@ export function DemoReschedule({ demo, onReschedule }: DemoRescheduleProps) {
               Reschedule Demo
             </DialogTitle>
             <DialogDescription>
-              Jadwalkan ulang demo: {demo.title}
+              Jadwalkan ulang demo: {demo?.title || 'Selected Demo'}
             </DialogDescription>
           </DialogHeader>
 

@@ -1,0 +1,541 @@
+import React, { useState } from 'react';
+import { Search, DollarSign, TrendingUp, Award, Calendar, User, Download, Calculator, Eye, CheckCircle, Target, Clock, ChevronRight, BarChart3, PieChart as PieChartIcon, ArrowUpRight, Percent, Zap, Wallet } from 'lucide-react';
+import { Button } from '@/app/components/ui/button';
+import { Badge } from '@/app/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/app/components/ui/dialog';
+import { Input } from '@/app/components/ui/input';
+import { Label } from '@/app/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { toast } from 'sonner';
+import { formatCurrency, formatDate } from '@/utils/formatters';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Legend, AreaChart, Area } from 'recharts';
+
+interface CommissionRecord {
+  id: string;
+  salesPerson: string;
+  period: string;
+  totalSales: number;
+  baseCommission: number;
+  bonuses: number;
+  totalCommission: number;
+  status: 'pending' | 'approved' | 'paid';
+  deals: number;
+  achievementRate: number;
+  paymentDate?: string;
+}
+
+interface CommissionTier {
+  id: string;
+  minAmount: number;
+  maxAmount: number;
+  rate: number;
+}
+
+interface Bonus {
+  id: string;
+  name: string;
+  type: 'flat' | 'percentage';
+  value: number;
+  condition: string;
+  icon: React.ElementType;
+}
+
+export function CommissionCalculator() {
+  const [activeTab, setActiveTab] = useState('commissions');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPeriod, setSelectedPeriod] = useState('feb-2024');
+  const [showDetailDialog, setShowDetailDialog] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<CommissionRecord | null>(null);
+  
+  // Simulation states
+  const [simAmount, setSimAmount] = useState<string>('500000000');
+  const [simResults, setSimResults] = useState<{base: number, tier: number} | null>(null);
+
+  // Commission Tiers
+  const [tiers] = useState<CommissionTier[]>([
+    { id: '1', minAmount: 0, maxAmount: 100000000, rate: 2.5 },
+    { id: '2', minAmount: 100000000, maxAmount: 250000000, rate: 3.5 },
+    { id: '3', minAmount: 250000000, maxAmount: 500000000, rate: 5.0 },
+    { id: '4', minAmount: 500000000, maxAmount: 999999999999, rate: 7.0 },
+  ]);
+
+  // Bonuses
+  const [bonuses] = useState<Bonus[]>([
+    { id: '1', name: 'New Client Bonus', type: 'flat', value: 5000000, condition: 'Per perolehan klien baru', icon: User },
+    { id: '2', name: 'Target Achievement', type: 'percentage', value: 10, condition: 'Mencapai 100%+ target bulanan', icon: Target },
+    { id: '3', name: 'Mega Deal Bonus', type: 'flat', value: 10000000, condition: 'Kesepakatan > Rp 500 Juta', icon: Zap },
+    { id: '4', name: 'Quarterly MVP', type: 'percentage', value: 15, condition: 'Performa terbaik dalam satu kuartal', icon: Award },
+  ]);
+
+  // Commission Records
+  const [commissions] = useState<CommissionRecord[]>([
+    { id: '1', salesPerson: 'Budi Santoso', period: 'Feb 2024', totalSales: 350000000, baseCommission: 13125000, bonuses: 10000000, totalCommission: 23125000, status: 'pending', deals: 3, achievementRate: 116.7 },
+    { id: '2', salesPerson: 'Ani Wijaya', period: 'Feb 2024', totalSales: 280000000, baseCommission: 10800000, bonuses: 7800000, totalCommission: 18600000, status: 'approved', deals: 4, achievementRate: 93.3 },
+    { id: '3', salesPerson: 'Dewi Kartika', period: 'Feb 2024', totalSales: 520000000, baseCommission: 29400000, bonuses: 25000000, totalCommission: 54400000, status: 'approved', deals: 5, achievementRate: 173.3 },
+    { id: '4', salesPerson: 'Eko Prasetyo', period: 'Feb 2024', totalSales: 185000000, baseCommission: 6437500, bonuses: 0, totalCommission: 6437500, status: 'pending', deals: 2, achievementRate: 61.7 },
+    { id: '5', salesPerson: 'Budi Santoso', period: 'Jan 2024', totalSales: 420000000, baseCommission: 19600000, bonuses: 15000000, totalCommission: 34600000, status: 'paid', deals: 6, achievementRate: 140.0, paymentDate: '2024-02-05' },
+  ]);
+
+  const currentPeriodCommissions = commissions.filter(c => c.period.toLowerCase().includes(selectedPeriod.replace('-', ' ')));
+  
+  // Define chart data variables
+  const commissionByPersonData = currentPeriodCommissions.map(c => ({
+    name: c.salesPerson.split(' ')[0],
+    base: c.baseCommission,
+    bonus: c.bonuses,
+    total: c.totalCommission
+  }));
+
+  const statusDistributionData = [
+    { name: 'Pending', value: currentPeriodCommissions.filter(c => c.status === 'pending').length },
+    { name: 'Approved', value: currentPeriodCommissions.filter(c => c.status === 'approved').length },
+    { name: 'Paid', value: commissions.filter(c => c.status === 'paid').length },
+  ];
+
+  const stats = {
+    totalCommission: currentPeriodCommissions.reduce((sum, c) => sum + c.totalCommission, 0),
+    pending: currentPeriodCommissions.filter(c => c.status === 'pending').reduce((sum, c) => sum + c.totalCommission, 0),
+    approved: currentPeriodCommissions.filter(c => c.status === 'approved').reduce((sum, c) => sum + c.totalCommission, 0),
+    paid: commissions.filter(c => c.status === 'paid').reduce((sum, c) => sum + c.totalCommission, 0),
+    avgRate: currentPeriodCommissions.length > 0 ? currentPeriodCommissions.reduce((sum, c) => sum + c.achievementRate, 0) / currentPeriodCommissions.length : 0
+  };
+
+  const calculateSim = () => {
+    const amount = parseFloat(simAmount);
+    if (isNaN(amount)) return;
+    
+    let total = 0;
+    let rate = 0;
+    for (const tier of tiers) {
+      if (amount >= tier.minAmount) {
+        const applicable = Math.min(amount, tier.maxAmount) - tier.minAmount;
+        total += (applicable * tier.rate) / 100;
+        rate = tier.rate;
+        if (amount <= tier.maxAmount) break;
+      }
+    }
+    setSimResults({ base: total, tier: rate });
+    toast.success('Simulasi kalkulasi selesai');
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'pending': return <Badge className="bg-amber-100 text-amber-700 border-amber-200">Awaiting Approval</Badge>;
+      case 'approved': return <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">Ready to Pay</Badge>;
+      case 'paid': return <Badge className="bg-blue-100 text-blue-700 border-blue-200">Paid</Badge>;
+      default: return null;
+    }
+  };
+
+  return (
+    <div className="space-y-8 animate-in fade-in duration-700">
+      {/* Premium Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2 border-b border-gray-100">
+        <div>
+          <h1 className="text-4xl font-extrabold tracking-tight uppercase bg-gradient-to-r from-[#01544e] via-[#02847c] to-[#01544e] bg-clip-text text-transparent">
+            Commission Control
+          </h1>
+          <p className="text-sm font-medium text-gray-500 mt-2 uppercase tracking-[0.2em] flex items-center gap-2">
+            <DollarSign className="h-4 w-4" /> Multi-tiered Incentives & Payout Management
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <Button variant="outline" className="gap-2 border-gray-200">
+            <Download className="h-4 w-4" /> Export Payroll
+          </Button>
+          <Button className="bg-[#01544e] hover:bg-[#023d39] text-white shadow-lg shadow-emerald-900/20 gap-2">
+            <ArrowUpRight className="h-4 w-4" /> Approve All Pending
+          </Button>
+        </div>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: 'Total Payout', value: formatCurrency(stats.totalCommission), icon: Wallet, color: 'text-[#01544e]', bg: 'bg-emerald-50' },
+          { label: 'Pending Approval', value: formatCurrency(stats.pending), icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
+          { label: 'Approved Ready', value: formatCurrency(stats.approved), icon: CheckCircle, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: 'Avg Achievement', value: `${stats.avgRate.toFixed(1)}%`, icon: TrendingUp, color: 'text-purple-600', bg: 'bg-purple-50' },
+        ].map((stat, i) => (
+          <Card key={i} className="border-none shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group">
+            <div className={`h-1 w-full ${stat.bg.replace('bg-', 'bg-')}`} style={{backgroundColor: i === 0 ? '#01544e' : undefined}}></div>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{stat.label}</p>
+                  <p className="text-2xl font-black text-gray-800">{stat.value}</p>
+                </div>
+                <div className={`h-12 w-12 rounded-2xl ${stat.bg} flex items-center justify-center transition-transform group-hover:scale-110`}>
+                  <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Tabs Navigation */}
+      <Tabs defaultValue="commissions" className="w-full space-y-6" onValueChange={setActiveTab}>
+        <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-2 lg:grid-cols-5 gap-1">
+          {[
+            { id: 'commissions', title: 'Commission Records', sub: 'Histori Pembayaran' },
+            { id: 'calculator', title: 'Simulation Tool', sub: 'Kalkulator Insentif' },
+            { id: 'tiers', title: 'Structure & Tiers', sub: 'Skema Persentase' },
+            { id: 'bonuses', title: 'Performance Bonus', sub: 'Tambahan Bonus' },
+            { id: 'analytics', title: 'Payout Analytics', sub: 'Analisis Distribusi' },
+          ].map((tab) => (
+            <TabsTrigger 
+              key={tab.id}
+              value={tab.id} 
+              className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
+            >
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="font-bold text-[10px] sm:text-[11px] uppercase tracking-tight leading-[1.1] mb-1">
+                  {tab.title}
+                </div>
+                <div className="text-[9px] text-gray-400 font-medium uppercase tracking-widest leading-none opacity-80">
+                  {tab.sub}
+                </div>
+              </div>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {/* Commissions List */}
+        <TabsContent value="commissions" className="space-y-4 outline-none">
+          <div className="flex flex-col md:flex-row justify-between gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input 
+                placeholder="Cari tenaga sales..." 
+                className="pl-10 h-11 border-gray-200 focus:ring-[#01544e]" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+              <SelectTrigger className="w-full md:w-[200px] h-11 border-gray-200">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="feb-2024">Februari 2024</SelectItem>
+                <SelectItem value="jan-2024">Januari 2024</SelectItem>
+                <SelectItem value="dec-2023">Desember 2023</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Card className="border-none shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-100">
+                    <th className="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Sales Person</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Performance</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest text-right">Base Comm.</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest text-right">Bonuses</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest text-right">Total Payout</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {currentPeriodCommissions.map((record) => (
+                    <tr key={record.id} className="hover:bg-gray-50/50 transition-colors group cursor-pointer" onClick={() => { setSelectedRecord(record); setShowDetailDialog(true); }}>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#01544e] to-[#02847c] flex items-center justify-center text-white font-bold text-sm">
+                            {record.salesPerson.charAt(0)}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-900">{record.salesPerson}</p>
+                            <p className="text-[10px] text-gray-500 uppercase tracking-wide">{record.deals} Deals Closed</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="space-y-1 max-w-[120px]">
+                          <div className="flex justify-between text-[10px] font-bold">
+                            <span>{record.achievementRate}%</span>
+                          </div>
+                          <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full rounded-full ${record.achievementRate >= 100 ? 'bg-emerald-500' : 'bg-amber-500'}`}
+                              style={{ width: `${Math.min(record.achievementRate, 100)}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-right font-medium text-gray-600">{formatCurrency(record.baseCommission)}</td>
+                      <td className="px-6 py-4 text-right font-medium text-emerald-600">+{formatCurrency(record.bonuses)}</td>
+                      <td className="px-6 py-4 text-right font-black text-gray-900">{formatCurrency(record.totalCommission)}</td>
+                      <td className="px-6 py-4">{getStatusBadge(record.status)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </TabsContent>
+
+        {/* Simulation Calculator Content */}
+        <TabsContent value="calculator" className="outline-none">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <Card className="border-none shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl text-[#01544e]">Incentive Simulator</CardTitle>
+                <CardDescription>Simulasikan estimasi komisi berdasarkan total penjualan pribadi</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6 p-6 pt-2">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="simAmount" className="text-xs font-bold uppercase tracking-widest text-gray-500">Estimasi Total Penjualan (Rp)</Label>
+                    <div className="relative">
+                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <Input 
+                        id="simAmount" 
+                        type="number" 
+                        value={simAmount} 
+                        onChange={(e) => setSimAmount(e.target.value)}
+                        className="pl-10 h-14 text-xl font-bold border-gray-200 focus:ring-[#01544e]" 
+                      />
+                    </div>
+                  </div>
+                  <Button className="w-full h-12 bg-[#01544e] hover:bg-[#023d39] text-white gap-2 text-lg font-bold" onClick={calculateSim}>
+                    <Calculator className="h-5 w-5" /> Hitung Estimasi
+                  </Button>
+                </div>
+
+                {simResults && (
+                  <div className="mt-8 p-6 bg-emerald-50 rounded-2xl border border-emerald-100 space-y-4 animate-in slide-in-from-bottom-4">
+                    <div className="flex justify-between items-center border-b border-emerald-100 pb-4">
+                      <span className="text-sm font-semibold text-emerald-800">Tier Terapan</span>
+                      <Badge className="bg-[#01544e] text-white text-lg px-3 py-1">{simResults.tier}% Rate</Badge>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Estimasi Komisi Dasar</p>
+                      <p className="text-4xl font-black text-[#01544e]">{formatCurrency(simResults.base)}</p>
+                    </div>
+                    <p className="text-[11px] text-emerald-700/70 italic">
+                      *Estimasi ini belum termasuk bonus performa, pajak, dan insentif khusus lainnya.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <div className="space-y-4">
+              <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest px-2">Kalkulasi Proyeksi</h3>
+              <Card className="border-none shadow-sm overflow-hidden h-[380px]">
+                <CardContent className="p-6">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={[
+                      { sales: 0, comm: 0 },
+                      { sales: 100000000, comm: 2500000 },
+                      { sales: 250000000, comm: 7750000 },
+                      { sales: 500000000, comm: 20250000 },
+                      { sales: 1000000000, comm: 55250000 },
+                    ]}>
+                      <defs>
+                        <linearGradient id="colorComm" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#01544e" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#01544e" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f1f1" />
+                      <XAxis dataKey="sales" hide />
+                      <YAxis hide />
+                      <Tooltip 
+                        formatter={(val: number) => formatCurrency(val)} 
+                        labelFormatter={(label) => `Sales: ${formatCurrency(label)}`}
+                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                      />
+                      <Area type="monotone" dataKey="comm" stroke="#01544e" strokeWidth={3} fillOpacity={1} fill="url(#colorComm)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                  <div className="text-center mt-4">
+                    <p className="text-xs font-medium text-gray-500 italic">Visualisasi pertumbuhan komisi eksponensial berdasarkan sistem tiering</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Tiers Content */}
+        <TabsContent value="tiers" className="outline-none">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {tiers.map((tier, idx) => (
+              <Card key={tier.id} className="border-none shadow-sm hover:ring-2 hover:ring-[#01544e] transition-all group relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <Percent className="h-16 w-16" />
+                </div>
+                <CardContent className="p-8">
+                  <div className="h-12 w-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-6">
+                    <span className="text-xl font-black text-[#01544e]">{tier.rate}%</span>
+                  </div>
+                  <h4 className="text-lg font-bold text-gray-900 mb-2">Tier {idx + 1}</h4>
+                  <div className="space-y-1 mb-6">
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Sales Threshold</p>
+                    <p className="text-sm font-semibold text-gray-700">
+                      {formatCurrency(tier.minAmount)} {tier.maxAmount < 999999999999 ? ` - ${formatCurrency(tier.maxAmount)}` : '+'}
+                    </p>
+                  </div>
+                  <div className="pt-4 border-t border-gray-100">
+                    <p className="text-[11px] text-gray-500 leading-relaxed">
+                      Komisi dihitung secara progresif untuk setiap segmen penjualan dalam rentang ini.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        {/* Performance Bonus Content */}
+        <TabsContent value="bonuses" className="outline-none">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {bonuses.map((bonus) => (
+              <Card key={bonus.id} className="border-none shadow-sm group hover:shadow-md transition-all overflow-hidden">
+                <CardContent className="p-0 flex flex-col sm:flex-row">
+                  <div className="w-full sm:w-[120px] bg-gray-50 flex items-center justify-center p-6 border-b sm:border-b-0 sm:border-r border-gray-100 group-hover:bg-[#01544e] transition-colors">
+                    <bonus.icon className="h-10 w-10 text-[#01544e] group-hover:text-white transition-colors" />
+                  </div>
+                  <div className="flex-1 p-6 space-y-3">
+                    <div className="flex justify-between items-start">
+                      <h4 className="text-xl font-black text-gray-900">{bonus.name}</h4>
+                      <Badge className="bg-emerald-100 text-[#01544e] border-none text-base px-3">
+                        {bonus.type === 'flat' ? formatCurrency(bonus.value) : `+${bonus.value}%`}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-[#01544e] font-bold">
+                      <Zap className="h-4 w-4" /> Syarat: {bonus.condition}
+                    </div>
+                    <p className="text-xs text-gray-500 leading-relaxed">
+                      Bonus ini akan otomatis ditambahkan ke total komisi bulanan jika kriteria performa terpenuhi pada saat penutupan periode.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        {/* Analytics Content */}
+        <TabsContent value="analytics" className="space-y-6 outline-none">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <Card className="lg:col-span-2 border-none shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl">Payout Distribution by Sales Rep</CardTitle>
+                <CardDescription>Perbandingan antara komisi dasar dan akumulasi bonus</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[350px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={commissionByPersonData} layout="vertical" margin={{ left: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f1f1" />
+                    <XAxis type="number" hide />
+                    <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 700 }} />
+                    <Tooltip 
+                      formatter={(val: number) => formatCurrency(val)}
+                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                    />
+                    <Legend iconType="circle" />
+                    <Bar dataKey="base" stackId="a" fill="#01544e" name="Base Commission" radius={[0, 0, 0, 0]} barSize={24} />
+                    <Bar dataKey="bonus" stackId="a" fill="#02847c" name="Total Bonuses" radius={[0, 4, 4, 0]} barSize={24} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl">Payout Status</CardTitle>
+                <CardDescription>Distribusi status pembayaran periode berjalan</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[350px] flex flex-col items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={statusDistributionData}
+                      cx="50%"
+                      cy="45%"
+                      innerRadius={80}
+                      outerRadius={110}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {statusDistributionData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={index === 0 ? '#f59e0b' : index === 1 ? '#10b981' : '#3b82f6'} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={{ borderRadius: '12px', border: 'none' }} />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="grid grid-cols-3 gap-4 w-full mt-4">
+                  {statusDistributionData.map((s, i) => (
+                    <div key={i} className="text-center">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{s.name}</p>
+                      <p className="text-lg font-black" style={{ color: i === 0 ? '#f59e0b' : i === 1 ? '#10b981' : '#3b82f6' }}>{s.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {/* Detail Dialog */}
+      <Dialog open={showDetailDialog} onOpenChange={setShowDetailDialog}>
+        <DialogContent className="max-w-2xl border-none shadow-2xl">
+          <DialogHeader className="pb-4 border-b border-gray-100">
+            <DialogTitle className="text-2xl text-[#01544e]">Rincian Insentif Payroll</DialogTitle>
+            <DialogDescription>Detail kalkulasi komisi dan bonus untuk periode {selectedRecord?.period}</DialogDescription>
+          </DialogHeader>
+          {selectedRecord && (
+            <div className="space-y-8 py-6">
+              <div className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-gray-50 rounded-3xl border border-gray-100">
+                <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#01544e] to-[#02847c] flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+                  {selectedRecord.salesPerson.charAt(0)}
+                </div>
+                <div className="text-center sm:text-left space-y-1">
+                  <h2 className="text-2xl font-black text-gray-900">{selectedRecord.salesPerson}</h2>
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-2">
+                    <Badge variant="outline" className="border-gray-200">{selectedRecord.deals} Deals Closed</Badge>
+                    <Badge className="bg-[#01544e] text-white">Achievement: {selectedRecord.achievementRate}%</Badge>
+                  </div>
+                </div>
+                <div className="sm:ml-auto text-center sm:text-right">
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Status Pembayaran</p>
+                  {getStatusBadge(selectedRecord.status)}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-5 bg-white border border-gray-100 rounded-2xl shadow-sm space-y-1">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Komisi Dasar</p>
+                  <p className="text-2xl font-black text-gray-800">{formatCurrency(selectedRecord.baseCommission)}</p>
+                </div>
+                <div className="p-5 bg-white border border-gray-100 rounded-2xl shadow-sm space-y-1">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Bonus Performa</p>
+                  <p className="text-2xl font-black text-emerald-600">{formatCurrency(selectedRecord.bonuses)}</p>
+                </div>
+              </div>
+
+              <div className="p-6 bg-[#01544e] text-white rounded-3xl shadow-xl shadow-emerald-900/20 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                  <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1">Total Pencairan Komisi</p>
+                  <p className="text-4xl font-black">{formatCurrency(selectedRecord.totalCommission)}</p>
+                </div>
+                <Button className="bg-white text-[#01544e] hover:bg-emerald-50 h-12 px-8 font-bold text-base rounded-xl">
+                  Konfirmasi Pembayaran
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

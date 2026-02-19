@@ -179,23 +179,35 @@ export function PerformanceHub() {
       </div>
 
       {/* Detailed Metrics Tabs */}
-      <Tabs defaultValue="activity" className="space-y-4">
-        <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start">
-          <TabsTrigger value="activity" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
-            <span className="font-bold text-sm">Activity Metrics</span>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">METRIK AKTIVITAS</span>
+      <Tabs defaultValue="activity" className="space-y-6">
+        <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-4">
+          <TabsTrigger 
+            value="activity" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
+            <span className="font-bold text-sm uppercase tracking-tight">Activity Metrics</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Metrik Aktivitas</span>
           </TabsTrigger>
-          <TabsTrigger value="results" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
-            <span className="font-bold text-sm">Output Results</span>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">HASIL PENCAPAIAN</span>
+          <TabsTrigger 
+            value="results" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
+            <span className="font-bold text-sm uppercase tracking-tight">Output Results</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Hasil Pencapaian</span>
           </TabsTrigger>
-          <TabsTrigger value="products" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
-            <span className="font-bold text-sm">Product Push</span>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PENJUALAN PRODUK</span>
+          <TabsTrigger 
+            value="products" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
+            <span className="font-bold text-sm uppercase tracking-tight">Product Push</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Penjualan Produk</span>
           </TabsTrigger>
-          <TabsTrigger value="quality" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
-            <span className="font-bold text-sm">Quality & Retention</span>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">KUALITAS & RETENSI</span>
+          <TabsTrigger 
+            value="quality" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
+            <span className="font-bold text-sm uppercase tracking-tight">Quality & Retention</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Kualitas & Retensi</span>
           </TabsTrigger>
         </TabsList>
 

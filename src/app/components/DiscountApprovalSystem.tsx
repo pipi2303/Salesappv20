@@ -1,0 +1,795 @@
+import React, { useState, useMemo } from 'react';
+import { 
+  Search, 
+  Plus, 
+  CheckCircle2, 
+  XCircle, 
+  Clock, 
+  AlertCircle, 
+  DollarSign, 
+  User, 
+  TrendingDown, 
+  Calendar, 
+  Filter, 
+  Download, 
+  Eye, 
+  MessageSquare, 
+  ChevronRight,
+  ShieldCheck,
+  Zap,
+  History,
+  ArrowUpRight,
+  Target,
+  FileText,
+  BadgeCheck,
+  MoreVertical,
+  Mail,
+  ArrowRight,
+  TrendingUp,
+  LineChart as LineChartIcon,
+  Percent,
+  MapPin,
+  Globe,
+  Info,
+  CheckSquare
+} from 'lucide-react';
+import { Button } from '@/app/components/ui/button';
+import { Badge } from '@/app/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/app/components/ui/dialog';
+import { Input } from '@/app/components/ui/input';
+import { Label } from '@/app/components/ui/label';
+import { Textarea } from '@/app/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { toast } from 'sonner';
+import { formatCurrency, formatDate } from '@/utils/formatters';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Legend, AreaChart, Area, ComposedChart, Line } from 'recharts';
+import { motion, AnimatePresence } from 'motion/react';
+
+interface DiscountRequest {
+  id: string;
+  requestNumber: string;
+  clientName: string;
+  opportunityId: string;
+  productName: string;
+  originalPrice: number;
+  discountPercent: number;
+  discountAmount: number;
+  finalPrice: number;
+  requestedBy: string;
+  requestedDate: string;
+  reason: string;
+  status: 'pending' | 'approved' | 'rejected' | 'expired' | 'counter-offer';
+  currentApprover: string;
+  approvalLevel: number;
+  approvalHistory: ApprovalStep[];
+  urgency: 'low' | 'medium' | 'high';
+  validUntil: string;
+  originalMargin: number;
+  proposedMargin: number;
+  region: string;
+  conditions?: string;
+}
+
+interface ApprovalStep {
+  level: number;
+  approverName: string;
+  approverRole: string;
+  action: 'pending' | 'approved' | 'rejected' | 'counter-offer';
+  date?: string;
+  comment?: string;
+  counterOfferPercent?: number;
+  conditionsAdded?: string;
+}
+
+interface ApprovalPolicy {
+  id: string;
+  level: number;
+  roleName: string;
+  minDiscount: number;
+  maxDiscount: number;
+  approvers: string[];
+  slaHours: number;
+}
+
+export function DiscountApprovalSystem() {
+  const [activeTab, setActiveTab] = useState('requests');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [selectedRegion, setSelectedRegion] = useState('all');
+  const [showRequestDialog, setShowRequestDialog] = useState(false);
+  const [showDetailDialog, setShowDetailDialog] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<DiscountRequest | null>(null);
+  const [isCounterOfferOpen, setIsCounterOfferOpen] = useState(false);
+  const [counterPercent, setCounterPercent] = useState<string>('');
+  const [counterComment, setCounterComment] = useState<string>('');
+  
+  // Conditional Approval State
+  const [isConditionalOpen, setIsConditionalOpen] = useState(false);
+  const [conditionNote, setConditionNote] = useState('');
+
+  // Dummy data
+  const [discountRequests, setDiscountRequests] = useState<DiscountRequest[]>([
+    {
+      id: '1',
+      requestNumber: 'DR-2024-001',
+      clientName: 'PT Maju Jaya',
+      opportunityId: 'OPP-001',
+      productName: 'Enterprise Plan',
+      originalPrice: 350000000,
+      discountPercent: 15,
+      discountAmount: 52500000,
+      finalPrice: 297500000,
+      requestedBy: 'Budi Santoso',
+      requestedDate: '2024-02-15',
+      reason: 'Kompetitor menawarkan harga lebih rendah. Akun strategis dengan potensi jangka panjang.',
+      status: 'pending',
+      currentApprover: 'Sarah Manager',
+      approvalLevel: 2,
+      urgency: 'high',
+      validUntil: '2024-02-22',
+      originalMargin: 45,
+      proposedMargin: 30,
+      region: 'Jawa Barat',
+      approvalHistory: [
+        {
+          level: 1,
+          approverName: 'Budi Santoso',
+          approverRole: 'Sales Executive',
+          action: 'approved',
+          date: '2024-02-15',
+          comment: 'Self-approval up to 10%'
+        },
+        {
+          level: 2,
+          approverName: 'Sarah Manager',
+          approverRole: 'Sales Manager',
+          action: 'pending',
+        }
+      ]
+    },
+    {
+      id: '2',
+      requestNumber: 'DR-2024-002',
+      clientName: 'CV Berkah Sejahtera',
+      opportunityId: 'OPP-002',
+      productName: 'Professional Plan',
+      originalPrice: 150000000,
+      discountPercent: 8,
+      discountAmount: 12000000,
+      finalPrice: 138000000,
+      requestedBy: 'Ani Wijaya',
+      requestedDate: '2024-02-14',
+      reason: 'Pelanggan baru, mencoba paket kecil untuk validasi kebutuhan.',
+      status: 'approved',
+      currentApprover: '-',
+      approvalLevel: 1,
+      urgency: 'medium',
+      validUntil: '2024-02-28',
+      originalMargin: 40,
+      proposedMargin: 32,
+      region: 'DKI Jakarta',
+      approvalHistory: [
+        {
+          level: 1,
+          approverName: 'Ani Wijaya',
+          approverRole: 'Sales Executive',
+          action: 'approved',
+          date: '2024-02-14',
+          comment: 'Approved within authority (0-10%)'
+        }
+      ]
+    },
+    {
+      id: '3',
+      requestNumber: 'DR-2024-003',
+      clientName: 'PT Global Solutions',
+      opportunityId: 'OPP-003',
+      productName: 'Custom Development',
+      originalPrice: 500000000,
+      discountPercent: 25,
+      discountAmount: 125000000,
+      finalPrice: 375000000,
+      requestedBy: 'Dewi Kartika',
+      requestedDate: '2024-02-13',
+      reason: 'Pesanan volume besar (kontrak 3 tahun), peluang kemitraan strategis.',
+      status: 'approved',
+      currentApprover: '-',
+      approvalLevel: 3,
+      urgency: 'high',
+      validUntil: '2024-03-01',
+      originalMargin: 50,
+      proposedMargin: 25,
+      region: 'Jawa Timur',
+      approvalHistory: [
+        { level: 1, approverName: 'Dewi Kartika', approverRole: 'Sales Executive', action: 'approved', date: '2024-02-13' },
+        { level: 2, approverName: 'Sarah Manager', approverRole: 'Sales Manager', action: 'approved', date: '2024-02-13', comment: 'Kesesuaian strategis yang baik, rekomendasikan persetujuan' },
+        { level: 3, approverName: 'John Director', approverRole: 'Sales Director', action: 'approved', date: '2024-02-14', comment: 'Disetujui untuk nilai strategis' }
+      ]
+    }
+  ]);
+
+  const approvalPolicies = [
+    { id: '1', level: 1, roleName: 'Sales Executive', minDiscount: 0, maxDiscount: 10, slaHours: 24 },
+    { id: '2', level: 2, roleName: 'Sales Manager', minDiscount: 10, maxDiscount: 20, slaHours: 48 },
+    { id: '3', level: 3, roleName: 'Sales Director', minDiscount: 20, maxDiscount: 30, slaHours: 72 },
+    { id: '4', level: 4, roleName: 'C-Level', minDiscount: 30, maxDiscount: 50, slaHours: 120 }
+  ];
+
+  const regions = ['all', 'DKI Jakarta', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Sumatera', 'Sulawesi'];
+
+  const marginData = useMemo(() => {
+    const baseData = [
+      { category: 'SaaS Enterprise', original: 65, proposed: 48, discount: 15, region: 'Jawa Barat' },
+      { category: 'Professional Services', original: 40, proposed: 32, discount: 8, region: 'DKI Jakarta' },
+      { category: 'Custom Dev', original: 55, proposed: 30, discount: 25, region: 'Jawa Timur' },
+      { category: 'Starter Pack', original: 30, proposed: 25, discount: 5, region: 'Sumatera' },
+      { category: 'Hardware Bundle', original: 25, proposed: 15, discount: 10, region: 'DKI Jakarta' },
+    ];
+    
+    if (selectedRegion === 'all') return baseData;
+    return baseData.filter(d => d.region === selectedRegion);
+  }, [selectedRegion]);
+
+  const filteredRequests = discountRequests.filter(r => 
+    (r.clientName.toLowerCase().includes(searchQuery.toLowerCase()) || r.requestNumber.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    (filterStatus === 'all' || r.status === filterStatus)
+  );
+
+  const getStatusStyle = (status: string) => {
+    switch(status) {
+      case 'approved': return 'bg-emerald-50 text-emerald-700 border-emerald-100';
+      case 'rejected': return 'bg-rose-50 text-rose-700 border-rose-100';
+      case 'pending': return 'bg-amber-50 text-amber-700 border-amber-100';
+      case 'counter-offer': return 'bg-blue-50 text-blue-700 border-blue-100';
+      default: return 'bg-gray-50 text-gray-700 border-gray-100';
+    }
+  };
+
+  const handleApprove = (req: DiscountRequest) => {
+    // Check for conditions
+    if (isConditionalOpen && conditionNote) {
+      toast.success(`Pengajuan ${req.requestNumber} disetujui dengan syarat!`, {
+        description: `Syarat: ${conditionNote}`,
+        icon: <CheckSquare className="h-4 w-4 text-emerald-500" />
+      });
+      setIsConditionalOpen(false);
+      setConditionNote('');
+    } else {
+      // Mock Director Level Email
+      if (req.approvalLevel >= 2) {
+        toast.info('Notifikasi Email dikirim ke Direksi', {
+          description: `Menunggu persetujuan Level 3 (Direktur Sales) untuk ${req.requestNumber}`,
+          icon: <Mail className="h-4 w-4" />
+        });
+      }
+      toast.success(`Pengajuan ${req.requestNumber} disetujui untuk level saat ini.`);
+    }
+    setShowDetailDialog(false);
+  };
+
+  const handleCounterOffer = () => {
+    if (!counterPercent || !selectedRequest) return;
+    
+    const newPercent = parseFloat(counterPercent);
+    
+    // Real-time notification simulation
+    toast.info(`Counter-offer ${newPercent}% diajukan`, {
+      description: `Notifikasi real-time terkirim ke Sales Executive: ${selectedRequest.requestedBy}`,
+      icon: <Zap className="h-4 w-4 text-blue-500 animate-pulse" />,
+      duration: 5000
+    });
+    
+    setIsCounterOfferOpen(false);
+    setShowDetailDialog(false);
+    setCounterPercent('');
+    setCounterComment('');
+  };
+
+  return (
+    <div className="space-y-8 pb-10">
+      {/* Premium Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#01544e] via-[#028076] to-[#01544e] bg-clip-text text-transparent">
+            DISCOUNT APPROVAL
+          </h1>
+          <p className="text-gray-500 font-medium flex items-center gap-2 mt-2">
+            <ShieldCheck className="h-4 w-4 text-[#01544e]" />
+            Sistem persetujuan diskon berjenjang dengan tata kelola & kepatuhan otomatis.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button variant="outline" className="border-gray-200 text-gray-600 font-bold uppercase tracking-wider text-xs px-4">
+            <Download className="h-4 w-4 mr-2" /> Export
+          </Button>
+          <Button onClick={() => setShowRequestDialog(true)} className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 shadow-lg shadow-[#01544e]/20">
+            <Plus className="h-4 w-4 mr-2" /> New Request
+          </Button>
+        </div>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-3">
+          <TabsTrigger value="requests" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Antrean Pengajuan</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Daftar Aktif</span>
+          </TabsTrigger>
+          <TabsTrigger value="policies" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Kebijakan & Matriks</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Aturan Berjenjang</span>
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Insight Performa</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Tren & Analitik</span>
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="requests" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+            <div className="relative flex-1 w-full max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input 
+                placeholder="Cari pengajuan atau klien..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 bg-gray-50 border-gray-200 focus:bg-white transition-all"
+              />
+            </div>
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <Select value={filterStatus} onValueChange={setFilterStatus}>
+                <SelectTrigger className="w-full sm:w-[180px] bg-gray-50 font-bold text-xs uppercase tracking-wider">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Semua Status</SelectItem>
+                  <SelectItem value="pending">Menunggu</SelectItem>
+                  <SelectItem value="approved">Disetujui</SelectItem>
+                  <SelectItem value="rejected">Ditolak</SelectItem>
+                  <SelectItem value="counter-offer">Counter-Offer</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            {filteredRequests.map((request, idx) => (
+              <motion.div
+                key={request.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.05 }}
+              >
+                <Card 
+                  className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100"
+                  onClick={() => {
+                    setSelectedRequest(request);
+                    setShowDetailDialog(true);
+                  }}
+                >
+                  <CardContent className="p-0">
+                    <div className="flex flex-col lg:flex-row items-stretch">
+                      <div className="p-6 flex-1 space-y-4">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] font-black text-[#01544e] uppercase tracking-widest bg-[#e6f2f1] px-2 py-0.5 rounded">
+                                {request.requestNumber}
+                              </span>
+                              <Badge variant="outline" className={`px-2 py-0 border ${getStatusStyle(request.status)}`}>
+                                <span className="text-[10px] font-bold uppercase tracking-widest">{request.status}</span>
+                              </Badge>
+                              <Badge variant="ghost" className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                                <MapPin className="h-3 w-3" /> {request.region}
+                              </Badge>
+                            </div>
+                            <h3 className="text-xl font-black text-gray-900 group-hover:text-[#01544e] transition-colors">
+                              {request.clientName}
+                            </h3>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Final Value</p>
+                            <p className="text-lg font-black text-emerald-600">{formatCurrency(request.finalPrice)}</p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          <div className="space-y-1">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Produk</p>
+                            <p className="text-xs font-bold text-gray-700 truncate">{request.productName}</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Diajukan Oleh</p>
+                            <p className="text-xs font-bold text-gray-700">{request.requestedBy}</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Diskon</p>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-black text-rose-600">{request.discountPercent}%</span>
+                              <span className="text-[10px] text-gray-400 line-through">{formatCurrency(request.originalPrice)}</span>
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Margin Saat Ini</p>
+                            <div className="flex items-center gap-1.5">
+                              <TrendingUp className={`h-3 w-3 ${request.proposedMargin > 30 ? 'text-emerald-500' : 'text-amber-500'}`} />
+                              <span className="text-xs font-bold text-gray-700">{request.proposedMargin}%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="lg:w-48 bg-gray-50 flex lg:flex-col items-center justify-center p-4 gap-3 border-t lg:border-t-0 lg:border-l border-gray-100">
+                        <Button variant="ghost" className="w-full text-[#01544e] hover:bg-white font-bold text-xs">
+                          <Eye className="h-4 w-4 mr-2" /> Detail
+                        </Button>
+                        <Button className="w-full bg-[#01544e] hover:bg-[#028076] text-white font-bold text-xs shadow-md">
+                          Review
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="policies" className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+           <div className="max-w-4xl mx-auto space-y-6">
+            <div className="bg-[#01544e] rounded-2xl p-8 text-white relative overflow-hidden shadow-xl mb-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-black uppercase tracking-tight">Sistem Notifikasi Real-Time</h2>
+                  <p className="text-white/70 font-medium max-w-md">Sales Executive akan menerima notifikasi instan saat Counter-Offer diajukan atau pengajuan disetujui dengan syarat.</p>
+                </div>
+                <div className="flex items-center gap-3">
+                   <div className="flex items-center space-x-2 bg-emerald-400/20 px-4 py-2 rounded-xl border border-emerald-400/30">
+                      <Zap className="h-4 w-4 text-emerald-400 animate-pulse" />
+                      <span className="text-xs font-bold uppercase text-emerald-400">Notif Sync ON</span>
+                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid gap-6">
+              {approvalPolicies.map((policy, idx) => (
+                <div key={policy.id} className="relative group">
+                  <Card className="relative z-10 border-gray-100 shadow-sm hover:shadow-md transition-all">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-6">
+                        <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-[#01544e] to-[#028076] flex items-center justify-center text-white font-black text-xl shadow-lg border-4 border-white">
+                          L{policy.level}
+                        </div>
+                        <div className="flex-1 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <div className="space-y-0.5">
+                              <h3 className="font-black text-gray-900 text-lg uppercase tracking-tight">{policy.roleName}</h3>
+                              <p className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center gap-1.5">
+                                <Info className="h-3 w-3 text-[#01544e]" /> Persetujuan Bersyarat Diaktifkan
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Authority Range</p>
+                              <p className="text-2xl font-black text-[#01544e]">{policy.minDiscount}% - {policy.maxDiscount}%</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="analytics" className="space-y-6">
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div className="space-y-1">
+              <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight">Filter Analitik</h3>
+              <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Sesuaikan visualisasi data berdasarkan wilayah operasional</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Label className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Wilayah:</Label>
+              <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                <SelectTrigger className="w-[200px] bg-gray-50 border-gray-200">
+                  <SelectValue placeholder="Semua Wilayah" />
+                </SelectTrigger>
+                <SelectContent>
+                  {regions.map(r => (
+                    <SelectItem key={r} value={r} className="text-xs font-bold uppercase">{r === 'all' ? 'Semua Wilayah' : r}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card className="border-gray-100 overflow-hidden shadow-sm">
+              <CardHeader className="bg-gray-50/50 border-b border-gray-100">
+                <CardTitle className="text-xs font-black uppercase tracking-[0.2em] text-gray-400 flex items-center gap-2">
+                   <Globe className="h-4 w-4 text-[#01544e]" />
+                   Margin vs Diskon Per Wilayah
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="h-[400px] p-6">
+                <AnimatePresence mode="wait">
+                  <motion.div 
+                    key={selectedRegion}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.02 }}
+                    className="h-full w-full"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <ComposedChart data={marginData}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                        <XAxis dataKey="category" axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 'bold' }} />
+                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 'bold' }} unit="%" />
+                        <Tooltip 
+                          cursor={{ fill: '#f8fafc' }}
+                          contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                        />
+                        <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase' }} />
+                        <Bar name="Original Margin" dataKey="original" fill="#01544e" radius={[4, 4, 0, 0]} barSize={30} />
+                        <Bar name="Proposed Margin" dataKey="proposed" fill="#028076" radius={[4, 4, 0, 0]} barSize={30} />
+                        <Line name="Discount %" type="monotone" dataKey="discount" stroke="#f43f5e" strokeWidth={3} dot={{ r: 4, fill: '#f43f5e', strokeWidth: 2, stroke: '#fff' }} />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                </AnimatePresence>
+              </CardContent>
+            </Card>
+
+            <Card className="border-gray-100 overflow-hidden shadow-sm">
+               <CardHeader className="bg-gray-50/50 border-b border-gray-100">
+                <CardTitle className="text-xs font-black uppercase tracking-[0.2em] text-gray-400 flex items-center gap-2">
+                   <TrendingUp className="h-4 w-4 text-[#01544e]" />
+                   Dampak Revenue {selectedRegion !== 'all' ? `- ${selectedRegion}` : ''}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="h-[400px] p-6 flex flex-col items-center justify-center">
+                {marginData.length === 0 ? (
+                  <div className="text-center space-y-2">
+                    <AlertCircle className="h-12 w-12 text-gray-200 mx-auto" />
+                    <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Tidak ada data untuk wilayah ini</p>
+                  </div>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={[
+                      { name: 'W1', revenue: 400 + (Math.random() * 200), saved: 40 + (Math.random() * 20) },
+                      { name: 'W2', revenue: 600 + (Math.random() * 200), saved: 80 + (Math.random() * 20) },
+                      { name: 'W3', revenue: 500 + (Math.random() * 200), saved: 120 + (Math.random() * 20) },
+                      { name: 'W4', revenue: 800 + (Math.random() * 200), saved: 150 + (Math.random() * 20) },
+                    ]}>
+                      <defs>
+                        <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#01544e" stopOpacity={0.1}/>
+                          <stop offset="95%" stopColor="#01544e" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
+                      <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }} />
+                      <Area type="monotone" dataKey="revenue" stroke="#01544e" fillOpacity={1} fill="url(#colorRev)" strokeWidth={3} />
+                      <Area type="monotone" dataKey="saved" stroke="#f43f5e" fill="#f43f5e" fillOpacity={0.05} strokeWidth={2} strokeDasharray="5 5" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {/* Detail Dialog */}
+      <Dialog open={showDetailDialog} onOpenChange={setShowDetailDialog}>
+        <DialogContent className="max-w-4xl p-0 overflow-hidden border-none rounded-2xl shadow-2xl">
+          {selectedRequest && (
+            <div className="flex flex-col h-full max-h-[95vh]">
+              <DialogHeader className="sr-only">
+                <DialogTitle>Approval Request - {selectedRequest.clientName}</DialogTitle>
+                <DialogDescription>
+                  Detailed discount approval request information for {selectedRequest.clientName}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="bg-[#01544e] p-8 text-white relative shrink-0">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -mr-24 -mt-24 blur-2xl" />
+                <div className="relative z-10 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-black uppercase tracking-[0.2em] bg-white/20 px-3 py-1 rounded-full">{selectedRequest.requestNumber}</span>
+                      <Badge variant="outline" className={`border-white/30 text-white ${getStatusStyle(selectedRequest.status)} bg-white/10 px-4 py-1`}>
+                        {selectedRequest.status.toUpperCase()}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-2 text-white/60">
+                      <MapPin className="h-4 w-4" />
+                      <span className="text-xs font-bold uppercase tracking-widest">{selectedRequest.region}</span>
+                    </div>
+                  </div>
+                  <h2 className="text-3xl font-black uppercase tracking-tight leading-none">{selectedRequest.clientName}</h2>
+                </div>
+              </div>
+
+              <div className="p-8 space-y-8 overflow-y-auto">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 space-y-1">
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Final Value</p>
+                    <p className="text-lg font-black text-[#01544e]">{formatCurrency(selectedRequest.finalPrice)}</p>
+                  </div>
+                  <div className="p-4 bg-rose-50 rounded-xl border border-rose-100 space-y-1">
+                    <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest">Diskon (%)</p>
+                    <p className="text-lg font-black text-rose-600">{selectedRequest.discountPercent}%</p>
+                  </div>
+                   <div className="p-4 bg-indigo-50 rounded-xl border border-indigo-100 space-y-1">
+                    <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Original Margin</p>
+                    <p className="text-lg font-black text-indigo-600">{selectedRequest.originalMargin}%</p>
+                  </div>
+                   <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-100 space-y-1">
+                    <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Proposed Margin</p>
+                    <p className="text-lg font-black text-emerald-600">{selectedRequest.proposedMargin}%</p>
+                  </div>
+                </div>
+
+                <AnimatePresence>
+                  {isCounterOfferOpen && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                       <div className="p-6 bg-blue-50 rounded-2xl border border-blue-200 space-y-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Zap className="h-4 w-4 text-blue-600" />
+                          <h4 className="text-sm font-black text-blue-900 uppercase tracking-tight">Kirim Real-Time Counter-Offer</h4>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label className="text-[10px] font-bold uppercase text-blue-700 tracking-widest">Diskon Baru (%)</Label>
+                            <Input 
+                              type="number" 
+                              placeholder="Contoh: 12" 
+                              className="bg-white border-blue-200"
+                              value={counterPercent}
+                              onChange={(e) => setCounterPercent(e.target.value)}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-[10px] font-bold uppercase text-blue-700 tracking-widest">Justifikasi</Label>
+                            <Input 
+                              placeholder="Komentar untuk Sales..." 
+                              className="bg-white border-blue-200"
+                              value={counterComment}
+                              onChange={(e) => setCounterComment(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          <Button variant="ghost" size="sm" onClick={() => setIsCounterOfferOpen(false)} className="text-blue-700 font-bold uppercase text-[10px] tracking-widest">Batal</Button>
+                          <Button size="sm" onClick={handleCounterOffer} className="bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase text-[10px] tracking-widest shadow-lg shadow-blue-200">Kirim & Notif Sales</Button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {isConditionalOpen && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                       <div className="p-6 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <CheckSquare className="h-4 w-4 text-emerald-600" />
+                          <h4 className="text-sm font-black text-emerald-900 uppercase tracking-tight">Setujui Dengan Syarat (Conditional)</h4>
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-[10px] font-bold uppercase text-emerald-700 tracking-widest">Syarat Khusus</Label>
+                          <Textarea 
+                            placeholder="Contoh: Kontrak harus diperpanjang minimal 2 tahun atau pembayaran dimuka 50%." 
+                            className="bg-white border-emerald-200"
+                            value={conditionNote}
+                            onChange={(e) => setConditionNote(e.target.value)}
+                          />
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          <Button variant="ghost" size="sm" onClick={() => setIsConditionalOpen(false)} className="text-emerald-700 font-bold uppercase text-[10px] tracking-widest">Batal</Button>
+                          <Button size="sm" onClick={() => handleApprove(selectedRequest)} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold uppercase text-[10px] tracking-widest shadow-lg shadow-emerald-200">Simpan & Setujui</Button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div className="space-y-3">
+                  <h4 className="text-xs font-black text-gray-900 uppercase tracking-[0.2em] flex items-center gap-2">
+                    <MessageSquare className="h-4 w-4 text-[#01544e]" /> Alasan Pengajuan
+                  </h4>
+                  <div className="p-5 bg-gray-50 rounded-xl border border-gray-100 italic text-gray-700 leading-relaxed shadow-inner">
+                    "{selectedRequest.reason}"
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="text-xs font-black text-gray-900 uppercase tracking-[0.2em] flex items-center gap-2">
+                    <History className="h-4 w-4 text-[#01544e]" /> Riwayat Persetujuan
+                  </h4>
+                  <div className="space-y-4 relative">
+                    {selectedRequest.approvalHistory.map((step, idx) => (
+                      <div key={idx} className="flex gap-4">
+                        <div className="flex flex-col items-center">
+                          <div className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 z-10 ${step.action === 'approved' ? 'bg-emerald-500 text-white' : 'bg-gray-200 text-gray-400'}`}>
+                            {step.action === 'approved' ? <CheckCircle2 className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
+                          </div>
+                          {idx < selectedRequest.approvalHistory.length - 1 && (
+                            <div className="w-0.5 h-full bg-gray-100 -mt-1" />
+                          )}
+                        </div>
+                        <div className="flex-1 pb-4 border-b border-gray-50 last:border-0">
+                          <div className="flex justify-between items-start">
+                            <div className="space-y-0.5">
+                              <p className="text-sm font-black text-gray-900">{step.approverName}</p>
+                              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{step.approverRole}</p>
+                            </div>
+                            <span className="text-[10px] font-bold text-gray-400">{step.date ? formatDate(step.date) : 'In Progress'}</span>
+                          </div>
+                          {step.comment && (
+                            <p className="mt-2 text-xs text-gray-600 bg-gray-50 p-2 rounded border border-gray-100">{step.comment}</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-4 shrink-0">
+                <Button variant="outline" className="font-bold text-xs uppercase tracking-widest border-gray-200 h-11" onClick={() => setShowDetailDialog(false)}>
+                  Kembali
+                </Button>
+                <div className="flex gap-3">
+                  {!isCounterOfferOpen && !isConditionalOpen && selectedRequest.status === 'pending' && (
+                    <>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setIsCounterOfferOpen(true)}
+                        className="text-blue-600 hover:bg-blue-50 border-blue-200 font-black text-xs uppercase tracking-widest px-6 h-11"
+                      >
+                        Counter-Offer
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setIsConditionalOpen(true)}
+                        className="text-emerald-600 hover:bg-emerald-50 border-emerald-200 font-black text-xs uppercase tracking-widest px-6 h-11"
+                      >
+                        Conditional Approve
+                      </Button>
+                    </>
+                  )}
+                  <Button variant="outline" className="text-rose-600 hover:bg-rose-50 border-rose-200 font-black text-xs uppercase tracking-widest px-6 h-11">
+                    Tolak
+                  </Button>
+                  {!isCounterOfferOpen && !isConditionalOpen && (
+                    <Button 
+                      className="bg-[#01544e] hover:bg-[#028076] text-white font-black text-xs uppercase tracking-widest px-8 h-11 shadow-lg shadow-[#01544e]/20"
+                      onClick={() => handleApprove(selectedRequest)}
+                    >
+                      Setujui Level {selectedRequest.approvalLevel}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

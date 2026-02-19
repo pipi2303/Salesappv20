@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings, Menu, X, Bell, User, LogOut, Database, Trophy, Target, ChevronDown, ChevronRight, TrendingUp, History } from 'lucide-react';
+import { Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings, Menu, X, Bell, User, LogOut, Database, Trophy, Target, ChevronDown, ChevronRight, TrendingUp, History, Percent, Mail, CheckSquare, DollarSign, MapPin, Book, PieChart, Link2 } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Toaster } from '@/app/components/ui/sonner';
 import { Home } from '@/app/components/Home';
@@ -17,6 +17,16 @@ const AdvancedAnalytics = lazy(() => import('@/app/components/AdvancedAnalytics'
 const SalesLeaderboard = lazy(() => import('@/app/components/SalesLeaderboard').then(m => ({ default: m.SalesLeaderboard })));
 const PerformanceHub = lazy(() => import('@/app/components/PerformanceHub').then(m => ({ default: m.PerformanceHub })));
 const KPIAIEnhanced = lazy(() => import('@/app/components/KPIAIEnhanced').then(m => ({ default: m.KPIAIEnhanced })));
+// New feature components
+const DiscountApprovalSystem = lazy(() => import('@/app/components/DiscountApprovalSystem').then(m => ({ default: m.DiscountApprovalSystem })));
+const QuotationManagement = lazy(() => import('@/app/components/QuotationManagement').then(m => ({ default: m.QuotationManagement })));
+const TaskManagement = lazy(() => import('@/app/components/TaskManagement').then(m => ({ default: m.TaskManagement })));
+const EmailCommunicationHub = lazy(() => import('@/app/components/EmailCommunicationHub').then(m => ({ default: m.EmailCommunicationHub })));
+const CommissionCalculator = lazy(() => import('@/app/components/CommissionCalculator').then(m => ({ default: m.CommissionCalculator })));
+const TerritoryManagement = lazy(() => import('@/app/components/TerritoryManagement').then(m => ({ default: m.TerritoryManagement })));
+const KnowledgeBase = lazy(() => import('@/app/components/KnowledgeBase').then(m => ({ default: m.KnowledgeBase })));
+const CustomReportBuilder = lazy(() => import('@/app/components/CustomReportBuilder').then(m => ({ default: m.CustomReportBuilder })));
+const IntegrationHub = lazy(() => import('@/app/components/IntegrationHub').then(m => ({ default: m.IntegrationHub })));
 import { AIAssistant } from '@/app/components/AIAssistant';
 import { AIChatAssistant } from '@/app/components/ai/AIChatAssistant';
 import { AppNotifications } from '@/app/components/AppNotifications';
@@ -116,9 +126,12 @@ function AppContent() {
     { id: 'opportunities', name: 'Opportunity Management', icon: TrendingUp, component: OpportunityManagement },
     { id: 'team', name: 'CRM', icon: Users, component: SalesTeam },
     { id: 'products', name: 'Product Catalog', icon: Package, component: ProductCatalog },
+    { id: 'quotations', name: 'Quotation Management', icon: FileText, component: QuotationManagement },
     { id: 'demos', name: 'Demo Scheduler', icon: Calendar, component: DemoScheduler },
     { id: 'contracts', name: 'Contract', icon: FileText, component: Contract },
+    { id: 'discount-approval', name: 'Discount Approval', icon: Percent, component: DiscountApprovalSystem },
     { id: 'reports', name: 'Sales Reports', icon: BarChart3, component: SalesReports },
+    { id: 'knowledge-base', name: 'Knowledge Base', icon: Book, component: KnowledgeBase },
     { 
       id: 'kpi', 
       name: 'KPI', 
@@ -129,7 +142,34 @@ function AppContent() {
         { id: 'kpi-ai-enhanced', name: 'KPI Target', component: KPIAIEnhanced }
       ]
     },
-    { id: 'analytics', name: 'Analytics', icon: Database, component: AdvancedAnalytics },
+    { 
+      id: 'automation', 
+      name: 'Automation & Tools', 
+      icon: CheckSquare,
+      subMenus: [
+        { id: 'tasks', name: 'Task Management', component: TaskManagement },
+        { id: 'email-hub', name: 'Email Hub', component: EmailCommunicationHub },
+        { id: 'territory', name: 'Territory Management', component: TerritoryManagement }
+      ]
+    },
+    { 
+      id: 'finance', 
+      name: 'Finance & Commission', 
+      icon: DollarSign,
+      subMenus: [
+        { id: 'commission', name: 'Commission Calculator', component: CommissionCalculator }
+      ]
+    },
+    { 
+      id: 'advanced', 
+      name: 'Advanced', 
+      icon: Database,
+      subMenus: [
+        { id: 'analytics', name: 'Advanced Analytics', component: AdvancedAnalytics },
+        { id: 'report-builder', name: 'Report Builder', component: CustomReportBuilder },
+        { id: 'integrations', name: 'Integration Hub', component: IntegrationHub }
+      ]
+    },
     { id: 'admin', name: 'Admin System', icon: Settings, component: AdminSystem }
   ];
 

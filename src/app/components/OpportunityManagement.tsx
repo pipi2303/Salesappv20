@@ -534,28 +534,37 @@ export function OpportunityManagement() {
       )}
 
       {/* Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start max-w-xl">
-          <TabsTrigger value="pipeline" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+        <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-3">
+          <TabsTrigger 
+            value="pipeline" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
             <div className="flex items-center gap-1.5 justify-center">
               <LayoutGrid className="h-4 w-4" />
-              <span className="font-bold text-sm">Pipeline</span>
+              <span className="font-bold text-sm uppercase tracking-tight">Pipeline</span>
             </div>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">VISUALISASI PROSES</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Visualisasi Proses</span>
           </TabsTrigger>
-          <TabsTrigger value="list" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+          <TabsTrigger 
+            value="list" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
             <div className="flex items-center gap-1.5 justify-center">
               <List className="h-4 w-4" />
-              <span className="font-bold text-sm">List View</span>
+              <span className="font-bold text-sm uppercase tracking-tight">List View</span>
             </div>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">DATA TERSTRUKTUR</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Data Terstruktur</span>
           </TabsTrigger>
-          <TabsTrigger value="forecast" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+          <TabsTrigger 
+            value="forecast" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
             <div className="flex items-center gap-1.5 justify-center">
               <TrendingUp className="h-4 w-4" />
-              <span className="font-bold text-sm">Forecast</span>
+              <span className="font-bold text-sm uppercase tracking-tight">Forecast</span>
             </div>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PREDIKSI PENJUALAN</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Prediksi Penjualan</span>
           </TabsTrigger>
         </TabsList>
 

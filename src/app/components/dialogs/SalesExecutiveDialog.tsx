@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Calendar, DollarSign, Target, TrendingUp, BarChart3, StickyNote, Trash2, Send, Percent, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/app/components/ui/dialog';
 import { toast } from 'sonner';
 import { AIFeaturesSection } from '@/app/components/AIFeaturesSection';
 import { formatCurrency } from '@/utils/formatters';
@@ -35,32 +36,38 @@ export function SalesExecutiveDialog({
   if (!selectedExecutive) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-[#01544e] to-[#02665c] text-white p-3 flex items-center justify-between z-10">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-base">
+    <Dialog open={!!selectedExecutive} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-y-auto p-0 border-none shadow-2xl">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Sales Executive Performance - {selectedExecutive.name}</DialogTitle>
+          <DialogDescription>
+            Individual performance metrics, pipeline tracking, and personal activity log for {selectedExecutive.name}
+          </DialogDescription>
+        </DialogHeader>
+
+        {/* Visual Header */}
+        <div className="sticky top-0 bg-gradient-to-r from-[#01544e] to-[#02665c] text-white p-4 flex items-center justify-between z-10 shadow-lg">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-lg">
               {selectedExecutive.avatar}
             </div>
             <div>
               <h2 className="text-xl font-bold">{selectedExecutive.name}</h2>
               <p className="text-sm text-white/80">{selectedExecutive.position}</p>
-              <p className="text-xs text-white/60">{selectedExecutive.email}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="h-6 w-6 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+            className="h-8 w-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 text-gray-900">
           {/* Period Filter Section */}
-          <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
             <div className="flex items-center gap-2">
               <Calendar className="h-5 w-5 text-gray-600" />
               <span className="font-semibold text-gray-700">Filter Period:</span>
@@ -70,7 +77,7 @@ export function SalesExecutiveDialog({
                 onClick={() => onPeriodFilterChange('monthly', 'Jan - 26')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   periodFilter === 'monthly'
-                    ? 'bg-[#01544e] text-white'
+                    ? 'bg-[#01544e] text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
                 }`}
               >
@@ -80,7 +87,7 @@ export function SalesExecutiveDialog({
                 onClick={() => onPeriodFilterChange('quarterly', 'Q1 - 2026')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   periodFilter === 'quarterly'
-                    ? 'bg-[#01544e] text-white'
+                    ? 'bg-[#01544e] text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
                 }`}
               >
@@ -88,11 +95,11 @@ export function SalesExecutiveDialog({
               </button>
             </div>
             {periodFilter === 'quarterly' && (
-              <div className="flex gap-2 ml-4">
+              <div className="flex gap-2 md:ml-4">
                 <select
                   value={selectedPeriod}
                   onChange={(e) => onPeriodFilterChange('quarterly', e.target.value)}
-                  className="px-4 py-2 rounded-lg border-2 border-blue-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-400 transition-colors min-w-[150px] cursor-pointer"
+                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#01544e] min-w-[150px] cursor-pointer"
                 >
                   <option value="Q1 - 2026">Quarter 1 - 2026</option>
                   <option value="Q2 - 2026">Quarter 2 - 2026</option>
@@ -102,11 +109,11 @@ export function SalesExecutiveDialog({
               </div>
             )}
             {periodFilter === 'monthly' && (
-              <div className="flex gap-2 ml-4">
+              <div className="flex gap-2 md:ml-4">
                 <select
                   value={selectedPeriod}
                   onChange={(e) => onPeriodFilterChange('monthly', e.target.value)}
-                  className="px-4 py-2 rounded-lg border-2 border-blue-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-400 transition-colors min-w-[150px] cursor-pointer"
+                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#01544e] min-w-[150px] cursor-pointer"
                 >
                   <option value="Jan - 26">January 2026</option>
                   <option value="Feb - 26">February 2026</option>
@@ -126,88 +133,88 @@ export function SalesExecutiveDialog({
           </div>
 
           {/* Selected Period Info */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-blue-600 animate-pulse"></div>
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="h-2.5 w-2.5 rounded-full bg-blue-600 animate-pulse"></div>
               <span className="text-sm font-medium text-blue-900">
-                Showing data for: {selectedPeriod}
+                Performance Status: <span className="font-bold underline">{selectedPeriod}</span>
               </span>
             </div>
-            <span className="text-xs font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
-              {periodFilter === 'monthly' ? '📊 Monthly View' : '📊 Quarterly View'}
+            <span className="text-xs font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full uppercase tracking-wider">
+              {periodFilter === 'monthly' ? 'Monthly Audit' : 'Quarterly Review'}
             </span>
           </div>
 
           {/* Performance Overview KPI Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="border-2 border-purple-600 bg-gradient-to-br from-purple-50 to-white">
+            <Card className="border-2 border-purple-100 hover:border-purple-600 transition-colors bg-gradient-to-br from-purple-50 to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Achievement</p>
-                    <p className="text-2xl font-bold text-purple-600">
+                    <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Achievement</p>
+                    <p className="text-xl font-bold text-purple-600">
                       {formatCurrency(selectedExecutive.achievement)}
                     </p>
                   </div>
-                  <div className="h-12 w-12 rounded-full bg-purple-600 flex items-center justify-center">
-                    <DollarSign className="h-6 w-6 text-white" />
+                  <div className="h-10 w-10 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/20">
+                    <DollarSign className="h-5 w-5 text-white" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-indigo-500 bg-gradient-to-br from-indigo-50 to-white">
+            <Card className="border-2 border-indigo-100 hover:border-indigo-500 transition-colors bg-gradient-to-br from-indigo-50 to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <p className="text-sm text-gray-600 mb-1">Target</p>
-                    <p className="text-2xl font-bold text-indigo-600">
+                    <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Target</p>
+                    <p className="text-xl font-bold text-indigo-600">
                       {formatCurrency(selectedExecutive.target)}
                     </p>
                     {(() => {
                       const gap = calculateGap(selectedExecutive.achievement, selectedExecutive.target);
                       const { label, value, isPositive } = formatGap(gap);
                       return (
-                        <p className={`text-xs font-semibold mt-1 ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                        <p className={`text-[10px] font-bold mt-1 px-1.5 py-0.5 rounded-md inline-block ${isPositive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                           {label}: {value}
                         </p>
                       );
                     })()}
                   </div>
-                  <div className="h-12 w-12 rounded-full bg-indigo-500 flex items-center justify-center">
-                    <Target className="h-6 w-6 text-white" />
+                  <div className="h-10 w-10 rounded-xl bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <Target className="h-5 w-5 text-white" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-green-500 bg-gradient-to-br from-green-50 to-white">
+            <Card className="border-2 border-green-100 hover:border-green-500 transition-colors bg-gradient-to-br from-green-50 to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Performance</p>
-                    <p className="text-2xl font-bold text-green-600">
+                    <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Performance</p>
+                    <p className="text-xl font-bold text-green-600">
                       {selectedExecutive.performance.toFixed(1)}%
                     </p>
                   </div>
-                  <div className="h-12 w-12 rounded-full bg-green-500 flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-white" />
+                  <div className="h-10 w-10 rounded-xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
+                    <TrendingUp className="h-5 w-5 text-white" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-orange-500 bg-gradient-to-br from-orange-50 to-white">
+            <Card className="border-2 border-orange-100 hover:border-orange-500 transition-colors bg-gradient-to-br from-orange-50 to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Total Deals</p>
-                    <p className="text-2xl font-bold text-orange-600">
+                    <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Total Deals</p>
+                    <p className="text-xl font-bold text-orange-600">
                       {selectedExecutive.totalDeals}
                     </p>
                   </div>
-                  <div className="h-12 w-12 rounded-full bg-orange-500 flex items-center justify-center">
-                    <BarChart3 className="h-6 w-6 text-white" />
+                  <div className="h-10 w-10 rounded-xl bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                    <BarChart3 className="h-5 w-5 text-white" />
                   </div>
                 </div>
               </CardContent>
@@ -221,80 +228,80 @@ export function SalesExecutiveDialog({
           />
 
           {/* Performance Progress */}
-          <Card className="border-2 border-purple-300 bg-gradient-to-r from-purple-50 to-white">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
+          <Card className="border border-purple-100 bg-white shadow-sm overflow-hidden">
+            <CardHeader className="bg-purple-50/50 border-b border-purple-100">
+              <CardTitle className="text-lg flex items-center gap-2 text-purple-900">
                 <TrendingUp className="h-5 w-5 text-purple-600" />
-                Performance Progress
+                Individual Achievement Progress
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+            <CardContent className="pt-6 pb-6">
+              <div className="space-y-6">
                 <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-semibold text-gray-700">Achievement vs Target</span>
-                    <span className="text-lg font-bold text-purple-600">
+                  <div className="flex justify-between items-center mb-2.5">
+                    <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Real-time Goal Tracking</span>
+                    <span className="text-lg font-black text-purple-600">
                       {selectedExecutive.performance.toFixed(1)}%
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-4">
+                  <div className="w-full bg-gray-100 rounded-full h-5 p-1 border border-gray-200">
                     <div 
-                      className="bg-gradient-to-r from-purple-600 to-pink-600 h-4 rounded-full transition-all flex items-center justify-end pr-2"
+                      className="bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600 h-full rounded-full transition-all duration-1000 flex items-center justify-end pr-2 relative"
                       style={{ width: `${Math.min(selectedExecutive.performance, 100)}%` }}
                     >
-                      <span className="text-xs text-white font-bold">
-                        {selectedExecutive.performance.toFixed(1)}%
-                      </span>
+                      {selectedExecutive.performance > 15 && (
+                        <span className="text-[10px] text-white font-black drop-shadow-sm">
+                          {selectedExecutive.performance.toFixed(0)}%
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                  <div className="p-4 bg-white rounded-lg border-2 border-green-200">
-                    <p className="text-xs text-gray-600 mb-1">Current Achievement</p>
-                    <p className="text-xl font-bold text-green-600">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100 shadow-inner">
+                    <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-1">Current Achievement</p>
+                    <p className="text-2xl font-black text-emerald-700">
                       {formatCurrency(selectedExecutive.achievement)}
                     </p>
                     {(() => {
                       const gap = calculateGap(selectedExecutive.achievement, selectedExecutive.target);
                       const { label, value, isPositive } = formatGap(gap);
                       return (
-                        <p className={`text-xs font-semibold mt-1 ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                        <div className={`mt-2 flex items-center gap-1.5 text-xs font-bold ${isPositive ? 'text-emerald-600' : 'text-red-600'}`}>
+                          {isPositive ? <CheckCircle className="h-3 w-3" /> : <AlertCircle className="h-3 w-3" />}
                           {label}: {value}
-                        </p>
+                        </div>
                       );
                     })()}
                   </div>
-                  <div className="p-4 bg-white rounded-lg border-2 border-blue-200">
-                    <p className="text-xs text-gray-600 mb-1">Target Goal</p>
-                    <p className="text-xl font-bold text-blue-600">
+                  <div className="p-4 bg-blue-50/50 rounded-xl border border-blue-100 shadow-inner">
+                    <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1">Assigned Target</p>
+                    <p className="text-2xl font-black text-blue-700">
                       {formatCurrency(selectedExecutive.target)}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {selectedExecutive.totalDeals} deals closed
-                    </p>
+                    <div className="mt-2 flex items-center gap-1.5 text-xs font-bold text-blue-600">
+                      <Clock className="h-3 w-3" />
+                      {selectedExecutive.totalDeals} deals closed this period
+                    </div>
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Contact Information */}
-          <Card className="border-2 border-gray-300 bg-gradient-to-r from-gray-50 to-white">
-            {/* ... rest of the card ... */}
-          </Card>
-
           {/* Notes Section */}
-          <Card className="border-2 border-amber-300 bg-gradient-to-r from-amber-50 to-white">
-            <CardHeader className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+          <Card className="border-none bg-gradient-to-br from-amber-50 to-orange-50 shadow-xl overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+            
+            <CardHeader className="bg-gradient-to-r from-amber-500 to-orange-500 text-white relative z-10">
               <CardTitle className="text-lg flex items-center gap-2">
                 <StickyNote className="h-5 w-5" />
-                Notes & Activity Log
+                Personal Performance Log
               </CardTitle>
-              <p className="text-sm text-white/80 mt-1">Track important updates and observations</p>
+              <p className="text-sm text-white/80 mt-1 uppercase tracking-widest font-bold text-[10px]">COACHING & ACTIVITY HISTORY</p>
             </CardHeader>
-            <CardContent className="pt-6">
-              {/* Add New Note */}
+            <CardContent className="pt-6 relative z-10">
               <div className="mb-6">
                 <div className="flex gap-2">
                   <input
@@ -302,43 +309,42 @@ export function SalesExecutiveDialog({
                     value={newNote}
                     onChange={(e) => onNewNoteChange(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && onAddNote()}
-                    placeholder="Add a new note..."
-                    className="flex-1 px-4 py-2 border-2 border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    placeholder="Capture a performance observation..."
+                    className="flex-1 px-4 py-3 bg-white border-2 border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-sm shadow-sm"
                   />
                   <Button
                     onClick={onAddNote}
                     disabled={!newNote?.trim()}
-                    className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-6"
+                    className="bg-[#01544e] hover:bg-[#023d39] text-white px-6 rounded-xl shadow-lg"
                   >
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
 
-              {/* Notes List */}
               <div className="space-y-3">
                 {notes.length === 0 ? (
-                  <div className="text-center py-8 text-gray-400">
-                    <StickyNote className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">No notes yet. Add your first note above!</p>
+                  <div className="text-center py-12 text-gray-400 bg-white/50 rounded-2xl border-2 border-dashed border-amber-200">
+                    <StickyNote className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                    <p className="text-sm font-bold uppercase tracking-wider">No active log entries</p>
                   </div>
                 ) : (
                   notes.map((note) => (
                     <div
                       key={note.id}
-                      className="bg-white border-2 border-amber-200 rounded-lg p-4 hover:border-amber-400 transition-colors group"
+                      className="bg-white border border-amber-100 rounded-xl p-4 hover:border-amber-400 transition-all group shadow-sm"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1">
-                          <p className="text-gray-800 mb-2">{note.text}</p>
-                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <p className="text-gray-800 mb-3 text-sm leading-relaxed">{note.text}</p>
+                          <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
                             <Calendar className="h-3 w-3" />
                             <span>{formatTimestamp(note.timestamp)}</span>
                           </div>
                         </div>
                         <button
                           onClick={() => onDeleteNote(note.id)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700 p-1.5 rounded-lg hover:bg-red-50"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -350,7 +356,7 @@ export function SalesExecutiveDialog({
             </CardContent>
           </Card>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

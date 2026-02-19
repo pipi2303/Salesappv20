@@ -197,19 +197,28 @@ export function AdvancedAnalytics() {
       </div>
 
       {/* Charts Tabs */}
-      <Tabs defaultValue="revenue" className="space-y-4">
-        <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start max-w-xl">
-          <TabsTrigger value="revenue" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
-            <span className="font-bold text-sm">Revenue Trends</span>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">TREN PENDAPATAN</span>
+      <Tabs defaultValue="revenue" className="space-y-6">
+        <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-3">
+          <TabsTrigger 
+            value="revenue" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
+            <span className="font-bold text-sm uppercase tracking-tight">Revenue Trends</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Tren Pendapatan</span>
           </TabsTrigger>
-          <TabsTrigger value="performance" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
-            <span className="font-bold text-sm">Team Performance</span>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PERFORMA TIM</span>
+          <TabsTrigger 
+            value="performance" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
+            <span className="font-bold text-sm uppercase tracking-tight">Team Performance</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Performa Tim</span>
           </TabsTrigger>
-          <TabsTrigger value="funnel" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
-            <span className="font-bold text-sm">Conversion Funnel</span>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">CORONG KONVERSI</span>
+          <TabsTrigger 
+            value="funnel" 
+            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+          >
+            <span className="font-bold text-sm uppercase tracking-tight">Conversion Funnel</span>
+            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Corong Konversi</span>
           </TabsTrigger>
         </TabsList>
 

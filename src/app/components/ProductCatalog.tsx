@@ -492,20 +492,22 @@ export function ProductCatalog() {
           </CardContent>
         </Card>
       ) : (
-        <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-          <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start">
+        <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="space-y-6">
+          <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-1">
             {categories.map(category => (
               <TabsTrigger 
                 key={category} 
                 value={category} 
-                className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]"
+                className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
               >
-                <span className="font-bold text-sm">
-                  {category === 'all' ? 'Semua' : category}
-                </span>
-                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">
-                  {getCategorySubtext(category)}
-                </span>
+                <div className="flex flex-col items-center justify-center h-full">
+                  <div className="font-bold text-[10px] sm:text-[11px] uppercase tracking-tight leading-[1.1] mb-1 max-w-[110px] whitespace-normal">
+                    {category === 'all' ? 'Semua Produk' : category}
+                  </div>
+                  <div className="text-[9px] text-gray-400 font-medium uppercase tracking-widest leading-none opacity-80">
+                    {getCategorySubtext(category)}
+                  </div>
+                </div>
               </TabsTrigger>
             ))}
           </TabsList>

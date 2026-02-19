@@ -1732,7 +1732,7 @@ export function DemoScheduler() {
                 </div>
                 <div>
                   <DialogTitle className="text-2xl font-bold leading-tight">
-                    {selectedDemo?.title}
+                    {selectedDemo?.title || 'Detail Demo'}
                   </DialogTitle>
                   <DialogDescription className="text-white/80 text-sm mt-1 leading-tight">
                     {selectedDemo?.company || 'Product Demo Schedule'}

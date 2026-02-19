@@ -583,7 +583,7 @@ export function LeadManagement() {
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
         <DialogContent className="!max-w-[950px] w-[950px] max-h-[90vh] overflow-hidden flex flex-col p-0">
           <DialogHeader className="sr-only">
-            <DialogTitle>Detail Lead</DialogTitle>
+            <DialogTitle>Detail Lead - {selectedLead?.name}</DialogTitle>
             <DialogDescription>Informasi karyawan dan perusahaan yang di-lead</DialogDescription>
           </DialogHeader>
           
@@ -603,10 +603,10 @@ export function LeadManagement() {
             </div>
           </div>
           
-          {selectedLead && (
+          {selectedLead ? (
             <>
               {/* Scrollable Content */}
-              <div className="flex-1 overflow-y-auto px-6 py-5">
+              <div className="flex-1 overflow-y-auto px-6 py-5 text-gray-900">
                 <div className="space-y-5">
                   {/* Section Perusahaan */}
                   <div className="space-y-3 -mx-6 px-6">
@@ -762,13 +762,17 @@ export function LeadManagement() {
                 </Button>
                 <Button 
                   variant="outline"
-                  className="px-6 h-10"
+                  className="px-6 h-10 text-gray-700"
                   onClick={() => setIsDetailOpen(false)}
                 >
                   Tutup
                 </Button>
               </div>
             </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center p-12 text-gray-500">
+              Loading detail data...
+            </div>
           )}
         </DialogContent>
       </Dialog>

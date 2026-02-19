@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/app/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/app/components/ui/dialog';
 import { Badge } from '@/app/components/ui/badge';
 import { Calendar, User, Building2, TrendingUp, Clock } from 'lucide-react';
 
@@ -191,6 +191,9 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
                 <Calendar className="h-7 w-7" />
                 Daily Breakdown - {selectedMonth.fullMonth} 2025
               </DialogTitle>
+              <DialogDescription>
+                Detailed view of daily visits and performance for {selectedMonth.fullMonth}
+              </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4">

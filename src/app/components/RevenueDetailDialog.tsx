@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/app/components/ui/dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Card, CardContent } from '@/app/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Progress } from '@/app/components/ui/progress';
@@ -241,23 +242,30 @@ export function RevenueDetailDialog({
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="w-full max-w-[800px] max-h-[85vh] overflow-y-auto p-0">
-          <DialogHeader className="sticky top-0 bg-white z-10 pb-4 pt-6 px-6 border-b border-gray-200">
+        <DialogContent className="w-full max-w-[800px] max-h-[85vh] overflow-y-auto p-0 border-none shadow-2xl">
+          <VisuallyHidden>
+            <DialogTitle>Revenue Breakdown - {employeeName}</DialogTitle>
+            <DialogDescription>
+              Year to Date (YTD) {year} - Target vs Actual Performance Breakdown by Segment
+            </DialogDescription>
+          </VisuallyHidden>
+          
+          <DialogHeader className="sticky top-0 bg-white z-10 pb-4 pt-6 px-6 border-b border-gray-200 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <DialogTitle className="text-xl flex items-center gap-2">
+                <div className="text-xl font-bold flex items-center gap-2 text-gray-900">
                   <DollarSign className="w-6 h-6 text-purple-600" />
                   Revenue Breakdown - {employeeName}
-                </DialogTitle>
-                <DialogDescription>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">
                   Year to Date (YTD) {year} - Target vs Actual Performance
-                </DialogDescription>
+                </p>
               </div>
               <button
                 onClick={() => onOpenChange(false)}
-                className="ml-4 rounded-full p-1.5 hover:bg-gray-100 transition-colors"
+                className="ml-4 rounded-full p-2 hover:bg-gray-100 transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500 hover:text-gray-700" />
+                <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
           </DialogHeader>
@@ -515,18 +523,30 @@ export function RevenueDetailDialog({
       {/* Daily Calendar Dialog */}
       {selectedMonth && (
         <Dialog open={showDailyDialog} onOpenChange={setShowDailyDialog}>
-          <DialogContent className="max-w-5xl h-[90vh] flex flex-col">
-            <DialogHeader className="flex-shrink-0 pb-3">
-              <DialogTitle className="flex items-center gap-3 text-2xl text-[#01544e]">
-                <Calendar className="h-7 w-7" />
-                Daily Breakdown - {selectedMonth.fullMonth} 2025
-              </DialogTitle>
+          <DialogContent className="max-w-5xl h-[90vh] flex flex-col p-0 border-none shadow-2xl">
+            <VisuallyHidden>
+              <DialogTitle>Daily Breakdown - {selectedMonth.fullMonth} 2025</DialogTitle>
               <DialogDescription>
-                Detailed visit records by day with client and doctor information
+                Detailed visit records by day with client and doctor information for {selectedMonth.fullMonth}
               </DialogDescription>
+            </VisuallyHidden>
+
+            <DialogHeader className="flex-shrink-0 px-6 pt-6 pb-3 bg-white border-b shadow-sm sticky top-0 z-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 text-2xl font-bold text-[#01544e]">
+                  <Calendar className="h-7 w-7" />
+                  Daily Breakdown - {selectedMonth.fullMonth} 2025
+                </div>
+                <button
+                  onClick={() => setShowDailyDialog(false)}
+                  className="rounded-full p-2 hover:bg-gray-100 transition-colors"
+                >
+                  <X className="w-6 h-6 text-gray-500" />
+                </button>
+              </div>
             </DialogHeader>
 
-            <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+            <div className="flex-1 overflow-y-auto space-y-4 px-6 pb-6 mt-4">
               {/* Top Summary Stats - 4 columns */}
               <div className="grid grid-cols-4 gap-3 p-5 bg-gradient-to-r from-[#01544e] to-[#023d39] rounded-xl text-white flex-shrink-0">
                 <div>

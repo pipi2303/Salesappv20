@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/app/components/ui/dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Card, CardContent } from '@/app/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Progress } from '@/app/components/ui/progress';
@@ -150,23 +151,30 @@ export function DealsDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-full max-w-[800px] max-h-[85vh] overflow-y-auto p-0">
-        <DialogHeader className="sticky top-0 bg-white z-10 pb-4 pt-6 px-6 border-b border-gray-200">
+      <DialogContent className="w-full max-w-[800px] max-h-[85vh] overflow-y-auto p-0 border-none shadow-2xl">
+        <VisuallyHidden>
+          <DialogTitle>Deals Breakdown - {employeeName}</DialogTitle>
+          <DialogDescription>
+            Year to Date (YTD) {year} - Target vs Actual Deals Performance for {employeeName}
+          </DialogDescription>
+        </VisuallyHidden>
+
+        <DialogHeader className="sticky top-0 bg-white z-10 pb-4 pt-6 px-6 border-b border-gray-200 shadow-sm">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <DialogTitle className="text-xl flex items-center gap-2">
+              <div className="text-xl font-bold flex items-center gap-2 text-gray-900">
                 <TrendingUp className="w-6 h-6 text-blue-600" />
                 Deals Breakdown - {employeeName}
-              </DialogTitle>
-              <DialogDescription>
+              </div>
+              <p className="text-sm text-gray-500 mt-1">
                 Year to Date (YTD) {year} - Target vs Actual Deals Performance
-              </DialogDescription>
+              </p>
             </div>
             <button
               onClick={() => onOpenChange(false)}
-              className="ml-4 rounded-full p-1.5 hover:bg-gray-100 transition-colors"
+              className="ml-4 rounded-full p-2 hover:bg-gray-100 transition-colors"
             >
-              <X className="w-5 h-5 text-gray-500 hover:text-gray-700" />
+              <X className="w-5 h-5 text-gray-500" />
             </button>
           </div>
         </DialogHeader>
