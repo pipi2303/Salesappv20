@@ -349,20 +349,18 @@ export function RevenueDetailDialog({
 
           {/* Segment Breakdown Tabs */}
           <Tabs defaultValue="hospital" className="w-full">
-            <TabsList className="grid grid-cols-3 w-full max-w-2xl mb-4">
-              <TabsTrigger value="hospital" className="gap-2 text-sm">
-                <Building2 className="w-4 h-4" />
-                Rumah Sakit (Quarterly)
+            <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start w-full">
+              <TabsTrigger value="hospital" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-xs">Rumah Sakit</span>
+                <span className="text-[8px] uppercase tracking-wider font-semibold opacity-60">QUARTERLY</span>
               </TabsTrigger>
-              <TabsTrigger value="retail" className="gap-2 text-sm">
-                <Stethoscope className="w-4 h-4" />
-                IntraClinic (Monthly)
+              <TabsTrigger value="retail" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-xs">IntraClinic</span>
+                <span className="text-[8px] uppercase tracking-wider font-semibold opacity-60">MONTHLY</span>
               </TabsTrigger>
-              <TabsTrigger value="intradoc" className="gap-2 text-sm">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
-                </svg>
-                IntraDoc (Monthly)
+              <TabsTrigger value="intradoc" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-xs">IntraDoc</span>
+                <span className="text-[8px] uppercase tracking-wider font-semibold opacity-60">MONTHLY</span>
               </TabsTrigger>
             </TabsList>
 

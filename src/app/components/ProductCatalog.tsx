@@ -286,6 +286,24 @@ export function ProductCatalog() {
     return formatCurrency(amount);
   };
 
+  const getCategorySubtext = (category: string) => {
+    const mapping: Record<string, string> = {
+      'all': 'SEMUA PRODUK',
+      'Hospital Management System': 'SISTEM ENTERPRISE',
+      'Document Management': 'ARSIP DIGITAL',
+      'Telemedicine': 'LAYANAN JARAK JAUH',
+      'Electronic Medical Record': 'REKAM MEDIS DIGITAL',
+      'Radiology': 'PENCITRAAN MEDIS',
+      'Laboratory': 'SISTEM INFORMASI LAB',
+      'Pharmacy Management': 'STOK & DISPENSING',
+      'Finance & Billing': 'TRANSAKSI & KLAIM',
+      'Mobile Application': 'PASIEN & DOKTER APP',
+      'Nursing Management': 'ASUHAN KEPERAWATAN',
+      'Inventory & Supply Chain': 'LOGISTIK MEDIS'
+    };
+    return mapping[category] || 'KATALOG PRODUK';
+  };
+
   const handleAddToProposal = (product: any) => {
     const existingItem = proposalItems.find(item => item.id === product.id);
     if (existingItem) {
@@ -475,10 +493,19 @@ export function ProductCatalog() {
         </Card>
       ) : (
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-          <TabsList className="h-11">
+          <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start">
             {categories.map(category => (
-              <TabsTrigger key={category} value={category} className="text-sm">
-                {category === 'all' ? 'Semua' : category}
+              <TabsTrigger 
+                key={category} 
+                value={category} 
+                className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]"
+              >
+                <span className="font-bold text-sm">
+                  {category === 'all' ? 'Semua' : category}
+                </span>
+                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">
+                  {getCategorySubtext(category)}
+                </span>
               </TabsTrigger>
             ))}
           </TabsList>

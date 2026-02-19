@@ -200,12 +200,27 @@ export function SalesReports() {
       <SalesKPICards stats={stats} />
 
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="h-11">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="sales">Sales Analysis</TabsTrigger>
-          <TabsTrigger value="performance">Team Performance</TabsTrigger>
-          <TabsTrigger value="products">Product Analysis</TabsTrigger>
-          <TabsTrigger value="regional">Regional Analysis</TabsTrigger>
+        <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start">
+          <TabsTrigger value="overview" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Overview</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">RINGKASAN EKSEKUTIF</span>
+          </TabsTrigger>
+          <TabsTrigger value="sales" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Sales Analysis</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">ANALISIS PENDAPATAN</span>
+          </TabsTrigger>
+          <TabsTrigger value="performance" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Team Performance</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">EVALUASI TIM SALES</span>
+          </TabsTrigger>
+          <TabsTrigger value="products" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Product Analysis</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PERFORMA PRODUK</span>
+          </TabsTrigger>
+          <TabsTrigger value="regional" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Regional Analysis</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">SEBARAN WILAYAH</span>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">

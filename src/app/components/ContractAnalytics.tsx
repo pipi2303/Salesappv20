@@ -101,11 +101,23 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
 
           <div className="overflow-y-auto max-h-[calc(90vh-140px)]">
             <Tabs defaultValue="overview" className="p-6">
-              <TabsList className="h-11">
-                <TabsTrigger value="overview" className="text-sm">Overview</TabsTrigger>
-                <TabsTrigger value="revenue" className="text-sm">Revenue</TabsTrigger>
-                <TabsTrigger value="performance" className="text-sm">Performance</TabsTrigger>
-                <TabsTrigger value="forecast" className="text-sm">Forecast</TabsTrigger>
+              <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start w-full">
+                <TabsTrigger value="overview" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                  <span className="font-bold text-sm">Overview</span>
+                  <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">RINGKASAN DATA</span>
+                </TabsTrigger>
+                <TabsTrigger value="revenue" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                  <span className="font-bold text-sm">Revenue</span>
+                  <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">ANALISIS NILAI</span>
+                </TabsTrigger>
+                <TabsTrigger value="performance" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                  <span className="font-bold text-sm">Performance</span>
+                  <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">HASIL KONTRAK</span>
+                </TabsTrigger>
+                <TabsTrigger value="forecast" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                  <span className="font-bold text-sm">Forecast</span>
+                  <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PROYEKSI MASA DEPAN</span>
+                </TabsTrigger>
               </TabsList>
 
               {/* OVERVIEW TAB */}

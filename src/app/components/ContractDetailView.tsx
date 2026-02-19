@@ -246,12 +246,27 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
         {/* TABS CONTENT */}
         <div className="overflow-y-auto max-h-[calc(90vh-380px)]">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="p-6">
-            <TabsList className="grid w-full grid-cols-5 h-11">
-              <TabsTrigger value="overview" className="text-sm">Overview</TabsTrigger>
-              <TabsTrigger value="financial" className="text-sm">Financial</TabsTrigger>
-              <TabsTrigger value="timeline" className="text-sm">Timeline</TabsTrigger>
-              <TabsTrigger value="documents" className="text-sm">Documents</TabsTrigger>
-              <TabsTrigger value="actions" className="text-sm">Actions</TabsTrigger>
+            <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start w-full">
+              <TabsTrigger value="overview" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-sm">Overview</span>
+                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">RINGKASAN</span>
+              </TabsTrigger>
+              <TabsTrigger value="financial" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-sm">Financial</span>
+                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">KEUANGAN</span>
+              </TabsTrigger>
+              <TabsTrigger value="timeline" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-sm">Timeline</span>
+                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">RIWAYAT JADWAL</span>
+              </TabsTrigger>
+              <TabsTrigger value="documents" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-sm">Documents</span>
+                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">ARSIP DIGITAL</span>
+              </TabsTrigger>
+              <TabsTrigger value="actions" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-sm">Actions</span>
+                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">TINDAKAN</span>
+              </TabsTrigger>
             </TabsList>
 
             {/* OVERVIEW TAB */}

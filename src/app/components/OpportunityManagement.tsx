@@ -535,18 +535,27 @@ export function OpportunityManagement() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 max-w-md h-11">
-          <TabsTrigger value="pipeline" className="flex items-center gap-2 text-sm">
-            <LayoutGrid className="h-4.5 w-4.5" />
-            Pipeline
+        <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start max-w-xl">
+          <TabsTrigger value="pipeline" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <LayoutGrid className="h-4 w-4" />
+              <span className="font-bold text-sm">Pipeline</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">VISUALISASI PROSES</span>
           </TabsTrigger>
-          <TabsTrigger value="list" className="flex items-center gap-2 text-sm">
-            <List className="h-4.5 w-4.5" />
-            List View
+          <TabsTrigger value="list" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <List className="h-4 w-4" />
+              <span className="font-bold text-sm">List View</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">DATA TERSTRUKTUR</span>
           </TabsTrigger>
-          <TabsTrigger value="forecast" className="flex items-center gap-2 text-sm">
-            <TrendingUp className="h-4.5 w-4.5" />
-            Forecast
+          <TabsTrigger value="forecast" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <TrendingUp className="h-4 w-4" />
+              <span className="font-bold text-sm">Forecast</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PREDIKSI PENJUALAN</span>
           </TabsTrigger>
         </TabsList>
 

@@ -384,22 +384,34 @@ export function AdminSystem() {
 
       {/* Admin Tabs */}
       <Tabs defaultValue="users" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 h-11">
-          <TabsTrigger value="users" className="flex items-center gap-2 text-sm">
-            <UsersIcon className="h-4.5 w-4.5" />
-            User Management
+        <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start">
+          <TabsTrigger value="users" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <UsersIcon className="h-4 w-4" />
+              <span className="font-bold text-sm">Users</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">MANAJEMEN PENGGUNA</span>
           </TabsTrigger>
-          <TabsTrigger value="roles" className="flex items-center gap-2 text-sm">
-            <Key className="h-4.5 w-4.5" />
-            Roles & Permissions
+          <TabsTrigger value="roles" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <Key className="h-4 w-4" />
+              <span className="font-bold text-sm">Roles</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">HAK AKSES & OTORISASI</span>
           </TabsTrigger>
-          <TabsTrigger value="audit" className="flex items-center gap-2 text-sm">
-            <FileText className="h-4.5 w-4.5" />
-            Audit Trail & Activity Log
+          <TabsTrigger value="audit" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <FileText className="h-4 w-4" />
+              <span className="font-bold text-sm">Audit Trail</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">LOG AKTIVITAS SISTEM</span>
           </TabsTrigger>
-          <TabsTrigger value="settings" className="flex items-center gap-2 text-sm">
-            <Palette className="h-4.5 w-4.5" />
-            Settings
+          <TabsTrigger value="settings" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <Palette className="h-4 w-4" />
+              <span className="font-bold text-sm">Settings</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">KONFIGURASI GLOBAL</span>
           </TabsTrigger>
         </TabsList>
 

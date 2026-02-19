@@ -458,21 +458,39 @@ export function DemoScheduler() {
 
       {/* Tabs */}
       <Tabs defaultValue="upcoming" className="space-y-4">
-        <TabsList className="h-11 flex-wrap">
-          <TabsTrigger value="upcoming" className="text-sm">Upcoming Demos</TabsTrigger>
-          <TabsTrigger value="all" className="text-sm">All Demos</TabsTrigger>
-          <TabsTrigger value="calendar" className="text-sm">Calendar View</TabsTrigger>
-          <TabsTrigger value="templates" className="text-sm">
-            <FileText className="h-4 w-4 mr-1.5" />
-            Templates
+        <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start">
+          <TabsTrigger value="upcoming" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Upcoming Demos</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">DEMO MENDATANG</span>
           </TabsTrigger>
-          <TabsTrigger value="metrics" className="text-sm">
-            <TrendingUp className="h-4 w-4 mr-1.5" />
-            Metrics
+          <TabsTrigger value="all" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">All Demos</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">SEMUA JADWAL</span>
           </TabsTrigger>
-          <TabsTrigger value="leaderboard" className="text-sm">
-            <Trophy className="h-4 w-4 mr-1.5" />
-            Leaderboard
+          <TabsTrigger value="calendar" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Calendar View</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">TAMPILAN KALENDER</span>
+          </TabsTrigger>
+          <TabsTrigger value="templates" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <FileText className="h-4 w-4" />
+              <span className="font-bold text-sm">Templates</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">SETUP CEPAT</span>
+          </TabsTrigger>
+          <TabsTrigger value="metrics" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <TrendingUp className="h-4 w-4" />
+              <span className="font-bold text-sm">Metrics</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">ANALITIK PERFORMA</span>
+          </TabsTrigger>
+          <TabsTrigger value="leaderboard" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <div className="flex items-center gap-1.5 justify-center">
+              <Trophy className="h-4 w-4" />
+              <span className="font-bold text-sm">Leaderboard</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">RANKING PRESENTER</span>
           </TabsTrigger>
         </TabsList>
 

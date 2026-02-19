@@ -180,11 +180,23 @@ export function PerformanceHub() {
 
       {/* Detailed Metrics Tabs */}
       <Tabs defaultValue="activity" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 h-11">
-          <TabsTrigger value="activity" className="text-sm">Activity Metrics</TabsTrigger>
-          <TabsTrigger value="results" className="text-sm">Output Results</TabsTrigger>
-          <TabsTrigger value="products" className="text-sm">Product Push</TabsTrigger>
-          <TabsTrigger value="quality" className="text-sm">Quality & Retention</TabsTrigger>
+        <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start">
+          <TabsTrigger value="activity" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Activity Metrics</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">METRIK AKTIVITAS</span>
+          </TabsTrigger>
+          <TabsTrigger value="results" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Output Results</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">HASIL PENCAPAIAN</span>
+          </TabsTrigger>
+          <TabsTrigger value="products" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Product Push</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PENJUALAN PRODUK</span>
+          </TabsTrigger>
+          <TabsTrigger value="quality" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Quality & Retention</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">KUALITAS & RETENSI</span>
+          </TabsTrigger>
         </TabsList>
 
         {/* Activity Metrics Tab */}

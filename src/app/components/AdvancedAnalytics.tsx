@@ -198,10 +198,19 @@ export function AdvancedAnalytics() {
 
       {/* Charts Tabs */}
       <Tabs defaultValue="revenue" className="space-y-4">
-        <TabsList className="h-11">
-          <TabsTrigger value="revenue" className="text-sm">Revenue Trends</TabsTrigger>
-          <TabsTrigger value="performance" className="text-sm">Team Performance</TabsTrigger>
-          <TabsTrigger value="funnel" className="text-sm">Conversion Funnel</TabsTrigger>
+        <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start max-w-xl">
+          <TabsTrigger value="revenue" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Revenue Trends</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">TREN PENDAPATAN</span>
+          </TabsTrigger>
+          <TabsTrigger value="performance" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Team Performance</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PERFORMA TIM</span>
+          </TabsTrigger>
+          <TabsTrigger value="funnel" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 min-w-[120px]">
+            <span className="font-bold text-sm">Conversion Funnel</span>
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">CORONG KONVERSI</span>
+          </TabsTrigger>
         </TabsList>
 
         {/* Revenue Trends */}

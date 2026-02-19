@@ -78,10 +78,19 @@ export function RevenueBreakdownDialog({
           </div>
 
           <Tabs value={tab} onValueChange={(v: any) => onTabChange(v)} className="space-y-4">
-            <TabsList className="grid grid-cols-3 w-full h-12 p-1 bg-gray-100 rounded-xl">
-              <TabsTrigger value="hospital" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm">Hospital</TabsTrigger>
-              <TabsTrigger value="retail" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-green-600 data-[state=active]:shadow-sm">Retail</TabsTrigger>
-              <TabsTrigger value="intradoc" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm">IntraDoc</TabsTrigger>
+            <TabsList className="h-14 bg-gray-100/50 p-1 flex overflow-x-auto no-scrollbar justify-start w-full">
+              <TabsTrigger value="hospital" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-sm">Hospital</span>
+                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">FASKES & RS</span>
+              </TabsTrigger>
+              <TabsTrigger value="retail" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-sm">Retail</span>
+                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">PASAR RITEL</span>
+              </TabsTrigger>
+              <TabsTrigger value="intradoc" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700 flex-1">
+                <span className="font-bold text-sm">IntraDoc</span>
+                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">MODUL INTRADOC</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="hospital">
