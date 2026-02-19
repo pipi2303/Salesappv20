@@ -544,7 +544,7 @@ export function OpportunityManagement() {
               <LayoutGrid className="h-4 w-4" />
               <span className="font-bold text-sm uppercase tracking-tight">Pipeline</span>
             </div>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Visualisasi Proses</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Visualisasi Proses</span>
           </TabsTrigger>
           <TabsTrigger 
             value="list" 
@@ -554,7 +554,7 @@ export function OpportunityManagement() {
               <List className="h-4 w-4" />
               <span className="font-bold text-sm uppercase tracking-tight">List View</span>
             </div>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Data Terstruktur</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Data Terstruktur</span>
           </TabsTrigger>
           <TabsTrigger 
             value="forecast" 
@@ -564,7 +564,7 @@ export function OpportunityManagement() {
               <TrendingUp className="h-4 w-4" />
               <span className="font-bold text-sm uppercase tracking-tight">Forecast</span>
             </div>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Prediksi Penjualan</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Prediksi Penjualan</span>
           </TabsTrigger>
         </TabsList>
 

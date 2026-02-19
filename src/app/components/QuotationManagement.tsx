@@ -125,28 +125,28 @@ export function QuotationManagement() {
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-black text-xs uppercase tracking-tight">Quotations</span>
-            <span className="text-[9px] text-gray-500 font-medium uppercase tracking-widest">Daftar Penawaran</span>
+            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest group-data-[state=active]:text-[#01544e]/70">Daftar Penawaran</span>
           </TabsTrigger>
           <TabsTrigger 
             value="analytics" 
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-black text-xs uppercase tracking-tight">Analytics</span>
-            <span className="text-[9px] text-gray-500 font-medium uppercase tracking-widest">Metrik Performa</span>
+            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Metrik Performa</span>
           </TabsTrigger>
           <TabsTrigger 
             value="templates" 
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-black text-xs uppercase tracking-tight">Templates</span>
-            <span className="text-[9px] text-gray-500 font-medium uppercase tracking-widest">Master Dokumen</span>
+            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Master Dokumen</span>
           </TabsTrigger>
           <TabsTrigger 
             value="settings" 
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-black text-xs uppercase tracking-tight">Settings</span>
-            <span className="text-[9px] text-gray-500 font-medium uppercase tracking-widest">Konfigurasi</span>
+            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Konfigurasi</span>
           </TabsTrigger>
         </TabsList>
 

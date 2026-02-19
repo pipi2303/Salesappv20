@@ -1,0 +1,152 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { MapPin, Users, Target, TrendingUp, Info } from 'lucide-react';
+import { formatCurrency } from '@/utils/formatters';
+
+interface Territory {
+  id: string;
+  name: string;
+  region: string;
+  assignedTo: string;
+  leads: number;
+  opportunities: number;
+  revenue: number;
+  target: number;
+  achievement: number;
+  coverage: number;
+}
+
+interface TerritoryMapProps {
+  territories: Territory[];
+  onSelectTerritory: (territory: Territory) => void;
+}
+
+export function TerritoryMap({ territories, onSelectTerritory }: TerritoryMapProps) {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  // Approximate coordinates for stylized map (Java Island)
+  const mapPoints = [
+    { id: '1', x: 200, y: 150, name: 'Jakarta Pusat' },
+    { id: '2', x: 220, y: 180, name: 'Jakarta Selatan' },
+    { id: '3', x: 280, y: 220, name: 'Bandung' },
+    { id: '4', x: 750, y: 280, name: 'Surabaya' },
+  ];
+
+  const getTerritoryData = (id: string) => territories.find(t => t.id === id);
+
+  return (
+    <div className="relative w-full h-[500px] bg-gray-50 rounded-xl overflow-hidden border border-gray-100 shadow-inner">
+      {/* Map Background (Stylized Java) */}
+      <svg viewBox="0 0 1000 400" className="w-full h-full opacity-20 pointer-events-none">
+        <path 
+          d="M50,150 Q150,120 300,180 T600,250 T950,300 L950,350 Q600,320 300,300 T50,250 Z" 
+          fill="#01544e" 
+          stroke="#01544e" 
+          strokeWidth="2"
+        />
+        {/* Decorative Grid */}
+        <defs>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" className="text-gray-300" />
+      </svg>
+
+      {/* Interactive Points */}
+      {mapPoints.map((point) => {
+        const data = getTerritoryData(point.id);
+        if (!data) return null;
+
+        const isHovered = hoveredId === point.id;
+        const colorClass = data.achievement >= 100 ? 'text-emerald-500' : 'text-[#01544e]';
+
+        return (
+          <div 
+            key={point.id}
+            className="absolute transition-all duration-300 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+            style={{ left: `${(point.x / 1000) * 100}%`, top: `${(point.y / 400) * 100}%` }}
+            onMouseEnter={() => setHoveredId(point.id)}
+            onMouseLeave={() => setHoveredId(null)}
+            onClick={() => onSelectTerritory(data)}
+          >
+            {/* Achievement Ring */}
+            <div className="relative">
+              <motion.div 
+                className={`absolute inset-0 rounded-full border-2 border-current opacity-20 ${colorClass}`}
+                animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0, 0.2] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <div className={`relative h-10 w-10 rounded-full bg-white shadow-xl flex items-center justify-center border-2 transition-transform group-hover:scale-110 ${data.achievement >= 100 ? 'border-emerald-500' : 'border-[#01544e]'}`}>
+                <MapPin className={`h-5 w-5 ${colorClass}`} />
+              </div>
+
+              {/* Tooltip Popup */}
+              <AnimatePresence>
+                {isHovered && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 z-50 w-64 pointer-events-none"
+                  >
+                    <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">{data.region}</p>
+                          <p className="text-sm font-black text-gray-900 uppercase tracking-tight leading-none">{data.name}</p>
+                        </div>
+                        <div className={`px-2 py-1 rounded text-[9px] font-black uppercase ${data.achievement >= 100 ? 'bg-emerald-50 text-emerald-600' : 'bg-emerald-900 text-white'}`}>
+                          {data.achievement.toFixed(1)}%
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center text-[10px] font-bold">
+                          <span className="text-gray-400 uppercase">Revenue</span>
+                          <span className="text-[#01544e]">{formatCurrency(data.revenue)}</span>
+                        </div>
+                        <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full rounded-full ${data.achievement >= 100 ? 'bg-emerald-500' : 'bg-[#01544e]'}`} 
+                            style={{ width: `${Math.min(data.achievement, 100)}%` }} 
+                          />
+                        </div>
+                        <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gray-50">
+                          <Users className="h-3 w-3 text-gray-400" />
+                          <span className="text-[9px] font-black text-gray-600 uppercase tracking-tight">{data.assignedTo}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Arrow */}
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white" />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Map Legend */}
+      <div className="absolute bottom-6 left-6 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-white/50 shadow-sm flex flex-col gap-3">
+        <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 border-b pb-1">Map Indicators</p>
+        <div className="flex items-center gap-3">
+          <div className="h-3 w-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-200" />
+          <span className="text-[10px] font-bold text-gray-600 uppercase tracking-tight">On Target ({'>'}100%)</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="h-3 w-3 rounded-full bg-[#01544e] shadow-sm shadow-emerald-200" />
+          <span className="text-[10px] font-bold text-gray-600 uppercase tracking-tight">Below Target</span>
+        </div>
+      </div>
+
+      {/* Instructions */}
+      <div className="absolute top-6 right-6 bg-black/5 backdrop-blur-sm px-4 py-2 rounded-full border border-black/5 flex items-center gap-2">
+        <Info className="h-3 w-3 text-gray-500" />
+        <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">Hover pins to view insights</span>
+      </div>
+    </div>
+  );
+}

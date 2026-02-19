@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
-import { MapPin, Users, Target, TrendingUp, Award, Plus, Search, Edit, Eye } from 'lucide-react';
+import { MapPin, Users, Target, TrendingUp, Award, Plus, Search, Edit, Eye, ShieldCheck, Briefcase, BarChart3, Map as MapIcon } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Input } from '@/app/components/ui/input';
+import { Label } from '@/app/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+import { Separator } from '@/app/components/ui/separator';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/app/components/ui/dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { toast } from 'sonner';
 import { formatCurrency } from '@/utils/formatters';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { TerritoryMap } from './TerritoryMap';
 
 interface Territory {
   id: string;
@@ -24,13 +31,76 @@ interface Territory {
 export function TerritoryManagement() {
   const [activeTab, setActiveTab] = useState('territories');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTerritory, setSelectedTerritory] = useState<Territory | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [newTerritory, setNewTerritory] = useState<Partial<Territory>>({
+    name: '',
+    region: 'DKI Jakarta',
+    assignedTo: '',
+    leads: 0,
+    opportunities: 0,
+    revenue: 0,
+    target: 0,
+    achievement: 0,
+    coverage: 0
+  });
 
-  const [territories] = useState<Territory[]>([
+  const [territories, setTerritories] = useState<Territory[]>([
     { id: '1', name: 'Jakarta Pusat', region: 'DKI Jakarta', assignedTo: 'Budi Santoso', leads: 45, opportunities: 12, revenue: 350000000, target: 300000000, achievement: 116.7, coverage: 85 },
     { id: '2', name: 'Jakarta Selatan', region: 'DKI Jakarta', assignedTo: 'Ani Wijaya', leads: 38, opportunities: 10, revenue: 280000000, target: 300000000, achievement: 93.3, coverage: 78 },
     { id: '3', name: 'Bandung', region: 'Jawa Barat', assignedTo: 'Dewi Kartika', leads: 52, opportunities: 15, revenue: 520000000, target: 400000000, achievement: 130.0, coverage: 92 },
     { id: '4', name: 'Surabaya', region: 'Jawa Timur', assignedTo: 'Eko Prasetyo', leads: 30, opportunities: 8, revenue: 185000000, target: 250000000, achievement: 74.0, coverage: 65 },
   ]);
+
+  const handleOpenDetail = (territory: Territory) => {
+    setSelectedTerritory(territory);
+    setIsDetailOpen(true);
+  };
+
+  const handleOpenEdit = (territory: Territory) => {
+    setSelectedTerritory(territory);
+    setIsEditOpen(true);
+  };
+
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedTerritory) return;
+    
+    setTerritories(prev => prev.map(t => t.id === selectedTerritory.id ? selectedTerritory : t));
+    setIsEditOpen(false);
+    toast.success(`Data wilayah ${selectedTerritory.name} berhasil diperbarui`);
+  };
+
+  const handleCreateTerritory = (e: React.FormEvent) => {
+    e.preventDefault();
+    const id = (territories.length + 1).toString();
+    const achievement = newTerritory.target && newTerritory.target > 0 
+      ? ((newTerritory.revenue || 0) / newTerritory.target) * 100 
+      : 0;
+    
+    const territoryToAdd = {
+      ...newTerritory,
+      id,
+      achievement,
+    } as Territory;
+
+    setTerritories(prev => [...prev, territoryToAdd]);
+    setIsAddOpen(false);
+    setNewTerritory({
+      name: '',
+      region: 'DKI Jakarta',
+      assignedTo: '',
+      leads: 0,
+      opportunities: 0,
+      revenue: 0,
+      target: 0,
+      achievement: 0,
+      coverage: 0
+    });
+    toast.success(`Wilayah ${territoryToAdd.name} berhasil ditambahkan`);
+  };
 
   const stats = {
     total: territories.length,
@@ -47,71 +117,86 @@ export function TerritoryManagement() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight uppercase bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-          Territory Management
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Geographic territory assignment, performance tracking & market penetration metrics
-        </p>
+    <div className="space-y-8 pb-10 animate-in fade-in duration-500">
+      {/* Premium Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#01544e] via-[#028076] to-[#01544e] bg-clip-text text-transparent">
+            TERRITORY MANAGEMENT
+          </h1>
+          <p className="text-gray-500 font-medium flex items-center gap-2 mt-2">
+            <MapPin className="h-4 w-4 text-[#01544e]" />
+            Penugasan wilayah geografis, pelacakan performa, dan metrik penetrasi pasar.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button variant="outline" className="border-gray-200 text-gray-600 font-bold uppercase tracking-wider text-xs px-4 h-11 transition-all hover:bg-gray-50">
+            <TrendingUp className="h-4 w-4 mr-2" /> Penetration Report
+          </Button>
+          <Button 
+            className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 h-11 shadow-lg shadow-[#01544e]/20 transition-all active:scale-95"
+            onClick={() => setIsAddOpen(true)}
+          >
+            <Plus className="h-4 w-4 mr-2" /> Add New Territory
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Territories</CardTitle>
-            <MapPin className="h-4 w-4 text-muted-foreground" />
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Territories</CardTitle>
+            <MapPin className="h-4 w-4 text-[#01544e]" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.total}</div>
-            <p className="text-xs text-muted-foreground">Active regions</p>
+          <CardContent className="pt-4">
+            <div className="text-3xl font-black text-gray-900">{stats.total}</div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Active regions</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-500" />
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Revenue</CardTitle>
+            <TrendingUp className="h-4 w-4 text-[#01544e]" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">{formatCurrency(stats.totalRevenue)}</div>
-            <p className="text-xs text-muted-foreground">All territories</p>
+          <CardContent className="pt-4">
+            <div className="text-3xl font-black text-[#01544e]">{formatCurrency(stats.totalRevenue)}</div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">YTD performance</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Achievement</CardTitle>
-            <Target className="h-4 w-4 text-blue-500" />
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Target Achievement</CardTitle>
+            <Target className="h-4 w-4 text-emerald-500" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">
+          <CardContent className="pt-4">
+            <div className="text-3xl font-black text-emerald-600">
               {((stats.totalRevenue / stats.totalTarget) * 100).toFixed(1)}%
             </div>
-            <p className="text-xs text-muted-foreground">vs target</p>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Average attainment</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Coverage</CardTitle>
-            <MapPin className="h-4 w-4 text-orange-500" />
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Avg Coverage</CardTitle>
+            <MapPin className="h-4 w-4 text-amber-500" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{stats.avgCoverage.toFixed(1)}%</div>
-            <p className="text-xs text-muted-foreground">Market penetration</p>
+          <CardContent className="pt-4">
+            <div className="text-3xl font-black text-amber-600">{stats.avgCoverage.toFixed(1)}%</div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Market share</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Top Territory</CardTitle>
-            <Award className="h-4 w-4 text-yellow-500" />
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Top Performer</CardTitle>
+            <Award className="h-4 w-4 text-purple-500" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.topPerformer.name}</div>
-            <p className="text-xs text-muted-foreground">{stats.topPerformer.achievement.toFixed(1)}%</p>
+          <CardContent className="pt-4">
+            <div className="text-3xl font-black text-purple-600 truncate">{stats.topPerformer.name}</div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">{stats.topPerformer.achievement.toFixed(1)}% Attainment</p>
           </CardContent>
         </Card>
       </div>
@@ -122,89 +207,124 @@ export function TerritoryManagement() {
             value="territories" 
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
-            <span className="font-bold text-sm uppercase tracking-tight">Territories</span>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Daftar Wilayah</span>
+            <span className="font-bold text-sm uppercase tracking-tight">Wilayah</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Territories</span>
           </TabsTrigger>
           <TabsTrigger 
             value="analytics" 
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
-            <span className="font-bold text-sm uppercase tracking-tight">Analytics</span>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Data Performa</span>
+            <span className="font-bold text-sm uppercase tracking-tight">Analitik</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Market Insights</span>
           </TabsTrigger>
           <TabsTrigger 
             value="map" 
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
-            <span className="font-bold text-sm uppercase tracking-tight">Map View</span>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Visual Geografis</span>
+            <span className="font-bold text-sm uppercase tracking-tight">Visual Map</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Geospatial</span>
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="territories" className="space-y-4">
-          <div className="flex gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search territories..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-10" />
+        <TabsContent value="territories" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+            <div className="relative flex-1 w-full max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input 
+                placeholder="Cari wilayah atau penanggung jawab..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 h-11 bg-gray-50 border-gray-200 focus:bg-white transition-all"
+              />
             </div>
-            <Button><Plus className="h-4 w-4 mr-2" />Add Territory</Button>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2">
             {territories.map((territory) => (
-              <Card key={territory.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
+              <Card key={territory.id} className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
+                <CardHeader className="pb-4 bg-gray-50/30">
                   <div className="flex items-start justify-between">
                     <div>
-                      <CardTitle className="flex items-center gap-2">
-                        <MapPin className="h-5 w-5 text-indigo-600" />
+                      <CardTitle className="text-xl font-black text-gray-900 group-hover:text-[#01544e] transition-colors flex items-center gap-2 uppercase tracking-tight">
+                        <MapPin className="h-5 w-5 text-[#01544e]" />
                         {territory.name}
                       </CardTitle>
-                      <CardDescription>{territory.region}</CardDescription>
+                      <CardDescription className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">REGION: {territory.region}</CardDescription>
                     </div>
-                    <Badge variant={territory.achievement >= 100 ? 'default' : 'secondary'} className={territory.achievement >= 100 ? 'bg-green-500' : ''}>
-                      {territory.achievement.toFixed(1)}%
-                    </Badge>
+                    <div className="flex flex-col items-end gap-1">
+                      <Badge className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 ${territory.achievement >= 100 ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-[#01544e] hover:bg-[#028076]'}`}>
+                        {territory.achievement.toFixed(1)}% ATTAINMENT
+                      </Badge>
+                    </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">{territory.assignedTo}</span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-xs text-muted-foreground">Leads</p>
-                      <p className="text-lg font-bold">{territory.leads}</p>
+                <CardContent className="p-6 space-y-6">
+                  <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center text-white text-xs font-black">
+                      {territory.assignedTo.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground">Opportunities</p>
-                      <p className="text-lg font-bold">{territory.opportunities}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Revenue</p>
-                      <p className="text-lg font-bold text-green-600">{formatCurrency(territory.revenue)}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Coverage</p>
-                      <p className="text-lg font-bold">{territory.coverage}%</p>
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Territory Manager</p>
+                      <p className="text-sm font-bold text-gray-900 uppercase tracking-tight">{territory.assignedTo}</p>
                     </div>
                   </div>
 
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span>Target Progress</span>
-                      <span className="font-semibold">{formatCurrency(territory.revenue)} / {formatCurrency(territory.target)}</span>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Commercial Metrics</p>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-lg font-black text-gray-900">{territory.leads}</span>
+                        <span className="text-[9px] font-bold text-gray-400 uppercase">Leads</span>
+                      </div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-lg font-black text-[#01544e]">{territory.opportunities}</span>
+                        <span className="text-[9px] font-bold text-gray-400 uppercase">Opportunities</span>
+                      </div>
                     </div>
-                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div className={`h-full transition-all ${territory.achievement >= 100 ? 'bg-green-500' : 'bg-blue-500'}`} style={{ width: `${Math.min(territory.achievement, 100)}%` }} />
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Market Coverage</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl font-black text-amber-600">{territory.coverage}%</span>
+                      </div>
+                      <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                        <div className="bg-amber-500 h-full rounded-full transition-all" style={{ width: `${territory.coverage}%` }} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-gray-100">
+                    <div className="flex justify-between items-end mb-2">
+                      <div>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Revenue Achievement</p>
+                        <p className="text-lg font-black text-[#01544e]">{formatCurrency(territory.revenue)}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[9px] font-bold text-gray-400 uppercase">Quota: {formatCurrency(territory.target)}</p>
+                      </div>
+                    </div>
+                    <div className="h-3 bg-gray-100 rounded-full overflow-hidden p-0.5 border border-gray-100 shadow-inner">
+                      <div 
+                        className={`h-full rounded-full transition-all duration-1000 ${territory.achievement >= 100 ? 'bg-gradient-to-r from-emerald-400 to-emerald-600' : 'bg-gradient-to-r from-[#01544e] to-[#028076]'}`} 
+                        style={{ width: `${Math.min(territory.achievement, 100)}%` }} 
+                      />
                     </div>
                   </div>
 
                   <div className="flex gap-2 pt-2">
-                    <Button variant="outline" size="sm" className="flex-1"><Eye className="h-3 w-3 mr-1" />View</Button>
-                    <Button variant="outline" size="sm" className="flex-1"><Edit className="h-3 w-3 mr-1" />Edit</Button>
+                    <Button 
+                      variant="outline" 
+                      className="flex-1 font-black text-[10px] uppercase tracking-widest border-gray-200 h-11 hover:bg-gray-50"
+                      onClick={() => handleOpenDetail(territory)}
+                    >
+                      <Eye className="h-4 w-4 mr-2" /> Detail Data
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="flex-1 font-black text-[10px] uppercase tracking-widest border-gray-200 h-11 hover:bg-gray-50"
+                      onClick={() => handleOpenEdit(territory)}
+                    >
+                      <Edit className="h-4 w-4 mr-2" /> Edit Wilayah
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -212,62 +332,391 @@ export function TerritoryManagement() {
           </div>
         </TabsContent>
 
-        <TabsContent value="analytics" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Territory Performance</CardTitle>
-                <CardDescription>Revenue by territory</CardDescription>
+        <TabsContent value="analytics" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card className="border-none shadow-sm overflow-hidden">
+              <CardHeader className="bg-white border-b border-gray-100">
+                <CardTitle className="text-lg font-black text-[#01544e] uppercase tracking-tight">Revenue vs Target</CardTitle>
+                <CardDescription className="text-xs font-bold uppercase tracking-widest text-gray-400">Perbandingan performa antar wilayah</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={territories}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip formatter={(value: any) => formatCurrency(value)} />
-                    <Bar dataKey="revenue" fill="#6366f1" name="Revenue" />
-                    <Bar dataKey="target" fill="#94a3b8" name="Target" />
-                  </BarChart>
-                </ResponsiveContainer>
+              <CardContent className="p-6">
+                <div className="h-80 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={territories} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold'}} />
+                      <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold'}} tickFormatter={(value) => `Rp${value/1000000}jt`} />
+                      <Tooltip 
+                        contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                        formatter={(value: any) => [formatCurrency(value), 'Value']}
+                      />
+                      <Bar dataKey="revenue" fill="#01544e" radius={[4, 4, 0, 0]} name="Actual Revenue" />
+                      <Bar dataKey="target" fill="#e2e8f0" radius={[4, 4, 0, 0]} name="Quota Target" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Region Distribution</CardTitle>
-                <CardDescription>Territories by region</CardDescription>
+            <Card className="border-none shadow-sm overflow-hidden">
+              <CardHeader className="bg-white border-b border-gray-100">
+                <CardTitle className="text-lg font-black text-[#01544e] uppercase tracking-tight">Market Concentration</CardTitle>
+                <CardDescription className="text-xs font-bold uppercase tracking-widest text-gray-400">Distribusi wilayah berdasarkan regional</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie data={regionData} cx="50%" cy="50%" labelLine={false} label={({ name, value }) => `${name}: ${value}`} outerRadius={80} fill="#8884d8" dataKey="value">
-                      {regionData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+              <CardContent className="p-6">
+                <div className="h-80 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie 
+                        data={regionData} 
+                        cx="50%" 
+                        cy="50%" 
+                        innerRadius={60}
+                        outerRadius={80} 
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {regionData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={index === 0 ? '#01544e' : index === 1 ? '#028076' : '#04ac9e'} />
+                        ))}
+                      </Pie>
+                      <Tooltip 
+                        contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                      />
+                      <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase'}} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        <TabsContent value="map" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Territory Map</CardTitle>
-              <CardDescription>Geographic distribution of territories</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <MapPin className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Interactive Map</h3>
-                <p className="text-sm text-muted-foreground">Map visualization coming soon</p>
+        <TabsContent value="map" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <Card className="border-none shadow-sm overflow-hidden min-h-[500px] flex flex-col">
+            <CardHeader className="bg-white border-b border-gray-100 flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="text-lg font-black text-[#01544e] uppercase tracking-tight">Geospatial Intelligence</CardTitle>
+                <CardDescription className="text-xs font-bold uppercase tracking-widest text-gray-400">Visualisasi sebaran wilayah dan kepadatan pasar</CardDescription>
               </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="text-[10px] font-black uppercase border-gray-200">Live GIS Data</Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 p-0 relative">
+              <TerritoryMap 
+                territories={territories} 
+                onSelectTerritory={(territory) => handleOpenDetail(territory)} 
+              />
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Detail Dialog */}
+      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+        <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden border-none shadow-2xl">
+          <VisuallyHidden>
+            <DialogTitle>Detail Wilayah {selectedTerritory?.name}</DialogTitle>
+            <DialogDescription>Rincian performa dan statistik wilayah</DialogDescription>
+          </VisuallyHidden>
+          
+          <div className="bg-[#01544e] p-8 text-white">
+            <div className="flex justify-between items-start">
+              <div>
+                <Badge className="bg-white/20 hover:bg-white/30 text-white border-none font-black text-[10px] uppercase tracking-widest mb-4">
+                  Territory ID: #{selectedTerritory?.id}
+                </Badge>
+                <h2 className="text-3xl font-black uppercase tracking-tight leading-none mb-2">
+                  {selectedTerritory?.name}
+                </h2>
+                <p className="text-emerald-100/70 font-bold uppercase tracking-widest text-xs flex items-center gap-2">
+                  <MapIcon className="h-3 w-3" /> {selectedTerritory?.region}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] font-black uppercase tracking-widest text-emerald-100/50 mb-1">Attainment</p>
+                <p className="text-4xl font-black">{selectedTerritory?.achievement.toFixed(1)}%</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-8 space-y-8 bg-white">
+            <div className="grid grid-cols-3 gap-6">
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Revenue Actual</p>
+                <p className="text-xl font-black text-[#01544e]">{formatCurrency(selectedTerritory?.revenue || 0)}</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Target Quota</p>
+                <p className="text-xl font-black text-gray-900">{formatCurrency(selectedTerritory?.target || 0)}</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Gap to Target</p>
+                <p className={`text-xl font-black ${(selectedTerritory?.target || 0) - (selectedTerritory?.revenue || 0) <= 0 ? 'text-emerald-600' : 'text-amber-600'}`}>
+                  {formatCurrency(Math.max(0, (selectedTerritory?.target || 0) - (selectedTerritory?.revenue || 0)))}
+                </p>
+              </div>
+            </div>
+
+            <Separator className="bg-gray-100" />
+
+            <div className="grid grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <h4 className="text-xs font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+                  <Users className="h-4 w-4 text-[#01544e]" /> Team Assignment
+                </h4>
+                <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                  <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center text-white font-black">
+                    {selectedTerritory?.assignedTo.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div>
+                    <p className="text-sm font-black text-gray-900 uppercase tracking-tight">{selectedTerritory?.assignedTo}</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Senior Territory Manager</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="text-xs font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+                  <BarChart3 className="h-4 w-4 text-[#01544e]" /> Pipeline Metrics
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                    <p className="text-[9px] font-black text-gray-400 uppercase mb-1">Total Leads</p>
+                    <p className="text-lg font-black text-gray-900">{selectedTerritory?.leads}</p>
+                  </div>
+                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                    <p className="text-[9px] font-black text-gray-400 uppercase mb-1">Opportunities</p>
+                    <p className="text-lg font-black text-[#01544e]">{selectedTerritory?.opportunities}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-emerald-50/50 p-6 rounded-2xl border border-emerald-100">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-xs font-black uppercase tracking-widest text-[#01544e] flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4" /> Market Penetration Status
+                </h4>
+                <Badge className="bg-[#01544e] text-[10px] font-black uppercase">{selectedTerritory?.coverage}% COVERAGE</Badge>
+              </div>
+              <div className="h-4 bg-white rounded-full overflow-hidden p-1 border border-emerald-200">
+                <div className="h-full bg-emerald-500 rounded-full transition-all duration-1000" style={{ width: `${selectedTerritory?.coverage}%` }} />
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter className="bg-gray-50 p-6 border-t border-gray-100">
+            <Button variant="outline" className="font-black uppercase tracking-widest text-[10px] h-11 px-8" onClick={() => setIsDetailOpen(false)}>
+              Close Detail
+            </Button>
+            <Button className="bg-[#01544e] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-8" onClick={() => {
+              setIsDetailOpen(false);
+              setIsEditOpen(true);
+            }}>
+              Edit Configuration
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden border-none shadow-2xl">
+          <VisuallyHidden>
+            <DialogTitle>Edit Wilayah {selectedTerritory?.name}</DialogTitle>
+            <DialogDescription>Perbarui parameter wilayah dan target</DialogDescription>
+          </VisuallyHidden>
+
+          <div className="bg-gray-900 p-8 text-white">
+            <h2 className="text-2xl font-black uppercase tracking-tight flex items-center gap-3">
+              <Edit className="h-6 w-6 text-[#028076]" /> 
+              Edit Territory
+            </h2>
+            <p className="text-gray-400 text-xs font-bold uppercase tracking-widest mt-2">Update configuration & target metrics</p>
+          </div>
+
+          <form onSubmit={handleSaveEdit}>
+            <div className="p-8 space-y-6 bg-white">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Territory Name</Label>
+                  <Input 
+                    value={selectedTerritory?.name || ''} 
+                    onChange={(e) => setSelectedTerritory(prev => prev ? {...prev, name: e.target.value} : null)}
+                    className="h-11 font-bold uppercase tracking-tight"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Region</Label>
+                  <Select 
+                    value={selectedTerritory?.region || ''} 
+                    onValueChange={(val) => setSelectedTerritory(prev => prev ? {...prev, region: val} : null)}
+                  >
+                    <SelectTrigger className="h-11 font-bold uppercase tracking-tight">
+                      <SelectValue placeholder="Select Region" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="DKI Jakarta">DKI Jakarta</SelectItem>
+                      <SelectItem value="Jawa Barat">Jawa Barat</SelectItem>
+                      <SelectItem value="Jawa Timur">Jawa Timur</SelectItem>
+                      <SelectItem value="Jawa Tengah">Jawa Tengah</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Assigned Manager</Label>
+                <div className="relative">
+                  <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input 
+                    value={selectedTerritory?.assignedTo || ''} 
+                    onChange={(e) => setSelectedTerritory(prev => prev ? {...prev, assignedTo: e.target.value} : null)}
+                    className="pl-10 h-11 font-bold uppercase tracking-tight"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Quota Target (IDR)</Label>
+                  <Input 
+                    type="number"
+                    value={selectedTerritory?.target || 0} 
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value);
+                      setSelectedTerritory(prev => prev ? {...prev, target: val, achievement: (prev.revenue / val) * 100} : null);
+                    }}
+                    className="h-11 font-bold"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Market Coverage (%)</Label>
+                  <Input 
+                    type="number"
+                    max="100"
+                    value={selectedTerritory?.coverage || 0} 
+                    onChange={(e) => setSelectedTerritory(prev => prev ? {...prev, coverage: parseInt(e.target.value)} : null)}
+                    className="h-11 font-bold"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter className="bg-gray-50 p-6 border-t border-gray-100 gap-2">
+              <Button type="button" variant="outline" className="font-black uppercase tracking-widest text-[10px] h-11 px-6" onClick={() => setIsEditOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-[#01544e] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-10 shadow-lg shadow-[#01544e]/20">
+                Save Changes
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add New Territory Dialog */}
+      <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden border-none shadow-2xl">
+          <VisuallyHidden>
+            <DialogTitle>Tambah Wilayah Baru</DialogTitle>
+            <DialogDescription>Masukkan rincian untuk wilayah sales baru</DialogDescription>
+          </VisuallyHidden>
+
+          <div className="bg-[#01544e] p-8 text-white">
+            <h2 className="text-2xl font-black uppercase tracking-tight flex items-center gap-3">
+              <Plus className="h-6 w-6 text-emerald-400" /> 
+              New Territory
+            </h2>
+            <p className="text-emerald-100/70 text-xs font-bold uppercase tracking-widest mt-2">Create new geographic sales assignment</p>
+          </div>
+
+          <form onSubmit={handleCreateTerritory}>
+            <div className="p-8 space-y-6 bg-white">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Territory Name</Label>
+                  <Input 
+                    required
+                    placeholder="e.g. Tangerang Raya"
+                    value={newTerritory.name} 
+                    onChange={(e) => setNewTerritory(prev => ({...prev, name: e.target.value}))}
+                    className="h-11 font-bold uppercase tracking-tight placeholder:text-gray-300"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Region</Label>
+                  <Select 
+                    value={newTerritory.region} 
+                    onValueChange={(val) => setNewTerritory(prev => ({...prev, region: val}))}
+                  >
+                    <SelectTrigger className="h-11 font-bold uppercase tracking-tight">
+                      <SelectValue placeholder="Select Region" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="DKI Jakarta">DKI Jakarta</SelectItem>
+                      <SelectItem value="Jawa Barat">Jawa Barat</SelectItem>
+                      <SelectItem value="Jawa Timur">Jawa Timur</SelectItem>
+                      <SelectItem value="Jawa Tengah">Jawa Tengah</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Assigned Manager</Label>
+                <div className="relative">
+                  <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input 
+                    required
+                    placeholder="Nama Lengkap Manajer"
+                    value={newTerritory.assignedTo} 
+                    onChange={(e) => setNewTerritory(prev => ({...prev, assignedTo: e.target.value}))}
+                    className="pl-10 h-11 font-bold uppercase tracking-tight placeholder:text-gray-300"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Initial Quota (IDR)</Label>
+                  <Input 
+                    required
+                    type="number"
+                    placeholder="300000000"
+                    value={newTerritory.target || ''} 
+                    onChange={(e) => setNewTerritory(prev => ({...prev, target: parseInt(e.target.value)}))}
+                    className="h-11 font-bold"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Coverage Goal (%)</Label>
+                  <Input 
+                    required
+                    type="number"
+                    max="100"
+                    placeholder="75"
+                    value={newTerritory.coverage || ''} 
+                    onChange={(e) => setNewTerritory(prev => ({...prev, coverage: parseInt(e.target.value)}))}
+                    className="h-11 font-bold"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter className="bg-gray-50 p-6 border-t border-gray-100 gap-2">
+              <Button type="button" variant="outline" className="font-black uppercase tracking-widest text-[10px] h-11 px-6" onClick={() => setIsAddOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-[#01544e] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-10 shadow-lg shadow-[#01544e]/20">
+                Create Territory
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

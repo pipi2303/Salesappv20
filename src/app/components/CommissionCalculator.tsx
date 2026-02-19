@@ -70,13 +70,26 @@ export function CommissionCalculator() {
   ]);
 
   // Commission Records
-  const [commissions] = useState<CommissionRecord[]>([
+  const [commissions, setCommissions] = useState<CommissionRecord[]>([
     { id: '1', salesPerson: 'Budi Santoso', period: 'Feb 2024', totalSales: 350000000, baseCommission: 13125000, bonuses: 10000000, totalCommission: 23125000, status: 'pending', deals: 3, achievementRate: 116.7 },
     { id: '2', salesPerson: 'Ani Wijaya', period: 'Feb 2024', totalSales: 280000000, baseCommission: 10800000, bonuses: 7800000, totalCommission: 18600000, status: 'approved', deals: 4, achievementRate: 93.3 },
     { id: '3', salesPerson: 'Dewi Kartika', period: 'Feb 2024', totalSales: 520000000, baseCommission: 29400000, bonuses: 25000000, totalCommission: 54400000, status: 'approved', deals: 5, achievementRate: 173.3 },
     { id: '4', salesPerson: 'Eko Prasetyo', period: 'Feb 2024', totalSales: 185000000, baseCommission: 6437500, bonuses: 0, totalCommission: 6437500, status: 'pending', deals: 2, achievementRate: 61.7 },
     { id: '5', salesPerson: 'Budi Santoso', period: 'Jan 2024', totalSales: 420000000, baseCommission: 19600000, bonuses: 15000000, totalCommission: 34600000, status: 'paid', deals: 6, achievementRate: 140.0, paymentDate: '2024-02-05' },
   ]);
+
+  const handleApproveAll = () => {
+    const pendingCount = commissions.filter(c => c.status === 'pending').length;
+    if (pendingCount === 0) {
+      toast.info('Tidak ada komisi dengan status pending');
+      return;
+    }
+
+    setCommissions(prev => prev.map(c => 
+      c.status === 'pending' ? { ...c, status: 'approved' } : c
+    ));
+    toast.success(`${pendingCount} komisi berhasil disetujui`);
+  };
 
   const currentPeriodCommissions = commissions.filter(c => c.period.toLowerCase().includes(selectedPeriod.replace('-', ' ')));
   
@@ -145,7 +158,10 @@ export function CommissionCalculator() {
           <Button variant="outline" className="gap-2 border-gray-200">
             <Download className="h-4 w-4" /> Export Payroll
           </Button>
-          <Button className="bg-[#01544e] hover:bg-[#023d39] text-white shadow-lg shadow-emerald-900/20 gap-2">
+          <Button 
+            className="bg-[#01544e] hover:bg-[#023d39] text-white shadow-lg shadow-emerald-900/20 gap-2"
+            onClick={handleApproveAll}
+          >
             <ArrowUpRight className="h-4 w-4" /> Approve All Pending
           </Button>
         </div>

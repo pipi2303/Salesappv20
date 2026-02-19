@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, Send, Mail, Inbox, Star, Archive, Trash2, Eye, Reply, Forward, Paperclip, Clock, CheckCircle, Users, FileText, Tag } from 'lucide-react';
+import { Search, Plus, Send, Mail, Inbox, Star, Archive, Trash2, Eye, Reply, Forward, Paperclip, Clock, CheckCircle, Users, FileText, Tag, Edit } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
@@ -365,26 +365,26 @@ export function EmailCommunicationHub() {
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="inbox" className="flex flex-col items-center py-3">
-            <span className="font-medium">Inbox</span>
-            <span className="text-xs text-muted-foreground">Received emails</span>
+        <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-5">
+          <TabsTrigger value="inbox" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Inbox</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Received</span>
           </TabsTrigger>
-          <TabsTrigger value="sent" className="flex flex-col items-center py-3">
-            <span className="font-medium">Sent</span>
-            <span className="text-xs text-muted-foreground">Outgoing mail</span>
+          <TabsTrigger value="sent" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Sent</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Outgoing</span>
           </TabsTrigger>
-          <TabsTrigger value="templates" className="flex flex-col items-center py-3">
-            <span className="font-medium">Templates</span>
-            <span className="text-xs text-muted-foreground">Email templates</span>
+          <TabsTrigger value="templates" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Templates</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Ready to Use</span>
           </TabsTrigger>
-          <TabsTrigger value="campaigns" className="flex flex-col items-center py-3">
-            <span className="font-medium">Campaigns</span>
-            <span className="text-xs text-muted-foreground">Bulk emails</span>
+          <TabsTrigger value="campaigns" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Campaigns</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Bulk Emails</span>
           </TabsTrigger>
-          <TabsTrigger value="analytics" className="flex flex-col items-center py-3">
-            <span className="font-medium">Analytics</span>
-            <span className="text-xs text-muted-foreground">Performance data</span>
+          <TabsTrigger value="analytics" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+            <span className="font-bold text-sm uppercase tracking-tight">Analytics</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Performance</span>
           </TabsTrigger>
         </TabsList>
 

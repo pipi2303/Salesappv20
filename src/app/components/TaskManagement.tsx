@@ -346,28 +346,28 @@ export function TaskManagement() {
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">My Tasks</span>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Daftar Tugas Saya</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest group-data-[state=active]:text-[#01544e]/70">Daftar Tugas Saya</span>
           </TabsTrigger>
           <TabsTrigger 
             value="team-tasks" 
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Team Tasks</span>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Aktivitas Tim</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Aktivitas Tim</span>
           </TabsTrigger>
           <TabsTrigger 
             value="calendar" 
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Calendar</span>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Timeline Jadwal</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Timeline Jadwal</span>
           </TabsTrigger>
           <TabsTrigger 
             value="completed" 
             className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Completed</span>
-            <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Riwayat Tugas</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Riwayat Tugas</span>
           </TabsTrigger>
         </TabsList>
 
