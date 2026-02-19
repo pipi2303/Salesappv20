@@ -1,23 +1,67 @@
 import React, { useState } from 'react';
-import { Search, Book, FileText, Video, HelpCircle, Star, ThumbsUp, Plus, Eye, Download } from 'lucide-react';
+import { Search, Book, FileText, Video, HelpCircle, Star, ThumbsUp, Plus, Eye, Download, Upload, X, Check } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/app/components/ui/card';
 import { Input } from '@/app/components/ui/input';
+import { Label } from '@/app/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/app/components/ui/dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { toast } from 'sonner';
+
+interface Article {
+  id: string;
+  title: string;
+  category: string;
+  type: 'document' | 'video' | 'faq';
+  views: number;
+  rating: number;
+}
 
 export function KnowledgeBase() {
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-
-  const articles = [
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  
+  const [articles, setArticles] = useState<Article[]>([
     { id: '1', title: 'Product Documentation - Enterprise Plan', category: 'Product Docs', type: 'document', views: 245, rating: 4.8 },
     { id: '2', title: 'Sales Playbook 2024', category: 'Sales', type: 'document', views: 189, rating: 4.9 },
     { id: '3', title: 'Objection Handling Techniques', category: 'Training', type: 'video', views: 167, rating: 4.7 },
     { id: '4', title: 'Competitive Analysis - Market Leaders', category: 'Competitive', type: 'document', views: 203, rating: 4.6 },
     { id: '5', title: 'Demo Best Practices', category: 'Training', type: 'video', views: 198, rating: 4.9 },
     { id: '6', title: 'FAQ - Common Customer Questions', category: 'FAQ', type: 'faq', views: 312, rating: 4.5 },
-  ];
+  ]);
+
+  const [newContent, setNewContent] = useState({
+    title: '',
+    category: 'Product Docs',
+    type: 'document' as 'document' | 'video' | 'faq'
+  });
+
+  const handleUpload = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsUploading(true);
+    
+    // Simulating upload delay
+    setTimeout(() => {
+      const id = (articles.length + 1).toString();
+      const articleToAdd: Article = {
+        ...newContent,
+        id,
+        views: 0,
+        rating: 5.0
+      };
+      
+      setArticles(prev => [articleToAdd, ...prev]);
+      setIsUploading(false);
+      setIsUploadOpen(false);
+      setNewContent({ title: '', category: 'Product Docs', type: 'document' });
+      toast.success('Konten berhasil diunggah ke Knowledge Base');
+    }, 1500);
+  };
 
   return (
     <div className="space-y-8 pb-10">
@@ -36,7 +80,10 @@ export function KnowledgeBase() {
           <Button variant="outline" className="border-gray-200 text-gray-600 font-bold uppercase tracking-wider text-xs px-4">
             <Download className="h-4 w-4 mr-2" /> Export
           </Button>
-          <Button className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 shadow-lg shadow-[#01544e]/20">
+          <Button 
+            className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 shadow-lg shadow-[#01544e]/20"
+            onClick={() => setIsUploadOpen(true)}
+          >
             <Plus className="h-4 w-4 mr-2" /> Upload Content
           </Button>
         </div>
@@ -278,7 +325,10 @@ export function KnowledgeBase() {
                   <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight">Kontribusi Materi Baru</h3>
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">Unggah file PDF panduan, video pelatihan, atau entri FAQ untuk membantu performa tim sales.</p>
                 </div>
-                <Button className="bg-[#01544e] hover:bg-[#028076] text-white h-12 px-8 font-bold uppercase tracking-widest text-xs shadow-lg shadow-emerald-900/20 w-full">
+                <Button 
+                  className="bg-[#01544e] hover:bg-[#028076] text-white h-12 px-8 font-bold uppercase tracking-widest text-xs shadow-lg shadow-emerald-900/20 w-full"
+                  onClick={() => setIsUploadOpen(true)}
+                >
                   <Plus className="h-4 w-4 mr-2" /> Upload Materi Baru
                 </Button>
               </div>
@@ -286,6 +336,105 @@ export function KnowledgeBase() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Upload Content Dialog */}
+      <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden border-none shadow-2xl">
+          <VisuallyHidden>
+            <DialogTitle>Upload Knowledge Content</DialogTitle>
+            <DialogDescription>Tambahkan dokumen, video, atau FAQ baru ke library</DialogDescription>
+          </VisuallyHidden>
+
+          <div className="bg-[#01544e] p-8 text-white">
+            <h2 className="text-2xl font-black uppercase tracking-tight flex items-center gap-3">
+              <Upload className="h-6 w-6 text-emerald-400" /> 
+              Upload Content
+            </h2>
+            <p className="text-emerald-100/70 text-xs font-bold uppercase tracking-widest mt-2">Add new resource to knowledge library</p>
+          </div>
+
+          <form onSubmit={handleUpload}>
+            <div className="p-8 space-y-6 bg-white">
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Content Title</Label>
+                <Input 
+                  required
+                  placeholder="e.g. Q4 Sales Strategy Guide"
+                  value={newContent.title} 
+                  onChange={(e) => setNewContent(prev => ({...prev, title: e.target.value}))}
+                  className="h-11 font-bold uppercase tracking-tight placeholder:text-gray-300"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Category</Label>
+                  <Select 
+                    value={newContent.category} 
+                    onValueChange={(val) => setNewContent(prev => ({...prev, category: val}))}
+                  >
+                    <SelectTrigger className="h-11 font-bold uppercase tracking-tight">
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Product Docs">Product Docs</SelectItem>
+                      <SelectItem value="Sales">Sales</SelectItem>
+                      <SelectItem value="Training">Training</SelectItem>
+                      <SelectItem value="Competitive">Competitive</SelectItem>
+                      <SelectItem value="FAQ">FAQ</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Content Type</Label>
+                  <Select 
+                    value={newContent.type} 
+                    onValueChange={(val: any) => setNewContent(prev => ({...prev, type: val}))}
+                  >
+                    <SelectTrigger className="h-11 font-bold uppercase tracking-tight">
+                      <SelectValue placeholder="Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="document">Document (PDF)</SelectItem>
+                      <SelectItem value="video">Video Training</SelectItem>
+                      <SelectItem value="faq">FAQ Entry</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">File Attachment</Label>
+                <div className="border-2 border-dashed border-gray-100 rounded-2xl p-8 text-center hover:border-[#01544e]/30 transition-all bg-gray-50/50 group cursor-pointer">
+                  <Upload className="h-8 w-8 text-gray-300 mx-auto mb-2 group-hover:text-[#01544e] transition-colors" />
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Click or drag file to upload</p>
+                  <p className="text-[9px] text-gray-300 mt-1 italic">Max size: 50MB (PDF, MP4, PNG)</p>
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter className="bg-gray-50 p-6 border-t border-gray-100 gap-2">
+              <Button type="button" variant="outline" className="font-black uppercase tracking-widest text-[10px] h-11 px-6" onClick={() => setIsUploadOpen(false)}>
+                Cancel
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={isUploading}
+                className="bg-[#01544e] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-10 shadow-lg shadow-[#01544e]/20 min-w-[140px]"
+              >
+                {isUploading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Uploading...
+                  </div>
+                ) : (
+                  'Publish Content'
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
