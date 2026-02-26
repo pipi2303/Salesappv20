@@ -254,8 +254,12 @@ export function SalesRepresentative() {
           {filteredKaryawan.map((k) => (
             <Card 
               key={k.id} 
-              className="hover:shadow-lg transition-shadow cursor-pointer"
-              onClick={() => {
+              className="hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-[#01544e]/30"
+              onClick={(e) => {
+                // Prevent if clicking on a button or interactive element
+                const target = e.target as HTMLElement;
+                if (target.closest('button')) return;
+                
                 setSelectedKaryawan(k);
                 setShowDetailDialog(true);
               }}
@@ -309,7 +313,7 @@ export function SalesRepresentative() {
       {/* Modals */}
       {showKaryawanForm && (
         <KaryawanFormModal
-          isOpen={showKaryawanForm}
+          karyawan={editingKaryawan}
           onClose={() => {
             setShowKaryawanForm(false);
             setEditingKaryawan(null);
@@ -319,26 +323,21 @@ export function SalesRepresentative() {
             setEditingKaryawan(null);
             fetchKaryawan();
           }}
-          editData={editingKaryawan}
         />
       )}
 
       {showDetailDialog && selectedKaryawan && (
         <EmployeeDetailDialog
+          open={showDetailDialog}
+          onOpenChange={(open) => {
+            setShowDetailDialog(open);
+            if (!open) setSelectedKaryawan(null);
+          }}
           employee={selectedKaryawan}
-          isOpen={showDetailDialog}
-          onClose={() => {
+          onEdit={() => {
             setShowDetailDialog(false);
-            setSelectedKaryawan(null);
-          }}
-          onEdit={(employee) => {
-            setShowDetailDialog(false);
-            setEditingKaryawan(employee);
+            setEditingKaryawan(selectedKaryawan);
             setShowKaryawanForm(true);
-          }}
-          onDelete={(id) => {
-            handleDeleteKaryawan(id);
-            setShowDetailDialog(false);
           }}
         />
       )}

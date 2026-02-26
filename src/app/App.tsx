@@ -7,7 +7,7 @@ import { Home } from '@/app/components/Home';
 const LeadManagement = lazy(() => import('@/app/components/LeadManagement').then(m => ({ default: m.LeadManagement })));
 const OpportunityManagement = lazy(() => import('@/app/components/OpportunityManagement').then(m => ({ default: m.OpportunityManagement })));
 const SalesTeam = lazy(() => import('@/app/components/SalesTeam').then(m => ({ default: m.SalesTeam })));
-const SalesRepresentative = lazy(() => import('@/app/components/SalesRepresentative'));
+const SalesRepresentative = lazy(() => import('@/app/components/SalesRepresentative').then(m => ({ default: m.default })));
 const ProductCatalog = lazy(() => import('@/app/components/ProductCatalog'));
 const ProposalHistory = lazy(() => import('@/app/components/ProposalHistory').then(m => ({ default: m.ProposalHistory })));
 const DemoScheduler = lazy(() => import('@/app/components/DemoScheduler').then(m => ({ default: m.DemoScheduler })));
@@ -144,14 +144,6 @@ function AppContent() {
         { id: 'kpi-tracker', name: 'KPI Tracker', component: PerformanceHub },
         { id: 'leaderboard', name: 'Leaderboard', component: SalesLeaderboard },
         { id: 'kpi-ai-enhanced', name: 'KPI Target', component: KPIAIEnhanced }
-      ]
-    },
-    { 
-      id: 'finance', 
-      name: 'Finance & Commission', 
-      icon: DollarSign,
-      subMenus: [
-        { id: 'commission', name: 'Commission Calculator', component: CommissionCalculator }
       ]
     },
     { 

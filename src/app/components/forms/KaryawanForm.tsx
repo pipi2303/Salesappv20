@@ -14,10 +14,7 @@ import {
 } from '@/app/components/ui/select';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { Button } from '@/app/components/ui/button';
-import { publicAnonKey } from '/utils/supabase/info';
-
-// Mock API URL - using localStorage only
-const API_URL = 'https://mock-project-id.supabase.co/functions/v1/make-server-67367fc1';
+import { employeesApi } from '@/services/api';
 
 interface KaryawanFormProps {
   karyawan: any;
@@ -98,23 +95,12 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
     try {
       setLoading(true);
       
-      const url = karyawan 
-        ? `${API_URL}/karyawan/${karyawan.id}`
-        : `${API_URL}/karyawan`;
-      
-      const method = karyawan ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.accessToken || publicAnonKey}`,
-          'apikey': publicAnonKey,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
+      let result;
+      if (karyawan) {
+        result = await employeesApi.update(karyawan.id, formData);
+      } else {
+        result = await employeesApi.create({ ...formData, id: crypto.randomUUID() });
+      }
       
       if (result.success) {
         toast.success(karyawan ? 'Data karyawan berhasil diupdate!' : 'Data karyawan berhasil ditambahkan!');
