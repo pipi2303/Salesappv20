@@ -134,9 +134,6 @@ function AppContent() {
     { id: 'contracts', name: 'Contract', icon: FileText, component: Contract },
     { id: 'discount-approval', name: 'Discount Approval', icon: Percent, component: DiscountApprovalSystem },
     { id: 'reports', name: 'Sales Reports', icon: BarChart3, component: SalesReports },
-    { id: 'tasks', name: 'Task Management', icon: CheckSquare, component: TaskManagement },
-    { id: 'knowledge-base', name: 'Knowledge Base', icon: Book, component: KnowledgeBase },
-    { id: 'analytics', name: 'Advanced Analytics', icon: BarChart3, component: AdvancedAnalytics },
     { 
       id: 'kpi', 
       name: 'KPI', 
@@ -147,6 +144,9 @@ function AppContent() {
         { id: 'kpi-ai-enhanced', name: 'KPI Target', component: KPIAIEnhanced }
       ]
     },
+    { id: 'tasks', name: 'Task Management', icon: CheckSquare, component: TaskManagement },
+    { id: 'knowledge-base', name: 'Knowledge Base', icon: Book, component: KnowledgeBase },
+    { id: 'analytics', name: 'Advanced Analytics', icon: BarChart3, component: AdvancedAnalytics },
     { id: 'admin', name: 'Admin System', icon: Settings, component: AdminSystem }
   ];
 
