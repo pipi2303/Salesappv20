@@ -136,6 +136,7 @@ function AppContent() {
     { id: 'reports', name: 'Sales Reports', icon: BarChart3, component: SalesReports },
     { id: 'tasks', name: 'Task Management', icon: CheckSquare, component: TaskManagement },
     { id: 'knowledge-base', name: 'Knowledge Base', icon: Book, component: KnowledgeBase },
+    { id: 'analytics', name: 'Advanced Analytics', icon: BarChart3, component: AdvancedAnalytics },
     { 
       id: 'kpi', 
       name: 'KPI', 
@@ -144,16 +145,6 @@ function AppContent() {
         { id: 'kpi-tracker', name: 'KPI Tracker', component: PerformanceHub },
         { id: 'leaderboard', name: 'Leaderboard', component: SalesLeaderboard },
         { id: 'kpi-ai-enhanced', name: 'KPI Target', component: KPIAIEnhanced }
-      ]
-    },
-    { 
-      id: 'advanced', 
-      name: 'Advanced', 
-      icon: Database,
-      subMenus: [
-        { id: 'analytics', name: 'Advanced Analytics', component: AdvancedAnalytics },
-        { id: 'report-builder', name: 'Report Builder', component: CustomReportBuilder },
-        { id: 'integrations', name: 'Integration Hub', component: IntegrationHub }
       ]
     },
     { id: 'admin', name: 'Admin System', icon: Settings, component: AdminSystem }
