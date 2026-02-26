@@ -28,9 +28,10 @@ interface OpportunityListProps {
   opportunities: Opportunity[];
   onEdit: (opportunity: Opportunity) => void;
   onDelete: (id: string) => void;
+  onView: (opportunity: Opportunity) => void;
 }
 
-export function OpportunityList({ opportunities, onEdit, onDelete }: OpportunityListProps) {
+export function OpportunityList({ opportunities, onEdit, onDelete, onView }: OpportunityListProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [stageFilter, setStageFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('closeDate');
@@ -298,6 +299,18 @@ export function OpportunityList({ opportunities, onEdit, onDelete }: Opportunity
                       >
                         <Trash2 className="w-4 h-4 mr-1" />
                         Delete
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent card click
+                          onView(opportunity);
+                        }}
+                        className="hover:bg-gray-50 hover:text-gray-600"
+                      >
+                        <User className="w-4 h-4 mr-1" />
+                        View
                       </Button>
                     </div>
                   </div>

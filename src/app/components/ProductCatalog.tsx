@@ -723,3 +723,5 @@ export function ProductCatalog() {
     </div>
   );
 }
+
+export default ProductCatalog;

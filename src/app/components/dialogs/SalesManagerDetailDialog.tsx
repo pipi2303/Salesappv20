@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Calendar, DollarSign, Target, TrendingUp, BarChart3, Users, StickyNote, Trash2, Send } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
+import { Badge } from '@/app/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/app/components/ui/dialog';
 import { AIFeaturesSection } from '@/app/components/AIFeaturesSection';
 import { formatCurrency } from '@/utils/formatters';

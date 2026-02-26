@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings, Menu, X, Bell, User, LogOut, Database, Trophy, Target, ChevronDown, ChevronRight, TrendingUp, History, Percent, Mail, CheckSquare, DollarSign, MapPin, Book, PieChart, Link2 } from 'lucide-react';
+import { Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings, Menu, X, Bell, User, LogOut, Database, Trophy, Target, ChevronDown, ChevronRight, TrendingUp, History, Percent, Mail, CheckSquare, DollarSign, MapPin, Book, PieChart, Link2, Clipboard } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Toaster } from '@/app/components/ui/sonner';
 import { Home } from '@/app/components/Home';
@@ -7,7 +7,7 @@ import { Home } from '@/app/components/Home';
 const LeadManagement = lazy(() => import('@/app/components/LeadManagement').then(m => ({ default: m.LeadManagement })));
 const OpportunityManagement = lazy(() => import('@/app/components/OpportunityManagement').then(m => ({ default: m.OpportunityManagement })));
 const SalesTeam = lazy(() => import('@/app/components/SalesTeam').then(m => ({ default: m.SalesTeam })));
-const ProductCatalog = lazy(() => import('@/app/components/ProductCatalog').then(m => ({ default: m.ProductCatalog })));
+const ProductCatalog = lazy(() => import('@/app/components/ProductCatalog'));
 const ProposalHistory = lazy(() => import('@/app/components/ProposalHistory').then(m => ({ default: m.ProposalHistory })));
 const DemoScheduler = lazy(() => import('@/app/components/DemoScheduler').then(m => ({ default: m.DemoScheduler })));
 const Contract = lazy(() => import('@/app/components/Contract').then(m => ({ default: m.Contract })));
@@ -27,6 +27,7 @@ const TerritoryManagement = lazy(() => import('@/app/components/TerritoryManagem
 const KnowledgeBase = lazy(() => import('@/app/components/KnowledgeBase').then(m => ({ default: m.KnowledgeBase })));
 const CustomReportBuilder = lazy(() => import('@/app/components/CustomReportBuilder').then(m => ({ default: m.CustomReportBuilder })));
 const IntegrationHub = lazy(() => import('@/app/components/IntegrationHub').then(m => ({ default: m.IntegrationHub })));
+const ConfigurePriceQuote = lazy(() => import('@/app/components/ConfigurePriceQuote').then(m => ({ default: m.ConfigurePriceQuote })));
 import { AIAssistant } from '@/app/components/AIAssistant';
 import { AIChatAssistant } from '@/app/components/ai/AIChatAssistant';
 import { AppNotifications } from '@/app/components/AppNotifications';
@@ -126,6 +127,7 @@ function AppContent() {
     { id: 'opportunities', name: 'Opportunity Management', icon: TrendingUp, component: OpportunityManagement },
     { id: 'team', name: 'CRM', icon: Users, component: SalesTeam },
     { id: 'products', name: 'Product Catalog', icon: Package, component: ProductCatalog },
+    { id: 'cpq', name: 'Configure, Propose & Quote', icon: Clipboard, component: ConfigurePriceQuote },
     { id: 'quotations', name: 'Quotation Management', icon: FileText, component: QuotationManagement },
     { id: 'demos', name: 'Demo Scheduler', icon: Calendar, component: DemoScheduler },
     { id: 'contracts', name: 'Contract', icon: FileText, component: Contract },
