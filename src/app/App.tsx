@@ -1,15 +1,13 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings, Menu, X, Bell, User, LogOut, Database, Trophy, Target, ChevronDown, ChevronRight, TrendingUp, History, Percent, Mail, CheckSquare, DollarSign, MapPin, Book, PieChart, Link2, Clipboard } from 'lucide-react';
+import { Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings, Menu, X, User, LogOut, Target, ChevronDown, ChevronRight, TrendingUp, Percent, CheckSquare, Book, Clipboard } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Toaster } from '@/app/components/ui/sonner';
 import { Home } from '@/app/components/Home';
 // Lazy load heavy components
-const LeadManagement = lazy(() => import('@/app/components/LeadManagement').then(m => ({ default: m.LeadManagement })));
 const OpportunityManagement = lazy(() => import('@/app/components/OpportunityManagement').then(m => ({ default: m.OpportunityManagement })));
 const SalesTeam = lazy(() => import('@/app/components/SalesTeam').then(m => ({ default: m.SalesTeam })));
 const SalesRepresentative = lazy(() => import('@/app/components/SalesRepresentative').then(m => ({ default: m.default })));
 const ProductCatalog = lazy(() => import('@/app/components/ProductCatalog'));
-const ProposalHistory = lazy(() => import('@/app/components/ProposalHistory').then(m => ({ default: m.ProposalHistory })));
 const DemoScheduler = lazy(() => import('@/app/components/DemoScheduler').then(m => ({ default: m.DemoScheduler })));
 const Contract = lazy(() => import('@/app/components/Contract').then(m => ({ default: m.Contract })));
 const SalesReports = lazy(() => import('@/app/components/SalesReports').then(m => ({ default: m.SalesReports })));
@@ -22,11 +20,7 @@ const KPIAIEnhanced = lazy(() => import('@/app/components/KPIAIEnhanced').then(m
 const DiscountApprovalSystem = lazy(() => import('@/app/components/DiscountApprovalSystem').then(m => ({ default: m.DiscountApprovalSystem })));
 const QuotationManagement = lazy(() => import('@/app/components/QuotationManagement').then(m => ({ default: m.QuotationManagement })));
 const TaskManagement = lazy(() => import('@/app/components/TaskManagement').then(m => ({ default: m.TaskManagement })));
-const CommissionCalculator = lazy(() => import('@/app/components/CommissionCalculator').then(m => ({ default: m.CommissionCalculator })));
-const TerritoryManagement = lazy(() => import('@/app/components/TerritoryManagement').then(m => ({ default: m.TerritoryManagement })));
 const KnowledgeBase = lazy(() => import('@/app/components/KnowledgeBase').then(m => ({ default: m.KnowledgeBase })));
-const CustomReportBuilder = lazy(() => import('@/app/components/CustomReportBuilder').then(m => ({ default: m.CustomReportBuilder })));
-const IntegrationHub = lazy(() => import('@/app/components/IntegrationHub').then(m => ({ default: m.IntegrationHub })));
 const ConfigurePriceQuote = lazy(() => import('@/app/components/ConfigurePriceQuote').then(m => ({ default: m.ConfigurePriceQuote })));
 import { AIAssistant } from '@/app/components/AIAssistant';
 import { AIChatAssistant } from '@/app/components/ai/AIChatAssistant';
@@ -36,7 +30,6 @@ import { LoadingScreen } from '@/app/components/LoadingScreen';
 import { ComponentLoader } from '@/app/components/ComponentLoader';
 import { Login } from '@/app/components/Login';
 import { AuthProvider, useAuth } from '@/app/contexts/AuthContext';
-import { initializeDatabase, isDataInitialized } from '@/utils/initializeDatabase';
 import { initializeAllData } from '@/utils/initializeAllData';
 import '@/utils/demoDebug'; // Load debug utilities
 import { toast } from 'sonner';
@@ -146,7 +139,7 @@ function AppContent() {
     },
     { id: 'tasks', name: 'Task Management', icon: CheckSquare, component: TaskManagement },
     { id: 'knowledge-base', name: 'Knowledge Base', icon: Book, component: KnowledgeBase },
-    { id: 'analytics', name: 'Advanced Analytics', icon: BarChart3, component: AdvancedAnalytics },
+    { id: 'analytics', name: 'Analytics', icon: BarChart3, component: AdvancedAnalytics },
     { id: 'admin', name: 'Admin System', icon: Settings, component: AdminSystem }
   ];
 

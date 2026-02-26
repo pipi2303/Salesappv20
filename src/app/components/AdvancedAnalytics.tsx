@@ -79,7 +79,7 @@ export function AdvancedAnalytics() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
             <BarChart3 className="h-8 w-8" />
-            Advanced Analytics
+            Analytics
           </h1>
           <p className="text-gray-500 mt-1">Analisis mendalam performa penjualan dan bisnis</p>
         </div>
