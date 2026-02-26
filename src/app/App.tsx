@@ -7,6 +7,7 @@ import { Home } from '@/app/components/Home';
 const LeadManagement = lazy(() => import('@/app/components/LeadManagement').then(m => ({ default: m.LeadManagement })));
 const OpportunityManagement = lazy(() => import('@/app/components/OpportunityManagement').then(m => ({ default: m.OpportunityManagement })));
 const SalesTeam = lazy(() => import('@/app/components/SalesTeam').then(m => ({ default: m.SalesTeam })));
+const SalesRepresentative = lazy(() => import('@/app/components/SalesRepresentative'));
 const ProductCatalog = lazy(() => import('@/app/components/ProductCatalog'));
 const ProposalHistory = lazy(() => import('@/app/components/ProposalHistory').then(m => ({ default: m.ProposalHistory })));
 const DemoScheduler = lazy(() => import('@/app/components/DemoScheduler').then(m => ({ default: m.DemoScheduler })));
@@ -21,7 +22,6 @@ const KPIAIEnhanced = lazy(() => import('@/app/components/KPIAIEnhanced').then(m
 const DiscountApprovalSystem = lazy(() => import('@/app/components/DiscountApprovalSystem').then(m => ({ default: m.DiscountApprovalSystem })));
 const QuotationManagement = lazy(() => import('@/app/components/QuotationManagement').then(m => ({ default: m.QuotationManagement })));
 const TaskManagement = lazy(() => import('@/app/components/TaskManagement').then(m => ({ default: m.TaskManagement })));
-const EmailCommunicationHub = lazy(() => import('@/app/components/EmailCommunicationHub').then(m => ({ default: m.EmailCommunicationHub })));
 const CommissionCalculator = lazy(() => import('@/app/components/CommissionCalculator').then(m => ({ default: m.CommissionCalculator })));
 const TerritoryManagement = lazy(() => import('@/app/components/TerritoryManagement').then(m => ({ default: m.TerritoryManagement })));
 const KnowledgeBase = lazy(() => import('@/app/components/KnowledgeBase').then(m => ({ default: m.KnowledgeBase })));
@@ -126,6 +126,7 @@ function AppContent() {
     { id: 'home', name: 'Home', icon: HomeIcon, component: Home },
     { id: 'opportunities', name: 'Opportunity Management', icon: TrendingUp, component: OpportunityManagement },
     { id: 'team', name: 'CRM', icon: Users, component: SalesTeam },
+    { id: 'sales-representative', name: 'Sales Representative', icon: Users, component: SalesRepresentative },
     { id: 'products', name: 'Product Catalog', icon: Package, component: ProductCatalog },
     { id: 'cpq', name: 'Configure, Propose & Quote', icon: Clipboard, component: ConfigurePriceQuote },
     { id: 'quotations', name: 'Quotation Management', icon: FileText, component: QuotationManagement },
@@ -133,6 +134,7 @@ function AppContent() {
     { id: 'contracts', name: 'Contract', icon: FileText, component: Contract },
     { id: 'discount-approval', name: 'Discount Approval', icon: Percent, component: DiscountApprovalSystem },
     { id: 'reports', name: 'Sales Reports', icon: BarChart3, component: SalesReports },
+    { id: 'tasks', name: 'Task Management', icon: CheckSquare, component: TaskManagement },
     { id: 'knowledge-base', name: 'Knowledge Base', icon: Book, component: KnowledgeBase },
     { 
       id: 'kpi', 
@@ -142,16 +144,6 @@ function AppContent() {
         { id: 'kpi-tracker', name: 'KPI Tracker', component: PerformanceHub },
         { id: 'leaderboard', name: 'Leaderboard', component: SalesLeaderboard },
         { id: 'kpi-ai-enhanced', name: 'KPI Target', component: KPIAIEnhanced }
-      ]
-    },
-    { 
-      id: 'automation', 
-      name: 'Automation & Tools', 
-      icon: CheckSquare,
-      subMenus: [
-        { id: 'tasks', name: 'Task Management', component: TaskManagement },
-        { id: 'email-hub', name: 'Email Hub', component: EmailCommunicationHub },
-        { id: 'territory', name: 'Territory Management', component: TerritoryManagement }
       ]
     },
     { 

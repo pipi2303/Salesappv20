@@ -53,7 +53,7 @@ interface Karyawan {
 
 export function SalesTeam() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('karyawan');
+  const [activeTab, setActiveTab] = useState('client');
   const [loading, setLoading] = useState(false);
   
   // Search & Filter state
@@ -299,14 +299,7 @@ export function SalesTeam() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 lg:w-[850px] h-14 bg-gray-100/50 p-1">
-          <TabsTrigger value="karyawan" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              <span className="font-bold text-sm">Sales Representative</span>
-            </div>
-            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60">TIM INTERNAL</span>
-          </TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 lg:w-[650px] h-14 bg-gray-100/50 p-1">
           <TabsTrigger value="client" className="flex flex-col gap-0.5 py-1.5 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-emerald-700">
             <div className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
@@ -330,10 +323,10 @@ export function SalesTeam() {
           </TabsTrigger>
         </TabsList>
 
-        {/* KARYAWAN TAB */}
-        <TabsContent value="karyawan" className="space-y-4">
+        {/* KARYAWAN TAB - Removed, now in separate menu */}
+        {/* <TabsContent value="karyawan" className="space-y-4">
           {/* Search & Filter */}
-          <Card>
+          {/* <Card>
             <CardContent className="p-4">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="md:col-span-2">
@@ -495,7 +488,7 @@ export function SalesTeam() {
               ))}
             </div>
           )}
-        </TabsContent>
+        </TabsContent> */}
 
         {/* CLIENT TAB */}
         <TabsContent value="client" className="space-y-4">
