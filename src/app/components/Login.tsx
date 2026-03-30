@@ -37,6 +37,51 @@ const demoAccounts = [
     icon: User,
     color: 'from-green-500 to-teal-600',
     description: 'Sales operations access'
+  },
+  {
+    email: 'rivelino.hasugian@gmail.com',
+    password: 'Rivelin0',
+    name: 'Rivelino Hasugian',
+    role: 'Sales Manager',
+    icon: Users,
+    color: 'from-purple-500 to-indigo-600',
+    description: 'Team management access'
+  },
+  {
+    email: 'nikky@gmail.com',
+    password: 'N1kky',
+    name: 'Nikky',
+    role: 'Sales Representative',
+    icon: User,
+    color: 'from-pink-500 to-rose-600',
+    description: 'Sales operations access'
+  },
+  {
+    email: 'bari@gmail.com',
+    password: 'Bar1',
+    name: 'Bari',
+    role: 'Sales Executive',
+    icon: User,
+    color: 'from-amber-500 to-orange-600',
+    description: 'Sales operations access'
+  },
+  {
+    email: 'andiko@gmail.com',
+    password: 'Andik0',
+    name: 'Andiko',
+    role: 'Sales Representative',
+    icon: User,
+    color: 'from-emerald-500 to-green-600',
+    description: 'Sales operations access'
+  },
+  {
+    email: 'pipi@gmail.com',
+    password: 'estehmanis',
+    name: 'Pipi',
+    role: 'Sales Representative',
+    icon: User,
+    color: 'from-sky-500 to-blue-600',
+    description: 'Sales operations access'
   }
 ];
 
@@ -218,59 +263,6 @@ export function Login({ onLogin }: LoginProps) {
                 )}
               </Button>
             </form>
-
-            {/* Divider */}
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500 font-medium">
-                  Atau gunakan demo account
-                </span>
-              </div>
-            </div>
-
-            {/* Quick Login Demo Accounts */}
-            <div className="space-y-1.5">
-              <p className="text-[10px] text-center text-gray-500 mb-2">
-                Klik salah satu untuk login cepat
-              </p>
-              {demoAccounts.map((account, idx) => {
-                const IconComponent = account.icon;
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => handleQuickLogin(account)}
-                    disabled={isLoading}
-                    className="w-full p-2 border border-gray-200 rounded-md hover:border-[#01544e] hover:bg-[#e6f2f1] transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className={`p-1 rounded-md bg-gradient-to-br ${account.color} shadow-sm`}>
-                        <IconComponent className="h-3 w-3 text-white" />
-                      </div>
-                      <div className="flex-1 text-left">
-                        <p className="text-xs font-semibold text-gray-900 group-hover:text-[#01544e] transition-colors">
-                          {account.name}
-                        </p>
-                        <p className="text-[10px] text-gray-500">{account.role}</p>
-                      </div>
-                      <div className="text-xs text-gray-400 group-hover:text-[#01544e] transition-colors">
-                        <LogIn className="h-3 w-3" />
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Demo Info */}
-            <div className="mt-6 p-4 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-100">
-              <p className="text-xs text-gray-600 text-center">
-                <span className="font-semibold">💡 Info:</span> Aplikasi ini menggunakan data dummy untuk demo. 
-                Semua akun dapat digunakan untuk eksplorasi fitur lengkap.
-              </p>
-            </div>
           </div>
 
           {/* Footer */}
