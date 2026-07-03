@@ -121,11 +121,11 @@ export function TerritoryManagement() {
       {/* Premium Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
         <div>
-          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#01544e] via-[#028076] to-[#01544e] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#013E37] via-[#028076] to-[#013E37] bg-clip-text text-transparent">
             TERRITORY MANAGEMENT
           </h1>
           <p className="text-gray-500 font-medium flex items-center gap-2 mt-2">
-            <MapPin className="h-4 w-4 text-[#01544e]" />
+            <MapPin className="h-4 w-4 text-[#013E37]" />
             Penugasan wilayah geografis, pelacakan performa, dan metrik penetrasi pasar.
           </p>
         </div>
@@ -134,7 +134,7 @@ export function TerritoryManagement() {
             <TrendingUp className="h-4 w-4 mr-2" /> Penetration Report
           </Button>
           <Button 
-            className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 h-11 shadow-lg shadow-[#01544e]/20 transition-all active:scale-95"
+            className="bg-[#013E37] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 h-11 shadow-lg shadow-[#013E37]/20 transition-all active:scale-95"
             onClick={() => setIsAddOpen(true)}
           >
             <Plus className="h-4 w-4 mr-2" /> Add New Territory
@@ -143,10 +143,10 @@ export function TerritoryManagement() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#013E37]/30 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
             <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Territories</CardTitle>
-            <MapPin className="h-4 w-4 text-[#01544e]" />
+            <MapPin className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
             <div className="text-3xl font-black text-gray-900">{stats.total}</div>
@@ -154,18 +154,18 @@ export function TerritoryManagement() {
           </CardContent>
         </Card>
 
-        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#013E37]/30 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
             <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Revenue</CardTitle>
-            <TrendingUp className="h-4 w-4 text-[#01544e]" />
+            <TrendingUp className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-[#01544e]">{formatCurrency(stats.totalRevenue)}</div>
+            <div className="text-3xl font-black text-[#013E37]">{formatCurrency(stats.totalRevenue)}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">YTD performance</p>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#013E37]/30 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
             <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Target Achievement</CardTitle>
             <Target className="h-4 w-4 text-emerald-500" />
@@ -178,7 +178,7 @@ export function TerritoryManagement() {
           </CardContent>
         </Card>
 
-        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#013E37]/30 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
             <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Avg Coverage</CardTitle>
             <MapPin className="h-4 w-4 text-amber-500" />
@@ -189,13 +189,13 @@ export function TerritoryManagement() {
           </CardContent>
         </Card>
 
-        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#013E37]/30 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
             <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Top Performer</CardTitle>
-            <Award className="h-4 w-4 text-purple-500" />
+            <Award className="h-4 w-4 text-[#EEF7F5]0" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-purple-600 truncate">{stats.topPerformer.name}</div>
+            <div className="text-3xl font-black text-[#013E37] truncate">{stats.topPerformer.name}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">{stats.topPerformer.achievement.toFixed(1)}% Attainment</p>
           </CardContent>
         </Card>
@@ -205,21 +205,21 @@ export function TerritoryManagement() {
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-3">
           <TabsTrigger 
             value="territories" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Wilayah</span>
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Territories</span>
           </TabsTrigger>
           <TabsTrigger 
             value="analytics" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Analitik</span>
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Market Insights</span>
           </TabsTrigger>
           <TabsTrigger 
             value="map" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Visual Map</span>
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Geospatial</span>
@@ -241,18 +241,18 @@ export function TerritoryManagement() {
 
           <div className="grid gap-6 md:grid-cols-2">
             {territories.map((territory) => (
-              <Card key={territory.id} className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
+              <Card key={territory.id} className="group hover:border-[#013E37]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
                 <CardHeader className="pb-4 bg-gray-50/30">
                   <div className="flex items-start justify-between">
                     <div>
-                      <CardTitle className="text-xl font-black text-gray-900 group-hover:text-[#01544e] transition-colors flex items-center gap-2 uppercase tracking-tight">
-                        <MapPin className="h-5 w-5 text-[#01544e]" />
+                      <CardTitle className="text-xl font-black text-gray-900 group-hover:text-[#013E37] transition-colors flex items-center gap-2 uppercase tracking-tight">
+                        <MapPin className="h-5 w-5 text-[#013E37]" />
                         {territory.name}
                       </CardTitle>
                       <CardDescription className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">REGION: {territory.region}</CardDescription>
                     </div>
                     <div className="flex flex-col items-end gap-1">
-                      <Badge className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 ${territory.achievement >= 100 ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-[#01544e] hover:bg-[#028076]'}`}>
+                      <Badge className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 ${territory.achievement >= 100 ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-[#013E37] hover:bg-[#028076]'}`}>
                         {territory.achievement.toFixed(1)}% ATTAINMENT
                       </Badge>
                     </div>
@@ -260,7 +260,7 @@ export function TerritoryManagement() {
                 </CardHeader>
                 <CardContent className="p-6 space-y-6">
                   <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
-                    <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center text-white text-xs font-black">
+                    <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center text-white text-xs font-black">
                       {territory.assignedTo.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
@@ -277,7 +277,7 @@ export function TerritoryManagement() {
                         <span className="text-[9px] font-bold text-gray-400 uppercase">Leads</span>
                       </div>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-lg font-black text-[#01544e]">{territory.opportunities}</span>
+                        <span className="text-lg font-black text-[#013E37]">{territory.opportunities}</span>
                         <span className="text-[9px] font-bold text-gray-400 uppercase">Opportunities</span>
                       </div>
                     </div>
@@ -296,7 +296,7 @@ export function TerritoryManagement() {
                     <div className="flex justify-between items-end mb-2">
                       <div>
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Revenue Achievement</p>
-                        <p className="text-lg font-black text-[#01544e]">{formatCurrency(territory.revenue)}</p>
+                        <p className="text-lg font-black text-[#013E37]">{formatCurrency(territory.revenue)}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-[9px] font-bold text-gray-400 uppercase">Quota: {formatCurrency(territory.target)}</p>
@@ -304,7 +304,7 @@ export function TerritoryManagement() {
                     </div>
                     <div className="h-3 bg-gray-100 rounded-full overflow-hidden p-0.5 border border-gray-100 shadow-inner">
                       <div 
-                        className={`h-full rounded-full transition-all duration-1000 ${territory.achievement >= 100 ? 'bg-gradient-to-r from-emerald-400 to-emerald-600' : 'bg-gradient-to-r from-[#01544e] to-[#028076]'}`} 
+                        className={`h-full rounded-full transition-all duration-1000 ${territory.achievement >= 100 ? 'bg-gradient-to-r from-emerald-400 to-emerald-600' : 'bg-gradient-to-r from-[#013E37] to-[#028076]'}`} 
                         style={{ width: `${Math.min(territory.achievement, 100)}%` }} 
                       />
                     </div>
@@ -336,7 +336,7 @@ export function TerritoryManagement() {
           <div className="grid gap-6 md:grid-cols-2">
             <Card className="border-none shadow-sm overflow-hidden">
               <CardHeader className="bg-white border-b border-gray-100">
-                <CardTitle className="text-lg font-black text-[#01544e] uppercase tracking-tight">Revenue vs Target</CardTitle>
+                <CardTitle className="text-lg font-black text-[#013E37] uppercase tracking-tight">Revenue vs Target</CardTitle>
                 <CardDescription className="text-xs font-bold uppercase tracking-widest text-gray-400">Perbandingan performa antar wilayah</CardDescription>
               </CardHeader>
               <CardContent className="p-6">
@@ -350,7 +350,7 @@ export function TerritoryManagement() {
                         contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
                         formatter={(value: any) => [formatCurrency(value), 'Value']}
                       />
-                      <Bar dataKey="revenue" fill="#01544e" radius={[4, 4, 0, 0]} name="Actual Revenue" />
+                      <Bar dataKey="revenue" fill="#013E37" radius={[4, 4, 0, 0]} name="Actual Revenue" />
                       <Bar dataKey="target" fill="#e2e8f0" radius={[4, 4, 0, 0]} name="Quota Target" />
                     </BarChart>
                   </ResponsiveContainer>
@@ -360,7 +360,7 @@ export function TerritoryManagement() {
 
             <Card className="border-none shadow-sm overflow-hidden">
               <CardHeader className="bg-white border-b border-gray-100">
-                <CardTitle className="text-lg font-black text-[#01544e] uppercase tracking-tight">Market Concentration</CardTitle>
+                <CardTitle className="text-lg font-black text-[#013E37] uppercase tracking-tight">Market Concentration</CardTitle>
                 <CardDescription className="text-xs font-bold uppercase tracking-widest text-gray-400">Distribusi wilayah berdasarkan regional</CardDescription>
               </CardHeader>
               <CardContent className="p-6">
@@ -377,7 +377,7 @@ export function TerritoryManagement() {
                         dataKey="value"
                       >
                         {regionData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={index === 0 ? '#01544e' : index === 1 ? '#028076' : '#04ac9e'} />
+                          <Cell key={`cell-${index}`} fill={index === 0 ? '#013E37' : index === 1 ? '#028076' : '#04ac9e'} />
                         ))}
                       </Pie>
                       <Tooltip 
@@ -396,7 +396,7 @@ export function TerritoryManagement() {
           <Card className="border-none shadow-sm overflow-hidden min-h-[500px] flex flex-col">
             <CardHeader className="bg-white border-b border-gray-100 flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-lg font-black text-[#01544e] uppercase tracking-tight">Geospatial Intelligence</CardTitle>
+                <CardTitle className="text-lg font-black text-[#013E37] uppercase tracking-tight">Geospatial Intelligence</CardTitle>
                 <CardDescription className="text-xs font-bold uppercase tracking-widest text-gray-400">Visualisasi sebaran wilayah dan kepadatan pasar</CardDescription>
               </div>
               <div className="flex items-center gap-2">
@@ -421,7 +421,7 @@ export function TerritoryManagement() {
             <DialogDescription>Rincian performa dan statistik wilayah</DialogDescription>
           </VisuallyHidden>
           
-          <div className="bg-[#01544e] p-8 text-white">
+          <div className="bg-[#013E37] p-8 text-white">
             <div className="flex justify-between items-start">
               <div>
                 <Badge className="bg-white/20 hover:bg-white/30 text-white border-none font-black text-[10px] uppercase tracking-widest mb-4">
@@ -445,7 +445,7 @@ export function TerritoryManagement() {
             <div className="grid grid-cols-3 gap-6">
               <div className="space-y-1">
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Revenue Actual</p>
-                <p className="text-xl font-black text-[#01544e]">{formatCurrency(selectedTerritory?.revenue || 0)}</p>
+                <p className="text-xl font-black text-[#013E37]">{formatCurrency(selectedTerritory?.revenue || 0)}</p>
               </div>
               <div className="space-y-1">
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Target Quota</p>
@@ -464,10 +464,10 @@ export function TerritoryManagement() {
             <div className="grid grid-cols-2 gap-8">
               <div className="space-y-4">
                 <h4 className="text-xs font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
-                  <Users className="h-4 w-4 text-[#01544e]" /> Team Assignment
+                  <Users className="h-4 w-4 text-[#013E37]" /> Team Assignment
                 </h4>
                 <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                  <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center text-white font-black">
+                  <div className="h-12 w-12 rounded-full bg-[#013E37] flex items-center justify-center text-white font-black">
                     {selectedTerritory?.assignedTo.split(' ').map(n => n[0]).join('')}
                   </div>
                   <div>
@@ -479,7 +479,7 @@ export function TerritoryManagement() {
 
               <div className="space-y-4">
                 <h4 className="text-xs font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
-                  <BarChart3 className="h-4 w-4 text-[#01544e]" /> Pipeline Metrics
+                  <BarChart3 className="h-4 w-4 text-[#013E37]" /> Pipeline Metrics
                 </h4>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
@@ -488,7 +488,7 @@ export function TerritoryManagement() {
                   </div>
                   <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
                     <p className="text-[9px] font-black text-gray-400 uppercase mb-1">Opportunities</p>
-                    <p className="text-lg font-black text-[#01544e]">{selectedTerritory?.opportunities}</p>
+                    <p className="text-lg font-black text-[#013E37]">{selectedTerritory?.opportunities}</p>
                   </div>
                 </div>
               </div>
@@ -496,10 +496,10 @@ export function TerritoryManagement() {
 
             <div className="bg-emerald-50/50 p-6 rounded-2xl border border-emerald-100">
               <div className="flex justify-between items-center mb-4">
-                <h4 className="text-xs font-black uppercase tracking-widest text-[#01544e] flex items-center gap-2">
+                <h4 className="text-xs font-black uppercase tracking-widest text-[#013E37] flex items-center gap-2">
                   <ShieldCheck className="h-4 w-4" /> Market Penetration Status
                 </h4>
-                <Badge className="bg-[#01544e] text-[10px] font-black uppercase">{selectedTerritory?.coverage}% COVERAGE</Badge>
+                <Badge className="bg-[#013E37] text-[10px] font-black uppercase">{selectedTerritory?.coverage}% COVERAGE</Badge>
               </div>
               <div className="h-4 bg-white rounded-full overflow-hidden p-1 border border-emerald-200">
                 <div className="h-full bg-emerald-500 rounded-full transition-all duration-1000" style={{ width: `${selectedTerritory?.coverage}%` }} />
@@ -511,7 +511,7 @@ export function TerritoryManagement() {
             <Button variant="outline" className="font-black uppercase tracking-widest text-[10px] h-11 px-8" onClick={() => setIsDetailOpen(false)}>
               Close Detail
             </Button>
-            <Button className="bg-[#01544e] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-8" onClick={() => {
+            <Button className="bg-[#013E37] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-8" onClick={() => {
               setIsDetailOpen(false);
               setIsEditOpen(true);
             }}>
@@ -609,7 +609,7 @@ export function TerritoryManagement() {
               <Button type="button" variant="outline" className="font-black uppercase tracking-widest text-[10px] h-11 px-6" onClick={() => setIsEditOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" className="bg-[#01544e] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-10 shadow-lg shadow-[#01544e]/20">
+              <Button type="submit" className="bg-[#013E37] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-10 shadow-lg shadow-[#013E37]/20">
                 Save Changes
               </Button>
             </DialogFooter>
@@ -625,7 +625,7 @@ export function TerritoryManagement() {
             <DialogDescription>Masukkan rincian untuk wilayah sales baru</DialogDescription>
           </VisuallyHidden>
 
-          <div className="bg-[#01544e] p-8 text-white">
+          <div className="bg-[#013E37] p-8 text-white">
             <h2 className="text-2xl font-black uppercase tracking-tight flex items-center gap-3">
               <Plus className="h-6 w-6 text-emerald-400" /> 
               New Territory
@@ -710,7 +710,7 @@ export function TerritoryManagement() {
               <Button type="button" variant="outline" className="font-black uppercase tracking-widest text-[10px] h-11 px-6" onClick={() => setIsAddOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" className="bg-[#01544e] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-10 shadow-lg shadow-[#01544e]/20">
+              <Button type="submit" className="bg-[#013E37] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-10 shadow-lg shadow-[#013E37]/20">
                 Create Territory
               </Button>
             </DialogFooter>

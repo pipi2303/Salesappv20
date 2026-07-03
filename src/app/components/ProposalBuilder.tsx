@@ -280,7 +280,7 @@ export function ProposalBuilder({
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="bg-[#01544e] text-white p-6">
+        <div className="bg-[#013E37] text-white p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 bg-white/20 rounded-lg flex items-center justify-center">
@@ -375,7 +375,7 @@ export function ProposalBuilder({
                         <div className="flex-1">
                           <div className="flex items-start justify-between mb-2">
                             <div>
-                              <Badge className="mb-2 bg-indigo-100 text-indigo-800">{item.category}</Badge>
+                              <Badge className="mb-2 bg-[#DFF0EC] text-[#012D29]">{item.category}</Badge>
                               <h4 className="font-bold text-gray-900">{item.name}</h4>
                               <p className="text-sm text-gray-600 mt-1">{item.description}</p>
                             </div>
@@ -417,7 +417,7 @@ export function ProposalBuilder({
                               <p className="font-semibold text-gray-900">
                                 Rp {(item.price / 1000000).toFixed(1)} Jt
                               </p>
-                              <p className="text-lg font-bold text-indigo-600 mt-1">
+                              <p className="text-lg font-bold text-[#013E37] mt-1">
                                 Rp {((item.price * item.quantity) / 1000000).toFixed(1)} Jt
                               </p>
                             </div>
@@ -444,13 +444,13 @@ export function ProposalBuilder({
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="Tambahkan catatan atau syarat & ketentuan..."
-                    className="w-full h-32 p-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full h-32 p-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#EEF7F5]0"
                   />
                 </CardContent>
               </Card>
 
               {/* Summary */}
-              <Card className="bg-gradient-to-br from-indigo-50 to-purple-50">
+              <Card className="bg-gradient-to-br bg-[#EEF7F5]">
                 <CardHeader>
                   <CardTitle className="text-lg">Ringkasan Biaya</CardTitle>
                 </CardHeader>
@@ -490,7 +490,7 @@ export function ProposalBuilder({
                   <div className="border-t pt-3 mt-3">
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-gray-900">Total</span>
-                      <span className="text-2xl font-bold text-[#01544e]">
+                      <span className="text-2xl font-bold text-[#013E37]">
                         Rp {(total / 1000000000).toFixed(2)} M
                       </span>
                     </div>
@@ -515,7 +515,7 @@ export function ProposalBuilder({
               </Button>
               <Button
                 onClick={handleSendProposal}
-                className="flex-1 bg-[#01544e] hover:bg-[#023d39] text-white gap-2"
+                className="flex-1 bg-[#013E37] hover:bg-[#025C52] text-white gap-2"
               >
                 <Send className="h-4 w-4" />
                 Kirim Proposal
@@ -546,7 +546,7 @@ export function ProposalFloatingButton({ itemCount, onClick }: ProposalFloatingB
           console.log('Floating button clicked!');
           onClick();
         }}
-        className="relative bg-[#01544e] hover:bg-[#023d39] text-white rounded-full p-4 shadow-2xl hover:scale-110 transition-all group cursor-pointer"
+        className="relative bg-[#013E37] hover:bg-[#025C52] text-white rounded-full p-4 shadow-2xl hover:scale-110 transition-all group cursor-pointer"
         style={{ pointerEvents: 'auto' }}
       >
         <FileText className="h-6 w-6" />

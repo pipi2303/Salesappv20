@@ -278,7 +278,7 @@ export function ConfigurePriceQuote() {
         </div>
         <Dialog open={isCreateQuoteOpen} onOpenChange={setIsCreateQuoteOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-[#01544e] hover:bg-[#013d38] text-white">
+            <Button className="bg-[#013E37] hover:bg-[#013d38] text-white">
               <Plus className="h-4 w-4 mr-2" />
               Create New Quote
             </Button>
@@ -343,7 +343,7 @@ export function ConfigurePriceQuote() {
                       <div className="pt-2 border-t">
                         <div className="flex items-center justify-between font-bold text-lg">
                           <span>Total Amount</span>
-                          <span className="text-[#01544e]">{formatCurrency(calculateTotal())}</span>
+                          <span className="text-[#013E37]">{formatCurrency(calculateTotal())}</span>
                         </div>
                       </div>
                     </div>
@@ -365,7 +365,7 @@ export function ConfigurePriceQuote() {
                 <Button type="button" variant="outline" onClick={() => setIsCreateQuoteOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" className="bg-[#01544e] hover:bg-[#013d38]" disabled={selectedProducts.length === 0}>
+                <Button type="submit" className="bg-[#013E37] hover:bg-[#013d38]" disabled={selectedProducts.length === 0}>
                   Create Quote
                 </Button>
               </div>
@@ -377,15 +377,15 @@ export function ConfigurePriceQuote() {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 bg-gray-100">
-          <TabsTrigger value="configure" className="data-[state=active]:bg-[#01544e] data-[state=active]:text-white">
+          <TabsTrigger value="configure" className="data-[state=active]:bg-[#013E37] data-[state=active]:text-white">
             <Settings className="h-4 w-4 mr-2" />
             Configure
           </TabsTrigger>
-          <TabsTrigger value="propose" className="data-[state=active]:bg-[#01544e] data-[state=active]:text-white">
+          <TabsTrigger value="propose" className="data-[state=active]:bg-[#013E37] data-[state=active]:text-white">
             <FileText className="h-4 w-4 mr-2" />
             Propose
           </TabsTrigger>
-          <TabsTrigger value="quote" className="data-[state=active]:bg-[#01544e] data-[state=active]:text-white">
+          <TabsTrigger value="quote" className="data-[state=active]:bg-[#013E37] data-[state=active]:text-white">
             <DollarSign className="h-4 w-4 mr-2" />
             Quote
           </TabsTrigger>
@@ -417,10 +417,10 @@ export function ConfigurePriceQuote() {
               <div className="space-y-4">
                 {/* Selected Products Summary */}
                 {selectedProducts.length > 0 && (
-                  <div className="bg-[#e6f2f1] border-2 border-[#01544e] rounded-lg p-4">
+                  <div className="bg-[#EEF7F5] border-2 border-[#013E37] rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-semibold text-[#01544e]">Current Configuration</h3>
-                      <Badge className="bg-[#01544e]">{selectedProducts.length} Products</Badge>
+                      <h3 className="font-semibold text-[#013E37]">Current Configuration</h3>
+                      <Badge className="bg-[#013E37]">{selectedProducts.length} Products</Badge>
                     </div>
                     <div className="space-y-2">
                       {selectedProducts.map(item => {
@@ -453,9 +453,9 @@ export function ConfigurePriceQuote() {
                           </div>
                         );
                       })}
-                      <div className="pt-3 border-t border-[#01544e] flex items-center justify-between">
+                      <div className="pt-3 border-t border-[#013E37] flex items-center justify-between">
                         <span className="font-bold text-lg">Total Configuration Value</span>
-                        <span className="font-bold text-xl text-[#01544e]">{formatCurrency(calculateTotal())}</span>
+                        <span className="font-bold text-xl text-[#013E37]">{formatCurrency(calculateTotal())}</span>
                       </div>
                     </div>
                   </div>
@@ -478,7 +478,7 @@ export function ConfigurePriceQuote() {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Base Price</p>
-                            <p className="text-2xl font-bold text-[#01544e]">{formatCurrency(product.basePrice)}</p>
+                            <p className="text-2xl font-bold text-[#013E37]">{formatCurrency(product.basePrice)}</p>
                           </div>
                           <div className="text-right">
                             <p className="text-sm text-gray-600">Stock</p>
@@ -499,7 +499,7 @@ export function ConfigurePriceQuote() {
 
                         <Button
                           onClick={() => addProductToConfiguration(product.id)}
-                          className="w-full bg-[#01544e] hover:bg-[#013d38]"
+                          className="w-full bg-[#013E37] hover:bg-[#013d38]"
                         >
                           <Plus className="h-4 w-4 mr-2" />
                           Add to Configuration
@@ -528,7 +528,7 @@ export function ConfigurePriceQuote() {
                   <p className="text-gray-600 mb-6">
                     Create professional proposals based on your product configurations
                   </p>
-                  <Button className="bg-[#01544e] hover:bg-[#013d38]">
+                  <Button className="bg-[#013E37] hover:bg-[#013d38]">
                     <Plus className="h-4 w-4 mr-2" />
                     Create Proposal
                   </Button>
@@ -560,8 +560,8 @@ export function ConfigurePriceQuote() {
                   <Card>
                     <CardContent className="pt-6">
                       <div className="text-center">
-                        <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-3">
-                          <Users className="h-6 w-6 text-purple-600" />
+                        <div className="h-12 w-12 rounded-full bg-[#DFF0EC] flex items-center justify-center mx-auto mb-3">
+                          <Users className="h-6 w-6 text-[#013E37]" />
                         </div>
                         <h4 className="font-semibold mb-1">Collaboration</h4>
                         <p className="text-sm text-gray-600">Team collaboration</p>
@@ -738,7 +738,7 @@ export function ConfigurePriceQuote() {
               <div className="border-t pt-4">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-semibold">Quote Summary</h4>
-                  <Badge className="bg-[#01544e]">
+                  <Badge className="bg-[#013E37]">
                     Total: {formatCurrency(selectedQuote.totalAmount)}
                   </Badge>
                 </div>
@@ -755,7 +755,7 @@ export function ConfigurePriceQuote() {
                 <Button variant="outline" onClick={() => setIsViewQuoteOpen(false)}>
                   Close
                 </Button>
-                <Button className="bg-[#01544e] hover:bg-[#013d38]">
+                <Button className="bg-[#013E37] hover:bg-[#013d38]">
                   <Download className="h-4 w-4 mr-2" />
                   Download PDF
                 </Button>

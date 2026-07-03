@@ -17,7 +17,7 @@ export function DemoAdvancedInfo({ demo }: DemoAdvancedInfoProps) {
     <>
       {/* SECTION 5: Attendees (if exists) */}
       {demo.attendees && demo.attendees.length > 0 && (
-        <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl border border-cyan-100 overflow-hidden">
+        <div className="bg-gradient-to-br from-[#EEF7F5] to-blue-50 rounded-xl border border-cyan-100 overflow-hidden">
           <div className="px-5 py-3.5 bg-cyan-100/50 border-b border-cyan-200">
             <div className="flex items-center gap-3">
               <Users className="w-5 h-5 text-cyan-600" />
@@ -34,7 +34,7 @@ export function DemoAdvancedInfo({ demo }: DemoAdvancedInfoProps) {
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                       attendee.type === 'internal' 
-                        ? 'bg-gradient-to-br from-blue-500 to-indigo-500' 
+                        ? 'bg-gradient-to-br from-[#013E37] to-[#025C52]' 
                         : 'bg-gradient-to-br from-green-500 to-emerald-500'
                     }`}>
                       {attendee.type === 'internal' ? (
@@ -81,10 +81,10 @@ export function DemoAdvancedInfo({ demo }: DemoAdvancedInfoProps) {
 
       {/* SECTION 6: Resources Booked (if exists) */}
       {demo.resources && demo.resources.length > 0 && (
-        <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl border border-violet-100 overflow-hidden">
-          <div className="px-5 py-3.5 bg-violet-100/50 border-b border-violet-200">
+        <div className="bg-gradient-to-br bg-[#EEF7F5] rounded-xl border border-[#DFF0EC] overflow-hidden">
+          <div className="px-5 py-3.5 bg-[#DFF0EC]/50 border-b border-[#C3DDD9]">
             <div className="flex items-center gap-3">
-              <DoorOpen className="w-5 h-5 text-violet-600" />
+              <DoorOpen className="w-5 h-5 text-[#013E37]" />
               <span className="font-semibold text-gray-900">Resources Booked ({demo.resources.length})</span>
             </div>
           </div>
@@ -97,10 +97,10 @@ export function DemoAdvancedInfo({ demo }: DemoAdvancedInfoProps) {
                 >
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                     resource.type === 'room' 
-                      ? 'bg-gradient-to-br from-purple-500 to-pink-500' 
+                      ? 'bg-gradient-to-br from-[#013E37] to-[#025C52]' 
                       : resource.type === 'equipment'
                       ? 'bg-gradient-to-br from-orange-500 to-red-500'
-                      : 'bg-gradient-to-br from-cyan-500 to-blue-500'
+                      : 'bg-gradient-to-br from-[#013E37] to-blue-500'
                   }`}>
                     {resource.type === 'room' && <DoorOpen className="w-5 h-5 text-white" />}
                     {resource.type === 'equipment' && <Laptop className="w-5 h-5 text-white" />}
@@ -110,7 +110,7 @@ export function DemoAdvancedInfo({ demo }: DemoAdvancedInfoProps) {
                     <p className="text-sm font-semibold text-gray-900">{resource.name}</p>
                     <Badge className={`text-xs mt-1 ${
                       resource.type === 'room' 
-                        ? 'bg-purple-100 text-purple-800' 
+                        ? 'bg-[#DFF0EC] text-[#012D29]' 
                         : resource.type === 'equipment'
                         ? 'bg-orange-100 text-orange-800'
                         : 'bg-cyan-100 text-cyan-800'
@@ -141,10 +141,10 @@ export function DemoAdvancedInfo({ demo }: DemoAdvancedInfoProps) {
                 <p className="text-2xl font-bold text-blue-900">{demo.bufferTime.before}</p>
                 <p className="text-xs text-blue-700">minutes before</p>
               </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg border border-purple-200">
-                <p className="text-xs font-medium text-purple-600 mb-1">DEMO DURATION</p>
-                <p className="text-2xl font-bold text-purple-900">{demo.duration}</p>
-                <p className="text-xs text-purple-700">minutes</p>
+              <div className="text-center p-4 bg-[#EEF7F5] rounded-lg border border-[#C3DDD9]">
+                <p className="text-xs font-medium text-[#013E37] mb-1">DEMO DURATION</p>
+                <p className="text-2xl font-bold text-[#012D29]">{demo.duration}</p>
+                <p className="text-xs text-[#013E37]">minutes</p>
               </div>
               <div className="text-center p-4 bg-green-50 rounded-lg border border-green-200">
                 <p className="text-xs font-medium text-green-600 mb-1">CLEANUP TIME</p>
@@ -160,7 +160,7 @@ export function DemoAdvancedInfo({ demo }: DemoAdvancedInfoProps) {
                 <div className="flex-none w-20 h-8 bg-blue-200 rounded flex items-center justify-center">
                   <span className="text-xs font-semibold text-blue-900">{demo.bufferTime.before}m</span>
                 </div>
-                <div className="flex-1 h-8 bg-purple-500 rounded flex items-center justify-center">
+                <div className="flex-1 h-8 bg-[#EEF7F5]0 rounded flex items-center justify-center">
                   <span className="text-xs font-semibold text-white">DEMO {demo.duration}m</span>
                 </div>
                 <div className="flex-none w-20 h-8 bg-green-200 rounded flex items-center justify-center">

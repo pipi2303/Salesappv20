@@ -166,7 +166,7 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="!max-w-[950px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
         {/* HEADER */}
-        <DialogHeader className="relative bg-[#01544e] text-white px-6 py-5 space-y-0 flex-shrink-0">
+        <DialogHeader className="relative bg-[#013E37] text-white px-6 py-5 space-y-0 flex-shrink-0">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors z-10"
@@ -208,10 +208,10 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
 
         {/* QUICK INFO CARDS */}
         {contract && (
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 px-6 py-4 grid grid-cols-3 gap-4 border-b border-indigo-100">
+          <div className="bg-gradient-to-br bg-[#EEF7F5] px-6 py-4 grid grid-cols-3 gap-4 border-b border-[#DFF0EC]">
             <div className="bg-white rounded-lg p-3 flex items-center gap-3 shadow-sm">
-              <div className="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-indigo-600" />
+              <div className="w-10 h-10 rounded-lg bg-[#DFF0EC] flex items-center justify-center">
+                <DollarSign className="w-5 h-5 text-[#013E37]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500">Nilai Kontrak</p>
@@ -219,8 +219,8 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
               </div>
             </div>
             <div className="bg-white rounded-lg p-3 flex items-center gap-3 shadow-sm">
-              <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-lg bg-[#DFF0EC] flex items-center justify-center">
+                <Calendar className="w-5 h-5 text-[#013E37]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500">Durasi</p>
@@ -244,22 +244,22 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
           <div className="px-6 py-5 space-y-4 overflow-y-auto flex-1">
             
             {/* SECTION 1: Informasi Dasar */}
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl border border-indigo-100 overflow-hidden">
+            <div className="bg-gradient-to-br bg-[#EEF7F5] rounded-xl border border-[#DFF0EC] overflow-hidden">
               <button
                 type="button"
                 onClick={() => toggleSection('basicInfo')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-indigo-100/50 hover:bg-indigo-100 transition-colors"
+                className="w-full flex items-center justify-between px-5 py-3.5 bg-[#DFF0EC]/50 hover:bg-[#DFF0EC] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[#013E37] flex items-center justify-center">
                     <FileText className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-indigo-900">Informasi Dasar Kontrak</h3>
+                  <h3 className="text-base font-bold text-[#012D29]">Informasi Dasar Kontrak</h3>
                 </div>
                 {expandedSections.basicInfo ? (
-                  <ChevronUp className="w-5 h-5 text-indigo-600" />
+                  <ChevronUp className="w-5 h-5 text-[#013E37]" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-indigo-600" />
+                  <ChevronDown className="w-5 h-5 text-[#013E37]" />
                 )}
               </button>
               
@@ -275,7 +275,7 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
                       onChange={handleChange}
                       required
                       placeholder="CTR-2026-001"
-                      className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -287,7 +287,7 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
                       value={formData.status}
                       onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as any }))}
                     >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                      <SelectTrigger className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0">
                         <SelectValue placeholder="Pilih status" />
                       </SelectTrigger>
                       <SelectContent>
@@ -307,7 +307,7 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
                       value={formData.product}
                       onChange={handleChange}
                       placeholder="Nama produk atau layanan"
-                      className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
                 </div>
@@ -315,7 +315,7 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
             </div>
 
             {/* SECTION 2: Informasi Client */}
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-blue-50 to-[#EEF7F5] rounded-xl border border-blue-100 overflow-hidden">
               <button
                 type="button"
                 onClick={() => toggleSection('clientInfo')}
@@ -427,22 +427,22 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
             </div>
 
             {/* SECTION 4: Timeline & Periode */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-xl border border-[#DFF0EC] overflow-hidden">
               <button
                 type="button"
                 onClick={() => toggleSection('timeline')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-purple-100/50 hover:bg-purple-100 transition-colors"
+                className="w-full flex items-center justify-between px-5 py-3.5 bg-[#DFF0EC]/50 hover:bg-[#DFF0EC] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[#013E37] flex items-center justify-center">
                     <Calendar className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-purple-900">Timeline & Periode Kontrak</h3>
+                  <h3 className="text-base font-bold text-[#012D29]">Timeline & Periode Kontrak</h3>
                 </div>
                 {expandedSections.timeline ? (
-                  <ChevronUp className="w-5 h-5 text-purple-600" />
+                  <ChevronUp className="w-5 h-5 text-[#013E37]" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-purple-600" />
+                  <ChevronDown className="w-5 h-5 text-[#013E37]" />
                 )}
               </button>
               
@@ -455,7 +455,7 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
                       name="startDate"
                       value={formData.startDate}
                       onChange={handleChange}
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -466,13 +466,13 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
                       name="endDate"
                       value={formData.endDate}
                       onChange={handleChange}
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
                   {formData.startDate && formData.endDate && (
-                    <div className="col-span-2 bg-purple-50 border border-purple-200 rounded-lg p-3">
-                      <div className="flex items-center gap-2 text-sm text-purple-800">
+                    <div className="col-span-2 bg-[#EEF7F5] border border-[#C3DDD9] rounded-lg p-3">
+                      <div className="flex items-center gap-2 text-sm text-[#012D29]">
                         <Calendar className="w-4 h-4" />
                         <span className="font-medium">
                           Durasi Kontrak: {getDaysDifference(formData.startDate, formData.endDate)} hari
@@ -500,7 +500,7 @@ export function ContractFormModal({ contract, onClose, onSuccess }: ContractForm
             <Button
               type="submit"
               disabled={loading}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white min-w-[100px]"
+              className="bg-gradient-to-r from-[#013E37] to-[#013E37] hover:from-[#013E37] hover:to-[#013E37] text-white min-w-[100px]"
             >
               <Save className="w-4 h-4 mr-2" />
               {loading ? 'Menyimpan...' : (contract ? 'Update Kontrak' : 'Buat Kontrak')}

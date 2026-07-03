@@ -42,10 +42,10 @@ export function LeadManagement() {
   const [newCompany, setNewCompany] = useState<Company>({ name: '', position: '', department: '', email: '', phone: '' });
 
   const statusColors: Record<string, string> = {
-    new: 'bg-[#e6f2f1] text-[#01544e]',
+    new: 'bg-[#EEF7F5] text-[#013E37]',
     contacted: 'bg-yellow-100 text-yellow-800',
-    qualified: 'bg-[#e6f2f1] text-[#01544e]',
-    proposal: 'bg-[#e6f2f1] text-[#01544e]',
+    qualified: 'bg-[#EEF7F5] text-[#013E37]',
+    proposal: 'bg-[#EEF7F5] text-[#013E37]',
     negotiation: 'bg-orange-100 text-orange-800',
     won: 'bg-green-100 text-green-800',
     lost: 'bg-red-100 text-red-800'
@@ -215,7 +215,7 @@ export function LeadManagement() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01544e]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div>
       </div>
     );
   }
@@ -225,7 +225,7 @@ export function LeadManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#01544e]">
+          <h1 className="text-3xl font-bold text-[#013E37]">
             Lead Management
           </h1>
           <p className="text-gray-600 mt-1">Kelola leads dengan integrasi Supabase real-time</p>
@@ -249,7 +249,7 @@ export function LeadManagement() {
               Clear All
             </Button>
           )}
-          <Button onClick={handleAddLead} className="bg-[#01544e] hover:bg-[#023d39] text-white">
+          <Button onClick={handleAddLead} className="bg-[#013E37] hover:bg-[#025C52] text-white">
             <Plus className="w-4 h-4 mr-2" />
             Tambah Lead
           </Button>
@@ -331,7 +331,7 @@ export function LeadManagement() {
                     {/* Lead Value */}
                     <div>
                       <p className="text-xs text-gray-500 mb-0.5">Nilai Lead</p>
-                      <p className="text-xl font-bold text-indigo-600">
+                      <p className="text-xl font-bold text-[#013E37]">
                         {formatCurrency(lead.value || 0)}
                       </p>
                     </div>
@@ -342,7 +342,7 @@ export function LeadManagement() {
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="hover:bg-[#e6f2f1] hover:text-[#01544e] hover:border-[#01544e]" 
+                      className="hover:bg-[#EEF7F5] hover:text-[#013E37] hover:border-[#013E37]" 
                       onClick={() => handleEditLead(lead)}
                     >
                       <Edit2 className="w-3.5 h-3.5 mr-1.5" />
@@ -549,7 +549,7 @@ export function LeadManagement() {
               <Button
                 variant="outline"
                 size="sm"
-                className="hover:bg-[#e6f2f1] hover:text-[#01544e] hover:border-[#01544e]"
+                className="hover:bg-[#EEF7F5] hover:text-[#013E37] hover:border-[#013E37]"
                 onClick={handleAddCompany}
               >
                 <Plus className="w-3.5 h-3.5 mr-1.5" />
@@ -571,7 +571,7 @@ export function LeadManagement() {
             <Button 
               onClick={handleSaveLead} 
               disabled={isSubmitting}
-              className="bg-[#01544e] hover:bg-[#023d39] text-white px-6"
+              className="bg-[#013E37] hover:bg-[#025C52] text-white px-6"
             >
               {isSubmitting ? 'Menyimpan...' : 'Simpan'}
             </Button>
@@ -612,12 +612,12 @@ export function LeadManagement() {
                   <div className="space-y-3 -mx-6 px-6">
                     <div className="flex items-center justify-between">
                       <h3 className="text-base font-semibold text-gray-900 flex items-center">
-                        <Building2 className="w-4 h-4 mr-2 text-indigo-600" />
+                        <Building2 className="w-4 h-4 mr-2 text-[#013E37]" />
                         Perusahaan yang di Lead
                       </h3>
                       <Button
                         size="sm"
-                        className="bg-[#01544e] text-white hover:bg-[#023d39] h-8 text-xs px-3"
+                        className="bg-[#013E37] text-white hover:bg-[#025C52] h-8 text-xs px-3"
                         onClick={() => setIsAddingCompany(true)}
                       >
                         <Plus className="w-3.5 h-3.5 mr-1.5" />
@@ -663,7 +663,7 @@ export function LeadManagement() {
 
                     {/* Form Add Company */}
                     {isAddingCompany && (
-                      <div className="mt-3 p-4 border border-indigo-200 rounded-md bg-indigo-50/30">
+                      <div className="mt-3 p-4 border border-[#C3DDD9] rounded-md bg-[#EEF7F5]/30">
                         <h4 className="font-medium text-sm text-gray-900 mb-3">Tambah Perusahaan Baru</h4>
                         <div className="grid grid-cols-2 gap-3">
                           <div className="space-y-1.5">
@@ -716,7 +716,7 @@ export function LeadManagement() {
                         <div className="flex gap-2 mt-3">
                           <Button
                             size="sm"
-                            className="bg-[#01544e] text-white hover:bg-[#023d39] h-8 text-xs"
+                            className="bg-[#013E37] text-white hover:bg-[#025C52] h-8 text-xs"
                             onClick={() => {
                               if (!newCompany.name || !newCompany.position) {
                                 toast.error('Nama perusahaan dan posisi wajib diisi');
@@ -751,7 +751,7 @@ export function LeadManagement() {
               {/* Footer Buttons */}
               <div className="px-6 py-4 border-t border-gray-200 flex gap-3">
                 <Button 
-                  className="flex-1 bg-[#01544e] text-white hover:bg-[#023d39] h-10"
+                  className="flex-1 bg-[#013E37] text-white hover:bg-[#025C52] h-10"
                   onClick={() => {
                     setIsDetailOpen(false);
                     handleEditLead(selectedLead);

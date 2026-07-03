@@ -258,7 +258,7 @@ export function ProductCatalog() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01544e]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div>
       </div>
     );
   }
@@ -356,7 +356,7 @@ export function ProductCatalog() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#01544e]">
+          <h1 className="text-3xl font-bold text-[#013E37]">
             Katalog Produk
           </h1>
           <p className="text-gray-600 mt-1">Jelajahi dan kelola semua produk & layanan</p>
@@ -372,7 +372,7 @@ export function ProductCatalog() {
           </Button>
           <Button 
             onClick={handleAdd}
-            className="bg-[#01544e] hover:bg-[#023d39] text-white gap-2"
+            className="bg-[#013E37] hover:bg-[#025C52] text-white gap-2"
           >
             <Plus className="h-4 w-4" />
             Tambah Product
@@ -386,7 +386,7 @@ export function ProductCatalog() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center">
+                <div className="h-12 w-12 rounded-full bg-[#013E37] flex items-center justify-center">
                   <Package className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -414,7 +414,7 @@ export function ProductCatalog() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center">
+                <div className="h-12 w-12 rounded-full bg-[#013E37] flex items-center justify-center">
                   <DollarSign className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -483,7 +483,7 @@ export function ProductCatalog() {
               <p className="text-gray-600 mb-6">Mulai tambahkan produk pertama Anda</p>
               <Button 
                 onClick={handleAdd}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white gap-2"
+                className="bg-gradient-to-r from-[#013E37] to-[#013E37] hover:from-[#013E37] hover:to-[#013E37] text-white gap-2"
               >
                 <Plus className="h-4 w-4" />
                 Tambah Product
@@ -498,7 +498,7 @@ export function ProductCatalog() {
               <TabsTrigger 
                 key={category} 
                 value={category} 
-                className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
+                className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
               >
                 <div className="flex flex-col items-center justify-center h-full">
                   <div className="font-bold text-[10px] sm:text-[11px] uppercase tracking-tight leading-[1.1] mb-1 max-w-[110px] whitespace-normal">
@@ -528,10 +528,10 @@ export function ProductCatalog() {
                 {filteredProducts.map((product) => (
                   <Card key={product.id} className="hover:shadow-xl transition-all group overflow-hidden flex flex-col">
                     {/* Product Image/Icon */}
-                    <div className="h-48 bg-[#01544e] flex items-center justify-center relative overflow-hidden">
+                    <div className="h-48 bg-[#013E37] flex items-center justify-center relative overflow-hidden">
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all"></div>
                       <Package className="h-24 w-24 text-white/80 group-hover:scale-110 transition-transform" />
-                      <Badge className="absolute top-4 right-4 bg-white/90 text-[#01544e]">
+                      <Badge className="absolute top-4 right-4 bg-white/90 text-[#013E37]">
                         {product.sold || 0} Terjual
                       </Badge>
                     </div>
@@ -539,7 +539,7 @@ export function ProductCatalog() {
                     <CardContent className="p-6 flex flex-col flex-1">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <Badge className="mb-2 bg-[#e6f2f1] text-[#01544e]">{product.category}</Badge>
+                          <Badge className="mb-2 bg-[#EEF7F5] text-[#013E37]">{product.category}</Badge>
                           <h3 className="text-xl font-bold text-gray-900 line-clamp-2">{product.name}</h3>
                         </div>
                       </div>
@@ -565,7 +565,7 @@ export function ProductCatalog() {
                         <div className="flex items-center justify-between mb-4">
                           <div>
                             <p className="text-xs text-gray-500">Harga Mulai</p>
-                            <p className="text-2xl font-bold text-indigo-600">
+                            <p className="text-2xl font-bold text-[#013E37]">
                               {formatCurrency(product.price)}
                             </p>
                           </div>
@@ -582,7 +582,7 @@ export function ProductCatalog() {
                               className={`text-white text-xs ${
                                 proposalItems.some(item => item.id === product.id && item.proposalType === 'teknis')
                                   ? 'bg-gray-400 cursor-not-allowed opacity-60'
-                                  : 'bg-[#01544e] hover:bg-[#023d39]'
+                                  : 'bg-[#013E37] hover:bg-[#025C52]'
                               }`}
                               onClick={() => handleAddToProposalTeknis(product)}
                               disabled={proposalItems.some(item => item.id === product.id && item.proposalType === 'teknis')}
@@ -594,7 +594,7 @@ export function ProductCatalog() {
                               className={`text-white text-xs ${
                                 proposalItems.some(item => item.id === product.id && !item.proposalType)
                                   ? 'bg-gray-400 cursor-not-allowed opacity-60'
-                                  : 'bg-[#01544e] hover:bg-[#023d39]'
+                                  : 'bg-[#013E37] hover:bg-[#025C52]'
                               }`}
                               onClick={() => handleAddToProposal(product)}
                               disabled={proposalItems.some(item => item.id === product.id && !item.proposalType)}
@@ -645,7 +645,7 @@ export function ProductCatalog() {
 
       {/* Best Seller Highlight */}
       {products.length > 0 && stats.bestSeller.sold > 0 && (
-        <Card className="bg-[#01544e] text-white">
+        <Card className="bg-[#013E37] text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="h-6 w-6" />

@@ -167,7 +167,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="!max-w-[950px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
         {/* HEADER */}
-        <DialogHeader className="relative bg-[#01544e] text-white px-6 py-5 space-y-0 flex-shrink-0">
+        <DialogHeader className="relative bg-[#013E37] text-white px-6 py-5 space-y-0 flex-shrink-0">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors z-10"
@@ -220,10 +220,10 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
 
         {/* QUICK INFO CARDS */}
         {partner && (
-          <div className="bg-gradient-to-br from-teal-50 to-cyan-50 px-6 py-4 grid grid-cols-3 gap-4 border-b border-teal-100">
+          <div className="bg-gradient-to-br from-[#EEF7F5] to-[#EEF7F5] px-6 py-4 grid grid-cols-3 gap-4 border-b border-[#013E37]/10">
             <div className="bg-white rounded-lg p-3 flex items-center gap-3 shadow-sm">
-              <div className="w-10 h-10 rounded-lg bg-teal-100 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-teal-600" />
+              <div className="w-10 h-10 rounded-lg bg-[#EEF7F5] flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-[#013E37]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500">Leads Generated</p>
@@ -256,25 +256,25 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
           <div className="px-6 py-5 space-y-4 overflow-y-auto flex-1 text-gray-900">
             
             {/* SECTION 1: Profil Identitas Partner */}
-            <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl border border-teal-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-[#EEF7F5] rounded-xl border border-[#013E37]/10 overflow-hidden">
               <button
                 type="button"
                 onClick={() => toggleSection('profil')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-teal-100/50 hover:bg-teal-100 transition-colors"
+                className="w-full flex items-center justify-between px-5 py-3.5 bg-[#EEF7F5]/50 hover:bg-[#EEF7F5] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[#013E37] flex items-center justify-center">
                     <Building2 className="w-4 h-4 text-white" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-base font-bold text-teal-900 leading-none">Profil Identitas Partner</h3>
-                    <p className="text-[10px] text-teal-700 mt-1 uppercase tracking-wider font-semibold opacity-70">DATA LEGAL & IDENTITAS PERUSAHAAN</p>
+                    <h3 className="text-base font-bold text-[#012D29] leading-none">Profil Identitas Partner</h3>
+                    <p className="text-[10px] text-[#025C52] mt-1 uppercase tracking-wider font-semibold opacity-70">DATA LEGAL & IDENTITAS PERUSAHAAN</p>
                   </div>
                 </div>
                 {expandedSections.profil ? (
-                  <ChevronUp className="w-5 h-5 text-teal-600" />
+                  <ChevronUp className="w-5 h-5 text-[#013E37]" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-teal-600" />
+                  <ChevronDown className="w-5 h-5 text-[#013E37]" />
                 )}
               </button>
               
@@ -282,7 +282,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                 <div className="p-5 pt-4 grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                      <Clipboard className="w-4 h-4 text-teal-600" />
+                      <Clipboard className="w-4 h-4 text-[#013E37]" />
                       ID Customer
                     </Label>
                     <Input
@@ -290,7 +290,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                       value={formData.id_customer}
                       onChange={handleChange}
                       placeholder="CUST-2025-001"
-                      className="bg-white border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                      className="bg-white border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
                     />
                   </div>
 
@@ -302,7 +302,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                       value={formData.tipe_partner}
                       onValueChange={(value) => setFormData(prev => ({ ...prev, tipe_partner: value }))}
                     >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-teal-500 focus:ring-teal-500">
+                      <SelectTrigger className="bg-white border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]">
                         <SelectValue placeholder="Pilih tipe" />
                       </SelectTrigger>
                       <SelectContent>
@@ -325,7 +325,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                       onChange={handleChange}
                       required
                       placeholder="PT Partner Technology Indonesia"
-                      className="bg-white border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                      className="bg-white border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
                     />
                   </div>
 
@@ -336,7 +336,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                       value={formData.spesialisasi}
                       onChange={handleChange}
                       placeholder="Cloud Infrastructure, SaaS Healthcare"
-                      className="bg-white border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                      className="bg-white border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
                     />
                   </div>
                 </div>
@@ -344,7 +344,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
             </div>
 
             {/* SECTION 2: Kontak & Relasi Bisnis */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 overflow-hidden">
+            <div className="bg-gradient-to-br bg-[#EEF7F5] rounded-xl border border-blue-100 overflow-hidden">
               <button
                 type="button"
                 onClick={() => toggleSection('kontak')}
@@ -416,25 +416,25 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
             </div>
 
             {/* SECTION 3: Legal & Kemitraan */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-xl border border-[#DFF0EC] overflow-hidden">
               <button
                 type="button"
                 onClick={() => toggleSection('legal')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-purple-100/50 hover:bg-purple-100 transition-colors"
+                className="w-full flex items-center justify-between px-5 py-3.5 bg-[#DFF0EC]/50 hover:bg-[#DFF0EC] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[#013E37] flex items-center justify-center">
                     <Shield className="w-4 h-4 text-white" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-base font-bold text-purple-900 leading-none">Legal & Kemitraan</h3>
-                    <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">STATUS MOU & LEVEL PARTNERSHIP</p>
+                    <h3 className="text-base font-bold text-[#012D29] leading-none">Legal & Kemitraan</h3>
+                    <p className="text-[10px] text-[#013E37] mt-1 uppercase tracking-wider font-semibold opacity-70">STATUS MOU & LEVEL PARTNERSHIP</p>
                   </div>
                 </div>
                 {expandedSections.legal ? (
-                  <ChevronUp className="w-5 h-5 text-purple-600" />
+                  <ChevronUp className="w-5 h-5 text-[#013E37]" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-purple-600" />
+                  <ChevronDown className="w-5 h-5 text-[#013E37]" />
                 )}
               </button>
               
@@ -446,7 +446,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                       value={formData.status_kemitraan}
                       onValueChange={(value) => setFormData(prev => ({ ...prev, status_kemitraan: value }))}
                     >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500">
+                      <SelectTrigger className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0">
                         <SelectValue placeholder="Pilih status" />
                       </SelectTrigger>
                       <SelectContent>
@@ -464,7 +464,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                       value={formData.tingkat_kemitraan}
                       onValueChange={(value) => setFormData(prev => ({ ...prev, tingkat_kemitraan: value }))}
                     >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500">
+                      <SelectTrigger className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0">
                         <SelectValue placeholder="Pilih tingkat" />
                       </SelectTrigger>
                       <SelectContent>
@@ -483,7 +483,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                       name="masa_berlaku_mou_start"
                       value={formData.masa_berlaku_mou_start}
                       onChange={handleChange}
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -494,7 +494,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                       name="masa_berlaku_mou_end"
                       value={formData.masa_berlaku_mou_end}
                       onChange={handleChange}
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -505,7 +505,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
                       value={formData.file_mou_nda}
                       onChange={handleChange}
                       placeholder="Link/Path ke dokumen MOU/NDA"
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
                 </div>
@@ -713,7 +713,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
               <Button
                 type="submit"
                 disabled={loading}
-                className="bg-[#01544e] hover:bg-[#01443e] text-white px-8 font-bold shadow-lg shadow-emerald-900/20"
+                className="bg-[#013E37] hover:bg-[#01443e] text-white px-8 font-bold shadow-lg shadow-emerald-900/20"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">

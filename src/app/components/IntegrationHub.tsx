@@ -67,7 +67,7 @@ export function IntegrationHub() {
   const integrations = [
     { id: '1', name: 'Gmail', category: 'Email', status: 'connected', icon: Mail, color: 'text-rose-500', bgColor: 'bg-rose-50', users: 12, description: 'Sinkronisasi email dan kalender secara real-time.' },
     { id: '2', name: 'Outlook', category: 'Email', status: 'available', icon: Mail, color: 'text-blue-500', bgColor: 'bg-blue-50', users: 0, description: 'Integrasi lengkap dengan Microsoft 365.' },
-    { id: '3', name: 'Slack', category: 'Communication', status: 'connected', icon: MessageSquare, color: 'text-indigo-500', bgColor: 'bg-indigo-50', users: 15, description: 'Notifikasi deal dan kolaborasi tim.' },
+    { id: '3', name: 'Slack', category: 'Communication', status: 'connected', icon: MessageSquare, color: 'text-[#EEF7F5]0', bgColor: 'bg-[#EEF7F5]', users: 15, description: 'Notifikasi deal dan kolaborasi tim.' },
     { id: '4', name: 'Microsoft Teams', category: 'Communication', status: 'available', icon: MessageSquare, color: 'text-blue-600', bgColor: 'bg-blue-50', users: 0, description: 'Rapat virtual dan berbagi dokumen.' },
     { id: '5', name: 'QuickBooks', category: 'Accounting', status: 'connected', icon: DollarSign, color: 'text-emerald-500', bgColor: 'bg-emerald-50', users: 3, description: 'Automasi faktur dan pelacakan pembayaran.' },
     { id: '6', name: 'Xero', category: 'Accounting', status: 'available', icon: DollarSign, color: 'text-sky-400', bgColor: 'bg-sky-50', users: 0, description: 'Solusi akuntansi awan untuk bisnis kecil.' },
@@ -137,11 +137,11 @@ export function IntegrationHub() {
       {/* Premium Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
         <div>
-          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#01544e] via-[#028076] to-[#01544e] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#013E37] via-[#028076] to-[#013E37] bg-clip-text text-transparent">
             INTEGRATION HUB
           </h1>
           <p className="text-gray-500 font-medium flex items-center gap-2 mt-2">
-            <Layers className="h-4 w-4 text-[#01544e]" />
+            <Layers className="h-4 w-4 text-[#013E37]" />
             Kelola ekosistem aplikasi, webhook, dan akses API dalam satu platform terpusat.
           </p>
         </div>
@@ -150,12 +150,12 @@ export function IntegrationHub() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input 
               placeholder="Cari integrasi..." 
-              className="pl-9 w-64 bg-white border-gray-200 focus:ring-[#01544e]"
+              className="pl-9 w-64 bg-white border-gray-200 focus:ring-[#013E37]"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <Button onClick={handleOpenWebhookCreate} className="bg-[#01544e] hover:bg-[#028076] text-white">
+          <Button onClick={handleOpenWebhookCreate} className="bg-[#013E37] hover:bg-[#028076] text-white">
             <Plus className="h-4 w-4 mr-2" /> Baru
           </Button>
         </div>
@@ -167,7 +167,7 @@ export function IntegrationHub() {
           { label: 'Total App', value: stats.total, sub: 'Tersedia di library', icon: Link2, color: 'text-blue-600', bg: 'bg-blue-50' },
           { label: 'Terhubung', value: stats.connected, sub: 'Koneksi aktif', icon: ShieldCheck, color: 'text-emerald-600', bg: 'bg-emerald-50' },
           { label: 'Webhooks', value: stats.activeWebhooks, sub: 'Titik akhir aktif', icon: Zap, color: 'text-amber-600', bg: 'bg-amber-50' },
-          { label: 'Pengguna', value: stats.totalUsers, sub: 'Integrasi terpakai', icon: Settings2, color: 'text-purple-600', bg: 'bg-purple-50' },
+          { label: 'Pengguna', value: stats.totalUsers, sub: 'Integrasi terpakai', icon: Settings2, color: 'text-[#013E37]', bg: 'bg-[#EEF7F5]' },
         ].map((stat, idx) => (
           <motion.div
             key={stat.label}
@@ -201,21 +201,21 @@ export function IntegrationHub() {
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-3">
           <TabsTrigger 
             value="integrations" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Katalog Aplikasi</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Konektivitas 3rd Party</span>
           </TabsTrigger>
           <TabsTrigger 
             value="webhooks" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Webhooks</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Otomasi Event Real-time</span>
           </TabsTrigger>
           <TabsTrigger 
             value="api" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">API Management</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Keamanan & Akses Data</span>
@@ -244,7 +244,7 @@ export function IntegrationHub() {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: (catIdx * 0.1) + (idx * 0.05) }}
                     >
-                      <Card className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 overflow-hidden bg-white border-gray-100">
+                      <Card className="group hover:border-[#013E37]/50 hover:shadow-xl transition-all duration-300 overflow-hidden bg-white border-gray-100">
                         <CardContent className="p-0">
                           <div className="p-5 flex items-start justify-between">
                             <div className="flex gap-4">
@@ -252,7 +252,7 @@ export function IntegrationHub() {
                                 <item.icon className="h-6 w-6" />
                               </div>
                               <div className="space-y-1">
-                                <h3 className="font-bold text-gray-900 group-hover:text-[#01544e] transition-colors">{item.name}</h3>
+                                <h3 className="font-bold text-gray-900 group-hover:text-[#013E37] transition-colors">{item.name}</h3>
                                 <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
                                   {item.description}
                                 </p>
@@ -289,8 +289,8 @@ export function IntegrationHub() {
                               size="sm" 
                               variant={item.status === 'connected' ? "ghost" : "default"}
                               className={item.status === 'connected' 
-                                ? "text-[#01544e] hover:bg-[#e6f2f1] font-bold text-xs" 
-                                : "bg-[#01544e] hover:bg-[#028076] text-white font-bold text-xs shadow-sm"
+                                ? "text-[#013E37] hover:bg-[#EEF7F5] font-bold text-xs" 
+                                : "bg-[#013E37] hover:bg-[#028076] text-white font-bold text-xs shadow-sm"
                               }
                               onClick={() => {
                                 if (item.status === 'connected') {
@@ -320,7 +320,7 @@ export function IntegrationHub() {
         <TabsContent value="webhooks" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <div className="flex items-start gap-4">
-              <div className="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100">
+              <div className="h-12 w-12 rounded-2xl bg-[#EEF7F5] flex items-center justify-center text-[#013E37] border border-[#DFF0EC]">
                 <Zap className="h-6 w-6" />
               </div>
               <div>
@@ -328,7 +328,7 @@ export function IntegrationHub() {
                 <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mt-0.5">Automasi transmisi data event aplikasi secara real-time.</p>
               </div>
             </div>
-            <Button onClick={handleOpenWebhookCreate} className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-widest text-[10px] px-6 h-11">
+            <Button onClick={handleOpenWebhookCreate} className="bg-[#013E37] hover:bg-[#028076] text-white font-bold uppercase tracking-widest text-[10px] px-6 h-11">
               <Plus className="h-4 w-4 mr-2" /> Add Webhook
             </Button>
           </div>
@@ -365,14 +365,14 @@ export function IntegrationHub() {
                           <div className="flex items-center gap-3 group/url cursor-pointer">
                             <div className="bg-gray-50 border border-gray-100 px-4 py-2 rounded-xl flex-1 flex items-center justify-between">
                               <code className="text-xs font-mono text-gray-600 truncate">{webhook.url}</code>
-                              <ExternalLink className="h-3.5 w-3.5 text-gray-400 group-hover/url:text-[#01544e] transition-colors" />
+                              <ExternalLink className="h-3.5 w-3.5 text-gray-400 group-hover/url:text-[#013E37] transition-colors" />
                             </div>
                           </div>
 
                           <div className="flex flex-wrap items-center gap-2">
                             <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest mr-2">Subscribed Events:</span>
                             {webhook.events.map(event => (
-                              <Badge key={event} variant="secondary" className="bg-indigo-50 text-indigo-700 border-indigo-100 text-[10px] font-bold uppercase tracking-tight">
+                              <Badge key={event} variant="secondary" className="bg-[#EEF7F5] text-[#013E37] border-[#DFF0EC] text-[10px] font-bold uppercase tracking-tight">
                                 {event}
                               </Badge>
                             ))}
@@ -402,7 +402,7 @@ export function IntegrationHub() {
               <div className="py-20 text-center border-2 border-dashed border-gray-100 rounded-3xl space-y-4">
                 <Globe className="h-12 w-12 text-gray-200 mx-auto" />
                 <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No webhooks configured</p>
-                <Button onClick={handleOpenWebhookCreate} variant="outline" className="text-[#01544e] border-[#01544e] hover:bg-[#e6f2f1]">
+                <Button onClick={handleOpenWebhookCreate} variant="outline" className="text-[#013E37] border-[#013E37] hover:bg-[#EEF7F5]">
                   Add your first endpoint
                 </Button>
               </div>
@@ -412,7 +412,7 @@ export function IntegrationHub() {
 
         <TabsContent value="api" className="animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="max-w-3xl mx-auto space-y-6">
-            <Card className="border-none shadow-xl bg-[#01544e] text-white overflow-hidden relative">
+            <Card className="border-none shadow-xl bg-[#013E37] text-white overflow-hidden relative">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/20 rounded-full -ml-32 -mb-32 blur-3xl" />
               
@@ -435,7 +435,7 @@ export function IntegrationHub() {
                         readOnly 
                         className="bg-white/10 border-white/20 text-white placeholder:text-white/30 h-12 font-mono text-sm"
                       />
-                      <Button variant="secondary" className="bg-white hover:bg-white/90 text-[#01544e] font-black uppercase text-[10px] px-6 shadow-lg shadow-black/20">Copy</Button>
+                      <Button variant="secondary" className="bg-white hover:bg-white/90 text-[#013E37] font-black uppercase text-[10px] px-6 shadow-lg shadow-black/20">Copy</Button>
                     </div>
                   </div>
                   
@@ -448,7 +448,7 @@ export function IntegrationHub() {
                         readOnly 
                         className="bg-white/10 border-white/20 text-white placeholder:text-white/30 h-12 font-mono text-sm"
                       />
-                      <Button variant="secondary" className="bg-white hover:bg-white/90 text-[#01544e] font-black uppercase text-[10px] px-6 shadow-lg shadow-black/20">Reveal</Button>
+                      <Button variant="secondary" className="bg-white hover:bg-white/90 text-[#013E37] font-black uppercase text-[10px] px-6 shadow-lg shadow-black/20">Reveal</Button>
                     </div>
                   </div>
                 </div>
@@ -461,7 +461,7 @@ export function IntegrationHub() {
                       <p className="text-[9px] text-white/60 font-medium uppercase tracking-[0.2em]">Currently active & accepting requests</p>
                     </div>
                   </div>
-                  <Badge className="bg-emerald-400 text-[#01544e] font-black uppercase tracking-widest text-[10px] py-1 px-3">ACTIVE</Badge>
+                  <Badge className="bg-emerald-400 text-[#013E37] font-black uppercase tracking-widest text-[10px] py-1 px-3">ACTIVE</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -470,7 +470,7 @@ export function IntegrationHub() {
               <Card className="border-gray-100 shadow-sm">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 flex items-center gap-2">
-                    <div className="p-1.5 rounded-lg bg-indigo-50 text-indigo-600">
+                    <div className="p-1.5 rounded-lg bg-[#EEF7F5] text-[#013E37]">
                       <Cpu className="h-4 w-4" />
                     </div>
                     System Rate Limits
@@ -485,11 +485,11 @@ export function IntegrationHub() {
                     <div key={limit.label} className="space-y-2">
                       <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
                         <span className="text-gray-400">{limit.label}</span>
-                        <span className="text-[#01544e]">{limit.value}</span>
+                        <span className="text-[#013E37]">{limit.value}</span>
                       </div>
                       <div className="h-2 w-full bg-gray-50 rounded-full overflow-hidden border border-gray-100">
                         <div 
-                          className="h-full bg-gradient-to-r from-[#01544e] to-[#028076] rounded-full transition-all duration-1000" 
+                          className="h-full bg-gradient-to-r from-[#013E37] to-[#028076] rounded-full transition-all duration-1000" 
                           style={{ width: `${limit.progress}%` }}
                         />
                       </div>
@@ -507,7 +507,7 @@ export function IntegrationHub() {
                   <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Baca dokumentasi lengkap integrasi API kami untuk membangun ekstensi kustom.</p>
                 </div>
                 <div className="space-y-3 relative z-10">
-                  <Button variant="outline" className="w-full border-[#01544e] text-[#01544e] hover:bg-[#e6f2f1] font-black uppercase tracking-widest text-[10px] h-11">
+                  <Button variant="outline" className="w-full border-[#013E37] text-[#013E37] hover:bg-[#EEF7F5] font-black uppercase tracking-widest text-[10px] h-11">
                     View Documentation
                     <ArrowRight className="h-3.5 w-3.5 ml-2" />
                   </Button>
@@ -525,7 +525,7 @@ export function IntegrationHub() {
       <Dialog open={isWebhookDialogOpen} onOpenChange={setIsWebhookDialogOpen}>
         <DialogContent className="max-w-lg border-none shadow-2xl">
           <DialogHeader className="pb-4 border-b border-gray-100">
-            <DialogTitle className="text-2xl font-black uppercase tracking-tighter text-[#01544e]">
+            <DialogTitle className="text-2xl font-black uppercase tracking-tighter text-[#013E37]">
               {editingWebhook ? 'Configure Webhook' : 'New Webhook'}
             </DialogTitle>
             <DialogDescription className="text-xs font-bold uppercase tracking-widest text-gray-400">
@@ -540,7 +540,7 @@ export function IntegrationHub() {
                 value={webhookForm.name}
                 onChange={(e) => setWebhookForm(prev => ({ ...prev, name: e.target.value }))}
                 placeholder="Contoh: Production CRM Sync" 
-                className="h-12 border-gray-200 focus:ring-[#01544e] font-bold"
+                className="h-12 border-gray-200 focus:ring-[#013E37] font-bold"
               />
             </div>
 
@@ -550,7 +550,7 @@ export function IntegrationHub() {
                 value={webhookForm.url}
                 onChange={(e) => setWebhookForm(prev => ({ ...prev, url: e.target.value }))}
                 placeholder="https://api.yourdomain.com/webhooks" 
-                className="h-12 border-gray-200 focus:ring-[#01544e] font-mono text-sm"
+                className="h-12 border-gray-200 focus:ring-[#013E37] font-mono text-sm"
               />
             </div>
 
@@ -558,7 +558,7 @@ export function IntegrationHub() {
               <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Events to Subscribe</Label>
               <div className="grid grid-cols-2 gap-3">
                 {['lead.created', 'opportunity.won', 'deal.lost', 'contract.signed', 'invoice.paid', 'task.overdue'].map(event => (
-                  <div key={event} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl border border-transparent hover:border-indigo-100 transition-all cursor-pointer group">
+                  <div key={event} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl border border-transparent hover:border-[#DFF0EC] transition-all cursor-pointer group">
                     <Switch 
                       id={event}
                       checked={webhookForm.events?.includes(event)}
@@ -571,7 +571,7 @@ export function IntegrationHub() {
                         }));
                       }}
                     />
-                    <Label htmlFor={event} className="text-[10px] font-bold uppercase tracking-tight text-gray-600 group-hover:text-indigo-600 transition-colors cursor-pointer">
+                    <Label htmlFor={event} className="text-[10px] font-bold uppercase tracking-tight text-gray-600 group-hover:text-[#013E37] transition-colors cursor-pointer">
                       {event.replace('.', ' ')}
                     </Label>
                   </div>
@@ -579,13 +579,13 @@ export function IntegrationHub() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-[#01544e]/5 rounded-2xl border border-[#01544e]/10">
+            <div className="flex items-center justify-between p-4 bg-[#013E37]/5 rounded-2xl border border-[#013E37]/10">
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center border border-[#01544e]/10 shadow-sm">
-                  <Info className="h-4 w-4 text-[#01544e]" />
+                <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center border border-[#013E37]/10 shadow-sm">
+                  <Info className="h-4 w-4 text-[#013E37]" />
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-[10px] font-black uppercase tracking-tight text-[#01544e]">Webhook Status</p>
+                  <p className="text-[10px] font-black uppercase tracking-tight text-[#013E37]">Webhook Status</p>
                   <p className="text-[9px] text-gray-500 font-medium uppercase tracking-widest">Toggle endpoint availability</p>
                 </div>
               </div>
@@ -601,7 +601,7 @@ export function IntegrationHub() {
             <Button variant="outline" onClick={() => setIsWebhookDialogOpen(false)} className="font-bold uppercase tracking-widest text-[10px] h-11 px-6">
               Cancel
             </Button>
-            <Button onClick={handleSaveWebhook} className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-widest text-[10px] px-10 h-11 shadow-lg shadow-[#01544e]/20">
+            <Button onClick={handleSaveWebhook} className="bg-[#013E37] hover:bg-[#028076] text-white font-bold uppercase tracking-widest text-[10px] px-10 h-11 shadow-lg shadow-[#013E37]/20">
               <Save className="h-3.5 w-3.5 mr-2" /> {editingWebhook ? 'Update Webhook' : 'Activate Webhook'}
             </Button>
           </DialogFooter>

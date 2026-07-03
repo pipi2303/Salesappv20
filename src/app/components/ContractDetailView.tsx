@@ -98,7 +98,7 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
         </VisuallyHidden>
         
         {/* HEADER */}
-        <div className="relative bg-[#01544e] text-white px-6 py-5">
+        <div className="relative bg-[#013E37] text-white px-6 py-5">
           <button
             onClick={onClose}
             className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors z-10"
@@ -159,7 +159,7 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
         </div>
 
         {/* QUICK STATS */}
-        <div className="bg-gradient-to-br from-teal-50 to-cyan-50 px-6 py-5 grid grid-cols-4 gap-4 border-b border-teal-100">
+        <div className="bg-gradient-to-br from-[#EEF7F5] to-[#EEF7F5] px-6 py-5 grid grid-cols-4 gap-4 border-b border-[#013E37]/10">
           <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -179,7 +179,7 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
           <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center">
                   <Calendar className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -225,14 +225,14 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
 
         {/* PROGRESS BAR */}
         {contract.status === 'active' && (
-          <div className="bg-gradient-to-br from-teal-50 to-cyan-50 px-6 py-4 border-b border-teal-100">
+          <div className="bg-gradient-to-br from-[#EEF7F5] to-[#EEF7F5] px-6 py-4 border-b border-[#013E37]/10">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-semibold text-gray-700">Progress Kontrak</span>
-              <span className="text-sm font-bold text-[#01544e]">{progressPercentage.toFixed(1)}%</span>
+              <span className="text-sm font-bold text-[#013E37]">{progressPercentage.toFixed(1)}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-[#01544e] to-teal-500 transition-all duration-300 rounded-full"
+                className="h-full bg-gradient-to-r from-[#013E37] to-[#013E37] transition-all duration-300 rounded-full"
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
@@ -273,7 +273,7 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
             <TabsContent value="overview" className="space-y-4 mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Client Information */}
-                <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
+                <Card className="bg-gradient-to-br from-blue-50 to-[#EEF7F5] border-blue-200">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-blue-900">
                       <Building2 className="w-5 h-5" />
@@ -330,9 +330,9 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
               </div>
 
               {/* Timeline Dates */}
-              <Card className="bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+              <Card className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 border-[#C3DDD9]">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-purple-900">
+                  <CardTitle className="flex items-center gap-2 text-[#012D29]">
                     <Calendar className="w-5 h-5" />
                     Timeline
                   </CardTitle>
@@ -528,7 +528,7 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
                   </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                <Card className="bg-gradient-to-br from-[#013E37] to-[#025C52] text-white">
                   <CardContent className="p-3">
                     <TrendingUp className="h-6 w-6 text-blue-200 mb-2" />
                     <p className="text-blue-100 text-[10px] mb-0.5">Monthly Recurring</p>
@@ -536,19 +536,19 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
                   </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-purple-500 to-pink-600 text-white">
+                <Card className="bg-gradient-to-br from-[#EEF7F5]0 to-pink-600 text-white">
                   <CardContent className="p-3">
-                    <Target className="h-6 w-6 text-purple-200 mb-2" />
-                    <p className="text-purple-100 text-[10px] mb-0.5">Payment Status</p>
+                    <Target className="h-6 w-6 text-[#C3DDD9] mb-2" />
+                    <p className="text-[#DFF0EC] text-[10px] mb-0.5">Payment Status</p>
                     <p className="text-xl font-bold">On Track</p>
                   </CardContent>
                 </Card>
               </div>
 
               {/* Payment Healthiness Card */}
-              <Card className="bg-gradient-to-br from-teal-50 to-cyan-50 border-2 border-teal-200">
+              <Card className="bg-gradient-to-br from-[#EEF7F5] to-[#EEF7F5] border-2 border-[#013E37]/20">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-teal-900">
+                  <CardTitle className="flex items-center gap-2 text-[#012D29]">
                     <CheckCircle className="w-5 h-5" />
                     Payment Healthiness
                   </CardTitle>
@@ -564,7 +564,7 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
                           toast.success(`Payment status updated to: ${value === 'lancar' ? 'Lancar ✅' : 'Macet ⚠️'}`);
                         }}
                       >
-                        <SelectTrigger className="w-full h-12 text-base font-semibold border-2 border-teal-300 hover:border-teal-400 focus:ring-2 focus:ring-teal-500">
+                        <SelectTrigger className="w-full h-12 text-base font-semibold border-2 border-[#013E37]/30 hover:border-[#013E37] focus:ring-2 focus:ring-[#013E37]">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -631,7 +631,7 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
                     </div>
                     <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                       <span className="text-sm text-gray-700">Monthly Recurring (MRR)</span>
-                      <span className="font-bold text-purple-600">Rp {(monthlyValue / 1000000).toFixed(1)} Jt</span>
+                      <span className="font-bold text-[#013E37]">Rp {(monthlyValue / 1000000).toFixed(1)} Jt</span>
                     </div>
                   </div>
                 </CardContent>
@@ -654,11 +654,11 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
                       return (
                         <div key={idx} className="flex gap-4">
                           <div className="flex flex-col items-center">
-                            <div className={`h-10 w-10 rounded-full bg-gradient-to-br ${idx === 0 ? 'from-blue-500 to-indigo-600' : 'from-purple-500 to-pink-600'} flex items-center justify-center`}>
+                            <div className={`h-10 w-10 rounded-full bg-gradient-to-br ${idx === 0 ? 'from-[#013E37] to-[#025C52]' : 'from-[#EEF7F5]0 to-pink-600'} flex items-center justify-center`}>
                               <IconComponent className="h-5 w-5 text-white" />
                             </div>
                             {idx < activities.length - 1 && (
-                              <div className="w-0.5 h-8 bg-gradient-to-b from-purple-300 to-pink-300 my-2" />
+                              <div className="w-0.5 h-8 bg-gradient-to-b from-[#5BB5AB] to-pink-300 my-2" />
                             )}
                           </div>
                           <div className="flex-1 pb-4">
@@ -730,7 +730,7 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
                 </Button>
 
                 <Button
-                  className="h-auto p-5 flex-col items-start bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white"
+                  className="h-auto p-5 flex-col items-start bg-gradient-to-r from-[#013E37] to-[#025C52] hover:bg-[#025C52] text-white"
                   onClick={() => toast.success('Amendment request created')}
                 >
                   <GitBranch className="h-6 w-6 mb-2" />
@@ -739,12 +739,12 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
                 </Button>
 
                 <Button
-                  className="h-auto p-5 flex-col items-start bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                  className="h-auto p-5 flex-col items-start bg-gradient-to-r from-[#013E37] to-[#025C52] hover:from-[#013E37] hover:to-pink-600 text-white"
                   onClick={() => toast.success('Notification sent to client')}
                 >
                   <Send className="h-6 w-6 mb-2" />
                   <span className="font-semibold text-lg">Send to Client</span>
-                  <span className="text-sm text-purple-100">Email contract details</span>
+                  <span className="text-sm text-[#DFF0EC]">Email contract details</span>
                 </Button>
 
                 <Button
@@ -808,7 +808,7 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
               Close
             </Button>
             <Button
-              className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+              className="bg-gradient-to-r from-[#013E37] to-[#025C52] hover:from-[#013E37] hover:to-[#013E37]"
               onClick={onEdit}
             >
               <Edit2 className="w-4 h-4 mr-2" />

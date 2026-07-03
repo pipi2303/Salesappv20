@@ -40,7 +40,7 @@ interface OpportunityPipelineProps {
 
 const stages = [
   { id: 'prospecting', name: 'Prospecting', probability: 30, color: 'bg-blue-100 text-blue-800', borderColor: 'border-blue-300', salesStage: 'Engage' },
-  { id: 'proposal', name: 'Proposal', probability: 50, color: 'bg-purple-100 text-purple-800', borderColor: 'border-purple-300', salesStage: 'Solution' },
+  { id: 'proposal', name: 'Proposal', probability: 50, color: 'bg-[#DFF0EC] text-[#012D29]', borderColor: 'border-[#5BB5AB]', salesStage: 'Solution' },
   { id: 'negotiation', name: 'Negotiation', probability: 70, color: 'bg-orange-100 text-orange-800', borderColor: 'border-orange-300', salesStage: 'Align' },
   { id: 'closed-won', name: 'Closed Won', probability: 100, color: 'bg-green-100 text-green-800', borderColor: 'border-green-300', salesStage: 'Execute' },
   { id: 'closed-lost', name: 'Closed Lost', probability: 0, color: 'bg-red-100 text-red-800', borderColor: 'border-red-300', salesStage: 'Close' },
@@ -103,7 +103,7 @@ function SortableOpportunityCard({
           </div>
 
           {/* Value */}
-          <div className="flex items-center gap-1 text-sm font-bold text-indigo-600">
+          <div className="flex items-center gap-1 text-sm font-bold text-[#013E37]">
             <DollarSign className="w-3.5 h-3.5" />
             {formatCurrency(opportunity.totalValue)}
           </div>
@@ -112,7 +112,7 @@ function SortableOpportunityCard({
           <div className="flex items-center gap-2">
             <div className="flex-1 bg-gray-200 rounded-full h-1.5">
               <div
-                className="bg-indigo-600 h-1.5 rounded-full"
+                className="bg-[#013E37] h-1.5 rounded-full"
                 style={{ width: `${opportunity.probability}%` }}
               />
             </div>
@@ -136,7 +136,7 @@ function SortableOpportunityCard({
             <Button
               variant="outline"
               size="sm"
-              className="flex-1 h-7 text-xs hover:bg-indigo-50 hover:text-indigo-600"
+              className="flex-1 h-7 text-xs hover:bg-[#EEF7F5] hover:text-[#013E37]"
               onClick={(e) => {
                 e.stopPropagation();
                 onEdit(opportunity);

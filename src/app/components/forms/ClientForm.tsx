@@ -202,7 +202,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="!max-w-[950px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
         {/* HEADER */}
-        <DialogHeader className="relative bg-[#01544e] text-white px-6 py-5 space-y-0 flex-shrink-0">
+        <DialogHeader className="relative bg-[#013E37] text-white px-6 py-5 space-y-0 flex-shrink-0">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors z-10"
@@ -255,7 +255,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
 
         {/* QUICK INFO CARDS */}
         {client && (
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 px-6 py-4 grid grid-cols-3 gap-4 border-b border-blue-100">
+          <div className="bg-gradient-to-br bg-[#EEF7F5] px-6 py-4 grid grid-cols-3 gap-4 border-b border-blue-100">
             <div className="bg-white rounded-lg p-3 flex items-center gap-3 shadow-sm">
               <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
                 <FileText className="w-5 h-5 text-blue-600" />
@@ -275,8 +275,8 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
               </div>
             </div>
             <div className="bg-white rounded-lg p-3 flex items-center gap-3 shadow-sm">
-              <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                <User className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-lg bg-[#DFF0EC] flex items-center justify-center">
+                <User className="w-5 h-5 text-[#013E37]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500">Volume Pasien</p>
@@ -295,7 +295,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
               <button
                 type="button"
                 onClick={() => toggleSection('dasar')}
-                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 transition-colors border-b border-emerald-100"
+                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-emerald-50 to-[#EEF7F5] hover:from-emerald-100 hover:to-[#EEF7F5] transition-colors border-b border-emerald-100"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-200">
@@ -481,7 +481,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
               <button
                 type="button"
                 onClick={() => toggleSection('teknis')}
-                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition-colors border-b border-blue-100"
+                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r bg-[#EEF7F5] hover:from-blue-100 hover:to-[#DFF0EC] transition-colors border-b border-blue-100"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-200">
@@ -629,25 +629,25 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
             </div>
 
             {/* SECTION 3: Data Pengambil Keputusan (Decision Maker) */}
-            <div className="bg-white rounded-xl border border-purple-100 overflow-hidden shadow-sm">
+            <div className="bg-white rounded-xl border border-[#DFF0EC] overflow-hidden shadow-sm">
               <button
                 type="button"
                 onClick={() => toggleSection('pic')}
-                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 transition-colors border-b border-purple-100"
+                className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[#EEF7F5] to-pink-50 hover:from-[#DFF0EC] hover:to-pink-100 transition-colors border-b border-[#DFF0EC]"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-200">
+                  <div className="w-10 h-10 rounded-xl bg-[#013E37] flex items-center justify-center shadow-lg shadow-[#C3DDD9]">
                     <UserCircle className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-base font-bold text-purple-900 leading-none">Data Pengambil Keputusan</h3>
-                    <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">PROFIL PIC & STATUS RELASI BISNIS</p>
+                    <h3 className="text-base font-bold text-[#012D29] leading-none">Data Pengambil Keputusan</h3>
+                    <p className="text-[10px] text-[#013E37] mt-1 uppercase tracking-wider font-semibold opacity-70">PROFIL PIC & STATUS RELASI BISNIS</p>
                   </div>
                 </div>
                 {expandedSections.pic ? (
-                  <ChevronUp className="w-5 h-5 text-purple-600" />
+                  <ChevronUp className="w-5 h-5 text-[#013E37]" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-purple-600" />
+                  <ChevronDown className="w-5 h-5 text-[#013E37]" />
                 )}
               </button>
               
@@ -656,7 +656,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
                   <div className="grid grid-cols-2 gap-5">
                     <div className="space-y-2">
                       <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                        <UserCircle className="w-3.5 h-3.5 text-purple-500" />
+                        <UserCircle className="w-3.5 h-3.5 text-[#EEF7F5]0" />
                         Nama Lengkap PIC
                       </Label>
                       <Input
@@ -664,13 +664,13 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
                         value={formData.nama_pic}
                         onChange={handleChange}
                         placeholder="dr. Ahmad Direktur"
-                        className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500 h-11"
+                        className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0 h-11"
                       />
                     </div>
 
                     <div className="space-y-2">
                       <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                        <Briefcase className="w-3.5 h-3.5 text-purple-500" />
+                        <Briefcase className="w-3.5 h-3.5 text-[#EEF7F5]0" />
                         Jabatan Strategis
                       </Label>
                       <Input
@@ -678,13 +678,13 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
                         value={formData.jabatan_pic}
                         onChange={handleChange}
                         placeholder="Direktur Utama / Owner"
-                        className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500 h-11"
+                        className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0 h-11"
                       />
                     </div>
 
                     <div className="space-y-2">
                       <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                        <MessageSquare className="w-3.5 h-3.5 text-purple-500" />
+                        <MessageSquare className="w-3.5 h-3.5 text-[#EEF7F5]0" />
                         Nomor WhatsApp
                       </Label>
                       <Input
@@ -693,14 +693,14 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
                         value={formData.whatsapp_pic}
                         onChange={handleChange}
                         placeholder="+62 812-3456-7890"
-                        className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500 h-11"
+                        className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0 h-11"
                       />
                     </div>
 
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                          <Activity className="w-3.5 h-3.5 text-purple-500" />
+                          <Activity className="w-3.5 h-3.5 text-[#EEF7F5]0" />
                           Status Hubungan
                         </Label>
                         <TooltipProvider>
@@ -716,7 +716,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
                             >
                               <div className="space-y-2.5">
                                 <div className="pb-1 border-b border-slate-700">
-                                  <p className="font-black text-purple-400 uppercase tracking-tighter">Klasifikasi Pipeline</p>
+                                  <p className="font-black text-[#038E7D] uppercase tracking-tighter">Klasifikasi Pipeline</p>
                                 </div>
                                 <div className="flex gap-2">
                                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1 shrink-0" />
@@ -743,7 +743,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
                         value={formData.status_hubungan}
                         onValueChange={(value) => setFormData(prev => ({ ...prev, status_hubungan: value }))}
                       >
-                        <SelectTrigger className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500 h-11">
+                        <SelectTrigger className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0 h-11">
                           <SelectValue placeholder="Pilih status relasi" />
                         </SelectTrigger>
                         <SelectContent>
@@ -800,7 +800,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
                         <SelectItem value="Lite"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-slate-400" /> Lite</span></SelectItem>
                         <SelectItem value="Standard"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-400" /> Standard</span></SelectItem>
                         <SelectItem value="Premium"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-amber-400" /> Premium</span></SelectItem>
-                        <SelectItem value="Enterprise"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-purple-500" /> Enterprise</span></SelectItem>
+                        <SelectItem value="Enterprise"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#EEF7F5]0" /> Enterprise</span></SelectItem>
                         <SelectItem value="Custom"><span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500" /> Custom</span></SelectItem>
                       </SelectContent>
                     </Select>
@@ -1087,7 +1087,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
               <Button
                 type="submit"
                 disabled={loading}
-                className="bg-[#01544e] hover:bg-[#01443e] text-white px-8 font-bold shadow-lg shadow-emerald-900/20"
+                className="bg-[#013E37] hover:bg-[#01443e] text-white px-8 font-bold shadow-lg shadow-emerald-900/20"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">

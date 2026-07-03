@@ -323,11 +323,11 @@ export function DiscountApprovalSystem() {
       {/* Premium Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
         <div>
-          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#01544e] via-[#028076] to-[#01544e] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#013E37] via-[#028076] to-[#013E37] bg-clip-text text-transparent">
             DISCOUNT APPROVAL
           </h1>
           <p className="text-gray-500 font-medium flex items-center gap-2 mt-2">
-            <ShieldCheck className="h-4 w-4 text-[#01544e]" />
+            <ShieldCheck className="h-4 w-4 text-[#013E37]" />
             Sistem persetujuan diskon berjenjang dengan tata kelola & kepatuhan otomatis.
           </p>
         </div>
@@ -335,7 +335,7 @@ export function DiscountApprovalSystem() {
           <Button variant="outline" className="border-gray-200 text-gray-600 font-bold uppercase tracking-wider text-xs px-4">
             <Download className="h-4 w-4 mr-2" /> Export
           </Button>
-          <Button onClick={() => setShowRequestDialog(true)} className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 shadow-lg shadow-[#01544e]/20">
+          <Button onClick={() => setShowRequestDialog(true)} className="bg-[#013E37] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 shadow-lg shadow-[#013E37]/20">
             <Plus className="h-4 w-4 mr-2" /> New Request
           </Button>
         </div>
@@ -343,15 +343,15 @@ export function DiscountApprovalSystem() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-3">
-          <TabsTrigger value="requests" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="requests" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Antrean Pengajuan</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Daftar Aktif</span>
           </TabsTrigger>
-          <TabsTrigger value="policies" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="policies" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Kebijakan & Matriks</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Aturan Berjenjang</span>
           </TabsTrigger>
-          <TabsTrigger value="analytics" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="analytics" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Insight Performa</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Tren & Analitik</span>
           </TabsTrigger>
@@ -393,7 +393,7 @@ export function DiscountApprovalSystem() {
                 transition={{ delay: idx * 0.05 }}
               >
                 <Card 
-                  className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100"
+                  className="group hover:border-[#013E37]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100"
                   onClick={() => {
                     setSelectedRequest(request);
                     setShowDetailDialog(true);
@@ -405,7 +405,7 @@ export function DiscountApprovalSystem() {
                         <div className="flex items-start justify-between">
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                              <span className="text-[10px] font-black text-[#01544e] uppercase tracking-widest bg-[#e6f2f1] px-2 py-0.5 rounded">
+                              <span className="text-[10px] font-black text-[#013E37] uppercase tracking-widest bg-[#EEF7F5] px-2 py-0.5 rounded">
                                 {request.requestNumber}
                               </span>
                               <Badge variant="outline" className={`px-2 py-0 border ${getStatusStyle(request.status)}`}>
@@ -415,7 +415,7 @@ export function DiscountApprovalSystem() {
                                 <MapPin className="h-3 w-3" /> {request.region}
                               </Badge>
                             </div>
-                            <h3 className="text-xl font-black text-gray-900 group-hover:text-[#01544e] transition-colors">
+                            <h3 className="text-xl font-black text-gray-900 group-hover:text-[#013E37] transition-colors">
                               {request.clientName}
                             </h3>
                           </div>
@@ -452,10 +452,10 @@ export function DiscountApprovalSystem() {
                       </div>
 
                       <div className="lg:w-48 bg-gray-50 flex lg:flex-col items-center justify-center p-4 gap-3 border-t lg:border-t-0 lg:border-l border-gray-100">
-                        <Button variant="ghost" className="w-full text-[#01544e] hover:bg-white font-bold text-xs">
+                        <Button variant="ghost" className="w-full text-[#013E37] hover:bg-white font-bold text-xs">
                           <Eye className="h-4 w-4 mr-2" /> Detail
                         </Button>
-                        <Button className="w-full bg-[#01544e] hover:bg-[#028076] text-white font-bold text-xs shadow-md">
+                        <Button className="w-full bg-[#013E37] hover:bg-[#028076] text-white font-bold text-xs shadow-md">
                           Review
                         </Button>
                       </div>
@@ -469,7 +469,7 @@ export function DiscountApprovalSystem() {
 
         <TabsContent value="policies" className="animate-in fade-in slide-in-from-bottom-2 duration-300">
            <div className="max-w-4xl mx-auto space-y-6">
-            <div className="bg-[#01544e] rounded-2xl p-8 text-white relative overflow-hidden shadow-xl mb-8">
+            <div className="bg-[#013E37] rounded-2xl p-8 text-white relative overflow-hidden shadow-xl mb-8">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl" />
               <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="space-y-2">
@@ -491,7 +491,7 @@ export function DiscountApprovalSystem() {
                   <Card className="relative z-10 border-gray-100 shadow-sm hover:shadow-md transition-all">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-6">
-                        <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-[#01544e] to-[#028076] flex items-center justify-center text-white font-black text-xl shadow-lg border-4 border-white">
+                        <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-[#013E37] to-[#028076] flex items-center justify-center text-white font-black text-xl shadow-lg border-4 border-white">
                           L{policy.level}
                         </div>
                         <div className="flex-1 space-y-4">
@@ -499,12 +499,12 @@ export function DiscountApprovalSystem() {
                             <div className="space-y-0.5">
                               <h3 className="font-black text-gray-900 text-lg uppercase tracking-tight">{policy.roleName}</h3>
                               <p className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center gap-1.5">
-                                <Info className="h-3 w-3 text-[#01544e]" /> Persetujuan Bersyarat Diaktifkan
+                                <Info className="h-3 w-3 text-[#013E37]" /> Persetujuan Bersyarat Diaktifkan
                               </p>
                             </div>
                             <div className="text-right">
                               <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Authority Range</p>
-                              <p className="text-2xl font-black text-[#01544e]">{policy.minDiscount}% - {policy.maxDiscount}%</p>
+                              <p className="text-2xl font-black text-[#013E37]">{policy.minDiscount}% - {policy.maxDiscount}%</p>
                             </div>
                           </div>
                         </div>
@@ -542,7 +542,7 @@ export function DiscountApprovalSystem() {
             <Card className="border-gray-100 overflow-hidden shadow-sm">
               <CardHeader className="bg-gray-50/50 border-b border-gray-100">
                 <CardTitle className="text-xs font-black uppercase tracking-[0.2em] text-gray-400 flex items-center gap-2">
-                   <Globe className="h-4 w-4 text-[#01544e]" />
+                   <Globe className="h-4 w-4 text-[#013E37]" />
                    Margin vs Diskon Per Wilayah
                 </CardTitle>
               </CardHeader>
@@ -565,7 +565,7 @@ export function DiscountApprovalSystem() {
                           contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
                         />
                         <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase' }} />
-                        <Bar name="Original Margin" dataKey="original" fill="#01544e" radius={[4, 4, 0, 0]} barSize={30} />
+                        <Bar name="Original Margin" dataKey="original" fill="#013E37" radius={[4, 4, 0, 0]} barSize={30} />
                         <Bar name="Proposed Margin" dataKey="proposed" fill="#028076" radius={[4, 4, 0, 0]} barSize={30} />
                         <Line name="Discount %" type="monotone" dataKey="discount" stroke="#f43f5e" strokeWidth={3} dot={{ r: 4, fill: '#f43f5e', strokeWidth: 2, stroke: '#fff' }} />
                       </ComposedChart>
@@ -578,7 +578,7 @@ export function DiscountApprovalSystem() {
             <Card className="border-gray-100 overflow-hidden shadow-sm">
                <CardHeader className="bg-gray-50/50 border-b border-gray-100">
                 <CardTitle className="text-xs font-black uppercase tracking-[0.2em] text-gray-400 flex items-center gap-2">
-                   <TrendingUp className="h-4 w-4 text-[#01544e]" />
+                   <TrendingUp className="h-4 w-4 text-[#013E37]" />
                    Dampak Revenue {selectedRegion !== 'all' ? `- ${selectedRegion}` : ''}
                 </CardTitle>
               </CardHeader>
@@ -598,15 +598,15 @@ export function DiscountApprovalSystem() {
                     ]}>
                       <defs>
                         <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#01544e" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="#01544e" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#013E37" stopOpacity={0.1}/>
+                          <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
                       <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }} />
-                      <Area type="monotone" dataKey="revenue" stroke="#01544e" fillOpacity={1} fill="url(#colorRev)" strokeWidth={3} />
+                      <Area type="monotone" dataKey="revenue" stroke="#013E37" fillOpacity={1} fill="url(#colorRev)" strokeWidth={3} />
                       <Area type="monotone" dataKey="saved" stroke="#f43f5e" fill="#f43f5e" fillOpacity={0.05} strokeWidth={2} strokeDasharray="5 5" />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -625,7 +625,7 @@ export function DiscountApprovalSystem() {
             <DialogDescription>Submit a new discount approval request for a client opportunity</DialogDescription>
           </VisuallyHidden>
 
-          <div className="bg-[#01544e] p-8 text-white relative shrink-0">
+          <div className="bg-[#013E37] p-8 text-white relative shrink-0">
             <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -mr-24 -mt-24 blur-2xl" />
             <div className="relative z-10 space-y-2">
               <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-white/20 px-3 py-1 rounded-full text-white">New Submission</span>
@@ -697,7 +697,7 @@ export function DiscountApprovalSystem() {
 
               <div className="space-y-2">
                 <Label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Supporting Documents (Competitor Price, etc.)</Label>
-                <div className="border-2 border-dashed border-gray-100 rounded-xl p-6 text-center space-y-3 hover:border-[#01544e]/30 transition-colors cursor-pointer relative group">
+                <div className="border-2 border-dashed border-gray-100 rounded-xl p-6 text-center space-y-3 hover:border-[#013E37]/30 transition-colors cursor-pointer relative group">
                   <input 
                     type="file" 
                     multiple 
@@ -709,7 +709,7 @@ export function DiscountApprovalSystem() {
                       }
                     }}
                   />
-                  <div className="mx-auto h-10 w-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-[#01544e]/10 group-hover:text-[#01544e] transition-colors">
+                  <div className="mx-auto h-10 w-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-[#013E37]/10 group-hover:text-[#013E37] transition-colors">
                     <Plus className="h-5 w-5" />
                   </div>
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Click to upload or drag files</p>
@@ -729,7 +729,7 @@ export function DiscountApprovalSystem() {
             <div className="space-y-6">
               <div className="p-6 bg-[#f8fafc] rounded-2xl border border-gray-100 space-y-6">
                 <div className="flex items-center justify-between">
-                  <Label className="text-[10px] font-black uppercase tracking-widest text-[#01544e]">Discount Requested (%)</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-[#013E37]">Discount Requested (%)</Label>
                   <span className="text-2xl font-black text-rose-600">{newRequestData.discountPercent}%</span>
                 </div>
                 
@@ -755,11 +755,11 @@ export function DiscountApprovalSystem() {
                 <div className="pt-4 border-t border-gray-200 flex items-center justify-between">
                   <div>
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Required Level</p>
-                    <p className="text-sm font-black text-[#01544e]">
+                    <p className="text-sm font-black text-[#013E37]">
                       Level {calculatedMargin.level}: {approvalPolicies.find(p => p.level === calculatedMargin.level)?.roleName}
                     </p>
                   </div>
-                  <Badge className="bg-[#01544e] text-white px-3 py-1 font-bold">AUTO-ROUTING</Badge>
+                  <Badge className="bg-[#013E37] text-white px-3 py-1 font-bold">AUTO-ROUTING</Badge>
                 </div>
               </div>
 
@@ -773,7 +773,7 @@ export function DiscountApprovalSystem() {
           <div className="p-6 bg-gray-50 border-t flex justify-end gap-3 shrink-0">
             <Button variant="outline" onClick={() => setShowRequestDialog(false)} className="h-12 px-8 font-bold border-gray-200 uppercase tracking-widest text-xs">Cancel</Button>
             <Button 
-              className="bg-[#01544e] hover:bg-[#028076] text-white h-12 px-10 font-bold shadow-lg shadow-emerald-900/20 uppercase tracking-widest text-xs"
+              className="bg-[#013E37] hover:bg-[#028076] text-white h-12 px-10 font-bold shadow-lg shadow-emerald-900/20 uppercase tracking-widest text-xs"
               onClick={() => {
                 toast.success('Discount request submitted successfully!');
                 setShowRequestDialog(false);
@@ -796,7 +796,7 @@ export function DiscountApprovalSystem() {
                   Detailed discount approval request information for {selectedRequest.clientName}
                 </DialogDescription>
               </DialogHeader>
-              <div className="bg-[#01544e] p-8 text-white relative shrink-0">
+              <div className="bg-[#013E37] p-8 text-white relative shrink-0">
                 <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -mr-24 -mt-24 blur-2xl" />
                 <div className="relative z-10 space-y-4">
                   <div className="flex items-center justify-between">
@@ -819,15 +819,15 @@ export function DiscountApprovalSystem() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 space-y-1">
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Final Value</p>
-                    <p className="text-lg font-black text-[#01544e]">{formatCurrency(selectedRequest.finalPrice)}</p>
+                    <p className="text-lg font-black text-[#013E37]">{formatCurrency(selectedRequest.finalPrice)}</p>
                   </div>
                   <div className="p-4 bg-rose-50 rounded-xl border border-rose-100 space-y-1">
                     <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest">Diskon (%)</p>
                     <p className="text-lg font-black text-rose-600">{selectedRequest.discountPercent}%</p>
                   </div>
-                   <div className="p-4 bg-indigo-50 rounded-xl border border-indigo-100 space-y-1">
-                    <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Original Margin</p>
-                    <p className="text-lg font-black text-indigo-600">{selectedRequest.originalMargin}%</p>
+                   <div className="p-4 bg-[#EEF7F5] rounded-xl border border-[#DFF0EC] space-y-1">
+                    <p className="text-[10px] font-black text-[#038E7D] uppercase tracking-widest">Original Margin</p>
+                    <p className="text-lg font-black text-[#013E37]">{selectedRequest.originalMargin}%</p>
                   </div>
                    <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-100 space-y-1">
                     <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Proposed Margin</p>
@@ -909,7 +909,7 @@ export function DiscountApprovalSystem() {
 
                 <div className="space-y-3">
                   <h4 className="text-xs font-black text-gray-900 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4 text-[#01544e]" /> Alasan Pengajuan
+                    <MessageSquare className="h-4 w-4 text-[#013E37]" /> Alasan Pengajuan
                   </h4>
                   <div className="p-5 bg-gray-50 rounded-xl border border-gray-100 italic text-gray-700 leading-relaxed shadow-inner">
                     "{selectedRequest.reason}"
@@ -918,7 +918,7 @@ export function DiscountApprovalSystem() {
 
                 <div className="space-y-4">
                   <h4 className="text-xs font-black text-gray-900 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <History className="h-4 w-4 text-[#01544e]" /> Riwayat Persetujuan
+                    <History className="h-4 w-4 text-[#013E37]" /> Riwayat Persetujuan
                   </h4>
                   <div className="space-y-4 relative">
                     {selectedRequest.approvalHistory.map((step, idx) => (
@@ -977,7 +977,7 @@ export function DiscountApprovalSystem() {
                   </Button>
                   {!isCounterOfferOpen && !isConditionalOpen && (
                     <Button 
-                      className="bg-[#01544e] hover:bg-[#028076] text-white font-black text-xs uppercase tracking-widest px-8 h-11 shadow-lg shadow-[#01544e]/20"
+                      className="bg-[#013E37] hover:bg-[#028076] text-white font-black text-xs uppercase tracking-widest px-8 h-11 shadow-lg shadow-[#013E37]/20"
                       onClick={() => handleApprove(selectedRequest)}
                     >
                       Setujui Level {selectedRequest.approvalLevel}

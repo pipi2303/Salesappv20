@@ -84,7 +84,7 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="!max-w-[650px] w-[90vw] p-0 overflow-hidden [&>button]:hidden">
         {/* Header */}
-        <div className="relative bg-[#01544e] px-6 py-4 text-white">
+        <div className="relative bg-[#013E37] px-6 py-4 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-white/20 flex items-center justify-center">
@@ -125,12 +125,12 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
                   onClick={() => setFormData(prev => ({ ...prev, type: value as any }))}
                   className={`flex flex-col items-center gap-2 p-3 rounded-lg border-2 transition-all ${
                     formData.type === value
-                      ? 'border-[#01544e] bg-emerald-50'
-                      : 'border-gray-200 hover:border-[#01544e]/50 bg-white'
+                      ? 'border-[#013E37] bg-emerald-50'
+                      : 'border-gray-200 hover:border-[#013E37]/50 bg-white'
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${formData.type === value ? 'text-[#01544e]' : 'text-gray-500'}`} />
-                  <span className={`text-xs font-medium ${formData.type === value ? 'text-[#01544e]' : 'text-gray-700'}`}>
+                  <Icon className={`h-5 w-5 ${formData.type === value ? 'text-[#013E37]' : 'text-gray-500'}`} />
+                  <span className={`text-xs font-medium ${formData.type === value ? 'text-[#013E37]' : 'text-gray-700'}`}>
                     {label}
                   </span>
                 </button>
@@ -149,7 +149,7 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
               value={formData.title}
               onChange={handleChange}
               placeholder="Contoh: Follow-up Call - Contract Discussion"
-              className="border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+              className="border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
             />
           </div>
 
@@ -166,7 +166,7 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
                 value={formData.date}
                 onChange={handleChange}
                 placeholder="27 Jan 2026"
-                className="border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+                className="border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
               />
             </div>
             <div className="space-y-2">
@@ -180,7 +180,7 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
                 value={formData.time}
                 onChange={handleChange}
                 placeholder="14:30"
-                className="border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+                className="border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
               />
             </div>
           </div>
@@ -197,7 +197,7 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
               onChange={handleChange}
               placeholder="Deskripsikan detail komunikasi, hasil diskusi, action items, dll."
               rows={4}
-              className="border-gray-300 focus:border-[#01544e] focus:ring-[#01544e] resize-none"
+              className="border-gray-300 focus:border-[#013E37] focus:ring-[#013E37] resize-none"
             />
           </div>
 
@@ -213,7 +213,7 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
                 value={formData.category1}
                 onChange={handleChange}
                 placeholder="Contoh: Hot Lead"
-                className="border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+                className="border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
               />
             </div>
             <div className="space-y-2">
@@ -226,7 +226,7 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
                 value={formData.category2}
                 onChange={handleChange}
                 placeholder="Contoh: Follow-up"
-                className="border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+                className="border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
               />
             </div>
           </div>
@@ -244,7 +244,7 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
           </Button>
           <Button
             onClick={handleSubmit}
-            className="min-w-32 bg-[#01544e] hover:bg-[#023d39] text-white"
+            className="min-w-32 bg-[#013E37] hover:bg-[#025C52] text-white"
           >
             <Send className="h-4 w-4 mr-2" />
             Tambah Komunikasi

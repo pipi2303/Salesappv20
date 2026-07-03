@@ -76,7 +76,7 @@ export function AIAssistant() {
       {/* Floating Button */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg bg-[#01544e] hover:bg-[#023d39] z-50"
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg bg-[#013E37] hover:bg-[#025C52] z-50"
         size="icon"
       >
         {isOpen ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6" />}
@@ -86,7 +86,7 @@ export function AIAssistant() {
       {isOpen && (
         <Card className="fixed bottom-24 right-6 w-96 h-[500px] shadow-2xl z-50 flex flex-col">
           {/* Header */}
-          <div className="p-4 border-b bg-[#01544e] rounded-t-lg">
+          <div className="p-4 border-b bg-[#013E37] rounded-t-lg">
             <div className="flex items-center gap-2">
               <Bot className="h-6 w-6 text-white" />
               <div>
@@ -107,7 +107,7 @@ export function AIAssistant() {
                   <div
                     className={`max-w-[80%] rounded-lg p-3 ${
                       message.sender === 'user'
-                        ? 'bg-[#01544e] text-white'
+                        ? 'bg-[#013E37] text-white'
                         : 'bg-gray-100 text-gray-900'
                     }`}
                   >
@@ -133,7 +133,7 @@ export function AIAssistant() {
                 placeholder="Tanyakan sesuatu..."
                 className="flex-1"
               />
-              <Button onClick={handleSend} size="icon" className="bg-[#01544e] hover:bg-[#023d39]">
+              <Button onClick={handleSend} size="icon" className="bg-[#013E37] hover:bg-[#025C52]">
                 <Send className="h-4 w-4" />
               </Button>
             </div>

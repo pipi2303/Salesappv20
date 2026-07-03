@@ -135,10 +135,10 @@ export function AILeadScoring({ leadData }: AILeadScoringProps) {
 
   if (calculating) {
     return (
-      <Card className="bg-gradient-to-r from-blue-50 to-purple-50">
+      <Card className="bg-gradient-to-r from-blue-50 to-[#EEF7F5]">
         <CardContent className="p-8 text-center">
           <div className="animate-pulse">
-            <Brain className="h-12 w-12 text-[#01544e] mx-auto mb-4 animate-bounce" />
+            <Brain className="h-12 w-12 text-[#013E37] mx-auto mb-4 animate-bounce" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               🤖 AI Analyzing Lead...
             </h3>
@@ -180,7 +180,7 @@ export function AILeadScoring({ leadData }: AILeadScoringProps) {
   return (
     <div className="space-y-4">
       {/* AI Score Header */}
-      <Card className="bg-gradient-to-br from-[#01544e] to-[#023d39] text-white">
+      <Card className="bg-gradient-to-br from-[#013E37] to-[#025C52] text-white">
         <CardContent className="p-6">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-14 w-14 rounded-full bg-white/20 flex items-center justify-center">
@@ -241,7 +241,7 @@ export function AILeadScoring({ leadData }: AILeadScoringProps) {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-base">
-            <BarChart3 className="h-5 w-5 text-[#01544e]" />
+            <BarChart3 className="h-5 w-5 text-[#013E37]" />
             Scoring Factors
           </CardTitle>
         </CardHeader>
@@ -307,17 +307,17 @@ export function AILeadScoring({ leadData }: AILeadScoringProps) {
       )}
 
       {/* AI Recommendations */}
-      <Card className="border-2 border-[#01544e] bg-[#e6f2f1]">
+      <Card className="border-2 border-[#013E37] bg-[#EEF7F5]">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-base">
-            <Zap className="h-5 w-5 text-[#01544e]" />
+            <Zap className="h-5 w-5 text-[#013E37]" />
             AI Recommendations
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           {aiScore.recommendations.map((rec, index) => (
-            <div key={index} className="flex items-start gap-3 p-3 bg-white rounded-lg border border-[#01544e]/20">
-              <div className="h-6 w-6 rounded-full bg-[#01544e] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+            <div key={index} className="flex items-start gap-3 p-3 bg-white rounded-lg border border-[#013E37]/20">
+              <div className="h-6 w-6 rounded-full bg-[#013E37] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
                 {index + 1}
               </div>
               <span className="text-sm text-gray-700 flex-1">{rec}</span>

@@ -70,7 +70,7 @@ export function Contract() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01544e]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div>
       </div>
     );
   }
@@ -146,13 +146,13 @@ export function Contract() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-[#01544e]">
+          <h1 className="text-3xl font-bold text-[#013E37]">
             Contract Management
           </h1>
           <p className="text-gray-600 mt-1">Kelola semua kontrak dan perjanjian</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={handleAddContract} className="bg-[#01544e] hover:bg-[#023d39]">
+          <Button onClick={handleAddContract} className="bg-[#013E37] hover:bg-[#025C52]">
             <Plus className="h-4 w-4 mr-2" />
             Buat Kontrak
           </Button>
@@ -164,7 +164,7 @@ export function Contract() {
         <Card className="hover:shadow-lg transition-shadow">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-[#013E37] flex items-center justify-center">
                 <FileText className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -206,7 +206,7 @@ export function Contract() {
         <Card className="hover:shadow-lg transition-shadow">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center">
                 <DollarSign className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -219,14 +219,14 @@ export function Contract() {
       </div>
 
       {/* TOP 8 ENHANCEMENTS - Quick Action Bar */}
-      <Card className="bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 border-2 border-indigo-200">
+      <Card className="bg-gradient-to-r from-[#EEF7F5] via-[#EEF7F5] to-pink-50 border-2 border-[#C3DDD9]">
         <CardContent className="p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="font-semibold text-lg text-gray-900">Contract Intelligence Suite</h3>
               <p className="text-sm text-gray-600">Access all advanced contract management features</p>
             </div>
-            <Badge className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
+            <Badge className="bg-gradient-to-r from-[#013E37] to-[#025C52] text-white">
               <Award className="h-3 w-3 mr-1" />
               8 Advanced Features
             </Badge>
@@ -290,7 +290,7 @@ export function Contract() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center">
                       <FileText className="h-6 w-6 text-white" />
                     </div>
                     <div>

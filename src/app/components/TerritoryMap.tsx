@@ -40,8 +40,8 @@ export function TerritoryMap({ territories, onSelectTerritory }: TerritoryMapPro
       <svg viewBox="0 0 1000 400" className="w-full h-full opacity-20 pointer-events-none">
         <path 
           d="M50,150 Q150,120 300,180 T600,250 T950,300 L950,350 Q600,320 300,300 T50,250 Z" 
-          fill="#01544e" 
-          stroke="#01544e" 
+          fill="#013E37" 
+          stroke="#013E37" 
           strokeWidth="2"
         />
         {/* Decorative Grid */}
@@ -59,7 +59,7 @@ export function TerritoryMap({ territories, onSelectTerritory }: TerritoryMapPro
         if (!data) return null;
 
         const isHovered = hoveredId === point.id;
-        const colorClass = data.achievement >= 100 ? 'text-emerald-500' : 'text-[#01544e]';
+        const colorClass = data.achievement >= 100 ? 'text-emerald-500' : 'text-[#013E37]';
 
         return (
           <div 
@@ -77,7 +77,7 @@ export function TerritoryMap({ territories, onSelectTerritory }: TerritoryMapPro
                 animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0, 0.2] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              <div className={`relative h-10 w-10 rounded-full bg-white shadow-xl flex items-center justify-center border-2 transition-transform group-hover:scale-110 ${data.achievement >= 100 ? 'border-emerald-500' : 'border-[#01544e]'}`}>
+              <div className={`relative h-10 w-10 rounded-full bg-white shadow-xl flex items-center justify-center border-2 transition-transform group-hover:scale-110 ${data.achievement >= 100 ? 'border-emerald-500' : 'border-[#013E37]'}`}>
                 <MapPin className={`h-5 w-5 ${colorClass}`} />
               </div>
 
@@ -104,11 +104,11 @@ export function TerritoryMap({ territories, onSelectTerritory }: TerritoryMapPro
                       <div className="space-y-2">
                         <div className="flex justify-between items-center text-[10px] font-bold">
                           <span className="text-gray-400 uppercase">Revenue</span>
-                          <span className="text-[#01544e]">{formatCurrency(data.revenue)}</span>
+                          <span className="text-[#013E37]">{formatCurrency(data.revenue)}</span>
                         </div>
                         <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
                           <div 
-                            className={`h-full rounded-full ${data.achievement >= 100 ? 'bg-emerald-500' : 'bg-[#01544e]'}`} 
+                            className={`h-full rounded-full ${data.achievement >= 100 ? 'bg-emerald-500' : 'bg-[#013E37]'}`} 
                             style={{ width: `${Math.min(data.achievement, 100)}%` }} 
                           />
                         </div>
@@ -137,7 +137,7 @@ export function TerritoryMap({ territories, onSelectTerritory }: TerritoryMapPro
           <span className="text-[10px] font-bold text-gray-600 uppercase tracking-tight">On Target ({'>'}100%)</span>
         </div>
         <div className="flex items-center gap-3">
-          <div className="h-3 w-3 rounded-full bg-[#01544e] shadow-sm shadow-emerald-200" />
+          <div className="h-3 w-3 rounded-full bg-[#013E37] shadow-sm shadow-emerald-200" />
           <span className="text-[10px] font-bold text-gray-600 uppercase tracking-tight">Below Target</span>
         </div>
       </div>

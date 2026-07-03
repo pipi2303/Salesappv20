@@ -254,7 +254,7 @@ export function RevenueDetailDialog({
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="text-xl font-bold flex items-center gap-2 text-gray-900">
-                  <DollarSign className="w-6 h-6 text-purple-600" />
+                  <DollarSign className="w-6 h-6 text-[#013E37]" />
                   Revenue Breakdown - {employeeName}
                 </div>
                 <p className="text-sm text-gray-500 mt-1">
@@ -274,10 +274,10 @@ export function RevenueDetailDialog({
           {/* Grand Total Summary - Compact 3 cards */}
           <div className="grid grid-cols-3 gap-3 mb-4 mt-4">
             {/* Total Revenue */}
-            <Card className="border-2 border-purple-400 bg-gradient-to-br from-purple-50 to-pink-50">
+            <Card className="border-2 border-[#038E7D] bg-gradient-to-br from-[#EEF7F5] to-pink-50">
               <CardContent className="p-4">
                 <div className="text-xs font-semibold text-gray-600 mb-1">Total Revenue YTD</div>
-                <div className="text-2xl font-bold text-purple-600 mb-1">
+                <div className="text-2xl font-bold text-[#013E37] mb-1">
                   {formatCurrency(grandTotal.actual)}
                 </div>
                 <div className="text-xs text-gray-600 space-y-0.5 mb-2">
@@ -301,7 +301,7 @@ export function RevenueDetailDialog({
             </Card>
 
             {/* Hospital Segment */}
-            <Card className="border-2 border-blue-400 bg-gradient-to-br from-blue-50 to-cyan-50">
+            <Card className="border-2 border-blue-400 bg-gradient-to-br from-blue-50 to-[#EEF7F5]">
               <CardContent className="p-4">
                 <div className="flex items-center gap-1 mb-1">
                   <Building2 className="w-3.5 h-3.5 text-blue-600" />
@@ -374,7 +374,7 @@ export function RevenueDetailDialog({
 
             {/* Hospital Quarterly View */}
             <TabsContent value="hospital" className="space-y-4">
-              <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
+              <div className="p-4 bg-gradient-to-r from-blue-50 to-[#EEF7F5] rounded-lg border border-blue-200">
                 <h3 className="font-semibold flex items-center gap-2 mb-3">
                   <Building2 className="w-4 h-4 text-blue-600" />
                   Rumah Sakit - Quarterly Breakdown {year}
@@ -533,7 +533,7 @@ export function RevenueDetailDialog({
 
             <DialogHeader className="flex-shrink-0 px-6 pt-6 pb-3 bg-white border-b shadow-sm sticky top-0 z-10">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3 text-2xl font-bold text-[#01544e]">
+                <div className="flex items-center gap-3 text-2xl font-bold text-[#013E37]">
                   <Calendar className="h-7 w-7" />
                   Daily Breakdown - {selectedMonth.fullMonth} 2025
                 </div>
@@ -548,7 +548,7 @@ export function RevenueDetailDialog({
 
             <div className="flex-1 overflow-y-auto space-y-4 px-6 pb-6 mt-4">
               {/* Top Summary Stats - 4 columns */}
-              <div className="grid grid-cols-4 gap-3 p-5 bg-gradient-to-r from-[#01544e] to-[#023d39] rounded-xl text-white flex-shrink-0">
+              <div className="grid grid-cols-4 gap-3 p-5 bg-gradient-to-r from-[#013E37] to-[#025C52] rounded-xl text-white flex-shrink-0">
                 <div>
                   <p className="text-xs opacity-90 mb-1">Total Actual</p>
                   <p className="text-3xl font-bold">{(selectedMonth.actual / 1000000).toFixed(0)}M</p>
@@ -576,14 +576,14 @@ export function RevenueDetailDialog({
                 {/* LEFT COLUMN - Calendar */}
                 <div className="space-y-3 flex flex-col">
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <Calendar className="h-4 w-4 text-[#01544e]" />
-                    <h3 className="font-semibold text-base text-[#01544e]">Calendar</h3>
+                    <Calendar className="h-4 w-4 text-[#013E37]" />
+                    <h3 className="font-semibold text-base text-[#013E37]">Calendar</h3>
                   </div>
 
-                  <div className="border-2 border-[#01544e] rounded-xl p-3 bg-white flex-1 flex flex-col">
+                  <div className="border-2 border-[#013E37] rounded-xl p-3 bg-white flex-1 flex flex-col">
                     {/* Calendar Header - Month/Year */}
                     <div className="text-center mb-3 pb-2 border-b flex-shrink-0">
-                      <h4 className="text-base font-bold text-[#01544e]">{selectedMonth.fullMonth} 2025</h4>
+                      <h4 className="text-base font-bold text-[#013E37]">{selectedMonth.fullMonth} 2025</h4>
                     </div>
 
                     {/* Calendar Grid */}
@@ -636,9 +636,9 @@ export function RevenueDetailDialog({
                                 onClick={() => setSelectedDate(day)}
                                 className={`aspect-square rounded-md text-[10px] font-semibold transition-all relative flex items-center justify-center
                                   ${isSelected 
-                                    ? 'bg-[#01544e] text-white shadow-lg scale-110 z-10' 
+                                    ? 'bg-[#013E37] text-white shadow-lg scale-110 z-10' 
                                     : hasVisit 
-                                      ? 'bg-green-100 text-[#01544e] hover:bg-green-200' 
+                                      ? 'bg-green-100 text-[#013E37] hover:bg-green-200' 
                                       : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                                   }
                                 `}
@@ -647,7 +647,7 @@ export function RevenueDetailDialog({
                                 
                                 {/* Visit indicator dot (bottom) */}
                                 {hasVisit && !isSelected && (
-                                  <div className="absolute bottom-0.5 left-1/2 transform -translate-x-1/2 w-0.5 h-0.5 bg-[#01544e] rounded-full"></div>
+                                  <div className="absolute bottom-0.5 left-1/2 transform -translate-x-1/2 w-0.5 h-0.5 bg-[#013E37] rounded-full"></div>
                                 )}
                                 
                                 {/* Visit count badge (top-right) */}
@@ -672,7 +672,7 @@ export function RevenueDetailDialog({
                         <span className="text-gray-700 font-medium">Has Visit</span>
                       </div>
                       <div className="flex items-center gap-1.5 text-[10px]">
-                        <div className="w-4 h-4 bg-[#01544e] rounded"></div>
+                        <div className="w-4 h-4 bg-[#013E37] rounded"></div>
                         <span className="text-gray-700 font-medium">Selected</span>
                       </div>
                     </div>
@@ -682,8 +682,8 @@ export function RevenueDetailDialog({
                 {/* RIGHT COLUMN - Activities */}
                 <div className="space-y-3 flex flex-col min-h-0">
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <TrendingUp className="h-4 w-4 text-[#01544e]" />
-                    <h3 className="font-semibold text-base text-[#01544e]">
+                    <TrendingUp className="h-4 w-4 text-[#013E37]" />
+                    <h3 className="font-semibold text-base text-[#013E37]">
                       {selectedDate ? `Activities on ${selectedDate} ${selectedMonth.fullMonth}` : 'Select a date'}
                     </h3>
                   </div>
@@ -717,14 +717,14 @@ export function RevenueDetailDialog({
                           {selectedDayVisits.map((visit, idx) => (
                             <Card 
                               key={idx} 
-                              className="hover:shadow-md transition-shadow border-l-4 border-l-[#01544e] bg-white"
+                              className="hover:shadow-md transition-shadow border-l-4 border-l-[#013E37] bg-white"
                             >
                               <CardContent className="p-2">
                                 <div className="space-y-1.5">
                                   {/* Header - Date, Status, Time */}
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-1.5">
-                                      <Badge className="bg-[#01544e] text-white font-semibold px-2 py-0.5 text-[10px]">
+                                      <Badge className="bg-[#013E37] text-white font-semibold px-2 py-0.5 text-[10px]">
                                         {visit.date}
                                       </Badge>
                                       <Badge 
@@ -746,7 +746,7 @@ export function RevenueDetailDialog({
 
                                   {/* Client */}
                                   <div className="flex items-start gap-2 pb-1">
-                                    <Building2 className="h-3.5 w-3.5 text-[#01544e] mt-0.5 flex-shrink-0" />
+                                    <Building2 className="h-3.5 w-3.5 text-[#013E37] mt-0.5 flex-shrink-0" />
                                     <div className="flex-1">
                                       <p className="text-[9px] text-gray-500 mb-0">Client</p>
                                       <p className="font-semibold text-gray-900 text-xs">{visit.client}</p>
@@ -755,7 +755,7 @@ export function RevenueDetailDialog({
 
                                   {/* Doctor */}
                                   <div className="flex items-start gap-2 pb-1">
-                                    <User className="h-3.5 w-3.5 text-[#01544e] mt-0.5 flex-shrink-0" />
+                                    <User className="h-3.5 w-3.5 text-[#013E37] mt-0.5 flex-shrink-0" />
                                     <div className="flex-1">
                                       <p className="text-[9px] text-gray-500 mb-0">Doctor</p>
                                       <p className="font-semibold text-gray-900 text-xs">{visit.doctor}</p>
@@ -766,7 +766,7 @@ export function RevenueDetailDialog({
                                   <div className="pt-1.5 border-t border-gray-200">
                                     <div className="flex items-center justify-between">
                                       <span className="text-[9px] text-gray-500 font-medium">Revenue</span>
-                                      <div className="flex items-center gap-1 text-[#01544e]">
+                                      <div className="flex items-center gap-1 text-[#013E37]">
                                         <TrendingUp className="h-3.5 w-3.5" />
                                         <p className="text-sm font-bold">
                                           Rp {formatNumber(visit.revenue / 1000000)}M
@@ -784,7 +784,7 @@ export function RevenueDetailDialog({
                             const totalRevenue = selectedDayVisits.reduce((sum, v) => sum + v.revenue, 0);
                             
                             return (
-                              <Card className="bg-gradient-to-r from-[#01544e] to-[#023d39] text-white border-0">
+                              <Card className="bg-gradient-to-r from-[#013E37] to-[#025C52] text-white border-0">
                                 <CardContent className="p-3">
                                   <div className="grid grid-cols-2 gap-3 text-center">
                                     <div>

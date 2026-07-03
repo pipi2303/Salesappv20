@@ -175,13 +175,13 @@ export function SalesReports() {
     }));
   };
 
-  if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01544e]"></div></div>;
+  if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div></div>;
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-[#01544e]">Sales Reports</h1>
+          <h1 className="text-3xl font-bold text-[#013E37]">Sales Reports</h1>
           <p className="text-gray-600 mt-1">Analisis lengkap performa sales Anda</p>
         </div>
         <div className="flex gap-2">
@@ -193,7 +193,7 @@ export function SalesReports() {
             <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
             <SelectContent>{getPeriodOptions().map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}</SelectContent>
           </Select>
-          <Button onClick={() => toast.success('Exporting PDF...')} className="bg-[#01544e] hover:bg-[#023d39]"><Download className="h-4 w-4 mr-2" />Export PDF</Button>
+          <Button onClick={() => toast.success('Exporting PDF...')} className="bg-[#013E37] hover:bg-[#025C52]"><Download className="h-4 w-4 mr-2" />Export PDF</Button>
         </div>
       </div>
 
@@ -203,35 +203,35 @@ export function SalesReports() {
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-3 md:grid-cols-5 gap-1">
           <TabsTrigger 
             value="overview" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Overview</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Ringkasan Eksekutif</span>
           </TabsTrigger>
           <TabsTrigger 
             value="sales" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Sales Analysis</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Analisis Pendapatan</span>
           </TabsTrigger>
           <TabsTrigger 
             value="performance" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Team Performance</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Evaluasi Tim Sales</span>
           </TabsTrigger>
           <TabsTrigger 
             value="products" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Product Analysis</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Performa Produk</span>
           </TabsTrigger>
           <TabsTrigger 
             value="regional" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Regional Analysis</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Sebaran Wilayah</span>
@@ -241,7 +241,7 @@ export function SalesReports() {
         <TabsContent value="overview" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
-              <CardHeader><CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-indigo-600" />Revenue Trend (Juta Rupiah)</CardTitle></CardHeader>
+              <CardHeader><CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-[#013E37]" />Revenue Trend (Juta Rupiah)</CardTitle></CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={salesData}>
@@ -252,7 +252,7 @@ export function SalesReports() {
               </CardContent>
             </Card>
             <Card>
-              <CardHeader><CardTitle className="flex items-center gap-2"><PieChartIcon className="h-5 w-5 text-purple-600" />Lead Sources</CardTitle></CardHeader>
+              <CardHeader><CardTitle className="flex items-center gap-2"><PieChartIcon className="h-5 w-5 text-[#013E37]" />Lead Sources</CardTitle></CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart><Pie data={leadSourceData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value" label={({name, percent}) => `${name} ${(percent*100).toFixed(0)}%`}>{leadSourceData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie><Tooltip /></PieChart>
@@ -267,7 +267,7 @@ export function SalesReports() {
                 {conversionFunnel.map((stage) => (
                   <div key={stage.stage} className="space-y-2">
                     <div className="flex justify-between items-center"><span className="text-sm font-medium">{stage.stage}</span><span className="text-sm text-gray-600">{formatNumber(stage.count)} ({stage.percentage}%)</span></div>
-                    <div className="h-8 bg-gray-100 rounded-full overflow-hidden relative"><div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xs font-semibold" style={{ width: `${stage.percentage}%` }}>{stage.percentage}%</div></div>
+                    <div className="h-8 bg-gray-100 rounded-full overflow-hidden relative"><div className="h-full bg-gradient-to-r from-blue-500 to-[#013E37] flex items-center justify-center text-white text-xs font-semibold" style={{ width: `${stage.percentage}%` }}>{stage.percentage}%</div></div>
                   </div>
                 ))}
               </div>
@@ -293,13 +293,13 @@ export function SalesReports() {
 
         <TabsContent value="performance" className="space-y-4">
           <Card>
-            <CardHeader><CardTitle className="flex items-center gap-2"><Users className="h-5 w-5 text-[#01544e]" />Team Performance</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="flex items-center gap-2"><Users className="h-5 w-5 text-[#013E37]" />Team Performance</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               {/* Director */}
-              <div className="border-2 border-[#01544e] rounded-lg p-4 bg-gradient-to-r from-[#e6f2f1] to-white cursor-pointer hover:shadow-md" onClick={() => setSelectedDirector(teamHierarchy)}>
+              <div className="border-2 border-[#013E37] rounded-lg p-4 bg-gradient-to-r from-[#EEF7F5] to-white cursor-pointer hover:shadow-md" onClick={() => setSelectedDirector(teamHierarchy)}>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3"><div className="h-14 w-14 rounded-full bg-[#01544e] flex items-center justify-center text-white font-bold">{teamHierarchy.avatar}</div><div><h3 className="font-bold text-[#01544e]">{teamHierarchy.name}</h3><p className="text-sm text-gray-600">{teamHierarchy.position}</p></div></div>
-                  <div className="text-right"><div className="text-2xl font-bold text-green-600">{formatCurrency(teamHierarchy.achievement)}</div><div className="text-sm font-semibold text-[#01544e]">{teamHierarchy.performance.toFixed(1)}% • {teamHierarchy.totalDeals} Deals</div></div>
+                  <div className="flex items-center gap-3"><div className="h-14 w-14 rounded-full bg-[#013E37] flex items-center justify-center text-white font-bold">{teamHierarchy.avatar}</div><div><h3 className="font-bold text-[#013E37]">{teamHierarchy.name}</h3><p className="text-sm text-gray-600">{teamHierarchy.position}</p></div></div>
+                  <div className="text-right"><div className="text-2xl font-bold text-green-600">{formatCurrency(teamHierarchy.achievement)}</div><div className="text-sm font-semibold text-[#013E37]">{teamHierarchy.performance.toFixed(1)}% • {teamHierarchy.totalDeals} Deals</div></div>
                 </div>
               </div>
 
@@ -309,14 +309,14 @@ export function SalesReports() {
                   <div key={am.id}>
                     {/* Area Manager Card */}
                     <div
-                      className={`border rounded-lg p-4 bg-white transition-all cursor-pointer ${expandedAreaManagers.includes(am.id) ? 'border-[#01544e] shadow-md' : 'border-gray-300 hover:border-[#01544e]'}`}
+                      className={`border rounded-lg p-4 bg-white transition-all cursor-pointer ${expandedAreaManagers.includes(am.id) ? 'border-[#013E37] shadow-md' : 'border-gray-300 hover:border-[#013E37]'}`}
                       onClick={() => setSelectedAreaManager(am)}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center font-bold text-[#01544e]">{am.avatar}</div>
+                          <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center font-bold text-[#013E37]">{am.avatar}</div>
                           <div>
-                            <h4 className="font-bold text-[#01544e]">{am.name}</h4>
+                            <h4 className="font-bold text-[#013E37]">{am.name}</h4>
                             <p className="text-sm text-gray-600">{am.position}</p>
                             <p className="text-xs text-gray-400">{am.managers.length} Manager • {am.managers.reduce((s, m) => s + m.team.length, 0)} Team</p>
                           </div>
@@ -324,11 +324,11 @@ export function SalesReports() {
                         <div className="flex items-center gap-3">
                           <div className="text-right">
                             <div className="text-xl font-bold text-green-600">{formatCurrency(am.achievement)}</div>
-                            <div className="text-sm font-semibold text-[#01544e]">{am.performance.toFixed(1)}%</div>
+                            <div className="text-sm font-semibold text-[#013E37]">{am.performance.toFixed(1)}%</div>
                           </div>
                           <button
                             onClick={(e) => toggleAreaManagerExpand(am.id, e)}
-                            className="h-8 w-8 rounded-full bg-[#e6f2f1] hover:bg-[#01544e] hover:text-white flex items-center justify-center text-[#01544e] transition-all"
+                            className="h-8 w-8 rounded-full bg-[#EEF7F5] hover:bg-[#013E37] hover:text-white flex items-center justify-center text-[#013E37] transition-all"
                           >
                             {expandedAreaManagers.includes(am.id) ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                           </button>
@@ -338,19 +338,19 @@ export function SalesReports() {
 
                     {/* Sales Managers under this Area Manager */}
                     {expandedAreaManagers.includes(am.id) && (
-                      <div className="ml-8 mt-2 space-y-2 border-l-2 border-[#01544e]/30 pl-4">
+                      <div className="ml-8 mt-2 space-y-2 border-l-2 border-[#013E37]/30 pl-4">
                         {am.managers.map(mgr => (
                           <div key={mgr.id}>
                             {/* Sales Manager Card */}
                             <div
-                              className={`border rounded-lg p-3 bg-gradient-to-r from-[#f0faf9] to-white transition-all cursor-pointer ${expandedSalesManagerTeams.includes(mgr.id) ? 'border-[#01544e]/60 shadow-sm' : 'border-[#01544e]/20 hover:border-[#01544e]/60'}`}
+                              className={`border rounded-lg p-3 bg-gradient-to-r from-[#f0faf9] to-white transition-all cursor-pointer ${expandedSalesManagerTeams.includes(mgr.id) ? 'border-[#013E37]/60 shadow-sm' : 'border-[#013E37]/20 hover:border-[#013E37]/60'}`}
                               onClick={() => setSelectedSalesManager(mgr)}
                             >
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                  <div className="h-10 w-10 rounded-full bg-[#01544e]/10 flex items-center justify-center font-bold text-[#01544e] text-sm">{mgr.avatar}</div>
+                                  <div className="h-10 w-10 rounded-full bg-[#013E37]/10 flex items-center justify-center font-bold text-[#013E37] text-sm">{mgr.avatar}</div>
                                   <div>
-                                    <h5 className="font-semibold text-[#01544e]">{mgr.name}</h5>
+                                    <h5 className="font-semibold text-[#013E37]">{mgr.name}</h5>
                                     <p className="text-xs text-gray-500">{mgr.position}</p>
                                     <p className="text-xs text-gray-400">{mgr.team.length} Sales Executive</p>
                                   </div>
@@ -358,11 +358,11 @@ export function SalesReports() {
                                 <div className="flex items-center gap-3">
                                   <div className="text-right">
                                     <div className="text-base font-bold text-green-600">{formatCurrency(mgr.achievement)}</div>
-                                    <div className="text-xs font-semibold text-[#01544e]">{mgr.performance.toFixed(1)}%</div>
+                                    <div className="text-xs font-semibold text-[#013E37]">{mgr.performance.toFixed(1)}%</div>
                                   </div>
                                   <button
                                     onClick={(e) => toggleSalesManagerTeam(mgr.id, e)}
-                                    className="h-7 w-7 rounded-full bg-[#01544e]/10 hover:bg-[#01544e] hover:text-white flex items-center justify-center text-[#01544e] transition-all"
+                                    className="h-7 w-7 rounded-full bg-[#013E37]/10 hover:bg-[#013E37] hover:text-white flex items-center justify-center text-[#013E37] transition-all"
                                   >
                                     {expandedSalesManagerTeams.includes(mgr.id) ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
                                   </button>
@@ -378,7 +378,7 @@ export function SalesReports() {
                                 {mgr.team.map(member => (
                                   <div
                                     key={member.id}
-                                    className="border border-gray-100 rounded-lg p-3 bg-white hover:border-[#01544e]/40 hover:bg-[#f9fffe] transition-all cursor-pointer"
+                                    className="border border-gray-100 rounded-lg p-3 bg-white hover:border-[#013E37]/40 hover:bg-[#f9fffe] transition-all cursor-pointer"
                                     onClick={() => setSelectedSalesExecutive(member as SalesExecutive)}
                                   >
                                     <div className="flex items-center justify-between">
@@ -414,23 +414,23 @@ export function SalesReports() {
               {teamHierarchy.accountManagers && teamHierarchy.accountManagers.length > 0 && (
                 <div className="mt-6">
                   <div className="flex items-center gap-2 mb-3 px-2">
-                    <Users className="h-5 w-5 text-purple-600" />
-                    <h3 className="font-bold text-purple-900">Account Managers</h3>
+                    <Users className="h-5 w-5 text-[#013E37]" />
+                    <h3 className="font-bold text-[#012D29]">Account Managers</h3>
                   </div>
                   <div className="ml-6 space-y-4">
                     {teamHierarchy.accountManagers.map(acm => (
-                      <div key={acm.id} className="border-2 border-purple-300 rounded-lg p-4 bg-gradient-to-r from-purple-50 to-white hover:border-purple-500 transition-all cursor-pointer" onClick={() => setSelectedAccountManager(acm)}>
+                      <div key={acm.id} className="border-2 border-[#5BB5AB] rounded-lg p-4 bg-gradient-to-r from-[#EEF7F5] to-white hover:border-[#EEF7F5]0 transition-all cursor-pointer" onClick={() => setSelectedAccountManager(acm)}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center font-bold text-white">{acm.avatar}</div>
+                            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center font-bold text-white">{acm.avatar}</div>
                             <div>
-                              <h4 className="font-bold text-purple-900">{acm.name}</h4>
-                              <p className="text-sm text-purple-700">{acm.position}</p>
+                              <h4 className="font-bold text-[#012D29]">{acm.name}</h4>
+                              <p className="text-sm text-[#013E37]">{acm.position}</p>
                             </div>
                           </div>
                           <div className="text-right">
                             <div className="text-xl font-bold text-green-600">{formatCurrency(acm.achievement)}</div>
-                            <div className="text-sm font-semibold text-purple-900">{acm.performance.toFixed(1)}% • {acm.totalDeals} Accounts</div>
+                            <div className="text-sm font-semibold text-[#012D29]">{acm.performance.toFixed(1)}% • {acm.totalDeals} Accounts</div>
                           </div>
                         </div>
                       </div>

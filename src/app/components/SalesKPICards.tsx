@@ -39,13 +39,13 @@ export function SalesKPICards({ stats }: SalesKPICardsProps) {
       <Card className="hover:shadow-lg transition-shadow">
         <CardContent className="pt-6">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#EEF7F5]0 to-[#EEF7F5]0 flex items-center justify-center">
               <DollarSign className="h-5 w-5 text-white" />
             </div>
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wide">Pipeline Value</p>
               <p className="text-xl font-bold mt-1">{formatCurrency(stats.pipelineValue)}</p>
-              <p className="text-xs text-purple-600 mt-0.5">Strong pipeline</p>
+              <p className="text-xs text-[#013E37] mt-0.5">Strong pipeline</p>
             </div>
           </div>
         </CardContent>
@@ -55,7 +55,7 @@ export function SalesKPICards({ stats }: SalesKPICardsProps) {
       <Card className="hover:shadow-lg transition-shadow">
         <CardContent className="pt-6">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#013E37] to-blue-500 flex items-center justify-center">
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -71,13 +71,13 @@ export function SalesKPICards({ stats }: SalesKPICardsProps) {
       <Card className="hover:shadow-lg transition-shadow">
         <CardContent className="pt-6">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#EEF7F5]0 to-pink-500 flex items-center justify-center">
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wide">Strong Upside</p>
               <p className="text-xl font-bold mt-1">{formatCurrency(stats.strongUpside)}</p>
-              <p className="text-xs text-indigo-600 mt-0.5">High confidence</p>
+              <p className="text-xs text-[#013E37] mt-0.5">High confidence</p>
             </div>
           </div>
         </CardContent>
@@ -87,13 +87,13 @@ export function SalesKPICards({ stats }: SalesKPICardsProps) {
       <Card className="hover:shadow-lg transition-shadow">
         <CardContent className="pt-6">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-teal-500 to-emerald-500 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-full bg-[#013E37] flex items-center justify-center">
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wide">Forecast</p>
               <p className="text-xl font-bold mt-1">{formatCurrency(stats.forecast)}</p>
-              <p className="text-xs text-teal-600 mt-0.5">Predicted revenue</p>
+              <p className="text-xs text-[#013E37] mt-0.5">Predicted revenue</p>
             </div>
           </div>
         </CardContent>
@@ -103,7 +103,7 @@ export function SalesKPICards({ stats }: SalesKPICardsProps) {
       <Card className="hover:shadow-lg transition-shadow">
         <CardContent className="pt-6">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-[#013E37] flex items-center justify-center">
               <Users className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -119,13 +119,13 @@ export function SalesKPICards({ stats }: SalesKPICardsProps) {
       <Card className="hover:shadow-lg transition-shadow">
         <CardContent className="pt-6">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center">
               <BarChart3 className="h-5 w-5 text-white" />
             </div>
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wide">Active Contracts</p>
               <p className="text-xl font-bold mt-1">{formatNumber(stats.totalContracts)}</p>
-              <p className="text-xs text-purple-600 mt-0.5">68% conversion rate</p>
+              <p className="text-xs text-[#013E37] mt-0.5">68% conversion rate</p>
             </div>
           </div>
         </CardContent>

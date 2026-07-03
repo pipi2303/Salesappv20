@@ -286,7 +286,7 @@ export function EmailCommunicationHub() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight uppercase bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold tracking-tight uppercase text-[#013E37]">
           Email & Communication Hub
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -332,7 +332,7 @@ export function EmailCommunicationHub() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Templates</CardTitle>
-            <FileText className="h-4 w-4 text-purple-500" />
+            <FileText className="h-4 w-4 text-[#EEF7F5]0" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalTemplates}</div>
@@ -366,23 +366,23 @@ export function EmailCommunicationHub() {
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-5">
-          <TabsTrigger value="inbox" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="inbox" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Inbox</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Received</span>
           </TabsTrigger>
-          <TabsTrigger value="sent" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="sent" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Sent</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Outgoing</span>
           </TabsTrigger>
-          <TabsTrigger value="templates" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="templates" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Templates</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Ready to Use</span>
           </TabsTrigger>
-          <TabsTrigger value="campaigns" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="campaigns" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Campaigns</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Bulk Emails</span>
           </TabsTrigger>
-          <TabsTrigger value="analytics" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="analytics" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Analytics</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Performance</span>
           </TabsTrigger>
@@ -425,7 +425,7 @@ export function EmailCommunicationHub() {
                     }}
                   >
                     <div className="flex items-start gap-4">
-                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold flex-shrink-0">
+                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center text-white font-semibold flex-shrink-0">
                         {email.from.split(' ').map(n => n[0]).join('')}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -514,7 +514,7 @@ export function EmailCommunicationHub() {
                             </Badge>
                           )}
                           {email.replied && (
-                            <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-200">
+                            <Badge variant="outline" className="text-xs bg-[#EEF7F5] text-[#013E37] border-[#C3DDD9]">
                               <Reply className="h-3 w-3 mr-1" />
                               Replied
                             </Badge>
@@ -645,9 +645,9 @@ export function EmailCommunicationHub() {
                       </div>
                       <div className="text-xs text-muted-foreground">Click Rate</div>
                     </div>
-                    <div className="text-center p-3 bg-purple-50 rounded-lg">
-                      <Reply className="h-5 w-5 mx-auto mb-1 text-purple-600" />
-                      <div className="text-2xl font-bold text-purple-600">
+                    <div className="text-center p-3 bg-[#EEF7F5] rounded-lg">
+                      <Reply className="h-5 w-5 mx-auto mb-1 text-[#013E37]" />
+                      <div className="text-2xl font-bold text-[#013E37]">
                         {campaign.sent > 0 ? ((campaign.replied / campaign.sent) * 100).toFixed(1) : 0}%
                       </div>
                       <div className="text-xs text-muted-foreground">Reply Rate</div>

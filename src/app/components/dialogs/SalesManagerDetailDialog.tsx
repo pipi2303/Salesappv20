@@ -46,7 +46,7 @@ export function SalesManagerDetailDialog({
         </DialogHeader>
 
         {/* Visual Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-[#01544e] to-[#02665c] text-white p-4 flex items-center justify-between z-10 shadow-lg">
+        <div className="sticky top-0 bg-gradient-to-r from-[#013E37] to-[#02665c] text-white p-4 flex items-center justify-between z-10 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-lg">
               {selectedManager.avatar}
@@ -77,7 +77,7 @@ export function SalesManagerDetailDialog({
                 onClick={() => onPeriodFilterChange('monthly', 'Jan - 26')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   periodFilter === 'monthly'
-                    ? 'bg-[#01544e] text-white shadow-md'
+                    ? 'bg-[#013E37] text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
                 }`}
               >
@@ -87,7 +87,7 @@ export function SalesManagerDetailDialog({
                 onClick={() => onPeriodFilterChange('quarterly', 'Q1 - 2026')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   periodFilter === 'quarterly'
-                    ? 'bg-[#01544e] text-white shadow-md'
+                    ? 'bg-[#013E37] text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
                 }`}
               >
@@ -99,7 +99,7 @@ export function SalesManagerDetailDialog({
                 <select
                   value={selectedPeriod}
                   onChange={(e) => onPeriodFilterChange('quarterly', e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#01544e] min-w-[150px] cursor-pointer"
+                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#013E37] min-w-[150px] cursor-pointer"
                 >
                   <option value="Q1 - 2026">Quarter 1 - 2026</option>
                   <option value="Q2 - 2026">Quarter 2 - 2026</option>
@@ -113,7 +113,7 @@ export function SalesManagerDetailDialog({
                 <select
                   value={selectedPeriod}
                   onChange={(e) => onPeriodFilterChange('monthly', e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#01544e] min-w-[150px] cursor-pointer"
+                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#013E37] min-w-[150px] cursor-pointer"
                 >
                   <option value="Jan - 26">January 2026</option>
                   <option value="Feb - 26">February 2026</option>
@@ -163,12 +163,12 @@ export function SalesManagerDetailDialog({
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-indigo-100 hover:border-indigo-500 transition-colors bg-gradient-to-br from-indigo-50 to-white shadow-sm">
+            <Card className="border-2 border-[#DFF0EC] hover:border-[#EEF7F5]0 transition-colors bg-gradient-to-br from-[#EEF7F5] to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Target</p>
-                    <p className="text-xl font-bold text-indigo-600">
+                    <p className="text-xl font-bold text-[#013E37]">
                       {formatCurrency(selectedManager.target)}
                     </p>
                     {(() => {
@@ -181,7 +181,7 @@ export function SalesManagerDetailDialog({
                       );
                     })()}
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                  <div className="h-10 w-10 rounded-xl bg-[#EEF7F5]0 flex items-center justify-center shadow-lg shadow-[#EEF7F5]0/20">
                     <Target className="h-5 w-5 text-white" />
                   </div>
                 </div>
@@ -220,23 +220,23 @@ export function SalesManagerDetailDialog({
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-violet-100 hover:border-violet-500 transition-colors bg-gradient-to-br from-violet-50 to-white shadow-sm">
+            <Card className="border-2 border-[#DFF0EC] hover:border-[#EEF7F5]0 transition-colors bg-gradient-to-br from-[#EEF7F5] to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Pipeline</p>
-                    <p className="text-xl font-bold text-violet-600">
+                    <p className="text-xl font-bold text-[#013E37]">
                       {formatCurrency(selectedManager.pipelineValue || 0)}
                     </p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-violet-500 flex items-center justify-center shadow-lg shadow-violet-500/20">
+                  <div className="h-10 w-10 rounded-xl bg-[#EEF7F5]0 flex items-center justify-center shadow-lg shadow-[#EEF7F5]0/20">
                     <DollarSign className="h-5 w-5 text-white" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-cyan-100 hover:border-cyan-500 transition-colors bg-gradient-to-br from-cyan-50 to-white shadow-sm">
+            <Card className="border-2 border-cyan-100 hover:border-cyan-500 transition-colors bg-gradient-to-br from-[#EEF7F5] to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -245,7 +245,7 @@ export function SalesManagerDetailDialog({
                       {formatCurrency(selectedManager.upside || 0)}
                     </p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-cyan-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                  <div className="h-10 w-10 rounded-xl bg-[#013E37] flex items-center justify-center shadow-lg shadow-cyan-500/20">
                     <TrendingUp className="h-5 w-5 text-white" />
                   </div>
                 </div>
@@ -268,16 +268,16 @@ export function SalesManagerDetailDialog({
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-teal-100 hover:border-teal-500 transition-colors bg-gradient-to-br from-teal-50 to-white shadow-sm">
+            <Card className="border-2 border-[#013E37]/10 hover:border-[#013E37] transition-colors bg-gradient-to-br from-[#EEF7F5] to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Forecast</p>
-                    <p className="text-xl font-bold text-teal-600">
+                    <p className="text-xl font-bold text-[#013E37]">
                       {formatCurrency(selectedManager.forecast || 0)}
                     </p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-teal-500 flex items-center justify-center shadow-lg shadow-teal-500/20">
+                  <div className="h-10 w-10 rounded-xl bg-[#013E37] flex items-center justify-center shadow-lg shadow-[#013E37]/20">
                     <TrendingUp className="h-5 w-5 text-white" />
                   </div>
                 </div>
@@ -376,7 +376,7 @@ export function SalesManagerDetailDialog({
                   <Button
                     onClick={onAddNote}
                     disabled={!newNote?.trim()}
-                    className="bg-[#01544e] hover:bg-[#023d39] text-white px-6 rounded-xl shadow-lg"
+                    className="bg-[#013E37] hover:bg-[#025C52] text-white px-6 rounded-xl shadow-lg"
                   >
                     <Send className="h-4 w-4" />
                   </Button>

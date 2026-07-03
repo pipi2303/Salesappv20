@@ -127,7 +127,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="!max-w-[950px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
         {/* HEADER */}
-        <DialogHeader className="relative bg-[#01544e] text-white px-6 py-4 space-y-0 flex-shrink-0">
+        <DialogHeader className="relative bg-[#013E37] text-white px-6 py-4 space-y-0 flex-shrink-0">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors z-10"
@@ -157,25 +157,25 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
           <div className="px-6 py-5 space-y-4 overflow-y-auto flex-1 text-gray-900">
             
             {/* SECTION 1: Informasi Pribadi */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-xl border border-[#DFF0EC] overflow-hidden">
               <button
                 type="button"
                 onClick={() => toggleSection('pribadi')}
-                className="w-full flex items-center justify-between px-5 py-3.5 bg-purple-100/50 hover:bg-purple-100 transition-colors"
+                className="w-full flex items-center justify-between px-5 py-3.5 bg-[#DFF0EC]/50 hover:bg-[#DFF0EC] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[#013E37] flex items-center justify-center">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-base font-bold text-purple-900 leading-none">Informasi Pribadi</h3>
-                    <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">IDENTITAS & DATA KONTAK PERSONAL</p>
+                    <h3 className="text-base font-bold text-[#012D29] leading-none">Informasi Pribadi</h3>
+                    <p className="text-[10px] text-[#013E37] mt-1 uppercase tracking-wider font-semibold opacity-70">IDENTITAS & DATA KONTAK PERSONAL</p>
                   </div>
                 </div>
                 {expandedSections.pribadi ? (
-                  <ChevronUp className="w-5 h-5 text-purple-600" />
+                  <ChevronUp className="w-5 h-5 text-[#013E37]" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-purple-600" />
+                  <ChevronDown className="w-5 h-5 text-[#013E37]" />
                 )}
               </button>
               
@@ -191,7 +191,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                       onChange={handleInputChange}
                       required
                       placeholder="Nama lengkap sesuai KTP"
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -206,7 +206,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                       required
                       maxLength={16}
                       placeholder="16 digit NIK"
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -217,7 +217,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                       value={formData.tempat_lahir}
                       onChange={handleInputChange}
                       placeholder="Kota tempat lahir"
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -228,7 +228,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                       name="tanggal_lahir"
                       value={formData.tanggal_lahir}
                       onChange={handleInputChange}
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -238,7 +238,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                       value={formData.jenis_kelamin}
                       onValueChange={(value) => handleChange('jenis_kelamin', value)}
                     >
-                      <SelectTrigger className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500">
+                      <SelectTrigger className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0">
                         <SelectValue placeholder="Pilih jenis kelamin" />
                       </SelectTrigger>
                       <SelectContent>
@@ -256,7 +256,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                       value={formData.nomor_wa}
                       onChange={handleInputChange}
                       placeholder="+62 812-3456-7890"
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -268,7 +268,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                       value={formData.email_pribadi}
                       onChange={handleInputChange}
                       placeholder="email@example.com"
-                      className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                      className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                     />
                   </div>
 
@@ -279,7 +279,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
                       value={formData.alamat}
                       onChange={handleInputChange}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm bg-white"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EEF7F5]0 focus:border-[#EEF7F5]0 text-sm bg-white"
                       placeholder="Alamat lengkap domisili saat ini"
                     />
                   </div>
@@ -288,7 +288,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
             </div>
 
             {/* SECTION 2: Status Kepegawaian */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 overflow-hidden">
+            <div className="bg-gradient-to-br bg-[#EEF7F5] rounded-xl border border-blue-100 overflow-hidden">
               <button
                 type="button"
                 onClick={() => toggleSection('kepegawaian')}
@@ -405,7 +405,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
             </div>
 
             {/* SECTION 3: Finansial & Administrasi Pajak */}
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-emerald-50 to-[#EEF7F5] rounded-xl border border-emerald-100 overflow-hidden">
               <button
                 type="button"
                 onClick={() => toggleSection('finansial')}
@@ -602,7 +602,7 @@ export function KaryawanFormModal({ karyawan, onClose, onSuccess }: KaryawanForm
             </Button>
             <Button
               type="submit"
-              className="min-w-28 h-8 text-sm font-semibold bg-[#01544e] hover:bg-[#023d39] text-white shadow-md transition-colors"
+              className="min-w-28 h-8 text-sm font-semibold bg-[#013E37] hover:bg-[#025C52] text-white shadow-md transition-colors"
               disabled={loading}
             >
               {loading ? (

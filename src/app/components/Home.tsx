@@ -135,7 +135,7 @@ export function Home() {
       value: formatNumber(stats.activeLeads),
       change: '+12 new',
       icon: Users,
-      color: 'from-blue-500 to-cyan-500',
+      color: 'from-blue-500 to-[#013E37]',
       textColor: 'text-blue-600'
     },
     {
@@ -151,7 +151,7 @@ export function Home() {
       value: formatCurrency(stats.totalRevenue),
       change: '+18.2%',
       icon: DollarSign,
-      color: 'from-emerald-500 to-teal-500',
+      color: 'from-emerald-500 to-[#013E37]',
       textColor: 'text-emerald-600'
     },
     // Row 2 starts here
@@ -160,15 +160,15 @@ export function Home() {
       value: formatCurrency(stats.pipelineValue),
       change: 'Strong pipeline',
       icon: TrendingUp,
-      color: 'from-purple-500 to-violet-500',
-      textColor: 'text-purple-600'
+      color: 'from-[#EEF7F5]0 to-[#EEF7F5]0',
+      textColor: 'text-[#013E37]'
     },
     {
       title: 'Upside',
       value: formatCurrency(stats.upside),
       change: 'Potential growth',
       icon: TrendingUp,
-      color: 'from-cyan-500 to-blue-500',
+      color: 'from-[#013E37] to-blue-500',
       textColor: 'text-cyan-600'
     },
     {
@@ -176,16 +176,16 @@ export function Home() {
       value: formatCurrency(stats.strongUpside),
       change: 'High confidence',
       icon: TrendingUp,
-      color: 'from-indigo-500 to-pink-500',
-      textColor: 'text-indigo-600'
+      color: 'from-[#EEF7F5]0 to-pink-500',
+      textColor: 'text-[#013E37]'
     },
     {
       title: 'Forecast',
       value: formatCurrency(stats.forecast),
       change: 'Predicted revenue',
       icon: Target,
-      color: 'from-teal-500 to-emerald-500',
-      textColor: 'text-teal-600'
+      color: 'from-[#013E37] to-emerald-500',
+      textColor: 'text-[#013E37]'
     },
   ];
 
@@ -194,7 +194,7 @@ export function Home() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01544e]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div>
       </div>
     );
   }
@@ -204,7 +204,7 @@ export function Home() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#01544e]">
+          <h1 className="text-3xl font-bold text-[#013E37]">
             Dashboard Sales Monitoring
           </h1>
           <p className="text-gray-600 mt-1">Selamat datang kembali! Berikut ringkasan aktivitas sales Anda hari ini.</p>
@@ -245,7 +245,7 @@ export function Home() {
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Activity className="h-5 w-5 text-[#01544e]" />
+              <Activity className="h-5 w-5 text-[#013E37]" />
               Trend Penjualan (Juta Rupiah)
             </CardTitle>
           </CardHeader>
@@ -254,8 +254,8 @@ export function Home() {
               <AreaChart data={salesData}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#01544e" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#01544e" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#013E37" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -269,7 +269,7 @@ export function Home() {
                     boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
                   }}
                 />
-                <Area type="monotone" dataKey="value" stroke="#01544e" fillOpacity={1} fill="url(#colorValue)" />
+                <Area type="monotone" dataKey="value" stroke="#013E37" fillOpacity={1} fill="url(#colorValue)" />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -279,7 +279,7 @@ export function Home() {
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-[#01544e]" />
+              <Users className="h-5 w-5 text-[#013E37]" />
               Sumber Lead
             </CardTitle>
           </CardHeader>
@@ -311,7 +311,7 @@ export function Home() {
       <Card className="hover:shadow-lg transition-shadow">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Award className="h-5 w-5 text-[#01544e]" />
+            <Award className="h-5 w-5 text-[#013E37]" />
             Performance Tim Sales (Juta Rupiah)
           </CardTitle>
         </CardHeader>
@@ -331,7 +331,7 @@ export function Home() {
               />
               <Legend />
               <Bar dataKey="target" fill="#94a3b8" name="Target" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="achievement" fill="#01544e" name="Achievement" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="achievement" fill="#013E37" name="Achievement" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
@@ -341,15 +341,15 @@ export function Home() {
       <Card className="hover:shadow-lg transition-shadow">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-[#01544e]" />
+            <FileText className="h-5 w-5 text-[#013E37]" />
             Aktivitas Terbaru
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {recentActivities.map((activity, index) => (
-              <div key={index} className="flex items-start gap-4 p-4 rounded-lg bg-gray-50 hover:bg-[#e6f2f1] transition-colors cursor-pointer">
-                <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center text-white font-semibold">
+              <div key={index} className="flex items-start gap-4 p-4 rounded-lg bg-gray-50 hover:bg-[#EEF7F5] transition-colors cursor-pointer">
+                <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center text-white font-semibold">
                   {activity.user.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div className="flex-1">

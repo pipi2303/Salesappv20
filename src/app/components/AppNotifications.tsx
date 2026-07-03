@@ -495,9 +495,9 @@ export const AppNotifications = React.memo(function AppNotifications({ className
         };
       default:
         return {
-          bgGradient: 'bg-gradient-to-br from-blue-50 to-indigo-50',
+          bgGradient: 'bg-gradient-to-br bg-[#EEF7F5]',
           borderColor: 'border-l-4 border-blue-500',
-          iconBg: 'bg-gradient-to-br from-blue-500 to-indigo-500',
+          iconBg: 'bg-gradient-to-br from-[#013E37] to-[#025C52]',
           icon: <Bell className="w-5 h-5 text-white" />,
           badge: 'bg-blue-500',
           textColor: 'text-blue-900',
@@ -508,12 +508,12 @@ export const AppNotifications = React.memo(function AppNotifications({ className
 
   const getCategoryBadge = (category: string) => {
     const badges = {
-      contract: { label: 'Contract', color: 'bg-purple-100 text-purple-700' },
+      contract: { label: 'Contract', color: 'bg-[#DFF0EC] text-[#013E37]' },
       lead: { label: 'Lead', color: 'bg-blue-100 text-blue-700' },
       deal: { label: 'Deal', color: 'bg-green-100 text-green-700' },
       task: { label: 'Task', color: 'bg-orange-100 text-orange-700' },
       product: { label: 'Product', color: 'bg-pink-100 text-pink-700' },
-      kpi: { label: 'KPI', color: 'bg-indigo-100 text-indigo-700' },
+      kpi: { label: 'KPI', color: 'bg-[#DFF0EC] text-[#013E37]' },
       system: { label: 'System', color: 'bg-gray-100 text-gray-700' },
     };
     return badges[category as keyof typeof badges] || badges.system;
@@ -629,7 +629,7 @@ export const AppNotifications = React.memo(function AppNotifications({ className
           {/* Sidebar Panel */}
           <div className="fixed right-0 top-0 h-full w-[480px] bg-white shadow-2xl z-50 flex flex-col animate-in slide-in-from-right duration-300">
             {/* Header - Brand Color Background */}
-            <div className="bg-[#01544e] text-white px-6 py-5">
+            <div className="bg-[#013E37] text-white px-6 py-5">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
@@ -655,7 +655,7 @@ export const AppNotifications = React.memo(function AppNotifications({ className
                         <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin' : ''}`} />
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom" className="bg-[#01544e] text-white">
+                    <TooltipContent side="bottom" className="bg-[#013E37] text-white">
                       Refresh
                     </TooltipContent>
                   </Tooltip>
@@ -669,7 +669,7 @@ export const AppNotifications = React.memo(function AppNotifications({ className
                         <Check className="w-3 h-3" />
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom" className="bg-[#01544e] text-white">
+                    <TooltipContent side="bottom" className="bg-[#013E37] text-white">
                       Tandai Semua
                     </TooltipContent>
                   </Tooltip>
@@ -683,7 +683,7 @@ export const AppNotifications = React.memo(function AppNotifications({ className
                         <Settings className="w-3 h-3" />
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom" className="bg-[#01544e] text-white">
+                    <TooltipContent side="bottom" className="bg-[#013E37] text-white">
                       Settings
                     </TooltipContent>
                   </Tooltip>
@@ -699,7 +699,7 @@ export const AppNotifications = React.memo(function AppNotifications({ className
                         <History className="w-3 h-3" />
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom" className="bg-[#01544e] text-white">
+                    <TooltipContent side="bottom" className="bg-[#013E37] text-white">
                       Archive ({archivedCount})
                     </TooltipContent>
                   </Tooltip>

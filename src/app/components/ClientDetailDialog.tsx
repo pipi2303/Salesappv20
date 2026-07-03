@@ -148,7 +148,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
     switch (type) {
       case 'Telepon': return <Phone className="h-4 w-4 text-green-600" />;
       case 'Email': return <Mail className="h-4 w-4 text-blue-600" />;
-      case 'Meeting': return <Users className="h-4 w-4 text-purple-600" />;
+      case 'Meeting': return <Users className="h-4 w-4 text-[#013E37]" />;
       case 'WhatsApp': return <MessageSquare className="h-4 w-4 text-emerald-600" />;
       case 'Visit': return <Calendar className="h-4 w-4 text-amber-600" />;
       default: return <MessageSquare className="h-4 w-4 text-gray-600" />;
@@ -159,7 +159,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
     switch (type) {
       case 'Telepon': return 'bg-green-100';
       case 'Email': return 'bg-blue-100';
-      case 'Meeting': return 'bg-purple-100';
+      case 'Meeting': return 'bg-[#DFF0EC]';
       case 'WhatsApp': return 'bg-emerald-100';
       case 'Visit': return 'bg-amber-100';
       default: return 'bg-gray-100';
@@ -170,14 +170,14 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
     const colorMap: Record<string, string> = {
       'Telepon': 'bg-green-50 text-green-700 border-green-200',
       'Email': 'bg-blue-50 text-blue-700 border-blue-200',
-      'Meeting': 'bg-purple-50 text-purple-700 border-purple-200',
+      'Meeting': 'bg-[#EEF7F5] text-[#013E37] border-[#C3DDD9]',
       'WhatsApp': 'bg-emerald-50 text-emerald-700 border-emerald-200',
       'Visit': 'bg-amber-50 text-amber-700 border-amber-200',
       'Hot Lead': 'bg-blue-50 text-blue-700 border-blue-200',
-      'Report': 'bg-purple-50 text-purple-700 border-purple-200',
+      'Report': 'bg-[#EEF7F5] text-[#013E37] border-[#C3DDD9]',
       'Technical': 'bg-orange-50 text-orange-700 border-orange-200',
       'Support': 'bg-red-50 text-red-700 border-red-200',
-      'Training': 'bg-indigo-50 text-indigo-700 border-indigo-200',
+      'Training': 'bg-[#EEF7F5] text-[#013E37] border-[#C3DDD9]',
     };
     return colorMap[category] || 'bg-gray-50 text-gray-700 border-gray-200';
   };
@@ -224,12 +224,12 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
           </DialogHeader>
 
           {/* Gradient Header */}
-          <div className="relative bg-[#01544e] px-5 py-3 text-white flex-shrink-0">
+          <div className="relative bg-[#013E37] px-5 py-3 text-white flex-shrink-0">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-4">
                 <div className="relative">
                   <div className="h-16 w-16 rounded-xl bg-white shadow-lg flex items-center justify-center">
-                    <span className="text-2xl font-bold bg-gradient-to-br from-[#01544e] to-[#023d39] bg-clip-text text-transparent">
+                    <span className="text-2xl font-bold bg-gradient-to-br from-[#013E37] to-[#025C52] bg-clip-text text-transparent">
                       {client.nama_entitas?.charAt(0) || 'C'}
                     </span>
                   </div>
@@ -266,7 +266,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
           <div className="px-6 py-4 space-y-5 overflow-y-auto flex-1">
             {/* Quick Info Cards */}
             <div className="grid grid-cols-3 gap-4">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
+              <div className="bg-gradient-to-br bg-[#EEF7F5] rounded-lg p-4 border border-blue-100">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
                     <Clipboard className="h-5 w-5 text-white" />
@@ -278,7 +278,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-lg p-4 border border-emerald-100">
+              <div className="bg-gradient-to-br from-emerald-50 to-[#EEF7F5] rounded-lg p-4 border border-emerald-100">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-lg bg-emerald-600 flex items-center justify-center flex-shrink-0">
                     <Shield className="h-5 w-5 text-white" />
@@ -290,9 +290,9 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-100">
+              <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-lg p-4 border border-[#DFF0EC]">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-purple-600 flex items-center justify-center flex-shrink-0">
+                  <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center flex-shrink-0">
                     <Users className="h-5 w-5 text-white" />
                   </div>
                   <div className="min-w-0">
@@ -304,7 +304,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
             </div>
 
             {/* Informasi Dasar */}
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-100">
+            <div className="bg-gradient-to-br from-emerald-50 to-[#EEF7F5] rounded-xl p-6 border border-emerald-100">
               <div className="flex items-center gap-3 mb-5">
                 <div className="h-10 w-10 rounded-lg bg-emerald-600 flex items-center justify-center">
                   <Building2 className="h-5 w-5 text-white" />
@@ -391,7 +391,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
             </div>
 
             {/* Profiling Teknis & Regulasi */}
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-blue-50 to-[#EEF7F5] rounded-xl border border-blue-100 overflow-hidden">
               <button
                 type="button"
                 onClick={() => setExpandedSections(prev => ({ ...prev, profilingTeknis: !prev.profilingTeknis }))}
@@ -476,25 +476,25 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
             </div>
 
             {/* Data Pengambil Keputusan */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-xl border border-[#DFF0EC] overflow-hidden">
               <button
                 type="button"
                 onClick={() => setExpandedSections(prev => ({ ...prev, pengambilKeputusan: !prev.pengambilKeputusan }))}
-                className="w-full flex items-center justify-between px-6 py-4 hover:bg-purple-100/50 transition-colors"
+                className="w-full flex items-center justify-between px-6 py-4 hover:bg-[#DFF0EC]/50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-purple-600 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center">
                     <Users className="h-5 w-5 text-white" />
                   </div>
                   <div className="text-left">
                     <h3 className="text-xl font-bold text-gray-900 leading-none">Data Pengambil Keputusan</h3>
-                    <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">PROFIL PIC & STATUS RELASI BISNIS</p>
+                    <p className="text-[10px] text-[#013E37] mt-1 uppercase tracking-wider font-semibold opacity-70">PROFIL PIC & STATUS RELASI BISNIS</p>
                   </div>
                 </div>
                 {expandedSections.pengambilKeputusan ? (
-                  <ChevronUp className="h-5 w-5 text-purple-600" />
+                  <ChevronUp className="h-5 w-5 text-[#013E37]" />
                 ) : (
-                  <ChevronDown className="h-5 w-5 text-purple-600" />
+                  <ChevronDown className="h-5 w-5 text-[#013E37]" />
                 )}
               </button>
               
@@ -503,7 +503,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white rounded-lg p-4">
                       <div className="flex items-start gap-3">
-                        <Users className="h-5 w-5 text-purple-600 mt-0.5" />
+                        <Users className="h-5 w-5 text-[#013E37] mt-0.5" />
                         <div>
                           <p className="text-sm text-gray-500 mb-1">Nama PIC</p>
                           <p className="font-semibold text-gray-900">{client.nama_pic || '-'}</p>
@@ -512,7 +512,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                     </div>
                     <div className="bg-white rounded-lg p-4">
                       <div className="flex items-start gap-3">
-                        <Briefcase className="h-5 w-5 text-purple-600 mt-0.5" />
+                        <Briefcase className="h-5 w-5 text-[#013E37] mt-0.5" />
                         <div>
                           <p className="text-sm text-gray-500 mb-1">Jabatan PIC</p>
                           <p className="font-semibold text-gray-900">{client.jabatan_pic || '-'}</p>
@@ -521,7 +521,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                     </div>
                     <div className="bg-white rounded-lg p-4">
                       <div className="flex items-start gap-3">
-                        <Phone className="h-5 w-5 text-purple-600 mt-0.5" />
+                        <Phone className="h-5 w-5 text-[#013E37] mt-0.5" />
                         <div>
                           <p className="text-sm text-gray-500 mb-1">WhatsApp PIC</p>
                           <p className="font-semibold text-gray-900">{client.whatsapp_pic || '-'}</p>
@@ -530,7 +530,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                     </div>
                     <div className="bg-white rounded-lg p-4">
                       <div className="flex items-start gap-3">
-                        <Shield className="h-5 w-5 text-purple-600 mt-0.5" />
+                        <Shield className="h-5 w-5 text-[#013E37] mt-0.5" />
                         <div>
                           <p className="text-sm text-gray-500 mb-1">Status Hubungan</p>
                           <Badge variant={client.status_hubungan === 'Hot' ? 'default' : 'secondary'} className="mt-1">
@@ -820,26 +820,26 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
             </div>
 
             {/* Komunikasi */}
-            <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-blue-50 rounded-xl border border-[#DFF0EC] overflow-hidden">
               <div className="w-full flex items-center justify-between px-6 py-4 bg-white/50">
                 <button
                   type="button"
                   onClick={() => setExpandedSections(prev => ({ ...prev, komunikasi: !prev.komunikasi }))}
                   className="flex items-center gap-3 hover:opacity-80 transition-opacity"
                 >
-                  <div className="h-10 w-10 rounded-lg bg-indigo-600 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center">
                     <MessageSquare className="h-5 w-5 text-white" />
                   </div>
                   <div className="text-left">
                     <h3 className="text-xl font-bold text-gray-900 leading-none">Komunikasi</h3>
-                    <p className="text-[10px] text-indigo-700 mt-1 uppercase tracking-wider font-semibold opacity-70">LOG INTERAKSI & RIWAYAT FOLLOW-UP</p>
+                    <p className="text-[10px] text-[#013E37] mt-1 uppercase tracking-wider font-semibold opacity-70">LOG INTERAKSI & RIWAYAT FOLLOW-UP</p>
                   </div>
                 </button>
                 <div className="flex items-center gap-3">
                   <Button
                     size="sm"
                     onClick={() => setShowAddCommunication(true)}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                    className="bg-[#013E37] hover:bg-[#013E37] text-white"
                   >
                     <Send className="h-4 w-4 mr-2" />
                     Tambah Komunikasi
@@ -850,9 +850,9 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                     className="hover:opacity-80 transition-opacity"
                   >
                     {expandedSections.komunikasi ? (
-                      <ChevronUp className="h-5 w-5 text-indigo-600" />
+                      <ChevronUp className="h-5 w-5 text-[#013E37]" />
                     ) : (
-                      <ChevronDown className="h-5 w-5 text-indigo-600" />
+                      <ChevronDown className="h-5 w-5 text-[#013E37]" />
                     )}
                   </button>
                 </div>
@@ -864,7 +864,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                   <div className="space-y-3">
                     {/* Sample Communication Items */}
                     {communications.map(comm => (
-                      <div key={comm.id} className="bg-white rounded-lg p-4 border border-indigo-100 hover:shadow-md transition-shadow">
+                      <div key={comm.id} className="bg-white rounded-lg p-4 border border-[#DFF0EC] hover:shadow-md transition-shadow">
                         <div className="flex items-start gap-3">
                           <div className={`h-8 w-8 rounded-full ${getBgColorForType(comm.type)} flex items-center justify-center flex-shrink-0`}>
                             {getIconForType(comm.type)}
@@ -894,14 +894,14 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
             </div>
 
             {/* AI Tools */}
-            <div className="bg-gradient-to-br from-[#e6f2f1] to-[#e6f2f1] rounded-xl border-2 border-[#01544e] overflow-hidden">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-[#EEF7F5] rounded-xl border-2 border-[#013E37] overflow-hidden">
               <button
                 type="button"
                 onClick={() => setExpandedSections(prev => ({ ...prev, aiTools: !prev.aiTools }))}
                 className="w-full flex items-center justify-between px-6 py-4 hover:bg-[#d1e7e5] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-[#01544e] flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center">
                     <Sparkles className="h-5 w-5 text-white" />
                   </div>
                   <div className="flex-1 text-left">
@@ -910,9 +910,9 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                   </div>
                 </div>
                 {expandedSections.aiTools ? (
-                  <ChevronUp className="h-5 w-5 text-[#01544e]" />
+                  <ChevronUp className="h-5 w-5 text-[#013E37]" />
                 ) : (
-                  <ChevronDown className="h-5 w-5 text-[#01544e]" />
+                  <ChevronDown className="h-5 w-5 text-[#013E37]" />
                 )}
               </button>
               
@@ -955,7 +955,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                       <div className="grid grid-cols-2 gap-3">
                         <Button
                           onClick={() => setShowEmailGenerator(true)}
-                          className="bg-[#01544e] hover:bg-[#023d39] h-auto py-4 flex-col items-start text-left"
+                          className="bg-[#013E37] hover:bg-[#025C52] h-auto py-4 flex-col items-start text-left"
                         >
                           <div className="flex items-center gap-2 mb-1">
                             <Mail className="h-5 w-5" />
@@ -966,7 +966,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                         
                         <Button
                           variant="outline"
-                          className="border-[#01544e] text-[#01544e] hover:bg-[#e6f2f1] h-auto py-4 flex-col items-start text-left"
+                          className="border-[#013E37] text-[#013E37] hover:bg-[#EEF7F5] h-auto py-4 flex-col items-start text-left"
                         >
                           <div className="flex items-center gap-2 mb-1">
                             <Phone className="h-5 w-5" />
@@ -977,7 +977,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                         
                         <Button
                           variant="outline"
-                          className="border-[#01544e] text-[#01544e] hover:bg-[#e6f2f1] h-auto py-4 flex-col items-start text-left"
+                          className="border-[#013E37] text-[#013E37] hover:bg-[#EEF7F5] h-auto py-4 flex-col items-start text-left"
                         >
                           <div className="flex items-center gap-2 mb-1">
                             <Calendar className="h-5 w-5" />
@@ -988,7 +988,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                         
                         <Button
                           variant="outline"
-                          className="border-[#01544e] text-[#01544e] hover:bg-[#e6f2f1] h-auto py-4 flex-col items-start text-left"
+                          className="border-[#013E37] text-[#013E37] hover:bg-[#EEF7F5] h-auto py-4 flex-col items-start text-left"
                         >
                           <div className="flex items-center gap-2 mb-1">
                             <FileText className="h-5 w-5" />
@@ -999,7 +999,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                         
                         <Button
                           variant="outline"
-                          className="border-[#01544e] text-[#01544e] hover:bg-[#e6f2f1] h-auto py-4 flex-col items-start text-left"
+                          className="border-[#013E37] text-[#013E37] hover:bg-[#EEF7F5] h-auto py-4 flex-col items-start text-left"
                         >
                           <div className="flex items-center gap-2 mb-1">
                             <Clipboard className="h-5 w-5" />
@@ -1027,7 +1027,7 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
             </Button>
             <Button
               onClick={onEdit}
-              className="min-w-28 h-8 text-sm font-semibold bg-[#01544e] hover:bg-[#023d39] text-white shadow-md transition-colors"
+              className="min-w-28 h-8 text-sm font-semibold bg-[#013E37] hover:bg-[#025C52] text-white shadow-md transition-colors"
             >
               <Building2 className="w-4 h-4 mr-2" />
               Edit Data

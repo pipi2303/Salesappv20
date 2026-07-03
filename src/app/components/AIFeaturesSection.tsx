@@ -10,9 +10,9 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
   const [aiTab, setAiTab] = useState<'insights' | 'coaching' | 'recommendations' | 'conversation' | 'scoring'>('insights');
 
   return (
-    <Card className="border-2 border-[#01544e] bg-gradient-to-r from-[#e6f2f1] to-white">
+    <Card className="border-2 border-[#013E37] bg-gradient-to-r from-[#EEF7F5] to-white">
       <CardHeader>
-        <CardTitle className="text-xl flex items-center gap-2 text-[#01544e]">
+        <CardTitle className="text-xl flex items-center gap-2 text-[#013E37]">
           <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
             <path d="M13 7H7v6h6V7z" />
             <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z" clipRule="evenodd" />
@@ -22,13 +22,13 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
       </CardHeader>
       <CardContent>
         {/* AI Tabs Navigation */}
-        <div className="flex flex-wrap gap-2 mb-6 border-b border-[#01544e]/20 pb-4">
+        <div className="flex flex-wrap gap-2 mb-6 border-b border-[#013E37]/20 pb-4">
           <button
             onClick={() => setAiTab('insights')}
             className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
               aiTab === 'insights'
-                ? 'bg-[#01544e] text-white shadow-lg'
-                : 'bg-white text-[#01544e] border-2 border-[#01544e]/30 hover:border-[#01544e] hover:shadow-md'
+                ? 'bg-[#013E37] text-white shadow-lg'
+                : 'bg-white text-[#013E37] border-2 border-[#013E37]/30 hover:border-[#013E37] hover:shadow-md'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -42,8 +42,8 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
             onClick={() => setAiTab('coaching')}
             className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
               aiTab === 'coaching'
-                ? 'bg-[#01544e] text-white shadow-lg'
-                : 'bg-white text-[#01544e] border-2 border-[#01544e]/30 hover:border-[#01544e] hover:shadow-md'
+                ? 'bg-[#013E37] text-white shadow-lg'
+                : 'bg-white text-[#013E37] border-2 border-[#013E37]/30 hover:border-[#013E37] hover:shadow-md'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -57,8 +57,8 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
             onClick={() => setAiTab('recommendations')}
             className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
               aiTab === 'recommendations'
-                ? 'bg-[#01544e] text-white shadow-lg'
-                : 'bg-white text-[#01544e] border-2 border-[#01544e]/30 hover:border-[#01544e] hover:shadow-md'
+                ? 'bg-[#013E37] text-white shadow-lg'
+                : 'bg-white text-[#013E37] border-2 border-[#013E37]/30 hover:border-[#013E37] hover:shadow-md'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -72,8 +72,8 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
             onClick={() => setAiTab('conversation')}
             className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
               aiTab === 'conversation'
-                ? 'bg-[#01544e] text-white shadow-lg'
-                : 'bg-white text-[#01544e] border-2 border-[#01544e]/30 hover:border-[#01544e] hover:shadow-md'
+                ? 'bg-[#013E37] text-white shadow-lg'
+                : 'bg-white text-[#013E37] border-2 border-[#013E37]/30 hover:border-[#013E37] hover:shadow-md'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -87,8 +87,8 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
             onClick={() => setAiTab('scoring')}
             className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
               aiTab === 'scoring'
-                ? 'bg-[#01544e] text-white shadow-lg'
-                : 'bg-white text-[#01544e] border-2 border-[#01544e]/30 hover:border-[#01544e] hover:shadow-md'
+                ? 'bg-[#013E37] text-white shadow-lg'
+                : 'bg-white text-[#013E37] border-2 border-[#013E37]/30 hover:border-[#013E37] hover:shadow-md'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
         {/* AI Tab Content */}
         {aiTab === 'insights' && (
           <div className="space-y-4">
-            <h4 className="font-bold text-lg text-[#01544e] flex items-center gap-2">
+            <h4 className="font-bold text-lg text-[#013E37] flex items-center gap-2">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                 <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
@@ -111,9 +111,9 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
               AI Customer Insights & Analytics
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20 hover:border-[#01544e] transition-all">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20 hover:border-[#013E37] transition-all">
                 <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center flex-shrink-0">
+                  <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center flex-shrink-0">
                     <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                     </svg>
@@ -129,9 +129,9 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                 </div>
               </div>
 
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20 hover:border-[#01544e] transition-all">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20 hover:border-[#013E37] transition-all">
                 <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center flex-shrink-0">
+                  <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center flex-shrink-0">
                     <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd" />
                     </svg>
@@ -140,15 +140,15 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                     <p className="font-semibold text-gray-900">Buying Patterns</p>
                     <p className="text-sm text-gray-600 mt-1">Q1 shows 23% increase in HMS deals, peak time: Tue-Thu 10AM-2PM</p>
                     <div className="mt-2">
-                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-semibold">Avg Deal: Rp 28.8M</span>
+                      <span className="text-xs bg-[#DFF0EC] text-[#013E37] px-2 py-1 rounded-full font-semibold">Avg Deal: Rp 28.8M</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20 hover:border-[#01544e] transition-all">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20 hover:border-[#013E37] transition-all">
                 <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center flex-shrink-0">
+                  <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center flex-shrink-0">
                     <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                     </svg>
@@ -163,9 +163,9 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                 </div>
               </div>
 
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20 hover:border-[#01544e] transition-all">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20 hover:border-[#013E37] transition-all">
                 <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center flex-shrink-0">
+                  <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center flex-shrink-0">
                     <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                     </svg>
@@ -185,7 +185,7 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
 
         {aiTab === 'coaching' && (
           <div className="space-y-4">
-            <h4 className="font-bold text-lg text-[#01544e] flex items-center gap-2">
+            <h4 className="font-bold text-lg text-[#013E37] flex items-center gap-2">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
               </svg>
@@ -214,20 +214,20 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                     <p className="text-sm text-gray-600 mt-1">Price objections up 18% this quarter. Schedule role-play sessions focusing on value demonstration.</p>
                     <div className="mt-2 flex items-center gap-2">
                       <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">Priority: Medium</span>
-                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Timeline: 2 weeks</span>
+                      <span className="text-xs bg-[#DFF0EC] text-[#013E37] px-2 py-1 rounded-full">Timeline: 2 weeks</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 bg-gradient-to-r from-purple-50 to-white rounded-lg border-2 border-purple-300">
+              <div className="p-4 bg-gradient-to-r from-[#EEF7F5] to-white rounded-lg border-2 border-[#5BB5AB]">
                 <div className="flex items-start gap-3">
-                  <div className="h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center flex-shrink-0 text-white font-bold">3</div>
+                  <div className="h-8 w-8 rounded-full bg-[#EEF7F5]0 flex items-center justify-center flex-shrink-0 text-white font-bold">3</div>
                   <div className="flex-1">
                     <p className="font-semibold text-gray-900">Cross-Sell Training</p>
                     <p className="text-sm text-gray-600 mt-1">Only 23% of HMS clients also buy IntraDoc. Recommend product bundling workshop.</p>
                     <div className="mt-2 flex items-center gap-2">
-                      <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">Potential: Rp 380M</span>
+                      <span className="text-xs bg-[#DFF0EC] text-[#013E37] px-2 py-1 rounded-full">Potential: Rp 380M</span>
                     </div>
                   </div>
                 </div>
@@ -238,26 +238,26 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
 
         {aiTab === 'recommendations' && (
           <div className="space-y-4">
-            <h4 className="font-bold text-lg text-[#01544e] flex items-center gap-2">
+            <h4 className="font-bold text-lg text-[#013E37] flex items-center gap-2">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
               </svg>
               AI Smart Recommendations
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20 hover:shadow-lg transition-all">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20 hover:shadow-lg transition-all">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs bg-[#01544e] text-white px-2 py-1 rounded-full font-bold">URGENT</span>
+                  <span className="text-xs bg-[#013E37] text-white px-2 py-1 rounded-full font-bold">URGENT</span>
                   <span className="text-xs text-gray-500">2 hours ago</span>
                 </div>
                 <p className="font-semibold text-gray-900">Follow up RS Siloam Hospitals</p>
                 <p className="text-sm text-gray-600 mt-2">Last contact 14 days ago. Deal value Rp 450M at 65% probability. Recommend immediate call.</p>
-                <button className="mt-3 w-full bg-[#01544e] text-white px-4 py-2 rounded-lg hover:bg-[#023d39] transition-colors text-sm font-semibold">
+                <button className="mt-3 w-full bg-[#013E37] text-white px-4 py-2 rounded-lg hover:bg-[#025C52] transition-colors text-sm font-semibold">
                   Schedule Call Now
                 </button>
               </div>
 
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20 hover:shadow-lg transition-all">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20 hover:shadow-lg transition-all">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded-full font-bold">OPPORTUNITY</span>
                   <span className="text-xs text-gray-500">5 hours ago</span>
@@ -269,7 +269,7 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                 </button>
               </div>
 
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20 hover:shadow-lg transition-all">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20 hover:shadow-lg transition-all">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs bg-green-500 text-white px-2 py-1 rounded-full font-bold">OPTIMIZE</span>
                   <span className="text-xs text-gray-500">1 day ago</span>
@@ -281,14 +281,14 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                 </button>
               </div>
 
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20 hover:shadow-lg transition-all">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20 hover:shadow-lg transition-all">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs bg-purple-500 text-white px-2 py-1 rounded-full font-bold">INSIGHT</span>
+                  <span className="text-xs bg-[#EEF7F5]0 text-white px-2 py-1 rounded-full font-bold">INSIGHT</span>
                   <span className="text-xs text-gray-500">2 days ago</span>
                 </div>
                 <p className="font-semibold text-gray-900">Best Time to Call</p>
                 <p className="text-sm text-gray-600 mt-2">Hospital decision makers most responsive Wed-Thu 2-4 PM. Conversion rate: 34% vs 18% avg.</p>
-                <button className="mt-3 w-full bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors text-sm font-semibold">
+                <button className="mt-3 w-full bg-[#EEF7F5]0 text-white px-4 py-2 rounded-lg hover:bg-[#013E37] transition-colors text-sm font-semibold">
                   Update Schedule
                 </button>
               </div>
@@ -298,17 +298,17 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
 
         {aiTab === 'conversation' && (
           <div className="space-y-4">
-            <h4 className="font-bold text-lg text-[#01544e] flex items-center gap-2">
+            <h4 className="font-bold text-lg text-[#013E37] flex items-center gap-2">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
               </svg>
               AI Conversation Intelligence
             </h4>
             <div className="space-y-3">
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20">
                 <div className="flex items-center justify-between mb-3">
                   <p className="font-semibold text-gray-900">Talk-to-Listen Ratio Analysis</p>
-                  <span className="text-sm font-bold text-[#01544e]">Last 30 Days</span>
+                  <span className="text-sm font-bold text-[#013E37]">Last 30 Days</span>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="text-center p-3 bg-green-50 rounded-lg border border-green-200">
@@ -321,15 +321,15 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                     <p className="text-xs text-gray-600 mt-1">Listen Time</p>
                     <span className="text-xs text-blue-600">✓ Good</span>
                   </div>
-                  <div className="text-center p-3 bg-purple-50 rounded-lg border border-purple-200">
-                    <p className="text-2xl font-bold text-purple-600">5.8</p>
+                  <div className="text-center p-3 bg-[#EEF7F5] rounded-lg border border-[#C3DDD9]">
+                    <p className="text-2xl font-bold text-[#013E37]">5.8</p>
                     <p className="text-xs text-gray-600 mt-1">Avg Questions</p>
-                    <span className="text-xs text-purple-600">Near Target</span>
+                    <span className="text-xs text-[#013E37]">Near Target</span>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20">
                 <p className="font-semibold text-gray-900 mb-3">Sentiment Analysis</p>
                 <div className="space-y-2">
                   <div>
@@ -362,13 +362,13 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                 </div>
               </div>
 
-              <div className="p-4 bg-white rounded-lg border-2 border-[#01544e]/20">
+              <div className="p-4 bg-white rounded-lg border-2 border-[#013E37]/20">
                 <p className="font-semibold text-gray-900 mb-3">Key Topics Discussed</p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-[#01544e] text-white rounded-full text-sm">Pricing (42%)</span>
+                  <span className="px-3 py-1 bg-[#013E37] text-white rounded-full text-sm">Pricing (42%)</span>
                   <span className="px-3 py-1 bg-blue-500 text-white rounded-full text-sm">Implementation (38%)</span>
                   <span className="px-3 py-1 bg-green-500 text-white rounded-full text-sm">Support (28%)</span>
-                  <span className="px-3 py-1 bg-purple-500 text-white rounded-full text-sm">Integration (23%)</span>
+                  <span className="px-3 py-1 bg-[#EEF7F5]0 text-white rounded-full text-sm">Integration (23%)</span>
                   <span className="px-3 py-1 bg-orange-500 text-white rounded-full text-sm">Training (19%)</span>
                 </div>
               </div>
@@ -378,7 +378,7 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
 
         {aiTab === 'scoring' && (
           <div className="space-y-4">
-            <h4 className="font-bold text-lg text-[#01544e] flex items-center gap-2">
+            <h4 className="font-bold text-lg text-[#013E37] flex items-center gap-2">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clipRule="evenodd" />
               </svg>
@@ -447,7 +447,7 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Budget Confirmed</span>
                       <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Decision Maker Engaged</span>
-                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Proposal Sent</span>
+                      <span className="text-xs bg-[#DFF0EC] text-[#013E37] px-2 py-1 rounded-full">Proposal Sent</span>
                     </div>
                   </div>
                   <div className="text-right">

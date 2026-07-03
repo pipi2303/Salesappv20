@@ -72,7 +72,7 @@ export function NotificationSettings({ isOpen, onClose, settings, onSave }: Noti
           {/* Real-time Notifications */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-[#013E37] flex items-center justify-center">
                 <Bell className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
@@ -93,7 +93,7 @@ export function NotificationSettings({ isOpen, onClose, settings, onSave }: Noti
           {/* Push Notifications */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center">
                 <Bell className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
@@ -109,7 +109,7 @@ export function NotificationSettings({ isOpen, onClose, settings, onSave }: Noti
             </div>
 
             {localSettings.pushEnabled && (
-              <div className="ml-13 pl-4 border-l-2 border-purple-300 space-y-3">
+              <div className="ml-13 pl-4 border-l-2 border-[#5BB5AB] space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-sm text-gray-700">Desktop Notifications</label>
                   <Switch
@@ -266,7 +266,7 @@ export function NotificationSettings({ isOpen, onClose, settings, onSave }: Noti
           </div>
 
           {/* Info Box */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+          <div className="bg-gradient-to-br bg-[#EEF7F5] rounded-xl p-4 border border-blue-200">
             <div className="flex gap-3">
               <Bell className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div>
@@ -293,7 +293,7 @@ export function NotificationSettings({ isOpen, onClose, settings, onSave }: Noti
             </Button>
             <Button 
               onClick={handleSave}
-              className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600"
+              className="bg-gradient-to-r from-[#013E37] to-[#025C52] hover:bg-[#025C52]"
             >
               <Check className="w-4 h-4 mr-2" />
               Simpan Pengaturan

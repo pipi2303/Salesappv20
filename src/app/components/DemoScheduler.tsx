@@ -157,7 +157,7 @@ export function DemoScheduler() {
       id: 'enterprise',
       name: 'Enterprise Demo',
       icon: Building2,
-      color: 'bg-[#01544e]',
+      color: 'bg-[#013E37]',
       duration: 60,
       product: 'Enterprise Suite',
       description: 'Comprehensive demo for large organizations',
@@ -168,7 +168,7 @@ export function DemoScheduler() {
       id: 'smb',
       name: 'SMB Quick Demo',
       icon: Zap,
-      color: 'bg-[#01544e]',
+      color: 'bg-[#013E37]',
       duration: 30,
       product: 'Business Edition',
       description: 'Fast-paced demo for small-medium businesses',
@@ -179,7 +179,7 @@ export function DemoScheduler() {
       id: 'technical',
       name: 'Technical Deep Dive',
       icon: Settings,
-      color: 'bg-[#01544e]',
+      color: 'bg-[#013E37]',
       duration: 90,
       product: 'Platform API',
       description: 'In-depth technical demonstration',
@@ -190,7 +190,7 @@ export function DemoScheduler() {
       id: 'executive',
       name: 'Executive Briefing',
       icon: Star,
-      color: 'bg-[#01544e]',
+      color: 'bg-[#013E37]',
       duration: 45,
       product: 'Strategic Overview',
       description: 'High-level strategic presentation',
@@ -218,7 +218,7 @@ export function DemoScheduler() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01544e]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div>
       </div>
     );
   }
@@ -369,7 +369,7 @@ export function DemoScheduler() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-[#01544e]">
+          <h1 className="text-3xl font-bold text-[#013E37]">
             Demo Scheduler
           </h1>
           <p className="text-gray-600 mt-1">Kelola dan jadwalkan demo produk</p>
@@ -390,7 +390,7 @@ export function DemoScheduler() {
             <Brain className="h-4 w-4 mr-2" />
             Smart Scheduler
           </Button>
-          <Button onClick={handleAddDemo} className="bg-[#01544e] hover:bg-[#023d39]">
+          <Button onClick={handleAddDemo} className="bg-[#013E37] hover:bg-[#025C52]">
             <Plus className="h-4 w-4 mr-2" />
             Jadwalkan Demo
           </Button>
@@ -402,7 +402,7 @@ export function DemoScheduler() {
         <Card className="hover:shadow-lg transition-shadow">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center">
+              <div className="h-12 w-12 rounded-full bg-[#013E37] flex items-center justify-center">
                 <Calendar className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -430,7 +430,7 @@ export function DemoScheduler() {
         <Card className="hover:shadow-lg transition-shadow">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center">
+              <div className="h-12 w-12 rounded-full bg-[#013E37] flex items-center justify-center">
                 <Video className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -501,7 +501,7 @@ export function DemoScheduler() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="h-12 w-12 rounded-lg bg-[#01544e] flex items-center justify-center">
+                      <div className="h-12 w-12 rounded-lg bg-[#013E37] flex items-center justify-center">
                         <Video className="h-6 w-6 text-white" />
                       </div>
                       <div>
@@ -591,7 +591,7 @@ export function DemoScheduler() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
-                      <div className="h-12 w-12 rounded-lg bg-[#01544e] flex items-center justify-center">
+                      <div className="h-12 w-12 rounded-lg bg-[#013E37] flex items-center justify-center">
                         <Video className="h-6 w-6 text-white" />
                       </div>
                       <div className="flex-1">
@@ -633,27 +633,27 @@ export function DemoScheduler() {
                     <div 
                       key={demo.id} 
                       onClick={() => handleViewDetail(demo)}
-                      className="flex items-center gap-4 p-4 bg-[#e6f2f1] rounded-lg hover:shadow-md transition-all cursor-pointer hover:bg-[#d6e8e7] hover:scale-[1.02]"
+                      className="flex items-center gap-4 p-4 bg-[#EEF7F5] rounded-lg hover:shadow-md transition-all cursor-pointer hover:bg-[#d6e8e7] hover:scale-[1.02]"
                     >
                       <div className="text-center min-w-16">
-                        <div className="text-2xl font-bold text-[#01544e]">{parseDate(demo.date).getDate()}</div>
+                        <div className="text-2xl font-bold text-[#013E37]">{parseDate(demo.date).getDate()}</div>
                         <div className="text-xs text-gray-600">{parseDate(demo.date).toLocaleDateString('id-ID', { month: 'short' })}</div>
                       </div>
-                      <div className="h-12 w-1 bg-[#01544e] rounded"></div>
+                      <div className="h-12 w-1 bg-[#013E37] rounded"></div>
                       <div className="flex-1">
                         <h4 className="font-semibold text-gray-900">{demo.title}</h4>
                         <p className="text-sm text-gray-600">
                           <Clock className="h-3.5 w-3.5 inline mr-1" />
                           {demo.time} ({demo.duration} min) • {demo.leadName} ({demo.company})
                         </p>
-                        <p className="text-xs text-indigo-600 mt-1">
+                        <p className="text-xs text-[#013E37] mt-1">
                           <Video className="h-3 w-3 inline mr-1" />
                           {demo.product} • Presenter: {demo.presenter}
                         </p>
                       </div>
                       <div className="flex items-center gap-3">
                         <Badge className={statusColors[demo.status]}>{demo.status}</Badge>
-                        <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors" />
+                        <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-[#013E37] transition-colors" />
                       </div>
                     </div>
                   ))}
@@ -667,7 +667,7 @@ export function DemoScheduler() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-indigo-600" />
+                <FileText className="h-5 w-5 text-[#013E37]" />
                 Demo Templates - Quick Setup
               </CardTitle>
               <p className="text-sm text-gray-600 mt-2">Pilih template untuk auto-fill demo details dan hemat waktu hingga 70%</p>
@@ -679,7 +679,7 @@ export function DemoScheduler() {
                   return (
                     <Card 
                       key={template.id} 
-                      className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-indigo-200"
+                      className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-[#C3DDD9]"
                       onClick={() => {
                         setIsDialogOpen(true);
                         applyTemplate(template.id);
@@ -726,10 +726,10 @@ export function DemoScheduler() {
               </div>
 
               {/* Usage Tips */}
-              <Card className="mt-6 bg-[#e6f2f1] border-[#01544e]/20">
+              <Card className="mt-6 bg-[#EEF7F5] border-[#013E37]/20">
                 <CardContent className="p-5">
                   <div className="flex items-start gap-3">
-                    <Lightbulb className="h-5 w-5 text-[#01544e] mt-0.5" />
+                    <Lightbulb className="h-5 w-5 text-[#013E37] mt-0.5" />
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-2">Pro Tips:</h4>
                       <ul className="space-y-1 text-sm text-gray-700">
@@ -750,7 +750,7 @@ export function DemoScheduler() {
         <TabsContent value="metrics" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Total Demos */}
-            <Card className="bg-[#01544e] text-white">
+            <Card className="bg-[#013E37] text-white">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -763,7 +763,7 @@ export function DemoScheduler() {
             </Card>
 
             {/* Success Rate */}
-            <Card className="bg-[#01544e] text-white">
+            <Card className="bg-[#013E37] text-white">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -776,7 +776,7 @@ export function DemoScheduler() {
             </Card>
 
             {/* Upcoming */}
-            <Card className="bg-[#01544e] text-white">
+            <Card className="bg-[#013E37] text-white">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -789,7 +789,7 @@ export function DemoScheduler() {
             </Card>
 
             {/* Avg Duration */}
-            <Card className="bg-[#01544e] text-white">
+            <Card className="bg-[#013E37] text-white">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -808,7 +808,7 @@ export function DemoScheduler() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-indigo-600" />
+                <BarChart3 className="h-5 w-5 text-[#013E37]" />
                 Performance by Product
               </CardTitle>
             </CardHeader>
@@ -827,7 +827,7 @@ export function DemoScheduler() {
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2.5">
                         <div 
-                          className="bg-[#01544e] h-2.5 rounded-full transition-all"
+                          className="bg-[#013E37] h-2.5 rounded-full transition-all"
                           style={{ width: `${successRate}%` }}
                         ></div>
                       </div>
@@ -842,7 +842,7 @@ export function DemoScheduler() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-indigo-600" />
+                <Users className="h-5 w-5 text-[#013E37]" />
                 Performance by Presenter
               </CardTitle>
             </CardHeader>
@@ -857,7 +857,7 @@ export function DemoScheduler() {
                     <div key={presenter} className="space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center text-white font-semibold">
+                          <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center text-white font-semibold">
                             {presenter.split(' ').map(n => n[0]).join('')}
                           </div>
                           <span className="font-medium text-gray-900">{presenter}</span>
@@ -922,7 +922,7 @@ export function DemoScheduler() {
                                   <span className="text-2xl font-bold text-gray-400">#{index + 1}</span>
                                 )}
                               </div>
-                              <div className="h-14 w-14 rounded-full bg-[#01544e] flex items-center justify-center text-white font-bold text-lg">
+                              <div className="h-14 w-14 rounded-full bg-[#013E37] flex items-center justify-center text-white font-bold text-lg">
                                 {data.presenter.split(' ').map(n => n[0]).join('')}
                               </div>
                               <div>
@@ -1005,7 +1005,7 @@ export function DemoScheduler() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#01544e] text-white">
+            <Card className="bg-[#013E37] text-white">
               <CardContent className="p-5">
                 <div className="flex items-center gap-3">
                   <Target className="h-10 w-10 text-white/70" />
@@ -1032,7 +1032,7 @@ export function DemoScheduler() {
           </DialogDescription>
           
           {/* HEADER */}
-          <DialogHeader className="relative bg-[#01544e] text-white px-6 py-5 space-y-0 flex-shrink-0">
+          <DialogHeader className="relative bg-[#013E37] text-white px-6 py-5 space-y-0 flex-shrink-0">
             <button
               onClick={() => setIsDialogOpen(false)}
               className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors z-10"
@@ -1080,11 +1080,11 @@ export function DemoScheduler() {
             <div className="px-6 py-5 space-y-4 overflow-y-auto flex-1">
               
               {/* SECTION 1: Client Information */}
-              <div className="bg-[#e6f2f1] rounded-xl border border-[#01544e]/20 overflow-hidden">
+              <div className="bg-[#EEF7F5] rounded-xl border border-[#013E37]/20 overflow-hidden">
                 <button
                   type="button"
                   onClick={() => toggleSection('info')}
-                  className="w-full flex items-center justify-between px-5 py-3.5 bg-[#01544e]/10 hover:bg-[#01544e]/20 transition-colors"
+                  className="w-full flex items-center justify-between px-5 py-3.5 bg-[#013E37]/10 hover:bg-[#013E37]/20 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <Users className="w-5 h-5 text-blue-600" />
@@ -1106,7 +1106,7 @@ export function DemoScheduler() {
                         value={formData.title || ''}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         placeholder="e.g. Demo Enterprise Plan"
-                        className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                        className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                       />
                     </div>
 
@@ -1119,7 +1119,7 @@ export function DemoScheduler() {
                           value={formData.leadName || ''}
                           onChange={(e) => setFormData({ ...formData, leadName: e.target.value })}
                           placeholder="Nama lead"
-                          className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                          className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                         />
                       </div>
                       <div className="space-y-2">
@@ -1130,7 +1130,7 @@ export function DemoScheduler() {
                           value={formData.company || ''}
                           onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                           placeholder="Nama perusahaan"
-                          className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                          className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                         />
                       </div>
                     </div>
@@ -1139,7 +1139,7 @@ export function DemoScheduler() {
               </div>
 
               {/* SECTION 2: Schedule */}
-              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-100 overflow-hidden">
+              <div className="bg-gradient-to-br from-emerald-50 to-[#EEF7F5] rounded-xl border border-emerald-100 overflow-hidden">
                 <button
                   type="button"
                   onClick={() => toggleSection('schedule')}
@@ -1199,14 +1199,14 @@ export function DemoScheduler() {
               </div>
 
               {/* SECTION 3: Demo Details */}
-              <div className="bg-[#e6f2f1] rounded-xl border border-[#01544e]/20 overflow-hidden">
+              <div className="bg-[#EEF7F5] rounded-xl border border-[#013E37]/20 overflow-hidden">
                 <button
                   type="button"
                   onClick={() => toggleSection('details')}
-                  className="w-full flex items-center justify-between px-5 py-3.5 bg-[#01544e]/10 hover:bg-[#01544e]/20 transition-colors"
+                  className="w-full flex items-center justify-between px-5 py-3.5 bg-[#013E37]/10 hover:bg-[#013E37]/20 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <Video className="w-5 h-5 text-purple-600" />
+                    <Video className="w-5 h-5 text-[#013E37]" />
                     <span className="font-semibold text-gray-900">Demo Details</span>
                   </div>
                   {expandedSections.details ? (
@@ -1226,7 +1226,7 @@ export function DemoScheduler() {
                           value={formData.presenter || ''}
                           onChange={(e) => setFormData({ ...formData, presenter: e.target.value })}
                           placeholder="Nama presenter"
-                          className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                          className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                         />
                       </div>
                       <div className="space-y-2">
@@ -1237,7 +1237,7 @@ export function DemoScheduler() {
                           value={formData.product || ''}
                           onChange={(e) => setFormData({ ...formData, product: e.target.value })}
                           placeholder="Nama produk"
-                          className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                          className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                         />
                       </div>
                     </div>
@@ -1250,7 +1250,7 @@ export function DemoScheduler() {
                         value={formData.meetingLink || ''}
                         onChange={(e) => setFormData({ ...formData, meetingLink: e.target.value })}
                         placeholder="https://meet.zoom.us/..."
-                        className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                        className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                       />
                     </div>
 
@@ -1263,7 +1263,7 @@ export function DemoScheduler() {
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                         placeholder="Catatan demo..."
                         rows={3}
-                        className="bg-white border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+                        className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                       />
                     </div>
                   </div>
@@ -1698,7 +1698,7 @@ export function DemoScheduler() {
               </Button>
               <Button 
                 type="submit"
-                className="px-6 bg-[#01544e] hover:bg-[#023d39]" 
+                className="px-6 bg-[#013E37] hover:bg-[#025C52]" 
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Menyimpan...' : (selectedDemo ? 'Update Demo' : 'Jadwalkan Demo')}
@@ -1716,7 +1716,7 @@ export function DemoScheduler() {
           </DialogDescription>
           
           {/* HEADER */}
-          <DialogHeader className="relative bg-[#01544e] text-white px-6 py-5 space-y-0 flex-shrink-0">
+          <DialogHeader className="relative bg-[#013E37] text-white px-6 py-5 space-y-0 flex-shrink-0">
             <button
               onClick={() => setIsDetailOpen(false)}
               className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors z-10"
@@ -1796,10 +1796,10 @@ export function DemoScheduler() {
             <div className="px-6 py-5 space-y-4 overflow-y-auto flex-1">
               
               {/* SECTION 1: Client Information */}
-              <div className="bg-[#e6f2f1] rounded-xl border border-[#01544e]/20 overflow-hidden">
-                <div className="px-5 py-3.5 bg-[#01544e]/10 border-b border-[#01544e]/20">
+              <div className="bg-[#EEF7F5] rounded-xl border border-[#013E37]/20 overflow-hidden">
+                <div className="px-5 py-3.5 bg-[#013E37]/10 border-b border-[#013E37]/20">
                   <div className="flex items-center gap-3">
-                    <Users className="w-5 h-5 text-[#01544e]" />
+                    <Users className="w-5 h-5 text-[#013E37]" />
                     <span className="font-semibold text-gray-900">Client Information</span>
                   </div>
                 </div>
@@ -1818,7 +1818,7 @@ export function DemoScheduler() {
               </div>
 
               {/* SECTION 2: Schedule Information */}
-              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-100 overflow-hidden">
+              <div className="bg-gradient-to-br from-emerald-50 to-[#EEF7F5] rounded-xl border border-emerald-100 overflow-hidden">
                 <div className="px-5 py-3.5 bg-emerald-100/50 border-b border-emerald-200">
                   <div className="flex items-center gap-3">
                     <Calendar className="w-5 h-5 text-emerald-600" />
@@ -1851,10 +1851,10 @@ export function DemoScheduler() {
               </div>
 
               {/* SECTION 3: Demo Details */}
-              <div className="bg-[#e6f2f1] rounded-xl border border-[#01544e]/20 overflow-hidden">
-                <div className="px-5 py-3.5 bg-[#01544e]/10 border-b border-[#01544e]/20">
+              <div className="bg-[#EEF7F5] rounded-xl border border-[#013E37]/20 overflow-hidden">
+                <div className="px-5 py-3.5 bg-[#013E37]/10 border-b border-[#013E37]/20">
                   <div className="flex items-center gap-3">
-                    <Video className="w-5 h-5 text-[#01544e]" />
+                    <Video className="w-5 h-5 text-[#013E37]" />
                     <span className="font-semibold text-gray-900">Demo Details</span>
                   </div>
                 </div>
@@ -1872,7 +1872,7 @@ export function DemoScheduler() {
 
                   {/* Meeting Link */}
                   {selectedDemo.meetingLink && (
-                    <div className="pt-3 border-t border-purple-100">
+                    <div className="pt-3 border-t border-[#DFF0EC]">
                       <p className="text-xs font-medium text-gray-500 mb-2">Meeting Link</p>
                       <div className="flex items-center gap-3">
                         <Input 
@@ -2079,7 +2079,7 @@ export function DemoScheduler() {
             AI-powered smart scheduling assistant with optimal time recommendations, conflict detection, and intelligent scheduling suggestions
           </DialogDescription>
           
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <Brain className="h-6 w-6 text-white" />
@@ -2097,16 +2097,16 @@ export function DemoScheduler() {
             {/* Optimal Time Slots */}
             <div>
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <Clock className="h-5 w-5 text-purple-600" />
+                <Clock className="h-5 w-5 text-[#013E37]" />
                 Recommended Time Slots
               </h3>
               <div className="grid grid-cols-1 gap-3">
                 {[
-                  { day: 'Tuesday', time: '10:00 AM', reason: 'Highest engagement rate (85%)', color: 'bg-[#01544e]' },
-                  { day: 'Wednesday', time: '2:00 PM', reason: 'Low conflict probability (5%)', color: 'bg-[#01544e]' },
-                  { day: 'Thursday', time: '11:00 AM', reason: 'Best presenter availability', color: 'bg-[#01544e]' }
+                  { day: 'Tuesday', time: '10:00 AM', reason: 'Highest engagement rate (85%)', color: 'bg-[#013E37]' },
+                  { day: 'Wednesday', time: '2:00 PM', reason: 'Low conflict probability (5%)', color: 'bg-[#013E37]' },
+                  { day: 'Thursday', time: '11:00 AM', reason: 'Best presenter availability', color: 'bg-[#013E37]' }
                 ].map((slot, idx) => (
-                  <Card key={idx} className="hover:shadow-md transition-all cursor-pointer border-2 hover:border-purple-300">
+                  <Card key={idx} className="hover:shadow-md transition-all cursor-pointer border-2 hover:border-[#5BB5AB]">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -2120,7 +2120,7 @@ export function DemoScheduler() {
                         </div>
                         <Button 
                           size="sm" 
-                          className="bg-[#01544e] hover:bg-[#023d39]"
+                          className="bg-[#013E37] hover:bg-[#025C52]"
                           onClick={() => {
                             setShowSmartScheduler(false);
                             setIsDialogOpen(true);
@@ -2139,7 +2139,7 @@ export function DemoScheduler() {
             {/* Presenter Recommendations */}
             <div>
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <Users className="h-5 w-5 text-purple-600" />
+                <Users className="h-5 w-5 text-[#013E37]" />
                 Best Presenter Match
               </h3>
               <div className="grid grid-cols-1 gap-3">
@@ -2152,7 +2152,7 @@ export function DemoScheduler() {
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center text-white font-semibold">
+                            <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center text-white font-semibold">
                               {presenter.split(' ').map(n => n[0]).join('')}
                             </div>
                             <div>
@@ -2193,10 +2193,10 @@ export function DemoScheduler() {
             </Card>
 
             {/* AI Insights */}
-            <Card className="bg-[#e6f2f1] border-[#01544e]/20">
+            <Card className="bg-[#EEF7F5] border-[#013E37]/20">
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
-                  <Lightbulb className="h-5 w-5 text-[#01544e] mt-0.5" />
+                  <Lightbulb className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2">AI Insights</h4>
                     <ul className="space-y-1 text-sm text-gray-700">
@@ -2216,7 +2216,7 @@ export function DemoScheduler() {
               Close
             </Button>
             <Button 
-              className="bg-[#01544e] hover:bg-[#023d39]"
+              className="bg-[#013E37] hover:bg-[#025C52]"
               onClick={() => {
                 setShowSmartScheduler(false);
                 setIsDialogOpen(true);
@@ -2235,7 +2235,7 @@ export function DemoScheduler() {
             {selectedDemo ? `Follow-up actions and next steps for demo with ${selectedDemo.clientName}` : 'Demo follow-up actions'}
           </DialogDescription>
           
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5 -mx-6 -mt-6 mb-4">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5 -mx-6 -mt-6 mb-4">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <Send className="h-6 w-6 text-white" />
@@ -2256,14 +2256,14 @@ export function DemoScheduler() {
                 icon: Mail,
                 title: 'Send Thank You Email',
                 description: 'Automated personalized thank you with demo recording',
-                color: 'bg-[#01544e]',
+                color: 'bg-[#013E37]',
                 action: 'Send Email'
               },
               {
                 icon: FileText,
                 title: 'Generate Proposal',
                 description: 'Create custom proposal based on demo discussion',
-                color: 'bg-[#01544e]',
+                color: 'bg-[#013E37]',
                 action: 'Create Proposal'
               },
               {
@@ -2285,7 +2285,7 @@ export function DemoScheduler() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="h-12 w-12 rounded-xl bg-[#01544e] flex items-center justify-center">
+                      <div className="h-12 w-12 rounded-xl bg-[#013E37] flex items-center justify-center">
                         <item.icon className="h-6 w-6 text-white" />
                       </div>
                       <div>
@@ -2295,7 +2295,7 @@ export function DemoScheduler() {
                     </div>
                     <Button 
                       size="sm"
-                      className="bg-[#01544e] hover:bg-[#023d39]"
+                      className="bg-[#013E37] hover:bg-[#025C52]"
                       onClick={() => {
                         toast.success(`${item.action} initiated!`);
                       }}

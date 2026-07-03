@@ -352,7 +352,7 @@ export function RecommendationDetailDialog({ open, onClose, recommendation }: Re
         </DialogDescription>
         
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-gradient-to-r from-[#01544e] to-[#023d39] text-white p-6 rounded-t-lg">
+        <div className="sticky top-0 z-10 bg-gradient-to-r from-[#013E37] to-[#025C52] text-white p-6 rounded-t-lg">
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
@@ -392,10 +392,10 @@ export function RecommendationDetailDialog({ open, onClose, recommendation }: Re
 
         <div className="p-6 space-y-6">
           {/* Overview Summary */}
-          <Card className="border-2 border-[#01544e] bg-[#e6f2f1]">
+          <Card className="border-2 border-[#013E37] bg-[#EEF7F5]">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
-                <Sparkles className="h-5 w-5 text-[#01544e]" />
+                <Sparkles className="h-5 w-5 text-[#013E37]" />
                 Recommendation Overview
               </CardTitle>
             </CardHeader>
@@ -418,7 +418,7 @@ export function RecommendationDetailDialog({ open, onClose, recommendation }: Re
                 </div>
                 <div className="bg-white p-3 rounded-lg">
                   <p className="text-xs text-gray-600 mb-1">Timeframe</p>
-                  <p className="text-2xl font-bold text-purple-700">{detailedData.overview.timeframe}</p>
+                  <p className="text-2xl font-bold text-[#013E37]">{detailedData.overview.timeframe}</p>
                 </div>
                 <div className="bg-white p-3 rounded-lg">
                   <p className="text-xs text-gray-600 mb-1">Effort Level</p>
@@ -441,7 +441,7 @@ export function RecommendationDetailDialog({ open, onClose, recommendation }: Re
           {/* Target Deals/Clients */}
           {detailedData.targetDeals && (
             <Card>
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 pb-3">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-[#EEF7F5] pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Target className="h-5 w-5 text-blue-600" />
                   Target Opportunities
@@ -449,7 +449,7 @@ export function RecommendationDetailDialog({ open, onClose, recommendation }: Re
               </CardHeader>
               <CardContent className="p-4 space-y-3">
                 {detailedData.targetDeals.map((deal, idx) => (
-                  <div key={idx} className="border-l-4 border-[#01544e] bg-gray-50 p-4 rounded-r-lg">
+                  <div key={idx} className="border-l-4 border-[#013E37] bg-gray-50 p-4 rounded-r-lg">
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <h4 className="font-bold text-gray-900">{deal.name}</h4>
@@ -534,9 +534,9 @@ export function RecommendationDetailDialog({ open, onClose, recommendation }: Re
           {/* Key Metrics */}
           {detailedData.metrics && (
             <Card>
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 pb-3">
+              <CardHeader className="bg-gradient-to-r from-[#EEF7F5] to-pink-50 pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <BarChart3 className="h-5 w-5 text-purple-600" />
+                  <BarChart3 className="h-5 w-5 text-[#013E37]" />
                   Key Metrics
                 </CardTitle>
               </CardHeader>
@@ -562,20 +562,20 @@ export function RecommendationDetailDialog({ open, onClose, recommendation }: Re
           )}
 
           {/* Action Plan */}
-          <Card className="border-2 border-[#01544e] bg-[#e6f2f1]">
+          <Card className="border-2 border-[#013E37] bg-[#EEF7F5]">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
-                <Rocket className="h-5 w-5 text-[#01544e]" />
+                <Rocket className="h-5 w-5 text-[#013E37]" />
                 Detailed Action Plan
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {detailedData.actionPlan.map((action, idx) => (
-                <div key={idx} className="bg-white p-4 rounded-lg border-l-4 border-[#01544e]">
+                <div key={idx} className="bg-white p-4 rounded-lg border-l-4 border-[#013E37]">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="h-6 w-6 rounded-full bg-[#01544e] text-white flex items-center justify-center text-xs font-bold">
+                        <div className="h-6 w-6 rounded-full bg-[#013E37] text-white flex items-center justify-center text-xs font-bold">
                           {idx + 1}
                         </div>
                         <p className="font-bold text-gray-900">{action.step}</p>
@@ -594,7 +594,7 @@ export function RecommendationDetailDialog({ open, onClose, recommendation }: Re
                     <Button 
                       size="sm"
                       onClick={() => toast.success(`Task assigned to ${action.owner}`)}
-                      className="ml-4 bg-[#01544e] hover:bg-[#023d39]"
+                      className="ml-4 bg-[#013E37] hover:bg-[#025C52]"
                     >
                       Assign
                       <ArrowRight className="h-4 w-4 ml-1" />
@@ -659,7 +659,7 @@ export function RecommendationDetailDialog({ open, onClose, recommendation }: Re
                 toast.success('Action plan created and team members notified!');
                 onClose();
               }}
-              className="bg-[#01544e] hover:bg-[#023d39]"
+              className="bg-[#013E37] hover:bg-[#025C52]"
             >
               <CheckCircle className="h-4 w-4 mr-2" />
               Execute Action Plan

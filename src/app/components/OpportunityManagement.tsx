@@ -355,7 +355,7 @@ export function OpportunityManagement() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01544e]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div>
       </div>
     );
   }
@@ -365,7 +365,7 @@ export function OpportunityManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#01544e]">
+          <h1 className="text-3xl font-bold text-[#013E37]">
             Opportunity Management
           </h1>
           <p className="text-gray-600 mt-1">Track deals from prospect to close</p>
@@ -381,7 +381,7 @@ export function OpportunityManagement() {
           </Button>
           <Button 
             onClick={handleCreate} 
-            className="bg-[#01544e] hover:bg-[#023d39] text-white"
+            className="bg-[#013E37] hover:bg-[#025C52] text-white"
           >
             <Plus className="w-4 h-4 mr-2" />
             New Opportunity
@@ -446,8 +446,8 @@ export function OpportunityManagement() {
                   Rp {(stats.strongUpside / 1000000).toFixed(0)}M
                 </p>
               </div>
-              <div className="h-12 w-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-6 w-6 text-indigo-600" />
+              <div className="h-12 w-12 bg-[#DFF0EC] rounded-lg flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-[#013E37]" />
               </div>
             </div>
           </CardContent>
@@ -462,8 +462,8 @@ export function OpportunityManagement() {
                   Rp {(stats.forecast / 1000000).toFixed(0)}M
                 </p>
               </div>
-              <div className="h-12 w-12 bg-teal-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-6 w-6 text-teal-600" />
+              <div className="h-12 w-12 bg-[#EEF7F5] rounded-lg flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-[#013E37]" />
               </div>
             </div>
           </CardContent>
@@ -478,8 +478,8 @@ export function OpportunityManagement() {
                   Rp {(stats.weightedValue / 1000000).toFixed(0)}M
                 </p>
               </div>
-              <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-6 w-6 text-purple-600" />
+              <div className="h-12 w-12 bg-[#DFF0EC] rounded-lg flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-[#013E37]" />
               </div>
             </div>
           </CardContent>
@@ -538,7 +538,7 @@ export function OpportunityManagement() {
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-3">
           <TabsTrigger 
             value="pipeline" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <div className="flex items-center gap-1.5 justify-center">
               <LayoutGrid className="h-4 w-4" />
@@ -548,7 +548,7 @@ export function OpportunityManagement() {
           </TabsTrigger>
           <TabsTrigger 
             value="list" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <div className="flex items-center gap-1.5 justify-center">
               <List className="h-4 w-4" />
@@ -558,7 +558,7 @@ export function OpportunityManagement() {
           </TabsTrigger>
           <TabsTrigger 
             value="forecast" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <div className="flex items-center gap-1.5 justify-center">
               <TrendingUp className="h-4 w-4" />

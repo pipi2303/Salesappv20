@@ -201,8 +201,8 @@ export function TaskManagement() {
 
   const getCategoryColor = (category: string): string => {
     const colors: Record<string, string> = {
-      'Sales Follow-up': 'bg-indigo-100 text-indigo-700',
-      'Reporting': 'bg-purple-100 text-purple-700',
+      'Sales Follow-up': 'bg-[#DFF0EC] text-[#013E37]',
+      'Reporting': 'bg-[#DFF0EC] text-[#013E37]',
       'Admin': 'bg-gray-100 text-gray-700',
       'Contract': 'bg-green-100 text-green-700',
       'Training': 'bg-blue-100 text-blue-700',
@@ -250,7 +250,7 @@ export function TaskManagement() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight uppercase bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold tracking-tight uppercase text-[#013E37]">
           Task & Activity Management
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -343,28 +343,28 @@ export function TaskManagement() {
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-4">
           <TabsTrigger 
             value="my-tasks" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">My Tasks</span>
-            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest group-data-[state=active]:text-[#01544e]/70">Daftar Tugas Saya</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest group-data-[state=active]:text-[#013E37]/70">Daftar Tugas Saya</span>
           </TabsTrigger>
           <TabsTrigger 
             value="team-tasks" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Team Tasks</span>
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Aktivitas Tim</span>
           </TabsTrigger>
           <TabsTrigger 
             value="calendar" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Calendar</span>
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Timeline Jadwal</span>
           </TabsTrigger>
           <TabsTrigger 
             value="completed" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Completed</span>
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Riwayat Tugas</span>
@@ -482,7 +482,7 @@ export function TaskManagement() {
                             </div>
                             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all"
+                                className="h-full bg-gradient-to-r from-[#013E37] to-[#025C52] transition-all"
                                 style={{ width: `${getCompletionPercentage(task)}%` }}
                               />
                             </div>
@@ -549,7 +549,7 @@ export function TaskManagement() {
                     <div key={member} className="border rounded-lg p-4">
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2">
-                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold">
+                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center text-white font-semibold">
                             {member.split(' ').map(n => n[0]).join('')}
                           </div>
                           <div>

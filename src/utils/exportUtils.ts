@@ -88,7 +88,7 @@ export const exportKPIToPDF = (data: KPITargetData[], filename: string = 'KPI_Su
   
   // Header
   doc.setFontSize(18);
-  doc.setTextColor(1, 84, 78); // #01544e
+  doc.setTextColor(1, 62, 55); // #013E37
   doc.text('KPI Performance Summary', 14, 22);
   
   doc.setFontSize(10);
@@ -126,10 +126,10 @@ export const exportKPIToPDF = (data: KPITargetData[], filename: string = 'KPI_Su
 
 export const exportSingleKPIToPDF = (item: KPITargetData) => {
   const doc = new jsPDF();
-  const brandColor = [1, 84, 78]; // #01544e
+  const brandColor = [1, 62, 55]; // #013E37
 
   // Header
-  doc.setFillColor(1, 84, 78);
+  doc.setFillColor(1, 62, 55);
   doc.rect(0, 0, 210, 40, 'F');
   
   doc.setFontSize(22);
@@ -173,7 +173,7 @@ export const exportSingleKPIToPDF = (item: KPITargetData) => {
   // AI Insights Section
   const finalY = (doc as any).lastAutoTable.finalY + 20;
   doc.setFontSize(14);
-  doc.setTextColor(1, 84, 78);
+  doc.setTextColor(1, 62, 55);
   doc.text('AI Analysis & Recommendations', 14, finalY);
   
   doc.setFontSize(10);

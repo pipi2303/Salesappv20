@@ -68,11 +68,11 @@ export function KnowledgeBase() {
       {/* Premium Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
         <div>
-          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#01544e] via-[#028076] to-[#01544e] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-black tracking-tighter uppercase bg-gradient-to-r from-[#013E37] via-[#028076] to-[#013E37] bg-clip-text text-transparent">
             KNOWLEDGE BASE
           </h1>
           <p className="text-gray-500 font-medium flex items-center gap-2 mt-2">
-            <Book className="h-4 w-4 text-[#01544e]" />
+            <Book className="h-4 w-4 text-[#013E37]" />
             Pusat dokumentasi produk, panduan penjualan, dan analisis kompetitif.
           </p>
         </div>
@@ -81,7 +81,7 @@ export function KnowledgeBase() {
             <Download className="h-4 w-4 mr-2" /> Export
           </Button>
           <Button 
-            className="bg-[#01544e] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 shadow-lg shadow-[#01544e]/20"
+            className="bg-[#013E37] hover:bg-[#028076] text-white font-bold uppercase tracking-wider text-xs px-6 shadow-lg shadow-[#013E37]/20"
             onClick={() => setIsUploadOpen(true)}
           >
             <Plus className="h-4 w-4 mr-2" /> Upload Content
@@ -90,27 +90,27 @@ export function KnowledgeBase() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-4">
-        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#013E37]/30 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
             <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Articles</CardTitle>
-            <Book className="h-4 w-4 text-[#01544e]" />
+            <Book className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
             <div className="text-3xl font-black text-gray-900">{articles.length}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Items available</p>
           </CardContent>
         </Card>
-        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#013E37]/30 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
             <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Views</CardTitle>
-            <Eye className="h-4 w-4 text-[#01544e]" />
+            <Eye className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-[#01544e]">{articles.reduce((sum, a) => sum + a.views, 0)}</div>
+            <div className="text-3xl font-black text-[#013E37]">{articles.reduce((sum, a) => sum + a.views, 0)}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">All time reach</p>
           </CardContent>
         </Card>
-        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#013E37]/30 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
             <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Avg Rating</CardTitle>
             <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
@@ -120,10 +120,10 @@ export function KnowledgeBase() {
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Sales satisfaction</p>
           </CardContent>
         </Card>
-        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#01544e]/30 transition-all">
+        <Card className="border-gray-100 shadow-sm overflow-hidden group hover:border-[#013E37]/30 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50/50">
             <CardTitle className="text-[10px] font-black uppercase tracking-widest text-gray-400">Active Topics</CardTitle>
-            <FileText className="h-4 w-4 text-[#01544e]" />
+            <FileText className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
             <div className="text-3xl font-black text-gray-900">6</div>
@@ -134,23 +134,23 @@ export function KnowledgeBase() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-5">
-          <TabsTrigger value="all" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="all" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Semua</span>
-            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest group-data-[state=active]:text-[#01544e]/70">Library</span>
+            <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest group-data-[state=active]:text-[#013E37]/70">Library</span>
           </TabsTrigger>
-          <TabsTrigger value="documents" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="documents" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Dokumen</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">PDF & Guides</span>
           </TabsTrigger>
-          <TabsTrigger value="videos" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="videos" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Video</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Training</span>
           </TabsTrigger>
-          <TabsTrigger value="faq" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="faq" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">FAQ</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Solusi Cepat</span>
           </TabsTrigger>
-          <TabsTrigger value="upload" className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
+          <TabsTrigger value="upload" className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5">
             <span className="font-bold text-sm uppercase tracking-tight">Internal</span>
             <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Contributor</span>
           </TabsTrigger>
@@ -171,19 +171,19 @@ export function KnowledgeBase() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {articles.map((article) => (
-              <Card key={article.id} className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
+              <Card key={article.id} className="group hover:border-[#013E37]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-[#e6f2f1] transition-colors">
-                      {article.type === 'document' && <FileText className="h-8 w-8 text-[#01544e]" />}
-                      {article.type === 'video' && <Video className="h-8 w-8 text-[#01544e]" />}
-                      {article.type === 'faq' && <HelpCircle className="h-8 w-8 text-[#01544e]" />}
+                    <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-[#EEF7F5] transition-colors">
+                      {article.type === 'document' && <FileText className="h-8 w-8 text-[#013E37]" />}
+                      {article.type === 'video' && <Video className="h-8 w-8 text-[#013E37]" />}
+                      {article.type === 'faq' && <HelpCircle className="h-8 w-8 text-[#013E37]" />}
                     </div>
                     <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest border-gray-200">
                       {article.category}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl font-black text-gray-900 leading-tight group-hover:text-[#01544e] transition-colors">
+                  <CardTitle className="text-xl font-black text-gray-900 leading-tight group-hover:text-[#013E37] transition-colors">
                     {article.title}
                   </CardTitle>
                 </CardHeader>
@@ -205,7 +205,7 @@ export function KnowledgeBase() {
                       <Eye className="h-4 w-4 mr-2" /> View
                     </Button>
                     <Button variant="outline" className="font-bold border-gray-200 h-10 w-10 p-0">
-                      <Download className="h-4 w-4 text-[#01544e]" />
+                      <Download className="h-4 w-4 text-[#013E37]" />
                     </Button>
                   </div>
                 </CardContent>
@@ -217,15 +217,15 @@ export function KnowledgeBase() {
         <TabsContent value="documents" className="space-y-6">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {articles.filter(a => a.type === 'document').map((article) => (
-              <Card key={article.id} className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
+              <Card key={article.id} className="group hover:border-[#013E37]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-[#e6f2f1] transition-colors">
-                      <FileText className="h-8 w-8 text-[#01544e]" />
+                    <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-[#EEF7F5] transition-colors">
+                      <FileText className="h-8 w-8 text-[#013E37]" />
                     </div>
                     <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest border-gray-200">{article.category}</Badge>
                   </div>
-                  <CardTitle className="text-xl font-black text-gray-900 leading-tight group-hover:text-[#01544e] transition-colors">{article.title}</CardTitle>
+                  <CardTitle className="text-xl font-black text-gray-900 leading-tight group-hover:text-[#013E37] transition-colors">{article.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
@@ -239,7 +239,7 @@ export function KnowledgeBase() {
                     </div>
                   </div>
                   <Button variant="outline" className="w-full font-bold text-[10px] uppercase tracking-widest border-gray-200 h-10">
-                    <Download className="h-4 w-4 mr-2 text-[#01544e]" /> Download PDF
+                    <Download className="h-4 w-4 mr-2 text-[#013E37]" /> Download PDF
                   </Button>
                 </CardContent>
               </Card>
@@ -250,15 +250,15 @@ export function KnowledgeBase() {
         <TabsContent value="videos" className="space-y-6">
           <div className="grid gap-6 md:grid-cols-2">
             {articles.filter(a => a.type === 'video').map((article) => (
-              <Card key={article.id} className="group hover:border-[#01544e]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
+              <Card key={article.id} className="group hover:border-[#013E37]/50 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-gray-100">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-[#e6f2f1] transition-colors">
-                      <Video className="h-8 w-8 text-[#01544e]" />
+                    <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-[#EEF7F5] transition-colors">
+                      <Video className="h-8 w-8 text-[#013E37]" />
                     </div>
                     <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest border-gray-200">{article.category}</Badge>
                   </div>
-                  <CardTitle className="text-xl font-black text-gray-900 leading-tight group-hover:text-[#01544e] transition-colors">{article.title}</CardTitle>
+                  <CardTitle className="text-xl font-black text-gray-900 leading-tight group-hover:text-[#013E37] transition-colors">{article.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
@@ -272,7 +272,7 @@ export function KnowledgeBase() {
                     </div>
                   </div>
                   <Button variant="outline" className="w-full font-bold text-[10px] uppercase tracking-widest border-gray-200 h-10">
-                    <Video className="h-4 w-4 mr-2 text-[#01544e]" /> Watch Video
+                    <Video className="h-4 w-4 mr-2 text-[#013E37]" /> Watch Video
                   </Button>
                 </CardContent>
               </Card>
@@ -289,13 +289,13 @@ export function KnowledgeBase() {
             <CardContent className="p-6">
               <div className="space-y-4">
                 {articles.filter(a => a.type === 'faq').map((article) => (
-                  <div key={article.id} className="p-5 bg-white border border-gray-100 rounded-2xl hover:border-[#01544e]/30 hover:shadow-lg transition-all cursor-pointer group">
+                  <div key={article.id} className="p-5 bg-white border border-gray-100 rounded-2xl hover:border-[#013E37]/30 hover:shadow-lg transition-all cursor-pointer group">
                     <div className="flex items-start gap-4">
-                      <div className="p-2.5 bg-gray-50 rounded-xl group-hover:bg-[#e6f2f1] transition-colors shrink-0">
-                        <HelpCircle className="h-6 w-6 text-[#01544e]" />
+                      <div className="p-2.5 bg-gray-50 rounded-xl group-hover:bg-[#EEF7F5] transition-colors shrink-0">
+                        <HelpCircle className="h-6 w-6 text-[#013E37]" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-black text-gray-900 uppercase tracking-tight group-hover:text-[#01544e] transition-colors mb-1">{article.title}</h3>
+                        <h3 className="font-black text-gray-900 uppercase tracking-tight group-hover:text-[#013E37] transition-colors mb-1">{article.title}</h3>
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Klik untuk melihat detail solusi dan panduan</p>
                       </div>
                       <div className="flex items-center gap-1.5 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-3 py-1 rounded-full">
@@ -318,15 +318,15 @@ export function KnowledgeBase() {
             </CardHeader>
             <CardContent className="p-12">
               <div className="text-center max-w-sm mx-auto space-y-6">
-                <div className="h-24 w-24 rounded-full bg-gray-50 flex items-center justify-center mx-auto border-4 border-white shadow-xl group hover:bg-[#e6f2f1] transition-all">
-                  <Plus className="h-10 w-10 text-gray-300 group-hover:text-[#01544e] transition-colors" />
+                <div className="h-24 w-24 rounded-full bg-gray-50 flex items-center justify-center mx-auto border-4 border-white shadow-xl group hover:bg-[#EEF7F5] transition-all">
+                  <Plus className="h-10 w-10 text-gray-300 group-hover:text-[#013E37] transition-colors" />
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight">Kontribusi Materi Baru</h3>
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">Unggah file PDF panduan, video pelatihan, atau entri FAQ untuk membantu performa tim sales.</p>
                 </div>
                 <Button 
-                  className="bg-[#01544e] hover:bg-[#028076] text-white h-12 px-8 font-bold uppercase tracking-widest text-xs shadow-lg shadow-emerald-900/20 w-full"
+                  className="bg-[#013E37] hover:bg-[#028076] text-white h-12 px-8 font-bold uppercase tracking-widest text-xs shadow-lg shadow-emerald-900/20 w-full"
                   onClick={() => setIsUploadOpen(true)}
                 >
                   <Plus className="h-4 w-4 mr-2" /> Upload Materi Baru
@@ -345,7 +345,7 @@ export function KnowledgeBase() {
             <DialogDescription>Tambahkan dokumen, video, atau FAQ baru ke library</DialogDescription>
           </VisuallyHidden>
 
-          <div className="bg-[#01544e] p-8 text-white">
+          <div className="bg-[#013E37] p-8 text-white">
             <h2 className="text-2xl font-black uppercase tracking-tight flex items-center gap-3">
               <Upload className="h-6 w-6 text-emerald-400" /> 
               Upload Content
@@ -405,8 +405,8 @@ export function KnowledgeBase() {
 
               <div className="space-y-2">
                 <Label className="text-[10px] font-black uppercase tracking-widest text-gray-400">File Attachment</Label>
-                <div className="border-2 border-dashed border-gray-100 rounded-2xl p-8 text-center hover:border-[#01544e]/30 transition-all bg-gray-50/50 group cursor-pointer">
-                  <Upload className="h-8 w-8 text-gray-300 mx-auto mb-2 group-hover:text-[#01544e] transition-colors" />
+                <div className="border-2 border-dashed border-gray-100 rounded-2xl p-8 text-center hover:border-[#013E37]/30 transition-all bg-gray-50/50 group cursor-pointer">
+                  <Upload className="h-8 w-8 text-gray-300 mx-auto mb-2 group-hover:text-[#013E37] transition-colors" />
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Click or drag file to upload</p>
                   <p className="text-[9px] text-gray-300 mt-1 italic">Max size: 50MB (PDF, MP4, PNG)</p>
                 </div>
@@ -420,7 +420,7 @@ export function KnowledgeBase() {
               <Button 
                 type="submit" 
                 disabled={isUploading}
-                className="bg-[#01544e] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-10 shadow-lg shadow-[#01544e]/20 min-w-[140px]"
+                className="bg-[#013E37] hover:bg-[#028076] text-white font-black uppercase tracking-widest text-[10px] h-11 px-10 shadow-lg shadow-[#013E37]/20 min-w-[140px]"
               >
                 {isUploading ? (
                   <div className="flex items-center gap-2">

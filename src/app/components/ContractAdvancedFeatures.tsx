@@ -29,8 +29,8 @@ export function ContractAmendments({ contracts, selectedContract }: AdvancedFeat
 
   const amendmentTypes = [
     { value: 'pricing', label: 'Pricing Adjustment', icon: DollarSign, color: 'from-green-500 to-emerald-600' },
-    { value: 'scope', label: 'Scope Change', icon: Package, color: 'from-blue-500 to-indigo-600' },
-    { value: 'term', label: 'Term Extension', icon: Calendar, color: 'from-purple-500 to-pink-600' },
+    { value: 'scope', label: 'Scope Change', icon: Package, color: 'from-[#013E37] to-[#025C52]' },
+    { value: 'term', label: 'Term Extension', icon: Calendar, color: 'from-[#EEF7F5]0 to-pink-600' },
     { value: 'service', label: 'Service Level Change', icon: Target, color: 'from-orange-500 to-red-600' }
   ];
 
@@ -72,7 +72,7 @@ export function ContractAmendments({ contracts, selectedContract }: AdvancedFeat
       <Button
         onClick={() => setIsOpen(true)}
         variant="outline"
-        className="border-indigo-500 text-indigo-600 hover:bg-indigo-50"
+        className="border-[#EEF7F5]0 text-[#013E37] hover:bg-[#EEF7F5]"
       >
         <GitBranch className="h-4 w-4 mr-2" />
         Amendments
@@ -81,7 +81,7 @@ export function ContractAmendments({ contracts, selectedContract }: AdvancedFeat
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="!max-w-[900px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <GitBranch className="h-6 w-6 text-white" />
@@ -97,7 +97,7 @@ export function ContractAmendments({ contracts, selectedContract }: AdvancedFeat
 
           <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(85vh-200px)]">
             {/* Create New Amendment */}
-            <Card className="border-2 border-indigo-200">
+            <Card className="border-2 border-[#C3DDD9]">
               <CardHeader>
                 <CardTitle className="text-lg">Create New Amendment Request</CardTitle>
               </CardHeader>
@@ -124,7 +124,7 @@ export function ContractAmendments({ contracts, selectedContract }: AdvancedFeat
                       return (
                         <Card 
                           key={type.value}
-                          className={`cursor-pointer transition-all ${amendmentType === type.value ? 'border-2 border-indigo-500 shadow-md' : 'hover:shadow-md'}`}
+                          className={`cursor-pointer transition-all ${amendmentType === type.value ? 'border-2 border-[#EEF7F5]0 shadow-md' : 'hover:shadow-md'}`}
                           onClick={() => setAmendmentType(type.value)}
                         >
                           <CardContent className="p-4">
@@ -152,7 +152,7 @@ export function ContractAmendments({ contracts, selectedContract }: AdvancedFeat
                 </div>
 
                 <Button 
-                  className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+                  className="w-full bg-gradient-to-r from-[#013E37] to-[#025C52] hover:from-[#013E37] hover:to-[#013E37]"
                   onClick={handleSubmitAmendment}
                 >
                   <Send className="h-4 w-4 mr-2" />
@@ -260,7 +260,7 @@ export function ContractCompliance({ contracts }: AdvancedFeaturesProps) {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="!max-w-[900px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <Shield className="h-6 w-6 text-white" />
@@ -383,7 +383,7 @@ export function ContractESignature({ contracts }: AdvancedFeaturesProps) {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="!max-w-[900px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <FileSignature className="h-6 w-6 text-white" />
@@ -415,7 +415,7 @@ export function ContractESignature({ contracts }: AdvancedFeaturesProps) {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+              <Card className="bg-gradient-to-br from-[#013E37] to-[#025C52] text-white">
                 <CardContent className="p-5">
                   <Zap className="h-8 w-8 text-blue-200 mb-2" />
                   <p className="text-blue-100 text-sm">Avg Signature Time</p>
@@ -477,7 +477,7 @@ export function ContractESignature({ contracts }: AdvancedFeaturesProps) {
             </div>
 
             {/* Signature Workflow */}
-            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+            <Card className="bg-gradient-to-r bg-[#EEF7F5] border-blue-200">
               <CardContent className="p-5">
                 <h4 className="font-semibold mb-3">Signature Workflow Process</h4>
                 <div className="flex items-center gap-3">
@@ -490,7 +490,7 @@ export function ContractESignature({ contracts }: AdvancedFeaturesProps) {
                   <ArrowRight className="h-5 w-5 text-gray-400" />
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <div className="h-8 w-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-sm font-bold">2</div>
+                      <div className="h-8 w-8 rounded-full bg-[#013E37] text-white flex items-center justify-center text-sm font-bold">2</div>
                       <span className="text-sm">Client Signature</span>
                     </div>
                   </div>
@@ -538,7 +538,7 @@ export function ContractRevenue({ contracts }: AdvancedFeaturesProps) {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="!max-w-[900px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <Calculator className="h-6 w-6 text-white" />
@@ -563,7 +563,7 @@ export function ContractRevenue({ contracts }: AdvancedFeaturesProps) {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+              <Card className="bg-gradient-to-br from-[#013E37] to-[#025C52] text-white">
                 <CardContent className="p-5">
                   <TrendingUp className="h-8 w-8 text-blue-200 mb-2" />
                   <p className="text-blue-100 text-sm">Monthly Recurring (MRR)</p>
@@ -571,10 +571,10 @@ export function ContractRevenue({ contracts }: AdvancedFeaturesProps) {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-purple-500 to-pink-600 text-white">
+              <Card className="bg-gradient-to-br from-[#EEF7F5]0 to-pink-600 text-white">
                 <CardContent className="p-5">
-                  <Clock className="h-8 w-8 text-purple-200 mb-2" />
-                  <p className="text-purple-100 text-sm">Deferred Revenue</p>
+                  <Clock className="h-8 w-8 text-[#C3DDD9] mb-2" />
+                  <p className="text-[#DFF0EC] text-sm">Deferred Revenue</p>
                   <p className="text-2xl font-bold mt-1">Rp {(deferredRevenue / 1000000).toFixed(0)} Jt</p>
                 </CardContent>
               </Card>
@@ -607,7 +607,7 @@ export function ContractRevenue({ contracts }: AdvancedFeaturesProps) {
             </Card>
 
             {/* Export Options */}
-            <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
+            <Card className="bg-gradient-to-r bg-[#EEF7F5] border-[#C3DDD9]">
               <CardContent className="p-5">
                 <h4 className="font-semibold mb-3">Export Financial Reports</h4>
                 <div className="flex gap-3">

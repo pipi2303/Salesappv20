@@ -118,7 +118,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="!max-w-[700px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
         {/* HEADER */}
-        <DialogHeader className="relative bg-[#01544e] text-white px-6 py-5 space-y-0 flex-shrink-0">
+        <DialogHeader className="relative bg-[#013E37] text-white px-6 py-5 space-y-0 flex-shrink-0">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors z-10"
@@ -167,10 +167,10 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
 
         {/* QUICK INFO CARDS - Only in Edit Mode */}
         {product && (
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 px-6 py-4 grid grid-cols-3 gap-4 border-b border-indigo-100 flex-shrink-0">
+          <div className="bg-gradient-to-br bg-[#EEF7F5] px-6 py-4 grid grid-cols-3 gap-4 border-b border-[#DFF0EC] flex-shrink-0">
             <div className="bg-white rounded-lg p-3 flex items-center gap-3 shadow-sm">
-              <div className="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-indigo-600" />
+              <div className="w-10 h-10 rounded-lg bg-[#DFF0EC] flex items-center justify-center">
+                <DollarSign className="w-5 h-5 text-[#013E37]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500">Harga</p>
@@ -189,8 +189,8 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
               </div>
             </div>
             <div className="bg-white rounded-lg p-3 flex items-center gap-3 shadow-sm">
-              <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                <Package className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-lg bg-[#DFF0EC] flex items-center justify-center">
+                <Package className="w-5 h-5 text-[#013E37]" />
               </div>
               <div>
                 <p className="text-xs text-gray-500">Terjual</p>
@@ -205,12 +205,12 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
           <div className="px-6 py-5 space-y-4 overflow-y-auto flex-1">
             
             {/* Product Information */}
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl border border-indigo-100 p-5 space-y-4">
+            <div className="bg-gradient-to-br bg-[#EEF7F5] rounded-xl border border-[#DFF0EC] p-5 space-y-4">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#013E37] flex items-center justify-center">
                   <Package className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-base font-bold text-indigo-900">Informasi Produk</h3>
+                <h3 className="text-base font-bold text-[#012D29]">Informasi Produk</h3>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -224,7 +224,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                     onChange={handleChange}
                     required
                     placeholder="HMS Enterprise Edition"
-                    className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                   />
                 </div>
 
@@ -236,7 +236,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                     value={formData.category}
                     onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
                   >
-                    <SelectTrigger className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                    <SelectTrigger className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0">
                       <SelectValue placeholder="Pilih kategori" />
                     </SelectTrigger>
                     <SelectContent>
@@ -266,7 +266,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                     onChange={handleChange}
                     required
                     placeholder="50000000"
-                    className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                   />
                 </div>
 
@@ -278,7 +278,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                     value={formData.stock}
                     onChange={handleChange}
                     placeholder="100"
-                    className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                   />
                 </div>
 
@@ -290,7 +290,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                     value={formData.sold}
                     onChange={handleChange}
                     placeholder="0"
-                    className="bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                   />
                 </div>
 
@@ -301,7 +301,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                     value={formData.description}
                     onChange={handleChange}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EEF7F5]0 focus:border-[#EEF7F5]0 text-sm bg-white"
                     placeholder="Deskripsi lengkap tentang produk..."
                   />
                 </div>
@@ -315,7 +315,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                     value={formData.features}
                     onChange={handleChange}
                     rows={6}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white font-mono"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EEF7F5]0 focus:border-[#EEF7F5]0 text-sm bg-white font-mono"
                     placeholder="Integrasi SatuSehat&#10;EMR Lengkap&#10;Rekam Medis Elektronik&#10;Billing & Klaim BPJS&#10;Laporan Real-time"
                   />
                   <p className="text-xs text-gray-500">
@@ -340,7 +340,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
             </Button>
             <Button 
               type="submit" 
-              className="bg-[#01544e] hover:bg-[#023d39] text-white px-6 gap-2"
+              className="bg-[#013E37] hover:bg-[#025C52] text-white px-6 gap-2"
               disabled={loading}
             >
               {loading ? (

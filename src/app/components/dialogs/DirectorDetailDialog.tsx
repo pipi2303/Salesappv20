@@ -39,7 +39,7 @@ export function DirectorDetailDialog({
         </DialogHeader>
 
         {/* Visual Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-[#01544e] to-[#023d39] text-white p-4 flex items-center justify-between z-10">
+        <div className="sticky top-0 bg-gradient-to-r from-[#013E37] to-[#025C52] text-white p-4 flex items-center justify-between z-10">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-lg">
               {selectedDirector.avatar}
@@ -70,7 +70,7 @@ export function DirectorDetailDialog({
                 onClick={() => onPeriodFilterChange('monthly', 'Jan - 26')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   periodFilter === 'monthly'
-                    ? 'bg-[#01544e] text-white shadow-md'
+                    ? 'bg-[#013E37] text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
                 }`}
               >
@@ -80,7 +80,7 @@ export function DirectorDetailDialog({
                 onClick={() => onPeriodFilterChange('quarterly', 'Q1 - 2026')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   periodFilter === 'quarterly'
-                    ? 'bg-[#01544e] text-white shadow-md'
+                    ? 'bg-[#013E37] text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
                 }`}
               >
@@ -93,7 +93,7 @@ export function DirectorDetailDialog({
                 <select
                   value={selectedPeriod}
                   onChange={(e) => onPeriodFilterChange('quarterly', e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#01544e] min-w-[150px] cursor-pointer"
+                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#013E37] min-w-[150px] cursor-pointer"
                 >
                   <option value="Q1 - 2026">Quarter 1 - 2026</option>
                   <option value="Q2 - 2026">Quarter 2 - 2026</option>
@@ -107,7 +107,7 @@ export function DirectorDetailDialog({
                 <select
                   value={selectedPeriod}
                   onChange={(e) => onPeriodFilterChange('monthly', e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#01544e] min-w-[150px] cursor-pointer"
+                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#013E37] min-w-[150px] cursor-pointer"
                 >
                   <option value="Jan - 26">January 2026</option>
                   <option value="Feb - 26">February 2026</option>
@@ -141,16 +141,16 @@ export function DirectorDetailDialog({
 
           {/* KPI Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-4">
-            <Card className="border-2 border-[#01544e]/20 hover:border-[#01544e] transition-colors bg-gradient-to-br from-[#e6f2f1] to-white shadow-sm">
+            <Card className="border-2 border-[#013E37]/20 hover:border-[#013E37] transition-colors bg-gradient-to-br from-[#EEF7F5] to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Achievement</p>
-                    <p className="text-xl font-bold text-[#01544e]">
+                    <p className="text-xl font-bold text-[#013E37]">
                       {formatCurrency(selectedDirector.achievement)}
                     </p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-[#01544e] flex items-center justify-center shadow-lg shadow-[#01544e]/20">
+                  <div className="h-10 w-10 rounded-xl bg-[#013E37] flex items-center justify-center shadow-lg shadow-[#013E37]/20">
                     <DollarSign className="h-5 w-5 text-white" />
                   </div>
                 </div>
@@ -214,23 +214,23 @@ export function DirectorDetailDialog({
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-purple-200 hover:border-purple-500 transition-colors bg-gradient-to-br from-purple-50 to-white shadow-sm">
+            <Card className="border-2 border-[#C3DDD9] hover:border-[#EEF7F5]0 transition-colors bg-gradient-to-br from-[#EEF7F5] to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Pipeline</p>
-                    <p className="text-xl font-bold text-purple-600">
+                    <p className="text-xl font-bold text-[#013E37]">
                       {formatCurrency(selectedDirector.pipelineValue || 0)}
                     </p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-purple-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                  <div className="h-10 w-10 rounded-xl bg-[#EEF7F5]0 flex items-center justify-center shadow-lg shadow-[#EEF7F5]0/20">
                     <DollarSign className="h-5 w-5 text-white" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-cyan-200 hover:border-cyan-500 transition-colors bg-gradient-to-br from-cyan-50 to-white shadow-sm">
+            <Card className="border-2 border-cyan-200 hover:border-cyan-500 transition-colors bg-gradient-to-br from-[#EEF7F5] to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -239,39 +239,39 @@ export function DirectorDetailDialog({
                       {formatCurrency(selectedDirector.upside || 0)}
                     </p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-cyan-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                  <div className="h-10 w-10 rounded-xl bg-[#013E37] flex items-center justify-center shadow-lg shadow-cyan-500/20">
                     <TrendingUp className="h-5 w-5 text-white" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-indigo-200 hover:border-indigo-500 transition-colors bg-gradient-to-br from-indigo-50 to-white shadow-sm">
+            <Card className="border-2 border-[#C3DDD9] hover:border-[#EEF7F5]0 transition-colors bg-gradient-to-br from-[#EEF7F5] to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Strong Upside</p>
-                    <p className="text-xl font-bold text-indigo-600">
+                    <p className="text-xl font-bold text-[#013E37]">
                       {formatCurrency(selectedDirector.strongUpside || 0)}
                     </p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                  <div className="h-10 w-10 rounded-xl bg-[#EEF7F5]0 flex items-center justify-center shadow-lg shadow-[#EEF7F5]0/20">
                     <TrendingUp className="h-5 w-5 text-white" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-teal-200 hover:border-teal-500 transition-colors bg-gradient-to-br from-teal-50 to-white shadow-sm">
+            <Card className="border-2 border-[#013E37]/20 hover:border-[#013E37] transition-colors bg-gradient-to-br from-[#EEF7F5] to-white shadow-sm">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Forecast</p>
-                    <p className="text-xl font-bold text-teal-600">
+                    <p className="text-xl font-bold text-[#013E37]">
                       {formatCurrency(selectedDirector.forecast || 0)}
                     </p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-teal-500 flex items-center justify-center shadow-lg shadow-teal-500/20">
+                  <div className="h-10 w-10 rounded-xl bg-[#013E37] flex items-center justify-center shadow-lg shadow-[#013E37]/20">
                     <TrendingUp className="h-5 w-5 text-white" />
                   </div>
                 </div>
@@ -289,7 +289,7 @@ export function DirectorDetailDialog({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-purple-100 text-purple-600">
+                <div className="p-2 rounded-lg bg-[#DFF0EC] text-[#013E37]">
                   <Users className="h-5 w-5" />
                 </div>
                 Area Managers Performance ({selectedDirector.areaManagers.length})
@@ -297,16 +297,16 @@ export function DirectorDetailDialog({
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {selectedDirector.areaManagers.map((areaManager) => (
-                <Card key={areaManager.id} className="border border-purple-100 hover:border-purple-400 transition-all bg-white shadow-sm hover:shadow-md group">
+                <Card key={areaManager.id} className="border border-[#DFF0EC] hover:border-[#038E7D] transition-all bg-white shadow-sm hover:shadow-md group">
                   <CardContent className="pt-6">
                     <div className="flex items-start gap-4">
-                      <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform">
+                      <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[#013E37] to-[#012D29] flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform">
                         {areaManager.avatar}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <h4 className="font-bold text-purple-900 text-lg truncate">{areaManager.name}</h4>
-                          <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+                          <h4 className="font-bold text-[#012D29] text-lg truncate">{areaManager.name}</h4>
+                          <Badge variant="outline" className="bg-[#EEF7F5] text-[#013E37] border-[#C3DDD9]">
                             {areaManager.performance.toFixed(0)}%
                           </Badge>
                         </div>
@@ -329,12 +329,12 @@ export function DirectorDetailDialog({
 
                         <div className="mt-4">
                           <div className="flex items-center justify-between mb-1.5">
-                            <span className="text-xs font-bold text-purple-600">Overall Progress</span>
+                            <span className="text-xs font-bold text-[#013E37]">Overall Progress</span>
                             <span className="text-xs text-gray-500 font-medium">{areaManager.totalDeals} Deals Closed</span>
                           </div>
                           <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden border border-gray-200">
                             <div 
-                              className="bg-gradient-to-r from-purple-600 to-indigo-600 h-full rounded-full transition-all duration-1000"
+                              className="bg-gradient-to-r from-[#013E37] to-[#013E37] h-full rounded-full transition-all duration-1000"
                               style={{ width: `${Math.min(areaManager.performance, 100)}%` }}
                             ></div>
                           </div>
@@ -348,7 +348,7 @@ export function DirectorDetailDialog({
           </div>
 
           {/* Org Summary */}
-          <Card className="border-none bg-[#01544e] text-white shadow-xl shadow-[#01544e]/20 overflow-hidden relative">
+          <Card className="border-none bg-[#013E37] text-white shadow-xl shadow-[#013E37]/20 overflow-hidden relative">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/20 rounded-full -ml-32 -mb-32 blur-3xl"></div>
             

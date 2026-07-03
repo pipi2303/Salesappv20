@@ -17,7 +17,7 @@ const demoAccounts = [
     name: 'Admin Utama',
     role: 'Super Admin',
     icon: Shield,
-    color: 'from-[#01544e] to-[#023d39]',
+    color: 'from-[#013E37] to-[#025C52]',
     description: 'Full system access'
   },
   {
@@ -35,7 +35,7 @@ const demoAccounts = [
     name: 'Siti Nurhaliza',
     role: 'Sales Representative',
     icon: User,
-    color: 'from-green-500 to-teal-600',
+    color: 'from-[#013E37] to-[#025C52]',
     description: 'Sales operations access'
   },
   {
@@ -44,7 +44,7 @@ const demoAccounts = [
     name: 'Rivelino Hasugian',
     role: 'Sales Manager',
     icon: Users,
-    color: 'from-purple-500 to-indigo-600',
+    color: 'from-[#013E37] to-[#025C52]',
     description: 'Team management access'
   },
   {
@@ -140,7 +140,7 @@ export function Login({ onLogin }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-teal-50 via-cyan-50 to-emerald-50 flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-[#EEF7F5] flex items-center justify-center p-4">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       
@@ -148,10 +148,10 @@ export function Login({ onLogin }: LoginProps) {
         {/* Left Side - Branding */}
         <div className="hidden lg:block space-y-6">
           <div className="space-y-4">
-            <div className="inline-block p-3 bg-[#01544e] rounded-2xl shadow-xl">
+            <div className="inline-block p-3 bg-[#013E37] rounded-2xl shadow-xl">
               <BarChart className="h-12 w-12 text-white" />
             </div>
-            <h1 className="text-5xl font-bold text-[#01544e]">
+            <h1 className="text-5xl font-bold text-[#013E37]">
               Sales Monitoring Pro
             </h1>
             <p className="text-xl text-gray-600">
@@ -177,7 +177,7 @@ export function Login({ onLogin }: LoginProps) {
         <div className="w-full">
           <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-10 border border-gray-100">
             <div className="text-center mb-8">
-              <div className="inline-block lg:hidden p-3 bg-[#01544e] rounded-2xl shadow-xl mb-4">
+              <div className="inline-block lg:hidden p-3 bg-[#013E37] rounded-2xl shadow-xl mb-4">
                 <BarChart className="h-10 w-10 text-white" />
               </div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Selamat Datang</h2>
@@ -199,7 +199,7 @@ export function Login({ onLogin }: LoginProps) {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-[#01544e] focus:ring-2 focus:ring-[#e6f2f1] transition-all outline-none"
+                    className="w-full pl-10 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-[#013E37] focus:ring-2 focus:ring-[#013E37]/10 transition-all outline-none"
                     placeholder="nama@email.com"
                     required
                   />
@@ -223,7 +223,7 @@ export function Login({ onLogin }: LoginProps) {
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-[#01544e] focus:ring-2 focus:ring-[#e6f2f1] transition-all outline-none"
+                    className="w-full pl-10 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-[#013E37] focus:ring-2 focus:ring-[#013E37]/10 transition-all outline-none"
                     placeholder="Masukkan password"
                     required
                   />
@@ -248,7 +248,7 @@ export function Login({ onLogin }: LoginProps) {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-[#01544e] hover:bg-[#023d39] text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all text-base"
+                className="w-full bg-[#013E37] hover:bg-[#025C52] text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all text-base"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-2">

@@ -156,8 +156,8 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
             >
               <CardContent className="pt-3 pb-3">
                 <div className="mb-2">
-                  <h3 className="font-bold text-[#01544e] text-sm">{data.month}</h3>
-                  <p className="text-2xl font-bold text-[#01544e] mt-1">
+                  <h3 className="font-bold text-[#013E37] text-sm">{data.month}</h3>
+                  <p className="text-2xl font-bold text-[#013E37] mt-1">
                     {actualValue}M
                   </p>
                   <p className="text-xs text-gray-500">of {targetValue}M</p>
@@ -187,7 +187,7 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
           <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-3 text-2xl text-[#01544e]">
+              <DialogTitle className="flex items-center gap-3 text-2xl text-[#013E37]">
                 <Calendar className="h-7 w-7" />
                 Daily Breakdown - {selectedMonth.fullMonth} 2025
               </DialogTitle>
@@ -198,7 +198,7 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
 
             <div className="space-y-4">
               {/* Summary Stats */}
-              <div className="grid grid-cols-4 gap-4 p-4 bg-gradient-to-r from-[#01544e] to-[#023d39] rounded-lg text-white">
+              <div className="grid grid-cols-4 gap-4 p-4 bg-gradient-to-r from-[#013E37] to-[#025C52] rounded-lg text-white">
                 <div>
                   <p className="text-xs opacity-80">Total Actual</p>
                   <p className="text-2xl font-bold">{selectedMonth.actual}M</p>
@@ -221,7 +221,7 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
 
               {/* Daily Data */}
               <div className="space-y-3">
-                <h3 className="font-semibold text-lg flex items-center gap-2 text-[#01544e]">
+                <h3 className="font-semibold text-lg flex items-center gap-2 text-[#013E37]">
                   <Calendar className="h-5 w-5" />
                   Visit Details per Day
                 </h3>
@@ -236,13 +236,13 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
                     {getDailyData(selectedMonth.fullMonth, selectedMonth.monthNum).map((visit, idx) => (
                       <Card 
                         key={idx} 
-                        className="hover:shadow-md transition-shadow border-l-4 border-l-[#01544e]"
+                        className="hover:shadow-md transition-shadow border-l-4 border-l-[#013E37]"
                       >
                         <CardContent className="p-4">
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
-                                <Badge className="bg-[#01544e] text-white font-semibold">
+                                <Badge className="bg-[#013E37] text-white font-semibold">
                                   {visit.date}
                                 </Badge>
                                 <Badge 
@@ -263,7 +263,7 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
 
                               <div className="grid grid-cols-2 gap-4">
                                 <div className="flex items-start gap-2">
-                                  <Building2 className="h-5 w-5 text-[#01544e] mt-0.5" />
+                                  <Building2 className="h-5 w-5 text-[#013E37] mt-0.5" />
                                   <div>
                                     <p className="text-xs text-gray-500">Client</p>
                                     <p className="font-semibold text-gray-900">{visit.client}</p>
@@ -271,7 +271,7 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
                                 </div>
 
                                 <div className="flex items-start gap-2">
-                                  <User className="h-5 w-5 text-[#01544e] mt-0.5" />
+                                  <User className="h-5 w-5 text-[#013E37] mt-0.5" />
                                   <div>
                                     <p className="text-xs text-gray-500">Doctor</p>
                                     <p className="font-semibold text-gray-900">{visit.doctor}</p>
@@ -281,7 +281,7 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
                             </div>
 
                             <div className="text-right ml-4">
-                              <div className="flex items-center gap-1 text-[#01544e]">
+                              <div className="flex items-center gap-1 text-[#013E37]">
                                 <TrendingUp className="h-5 w-5" />
                                 <p className="text-xl font-bold">
                                   Rp {formatNumber(visit.revenue / 1000)}K
@@ -312,9 +312,9 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
                       {getDailyData(selectedMonth.fullMonth, selectedMonth.monthNum).filter(v => v.status === 'Completed').length}
                     </p>
                   </div>
-                  <div className="p-3 bg-purple-50 rounded-lg">
+                  <div className="p-3 bg-[#EEF7F5] rounded-lg">
                     <p className="text-sm text-gray-600">Scheduled</p>
-                    <p className="text-2xl font-bold text-purple-600">
+                    <p className="text-2xl font-bold text-[#013E37]">
                       {getDailyData(selectedMonth.fullMonth, selectedMonth.monthNum).filter(v => v.status === 'Scheduled').length}
                     </p>
                   </div>

@@ -2,43 +2,57 @@
 
 :root {
   --font-size: 16px;
-  --background: #fafbff;
-  --foreground: oklch(0.145 0 0);
-  --card: #ffffff;
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: #01544e;
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: #030213;
-  --muted: #ececf0;
-  --muted-foreground: #717182;
-  --accent: #e9ebef;
-  --accent-foreground: #030213;
-  --destructive: #d4183d;
+
+  /* Layout */
+  --background:         #EEF7F5;
+  --foreground:         #012D29;
+  --card:               #ffffff;
+  --card-foreground:    #012D29;
+  --popover:            #ffffff;
+  --popover-foreground: #012D29;
+
+  /* Brand */
+  --primary:            #013E37;
+  --primary-foreground: #FFEFB2;
+  --secondary:          #025C52;
+  --secondary-foreground: #FFEFB2;
+  --muted:              #DFF0EC;
+  --muted-foreground:   #4D8078;
+  --accent:             #FFEFB2;
+  --accent-foreground:  #013E37;
+
+  /* Status */
+  --destructive:        #d4183d;
   --destructive-foreground: #ffffff;
-  --border: rgba(0, 0, 0, 0.08);
-  --input: transparent;
-  --input-background: #f8f9fc;
-  --switch-background: #cbced4;
+
+  /* Border / Input */
+  --border:             #C3DDD9;
+  --input:              transparent;
+  --input-background:   #ffffff;
+  --switch-background:  #5BB5AB;
+
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.75rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #030213;
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --ring:               #038E7D;
+
+  /* Charts */
+  --chart-1:            #038E7D;
+  --chart-2:            #FFBE00;
+  --chart-3:            #E87040;
+  --chart-4:            #0891B2;
+  --chart-5:            #16A34A;
+
+  --radius: 0.625rem;
+
+  /* Sidebar */
+  --sidebar:                    #013E37;
+  --sidebar-foreground:         #FFEFB2;
+  --sidebar-primary:            #FFEFB2;
+  --sidebar-primary-foreground: #013E37;
+  --sidebar-accent:             rgba(255, 239, 178, 0.12);
+  --sidebar-accent-foreground:  #FFEFB2;
+  --sidebar-border:             rgba(255, 239, 178, 0.15);
+  --sidebar-ring:               #038E7D;
 }
 
 .dark {
@@ -182,7 +196,7 @@
   /* Global scrollbar styles for all elements */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #01544e #e6f2f1;
+    scrollbar-color: #013E37 #EEF7F5;
   }
 
   *::-webkit-scrollbar {
@@ -191,27 +205,27 @@
   }
 
   *::-webkit-scrollbar-track {
-    background: #e6f2f1;
+    background: #EEF7F5;
     border-radius: 10px;
   }
 
   *::-webkit-scrollbar-thumb {
-    background: #01544e;
+    background: #013E37;
     border-radius: 10px;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: #023d39;
+    background: #025C52;
   }
 
   *::-webkit-scrollbar-thumb:active {
-    background: #012b27;
+    background: #013E37;
   }
 
   /* Firefox scrollbar */
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: #01544e #f3f4f6;
+    scrollbar-color: #013E37 #f3f4f6;
   }
 
   /* Custom scrollbar for sidebar navigation */
@@ -224,31 +238,31 @@
   }
 
   .sidebar-nav-scroll::-webkit-scrollbar-thumb {
-    background: #01544e;
+    background: #013E37;
     border-radius: 10px;
   }
 
   .sidebar-nav-scroll::-webkit-scrollbar-thumb:hover {
-    background: #023d39;
+    background: #025C52;
   }
 
   .sidebar-nav-scroll::-webkit-scrollbar-thumb:active {
-    background: #012b27;
+    background: #013E37;
   }
 
   /* Firefox scrollbar for sidebar */
   .sidebar-nav-scroll {
     scrollbar-width: thin;
-    scrollbar-color: #01544e transparent;
+    scrollbar-color: #013E37 transparent;
   }
 
   /* Custom scrollbar for ScrollArea in tooltips */
   [data-slot="scroll-area-thumb"] {
-    background: #01544e !important;
+    background: #013E37 !important;
   }
 
   [data-slot="scroll-area-thumb"]:hover {
-    background: #023d39 !important;
+    background: #025C52 !important;
   }
 
   [data-slot="scroll-area-scrollbar"] {
@@ -270,24 +284,24 @@
   }
 
   [data-slot="scroll-area-viewport"]::-webkit-scrollbar-thumb {
-    background: #01544e;
+    background: #013E37;
     border-radius: 10px;
   }
 
   [data-slot="scroll-area-viewport"]::-webkit-scrollbar-thumb:hover {
-    background: #023d39;
+    background: #025C52;
   }
 
   /* Firefox scrollbar for viewport */
   [data-slot="scroll-area-viewport"] {
     scrollbar-width: thin;
-    scrollbar-color: #01544e transparent;
+    scrollbar-color: #013E37 transparent;
   }
 
   /* Custom scrollbar for sales stage tooltip */
   .sales-stage-tooltip-scroll {
     scrollbar-width: thin;
-    scrollbar-color: #01544e #f3f4f6;
+    scrollbar-color: #013E37 #f3f4f6;
     pointer-events: auto;
     touch-action: pan-y;
     overscroll-behavior: contain;
@@ -306,18 +320,18 @@
   }
 
   .sales-stage-tooltip-scroll::-webkit-scrollbar-thumb {
-    background: #01544e;
+    background: #013E37;
     border-radius: 10px;
     pointer-events: auto;
     cursor: pointer;
   }
 
   .sales-stage-tooltip-scroll::-webkit-scrollbar-thumb:hover {
-    background: #023d39;
+    background: #025C52;
   }
 
   .sales-stage-tooltip-scroll::-webkit-scrollbar-thumb:active {
-    background: #012b27;
+    background: #013E37;
   }
 
   /* Force pointer events on Radix UI Tooltip Content */
@@ -347,7 +361,7 @@
   /* Custom scrollbar for notification center */
   .scrollbar-custom {
     scrollbar-width: thin;
-    scrollbar-color: #01544e #e6f2f1;
+    scrollbar-color: #013E37 #EEF7F5;
   }
 
   .scrollbar-custom::-webkit-scrollbar {
@@ -355,20 +369,20 @@
   }
 
   .scrollbar-custom::-webkit-scrollbar-track {
-    background: #e6f2f1;
+    background: #EEF7F5;
     border-radius: 10px;
   }
 
   .scrollbar-custom::-webkit-scrollbar-thumb {
-    background: #01544e;
+    background: #013E37;
     border-radius: 10px;
   }
 
   .scrollbar-custom::-webkit-scrollbar-thumb:hover {
-    background: #023d39;
+    background: #025C52;
   }
 
   .scrollbar-custom::-webkit-scrollbar-thumb:active {
-    background: #012b27;
+    background: #013E37;
   }
 }

@@ -123,7 +123,7 @@ export function SalesRepresentative() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#01544e]">Sales Representative</h1>
+          <h1 className="text-3xl font-bold text-[#013E37]">Sales Representative</h1>
           <p className="text-gray-500 mt-1">Kelola data tim sales internal</p>
         </div>
         
@@ -140,7 +140,7 @@ export function SalesRepresentative() {
             }}
             variant="outline"
             size="sm"
-            className="gap-2 border-[#01544e] text-[#01544e] hover:bg-[#01544e] hover:text-white"
+            className="gap-2 border-[#013E37] text-[#013E37] hover:bg-[#013E37] hover:text-white"
           >
             <Database className="h-4 w-4" />
             Load Dummy Data
@@ -170,7 +170,7 @@ export function SalesRepresentative() {
                   placeholder="Cari nama, NIK, atau email..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EEF7F5]0 focus:border-transparent"
                 />
               </div>
             </div>
@@ -178,7 +178,7 @@ export function SalesRepresentative() {
               <select
                 value={filterDivisi}
                 onChange={(e) => setFilterDivisi(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EEF7F5]0 focus:border-transparent"
               >
                 <option value="">Semua Divisi</option>
                 <option value="Sales & Marketing">Sales & Marketing</option>
@@ -193,7 +193,7 @@ export function SalesRepresentative() {
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EEF7F5]0 focus:border-transparent"
               >
                 <option value="">Semua Status</option>
                 <option value="Tetap">Tetap</option>
@@ -222,7 +222,7 @@ export function SalesRepresentative() {
               setSelectedKaryawan(null);
               setShowKaryawanForm(true);
             }}
-            className="gap-2 bg-[#01544e] hover:bg-[#023d39]"
+            className="gap-2 bg-[#013E37] hover:bg-[#025C52]"
           >
             <Plus className="h-4 w-4" />
             Tambah Karyawan
@@ -232,7 +232,7 @@ export function SalesRepresentative() {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div>
         </div>
       ) : filteredKaryawan.length === 0 ? (
         <Card>
@@ -254,7 +254,7 @@ export function SalesRepresentative() {
           {filteredKaryawan.map((k) => (
             <Card 
               key={k.id} 
-              className="hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-[#01544e]/30"
+              className="hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-[#013E37]/30"
               onClick={(e) => {
                 // Prevent if clicking on a button or interactive element
                 const target = e.target as HTMLElement;
@@ -268,7 +268,7 @@ export function SalesRepresentative() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1 space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center text-white font-semibold text-lg">
+                      <div className="h-12 w-12 rounded-full bg-[#013E37] flex items-center justify-center text-white font-semibold text-lg">
                         {k.nama_lengkap?.charAt(0) || 'K'}
                       </div>
                       <div>

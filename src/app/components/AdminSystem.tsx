@@ -82,7 +82,7 @@ export function AdminSystem() {
 
   const roles: Role[] = [
     { id: 'R1', name: 'Super Admin', description: 'Akses penuh ke seluruh sistem dan konfigurasi global.', permissions: ['all'], userCount: 1, color: 'bg-red-500' },
-    { id: 'R2', name: 'Sales Manager', description: 'Kelola tim, lihat semua laporan, dan setujui diskon.', permissions: ['view_reports', 'manage_team', 'approve_discounts'], userCount: 1, color: 'bg-[#01544e]' },
+    { id: 'R2', name: 'Sales Manager', description: 'Kelola tim, lihat semua laporan, dan setujui diskon.', permissions: ['view_reports', 'manage_team', 'approve_discounts'], userCount: 1, color: 'bg-[#013E37]' },
     { id: 'R3', name: 'Sales Executive', description: 'Kelola lead pribadi dan buat penawaran harga.', permissions: ['manage_leads', 'create_quotes'], userCount: 2, color: 'bg-blue-500' },
     { id: 'R4', name: 'Finance', description: 'Akses laporan keuangan dan kalkulasi komisi.', permissions: ['view_finance', 'calculate_commission'], userCount: 1, color: 'bg-amber-500' },
   ];
@@ -105,8 +105,8 @@ export function AdminSystem() {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] gap-4">
         <div className="relative">
-          <div className="h-16 w-16 rounded-full border-4 border-gray-200 border-t-[#01544e] animate-spin"></div>
-          <Shield className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-6 w-6 text-[#01544e]" />
+          <div className="h-16 w-16 rounded-full border-4 border-gray-200 border-t-[#013E37] animate-spin"></div>
+          <Shield className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-6 w-6 text-[#013E37]" />
         </div>
         <p className="text-gray-500 font-medium animate-pulse">Menyiapkan Sistem Administrasi...</p>
       </div>
@@ -118,7 +118,7 @@ export function AdminSystem() {
       {/* Premium Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2 border-b border-gray-100">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight uppercase bg-gradient-to-r from-[#01544e] via-[#02847c] to-[#01544e] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-extrabold tracking-tight uppercase bg-gradient-to-r from-[#013E37] via-[#02847c] to-[#013E37] bg-clip-text text-transparent">
             Admin Control Center
           </h1>
           <p className="text-sm font-medium text-gray-500 mt-2 uppercase tracking-[0.2em] flex items-center gap-2">
@@ -129,7 +129,7 @@ export function AdminSystem() {
           <Button variant="outline" className="gap-2 border-gray-200" onClick={fetchAdminData}>
             <RefreshCw className="h-4 w-4" /> Refresh
           </Button>
-          <Button className="bg-[#01544e] hover:bg-[#023d39] text-white shadow-lg shadow-emerald-900/20 gap-2" onClick={() => setIsUserDialogOpen(true)}>
+          <Button className="bg-[#013E37] hover:bg-[#025C52] text-white shadow-lg shadow-emerald-900/20 gap-2" onClick={() => setIsUserDialogOpen(true)}>
             <UserPlus className="h-4 w-4" /> Tambah User Baru
           </Button>
         </div>
@@ -141,7 +141,7 @@ export function AdminSystem() {
           { label: 'Total Pengguna', value: users.length, icon: UsersIcon, color: 'text-blue-600', bg: 'bg-blue-50' },
           { label: 'User Aktif', value: users.filter(u => u.status === 'active').length, icon: CheckCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50' },
           { label: 'System Health', value: '99.9%', icon: Activity, color: 'text-amber-600', bg: 'bg-amber-50' },
-          { label: 'Audit Log 24h', value: auditLogs.length, icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50' },
+          { label: 'Audit Log 24h', value: auditLogs.length, icon: FileText, color: 'text-[#013E37]', bg: 'bg-[#EEF7F5]' },
         ].map((stat, i) => (
           <Card key={i} className="border-none shadow-sm hover:shadow-md transition-all duration-300">
             <CardContent className="p-6">
@@ -164,7 +164,7 @@ export function AdminSystem() {
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-2 lg:grid-cols-4 gap-1">
           <TabsTrigger 
             value="users" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
           >
             <div className="flex flex-col items-center justify-center h-full">
               <div className="font-bold text-[10px] sm:text-[11px] uppercase tracking-tight leading-[1.1] mb-1 whitespace-normal">
@@ -177,7 +177,7 @@ export function AdminSystem() {
           </TabsTrigger>
           <TabsTrigger 
             value="roles" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
           >
             <div className="flex flex-col items-center justify-center h-full">
               <div className="font-bold text-[10px] sm:text-[11px] uppercase tracking-tight leading-[1.1] mb-1 whitespace-normal">
@@ -190,7 +190,7 @@ export function AdminSystem() {
           </TabsTrigger>
           <TabsTrigger 
             value="security" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
           >
             <div className="flex flex-col items-center justify-center h-full">
               <div className="font-bold text-[10px] sm:text-[11px] uppercase tracking-tight leading-[1.1] mb-1 whitespace-normal">
@@ -203,7 +203,7 @@ export function AdminSystem() {
           </TabsTrigger>
           <TabsTrigger 
             value="settings" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
           >
             <div className="flex flex-col items-center justify-center h-full">
               <div className="font-bold text-[10px] sm:text-[11px] uppercase tracking-tight leading-[1.1] mb-1 whitespace-normal">
@@ -223,7 +223,7 @@ export function AdminSystem() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
                 placeholder="Cari berdasarkan nama atau email..." 
-                className="pl-10 h-11 border-gray-200 focus:ring-[#01544e]" 
+                className="pl-10 h-11 border-gray-200 focus:ring-[#013E37]" 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -251,7 +251,7 @@ export function AdminSystem() {
                     <tr key={u.id} className="hover:bg-gray-50/50 transition-colors group">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#01544e] to-[#02847c] flex items-center justify-center text-white font-bold text-sm">
+                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#013E37] to-[#02847c] flex items-center justify-center text-white font-bold text-sm">
                             {u.name.charAt(0)}
                           </div>
                           <div>
@@ -278,7 +278,7 @@ export function AdminSystem() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-[#01544e]">
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-[#013E37]">
                             <Edit2 className="h-4 w-4" />
                           </Button>
                           <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-red-500">
@@ -308,7 +308,7 @@ export function AdminSystem() {
               {roles.map((role) => (
                 <Card 
                   key={role.id} 
-                  className={`cursor-pointer transition-all border-l-4 ${selectedRole?.id === role.id ? 'border-[#01544e] shadow-md ring-1 ring-emerald-100' : 'border-transparent hover:border-gray-200 shadow-sm'}`}
+                  className={`cursor-pointer transition-all border-l-4 ${selectedRole?.id === role.id ? 'border-[#013E37] shadow-md ring-1 ring-emerald-100' : 'border-transparent hover:border-gray-200 shadow-sm'}`}
                   onClick={() => setSelectedRole(role)}
                 >
                   <CardContent className="p-4">
@@ -320,7 +320,7 @@ export function AdminSystem() {
                   </CardContent>
                 </Card>
               ))}
-              <Button variant="outline" className="w-full h-12 border-dashed border-gray-300 text-gray-500 hover:text-[#01544e] gap-2">
+              <Button variant="outline" className="w-full h-12 border-dashed border-gray-300 text-gray-500 hover:text-[#013E37] gap-2">
                 <Plus className="h-4 w-4" /> Buat Role Baru
               </Button>
             </div>
@@ -330,10 +330,10 @@ export function AdminSystem() {
                 <CardHeader className="border-b border-gray-50">
                   <div className="flex justify-between items-center">
                     <div>
-                      <CardTitle className="text-xl text-[#01544e]">{selectedRole ? `Izin Akses: ${selectedRole.name}` : 'Pilih Role'}</CardTitle>
+                      <CardTitle className="text-xl text-[#013E37]">{selectedRole ? `Izin Akses: ${selectedRole.name}` : 'Pilih Role'}</CardTitle>
                       <CardDescription>Konfigurasikan apa yang dapat dilakukan oleh role ini di sistem</CardDescription>
                     </div>
-                    {selectedRole && <Button className="bg-[#01544e] hover:bg-[#023d39]">Simpan Perubahan</Button>}
+                    {selectedRole && <Button className="bg-[#013E37] hover:bg-[#025C52]">Simpan Perubahan</Button>}
                   </div>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -345,12 +345,12 @@ export function AdminSystem() {
                         { group: 'Sistem & Keamanan', perms: ['Kelola Pengguna', 'Akses Audit Log', 'Konfigurasi Global'] },
                       ].map((group, idx) => (
                         <div key={idx} className="space-y-4">
-                          <h5 className="text-[11px] font-black text-[#01544e] uppercase tracking-[0.2em]">{group.group}</h5>
+                          <h5 className="text-[11px] font-black text-[#013E37] uppercase tracking-[0.2em]">{group.group}</h5>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {group.perms.map((perm, pIdx) => (
                               <div key={pIdx} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-white hover:ring-1 hover:ring-gray-200 transition-all group">
                                 <span className="text-sm font-medium text-gray-700">{perm}</span>
-                                <Switch className="data-[state=checked]:bg-[#01544e]" defaultChecked={selectedRole.permissions.includes('all') || Math.random() > 0.5} />
+                                <Switch className="data-[state=checked]:bg-[#013E37]" defaultChecked={selectedRole.permissions.includes('all') || Math.random() > 0.5} />
                               </div>
                             ))}
                           </div>
@@ -374,7 +374,7 @@ export function AdminSystem() {
         {/* Audit Content */}
         <TabsContent value="security" className="space-y-6 outline-none">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="border-none shadow-sm bg-[#01544e] text-white">
+            <Card className="border-none shadow-sm bg-[#013E37] text-white">
               <CardContent className="p-6">
                 <div className="flex justify-between items-center mb-4">
                   <div className="h-10 w-10 rounded-xl bg-white/20 flex items-center justify-center">
@@ -401,8 +401,8 @@ export function AdminSystem() {
             <Card className="border-none shadow-sm">
               <CardContent className="p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center">
-                    <Database className="h-5 w-5 text-purple-500" />
+                  <div className="h-10 w-10 rounded-xl bg-[#EEF7F5] flex items-center justify-center">
+                    <Database className="h-5 w-5 text-[#EEF7F5]0" />
                   </div>
                   <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Backups</span>
                 </div>
@@ -435,7 +435,7 @@ export function AdminSystem() {
                         </span>
                       </div>
                       <p className="text-xs text-gray-600">
-                        Oleh <span className="font-semibold text-[#01544e]">{log.user}</span> di modul <span className="font-semibold">{log.resource}</span>
+                        Oleh <span className="font-semibold text-[#013E37]">{log.user}</span> di modul <span className="font-semibold">{log.resource}</span>
                       </p>
                       {log.details && (
                         <p className="text-[11px] text-gray-500 mt-2 p-2 bg-gray-50 rounded border border-gray-100 italic">
@@ -452,7 +452,7 @@ export function AdminSystem() {
                 ))}
               </div>
               <div className="p-4 bg-gray-50/50 flex justify-center">
-                <Button variant="ghost" size="sm" className="text-xs font-bold text-gray-500 hover:text-[#01544e] gap-1">
+                <Button variant="ghost" size="sm" className="text-xs font-bold text-gray-500 hover:text-[#013E37] gap-1">
                   Lihat Log Lainnya <ChevronRight className="h-3 w-3" />
                 </Button>
               </div>
@@ -474,7 +474,7 @@ export function AdminSystem() {
                 <Button 
                   key={i} 
                   variant="ghost" 
-                  className={`w-full justify-start gap-3 h-11 px-4 font-medium transition-all ${i === 1 ? 'bg-[#01544e] text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
+                  className={`w-full justify-start gap-3 h-11 px-4 font-medium transition-all ${i === 1 ? 'bg-[#013E37] text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
                 >
                   <item.icon className="h-4 w-4" /> {item.label}
                 </Button>
@@ -489,13 +489,13 @@ export function AdminSystem() {
                 </CardHeader>
                 <CardContent className="space-y-8">
                   <div className="space-y-4">
-                    <h5 className="text-[11px] font-black text-[#01544e] uppercase tracking-[0.2em]">Warna Identitas</h5>
+                    <h5 className="text-[11px] font-black text-[#013E37] uppercase tracking-[0.2em]">Warna Identitas</h5>
                     <div className="flex gap-4 items-center">
-                      <div className="h-12 w-12 rounded-full bg-[#01544e] ring-2 ring-offset-2 ring-[#01544e]"></div>
+                      <div className="h-12 w-12 rounded-full bg-[#013E37] ring-2 ring-offset-2 ring-[#013E37]"></div>
                       <div className="flex-1">
                         <Label className="text-sm">Primary Brand Color</Label>
                         <div className="flex gap-2 mt-2">
-                          <Input value="#01544e" className="max-w-[120px]" readOnly />
+                          <Input value="#013E37" className="max-w-[120px]" readOnly />
                           <Button variant="outline">Ubah Warna</Button>
                         </div>
                       </div>
@@ -503,15 +503,15 @@ export function AdminSystem() {
                   </div>
 
                   <div className="space-y-4">
-                    <h5 className="text-[11px] font-black text-[#01544e] uppercase tracking-[0.2em]">Logo Perusahaan</h5>
+                    <h5 className="text-[11px] font-black text-[#013E37] uppercase tracking-[0.2em]">Logo Perusahaan</h5>
                     <div className="flex gap-6 items-center p-6 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
                       <div className="h-20 w-48 bg-white rounded-lg flex items-center justify-center border border-gray-100 shadow-sm">
-                        <p className="text-xs font-black text-[#01544e]">SALES MONITORING LOGO</p>
+                        <p className="text-xs font-black text-[#013E37]">SALES MONITORING LOGO</p>
                       </div>
                       <div className="flex-1 space-y-2">
                         <p className="text-sm font-semibold">Upload Logo Baru</p>
                         <p className="text-xs text-gray-500">Gunakan format PNG atau SVG dengan latar belakang transparan. Ukuran maksimal 2MB.</p>
-                        <Button className="bg-[#01544e] hover:bg-[#023d39] mt-2">Pilih File</Button>
+                        <Button className="bg-[#013E37] hover:bg-[#025C52] mt-2">Pilih File</Button>
                       </div>
                     </div>
                   </div>
@@ -522,20 +522,20 @@ export function AdminSystem() {
                         <p className="font-bold text-gray-800">Dark Mode Otomatis</p>
                         <p className="text-xs text-gray-500">Sesuaikan tema dengan sistem operasi</p>
                       </div>
-                      <Switch className="data-[state=checked]:bg-[#01544e]" />
+                      <Switch className="data-[state=checked]:bg-[#013E37]" />
                     </div>
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <p className="font-bold text-gray-800">Compact View</p>
                         <p className="text-xs text-gray-500">Tampilkan lebih banyak data di tabel</p>
                       </div>
-                      <Switch className="data-[state=checked]:bg-[#01544e]" defaultChecked />
+                      <Switch className="data-[state=checked]:bg-[#013E37]" defaultChecked />
                     </div>
                   </div>
                 </CardContent>
                 <div className="p-6 bg-gray-50/50 border-t border-gray-100 flex justify-end gap-3">
                   <Button variant="outline">Reset Default</Button>
-                  <Button className="bg-[#01544e] hover:bg-[#023d39]">Simpan Semua Pengaturan</Button>
+                  <Button className="bg-[#013E37] hover:bg-[#025C52]">Simpan Semua Pengaturan</Button>
                 </div>
               </Card>
             </div>
@@ -547,7 +547,7 @@ export function AdminSystem() {
       <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-[#01544e]">Tambah Pengguna Baru</DialogTitle>
+            <DialogTitle className="text-2xl text-[#013E37]">Tambah Pengguna Baru</DialogTitle>
             <DialogDescription>Daftarkan anggota tim baru ke dalam sistem monitoring ini.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
@@ -589,7 +589,7 @@ export function AdminSystem() {
           </div>
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={() => setIsUserDialogOpen(false)}>Batalkan</Button>
-            <Button className="bg-[#01544e] hover:bg-[#023d39]" onClick={() => {
+            <Button className="bg-[#013E37] hover:bg-[#025C52]" onClick={() => {
               setIsUserDialogOpen(false);
               toast.success('User sedang didaftarkan ke sistem...');
             }}>Konfirmasi & Simpan</Button>

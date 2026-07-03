@@ -152,7 +152,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
     switch (stage.toLowerCase()) {
       case 'proposal': return 'bg-blue-600';
       case 'negotiation': return 'bg-orange-600';
-      case 'demo': return 'bg-purple-600';
+      case 'demo': return 'bg-[#013E37]';
       case 'qualification': return 'bg-green-600';
       default: return 'bg-gray-600';
     }
@@ -182,7 +182,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
           </DialogDescription>
           
           {/* Header */}
-          <div className="sticky top-0 z-10 bg-gradient-to-r from-[#01544e] to-[#023d39] text-white p-6 rounded-t-lg">
+          <div className="sticky top-0 z-10 bg-gradient-to-r from-[#013E37] to-[#025C52] text-white p-6 rounded-t-lg">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
@@ -249,13 +249,13 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
                 </CardContent>
               </Card>
 
-              <Card className="border-2 border-purple-200 bg-purple-50">
+              <Card className="border-2 border-[#C3DDD9] bg-[#EEF7F5]">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Clock className="h-5 w-5 text-purple-600" />
+                    <Clock className="h-5 w-5 text-[#013E37]" />
                     <p className="text-xs text-gray-600">In Pipeline</p>
                   </div>
-                  <p className="text-2xl font-bold text-purple-700">
+                  <p className="text-2xl font-bold text-[#013E37]">
                     {opportunity.daysInPipeline} days
                   </p>
                 </CardContent>
@@ -276,7 +276,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
 
             {/* Client Information */}
             <Card>
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 pb-3">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-[#EEF7F5] pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <User className="h-5 w-5 text-blue-600" />
                   Client Information
@@ -303,7 +303,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
                   </div>
 
                   <div className="flex items-start gap-3 bg-gray-50 p-3 rounded-lg">
-                    <MapPin className="h-5 w-5 text-purple-600 mt-0.5" />
+                    <MapPin className="h-5 w-5 text-[#013E37] mt-0.5" />
                     <div>
                       <p className="text-xs text-gray-600 mb-1">Location</p>
                       <p className="font-semibold text-gray-900">{detailedData.clientInfo?.location}</p>
@@ -334,7 +334,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-gray-600 mb-2">Package</p>
-                    <Badge className="bg-[#01544e]">{detailedData.dealInfo?.package}</Badge>
+                    <Badge className="bg-[#013E37]">{detailedData.dealInfo?.package}</Badge>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600 mb-2">Budget Status</p>
@@ -374,9 +374,9 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
             <div className="grid grid-cols-2 gap-6">
               {/* Timeline */}
               <Card>
-                <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 pb-3">
+                <CardHeader className="bg-gradient-to-r from-[#EEF7F5] to-pink-50 pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
-                    <Calendar className="h-5 w-5 text-purple-600" />
+                    <Calendar className="h-5 w-5 text-[#013E37]" />
                     Timeline
                   </CardTitle>
                 </CardHeader>
@@ -410,7 +410,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
                 </CardHeader>
                 <CardContent className="p-4 space-y-3">
                   {detailedData.activities?.map((activity, idx) => (
-                    <div key={idx} className="border-l-2 border-[#01544e] pl-3 py-1">
+                    <div key={idx} className="border-l-2 border-[#013E37] pl-3 py-1">
                       <div className="flex items-center gap-2 mb-1">
                         <p className="text-xs font-semibold text-gray-900">{activity.type}</p>
                         <p className="text-xs text-gray-500">{activity.date}</p>
@@ -463,28 +463,28 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
             </div>
 
             {/* Next Steps */}
-            <Card className="border-2 border-[#01544e] bg-[#e6f2f1]">
+            <Card className="border-2 border-[#013E37] bg-[#EEF7F5]">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <Zap className="h-5 w-5 text-[#01544e]" />
+                  <Zap className="h-5 w-5 text-[#013E37]" />
                   Next Steps & Action Items
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {detailedData.nextSteps?.map((step, idx) => (
                   <div key={idx} className="flex items-start gap-3 bg-white p-3 rounded-lg">
-                    <div className="h-6 w-6 rounded-full bg-[#01544e] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+                    <div className="h-6 w-6 rounded-full bg-[#013E37] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
                       {idx + 1}
                     </div>
                     <span className="text-sm text-gray-700 flex-1">{step}</span>
-                    <ArrowRight className="h-4 w-4 text-[#01544e]" />
+                    <ArrowRight className="h-4 w-4 text-[#013E37]" />
                   </div>
                 ))}
               </CardContent>
             </Card>
 
             {/* Quick Actions */}
-            <Card className="bg-gradient-to-r from-[#01544e] to-[#023d39] text-white">
+            <Card className="bg-gradient-to-r from-[#013E37] to-[#025C52] text-white">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base text-white">
                   <Sparkles className="h-5 w-5" />
@@ -508,7 +508,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
 
                   <Button
                     onClick={() => toast.success('Call initiated (Demo mode)')}
-                    className="bg-white text-[#01544e] hover:bg-[#d1fae5] border-2 border-[#01544e]/20 h-auto py-4 flex-col items-start text-left"
+                    className="bg-white text-[#013E37] hover:bg-[#d1fae5] border-2 border-[#013E37]/20 h-auto py-4 flex-col items-start text-left"
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <Phone className="h-5 w-5" />
@@ -519,7 +519,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
 
                   <Button
                     onClick={() => toast.success('Proposal generated (Demo mode)')}
-                    className="bg-white text-[#01544e] hover:bg-[#d1fae5] border-2 border-[#01544e]/20 h-auto py-4 flex-col items-start text-left"
+                    className="bg-white text-[#013E37] hover:bg-[#d1fae5] border-2 border-[#013E37]/20 h-auto py-4 flex-col items-start text-left"
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <FileText className="h-5 w-5" />
@@ -530,7 +530,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
 
                   <Button
                     onClick={() => toast.success('Meeting scheduled (Demo mode)')}
-                    className="bg-white text-[#01544e] hover:bg-[#d1fae5] border-2 border-[#01544e]/20 h-auto py-4 flex-col items-start text-left"
+                    className="bg-white text-[#013E37] hover:bg-[#d1fae5] border-2 border-[#013E37]/20 h-auto py-4 flex-col items-start text-left"
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <Calendar className="h-5 w-5" />
@@ -553,7 +553,7 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
                 toast.success('Opportunity marked as priority!');
                 onClose();
               }}
-              className="bg-[#01544e] hover:bg-[#023d39]"
+              className="bg-[#013E37] hover:bg-[#025C52]"
             >
               <Award className="h-4 w-4 mr-2" />
               Mark as Priority

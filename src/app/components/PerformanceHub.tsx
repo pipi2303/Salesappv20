@@ -26,7 +26,7 @@ export function PerformanceHub() {
 
   const getProgressColor = (percent: number) => {
     if (percent >= 100) return 'from-green-500 to-emerald-500';
-    if (percent >= 80) return 'from-blue-500 to-cyan-500';
+    if (percent >= 80) return 'from-blue-500 to-[#013E37]';
     if (percent >= 60) return 'from-yellow-500 to-orange-500';
     return 'from-red-500 to-pink-500';
   };
@@ -45,7 +45,7 @@ export function PerformanceHub() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-[#013E37]">
             Performance Hub
           </h1>
           <p className="text-gray-600 mt-1">Real-time KPI Tracking & Incentive Calculator</p>
@@ -57,7 +57,7 @@ export function PerformanceHub() {
       </div>
 
       {/* Main Progress Gauge */}
-      <Card className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white">
+      <Card className="bg-gradient-to-br from-[#013E37] to-[#013E37] text-white">
         <CardContent className="py-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
             {/* Left: User Info */}
@@ -67,8 +67,8 @@ export function PerformanceHub() {
               </div>
               <div>
                 <h3 className="text-xl font-bold">{currentUserKPI.employee_name}</h3>
-                <p className="text-indigo-100 text-sm">{currentUserKPI.employee_email}</p>
-                <p className="text-xs text-indigo-200 mt-0.5">Periode: {currentUserKPI.periode_bulan}</p>
+                <p className="text-[#DFF0EC] text-sm">{currentUserKPI.employee_email}</p>
+                <p className="text-xs text-[#C3DDD9] mt-0.5">Periode: {currentUserKPI.periode_bulan}</p>
               </div>
             </div>
 
@@ -99,7 +99,7 @@ export function PerformanceHub() {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-3xl font-bold">{currentUserKPI.pencapaian_target_persen}%</span>
-                  <span className="text-xs text-indigo-200">Target Achieved</span>
+                  <span className="text-xs text-[#C3DDD9]">Target Achieved</span>
                 </div>
               </div>
             </div>
@@ -107,11 +107,11 @@ export function PerformanceHub() {
             {/* Right: Revenue Stats */}
             <div className="space-y-2">
               <div>
-                <p className="text-indigo-200 text-xs">Target Revenue (Q)</p>
+                <p className="text-[#C3DDD9] text-xs">Target Revenue (Q)</p>
                 <p className="text-xl font-bold">{formatCurrency(currentUserKPI.target_revenue_q)}</p>
               </div>
               <div>
-                <p className="text-indigo-200 text-xs">Actual Revenue</p>
+                <p className="text-[#C3DDD9] text-xs">Actual Revenue</p>
                 <p className="text-xl font-bold text-yellow-300">{formatCurrency(currentUserKPI.actual_revenue_q)}</p>
               </div>
               <div className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export function PerformanceHub() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-500 to-pink-600 text-white hover:shadow-xl transition-shadow">
+        <Card className="bg-gradient-to-br from-[#EEF7F5]0 to-pink-600 text-white hover:shadow-xl transition-shadow">
           <CardContent className="py-4">
             <div className="flex items-start justify-between mb-3">
               <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -152,9 +152,9 @@ export function PerformanceHub() {
               <Badge className="bg-white/20 text-white text-xs">Annual</Badge>
             </div>
             <div>
-              <p className="text-purple-100 text-xs mb-1">Bonus Tahunan Terkumpul</p>
+              <p className="text-[#DFF0EC] text-xs mb-1">Bonus Tahunan Terkumpul</p>
               <p className="text-2xl font-bold">{formatCurrency(currentUserKPI.accumulated_annual_bonus)}</p>
-              <p className="text-xs text-purple-100 mt-1.5">Cair di akhir tahun</p>
+              <p className="text-xs text-[#DFF0EC] mt-1.5">Cair di akhir tahun</p>
             </div>
           </CardContent>
         </Card>
@@ -183,28 +183,28 @@ export function PerformanceHub() {
         <TabsList className="w-full h-auto p-1 bg-gray-100/50 backdrop-blur-sm rounded-xl border border-gray-200 grid grid-cols-4">
           <TabsTrigger 
             value="activity" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Activity Metrics</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Metrik Aktivitas</span>
           </TabsTrigger>
           <TabsTrigger 
             value="results" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Output Results</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Hasil Pencapaian</span>
           </TabsTrigger>
           <TabsTrigger 
             value="products" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Product Push</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Penjualan Produk</span>
           </TabsTrigger>
           <TabsTrigger 
             value="quality" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-bold text-sm uppercase tracking-tight">Quality & Retention</span>
             <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">Kualitas & Retensi</span>
@@ -228,7 +228,7 @@ export function PerformanceHub() {
                 <p className="text-xs text-gray-600 mb-3">Total kunjungan via geo-tagging</p>
                 <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-blue-500 to-cyan-500"
+                    className="h-full bg-gradient-to-r from-blue-500 to-[#013E37]"
                     style={{ width: `${Math.min((currentUserKPI.total_kunjungan_faskes / 50) * 100, 100)}%` }}
                   ></div>
                 </div>
@@ -239,18 +239,18 @@ export function PerformanceHub() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-sm font-medium">
-                  <Presentation className="h-4 w-4 text-purple-600" />
+                  <Presentation className="h-4 w-4 text-[#013E37]" />
                   Sesi Demo
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-4">
-                <div className="text-3xl font-bold text-purple-600 mb-1">
+                <div className="text-3xl font-bold text-[#013E37] mb-1">
                   {currentUserKPI.total_sesi_demo}
                 </div>
                 <p className="text-xs text-gray-600 mb-3">Presentasi RME/LIS/BPJS</p>
                 <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
+                    className="h-full bg-gradient-to-r from-[#013E37] to-[#025C52]"
                     style={{ width: `${Math.min((currentUserKPI.total_sesi_demo / 40) * 100, 100)}%` }}
                   ></div>
                 </div>
@@ -303,14 +303,14 @@ export function PerformanceHub() {
                     </div>
                     <Badge className="bg-blue-600 text-xs">High Value</Badge>
                   </div>
-                  <div className="flex items-center justify-between p-2 bg-purple-50 rounded-lg">
+                  <div className="flex items-center justify-between p-2 bg-[#EEF7F5] rounded-lg">
                     <div className="flex items-center gap-2">
-                      <div className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                      <div className="h-8 w-8 rounded-full bg-[#013E37] flex items-center justify-center text-white font-bold text-sm">
                         {currentUserKPI.jumlah_closing_klinik}
                       </div>
                       <span className="font-semibold text-sm">Klinik</span>
                     </div>
-                    <Badge className="bg-purple-600 text-xs">Medium Value</Badge>
+                    <Badge className="bg-[#013E37] text-xs">Medium Value</Badge>
                   </div>
                   <div className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
                     <div className="flex items-center gap-2">
@@ -328,13 +328,13 @@ export function PerformanceHub() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-sm font-medium">
-                  <BarChart3 className="h-4 w-4 text-indigo-600" />
+                  <BarChart3 className="h-4 w-4 text-[#013E37]" />
                   Conversion Rate
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-4">
                 <div className="text-center mb-4">
-                  <div className="text-4xl font-bold text-indigo-600 mb-1">
+                  <div className="text-4xl font-bold text-[#013E37] mb-1">
                     {currentUserKPI.conversion_rate.toFixed(1)}%
                   </div>
                   <p className="text-xs text-gray-600">Demo → Closing Success Rate</p>
@@ -397,7 +397,7 @@ export function PerformanceHub() {
                 <p className="text-xs text-gray-600 mb-3">Laboratory Information System</p>
                 <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden mb-2">
                   <div 
-                    className="h-full bg-gradient-to-r from-blue-500 to-cyan-500"
+                    className="h-full bg-gradient-to-r from-blue-500 to-[#013E37]"
                     style={{ width: `${Math.min((currentUserKPI.unit_lis_sold / 10) * 100, 100)}%` }}
                   ></div>
                 </div>
@@ -411,22 +411,22 @@ export function PerformanceHub() {
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-sm font-medium">
-                  <FileSignature className="h-4 w-4 text-purple-600" />
+                  <FileSignature className="h-4 w-4 text-[#013E37]" />
                   E-Sign
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-4">
-                <div className="text-3xl font-bold text-purple-600 mb-2">
+                <div className="text-3xl font-bold text-[#013E37] mb-2">
                   {currentUserKPI.adopsi_esign_klien}
                 </div>
                 <p className="text-xs text-gray-600 mb-3">Digital Integrity Adoption</p>
                 <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden mb-2">
                   <div 
-                    className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
+                    className="h-full bg-gradient-to-r from-[#013E37] to-[#025C52]"
                     style={{ width: `${Math.min((currentUserKPI.adopsi_esign_klien / 20) * 100, 100)}%` }}
                   ></div>
                 </div>
-                <Badge className="bg-purple-100 text-purple-800 text-xs">
+                <Badge className="bg-[#DFF0EC] text-[#012D29] text-xs">
                   <Zap className="h-3 w-3 mr-1" />
                   Future Tech
                 </Badge>
@@ -511,7 +511,7 @@ export function PerformanceHub() {
                   <p className="text-sm text-gray-600 mb-4">Hari (Lead → Closing)</p>
                   <div className="h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
                     <div 
-                      className="h-full bg-gradient-to-r from-blue-500 to-cyan-500"
+                      className="h-full bg-gradient-to-r from-blue-500 to-[#013E37]"
                       style={{ width: `${Math.min((30 / currentUserKPI.average_closing_time) * 100, 100)}%` }}
                     ></div>
                   </div>

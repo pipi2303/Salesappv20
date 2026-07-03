@@ -88,7 +88,7 @@ export function ContractRenewalReminders({ contracts }: ContractEnhancementsProp
     critical: 'from-red-500 to-red-600',
     urgent: 'from-orange-500 to-orange-600',
     warning: 'from-yellow-500 to-yellow-600',
-    normal: 'from-blue-500 to-indigo-600'
+    normal: 'from-[#013E37] to-[#025C52]'
   };
 
   const urgencyLabels = {
@@ -114,7 +114,7 @@ export function ContractRenewalReminders({ contracts }: ContractEnhancementsProp
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="!max-w-[900px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <Bell className="h-6 w-6 text-white" />
@@ -253,7 +253,7 @@ export function ContractTemplates() {
       id: 'enterprise-saas',
       name: 'Enterprise SaaS Agreement',
       icon: Building2,
-      color: 'from-blue-500 to-indigo-600',
+      color: 'from-[#013E37] to-[#025C52]',
       duration: '1-3 years',
       description: 'Comprehensive SaaS subscription for large organizations',
       features: ['Volume licensing', 'Custom SLA', 'Dedicated support', 'Security addendum']
@@ -262,7 +262,7 @@ export function ContractTemplates() {
       id: 'partnership',
       name: 'Partnership Agreement',
       icon: Award,
-      color: 'from-purple-500 to-pink-600',
+      color: 'from-[#EEF7F5]0 to-pink-600',
       duration: '2-5 years',
       description: 'Strategic partnership and collaboration agreement',
       features: ['Revenue sharing', 'Joint ventures', 'IP rights', 'Exit clauses']
@@ -298,7 +298,7 @@ export function ContractTemplates() {
       id: 'msa',
       name: 'Master Service Agreement (MSA)',
       icon: FileText,
-      color: 'from-cyan-500 to-blue-600',
+      color: 'from-[#013E37] to-blue-600',
       duration: '3-5 years',
       description: 'Framework for ongoing services',
       features: ['Statement of Work', 'Payment terms', 'Liability limits', 'Termination rights']
@@ -310,7 +310,7 @@ export function ContractTemplates() {
       <Button
         onClick={() => setIsOpen(true)}
         variant="outline"
-        className="border-purple-500 text-purple-600 hover:bg-purple-50"
+        className="border-[#EEF7F5]0 text-[#013E37] hover:bg-[#EEF7F5]"
       >
         <Package className="h-4 w-4 mr-2" />
         Templates
@@ -318,7 +318,7 @@ export function ContractTemplates() {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="!max-w-[1100px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <Package className="h-6 w-6 text-white" />
@@ -339,7 +339,7 @@ export function ContractTemplates() {
                 return (
                   <Card 
                     key={template.id}
-                    className="hover:shadow-lg transition-all cursor-pointer border-2 border-transparent hover:border-purple-200"
+                    className="hover:shadow-lg transition-all cursor-pointer border-2 border-transparent hover:border-[#C3DDD9]"
                   >
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4 mb-4">
@@ -425,7 +425,7 @@ export function ContractRiskScoring({ contracts }: ContractEnhancementsProps) {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="!max-w-[900px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <Shield className="h-6 w-6 text-white" />

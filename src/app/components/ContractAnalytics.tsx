@@ -85,7 +85,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="!max-w-[1200px] w-[95vw] max-h-[90vh] overflow-hidden p-0 gap-0">
-          <DialogHeader className="bg-[#01544e] text-white px-6 py-5">
+          <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
                 <BarChart3 className="h-6 w-6 text-white" />
@@ -124,7 +124,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
               <TabsContent value="overview" className="space-y-6 mt-6">
                 {/* Key Metrics */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                  <Card className="bg-gradient-to-br from-[#013E37] to-[#025C52] text-white">
                     <CardContent className="p-5">
                       <div className="flex items-center justify-between mb-2">
                         <DollarSign className="h-8 w-8 text-blue-200" />
@@ -146,13 +146,13 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gradient-to-br from-purple-500 to-pink-600 text-white">
+                  <Card className="bg-gradient-to-br from-[#EEF7F5]0 to-pink-600 text-white">
                     <CardContent className="p-5">
                       <div className="flex items-center justify-between mb-2">
-                        <FileText className="h-8 w-8 text-purple-200" />
-                        <Hash className="h-5 w-5 text-purple-200" />
+                        <FileText className="h-8 w-8 text-[#C3DDD9]" />
+                        <Hash className="h-5 w-5 text-[#C3DDD9]" />
                       </div>
-                      <p className="text-purple-100 text-sm">Total Contracts</p>
+                      <p className="text-[#DFF0EC] text-sm">Total Contracts</p>
                       <p className="text-2xl font-bold mt-1">{contracts.length}</p>
                     </CardContent>
                   </Card>
@@ -173,7 +173,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <PieChart className="h-5 w-5 text-indigo-600" />
+                      <PieChart className="h-5 w-5 text-[#013E37]" />
                       Contract Status Breakdown
                     </CardTitle>
                   </CardHeader>
@@ -204,7 +204,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Building2 className="h-5 w-5 text-indigo-600" />
+                      <Building2 className="h-5 w-5 text-[#013E37]" />
                       Top 5 Clients by Value
                     </CardTitle>
                   </CardHeader>
@@ -215,7 +215,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                           <CardContent className="p-4">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
-                                <div className={`h-10 w-10 rounded-full bg-gradient-to-br ${idx === 0 ? 'from-yellow-500 to-orange-600' : 'from-indigo-500 to-purple-600'} flex items-center justify-center text-white font-bold`}>
+                                <div className={`h-10 w-10 rounded-full bg-gradient-to-br ${idx === 0 ? 'from-yellow-500 to-orange-600' : 'from-[#EEF7F5]0 to-[#013E37]'} flex items-center justify-center text-white font-bold`}>
                                   #{idx + 1}
                                 </div>
                                 <div>
@@ -248,7 +248,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                  <Card className="bg-gradient-to-br from-[#013E37] to-[#025C52] text-white">
                     <CardContent className="p-5">
                       <TrendingUp className="h-8 w-8 text-blue-200 mb-2" />
                       <p className="text-blue-100 text-sm">Forecasted Revenue (12m)</p>
@@ -256,10 +256,10 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gradient-to-br from-purple-500 to-pink-600 text-white">
+                  <Card className="bg-gradient-to-br from-[#EEF7F5]0 to-pink-600 text-white">
                     <CardContent className="p-5">
-                      <Target className="h-8 w-8 text-purple-200 mb-2" />
-                      <p className="text-purple-100 text-sm">Average Deal Size</p>
+                      <Target className="h-8 w-8 text-[#C3DDD9] mb-2" />
+                      <p className="text-[#DFF0EC] text-sm">Average Deal Size</p>
                       <p className="text-2xl font-bold mt-1">Rp {(avgContractValue / 1000000).toFixed(0)} Jt</p>
                     </CardContent>
                   </Card>
@@ -268,7 +268,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Package className="h-5 w-5 text-indigo-600" />
+                      <Package className="h-5 w-5 text-[#013E37]" />
                       Revenue by Product
                     </CardTitle>
                   </CardHeader>
@@ -280,7 +280,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                           <div key={item.product} className="space-y-2">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
-                                <div className={`h-8 w-8 rounded-lg bg-gradient-to-br ${idx === 0 ? 'from-green-500 to-emerald-600' : 'from-blue-500 to-indigo-600'} flex items-center justify-center text-white font-bold text-sm`}>
+                                <div className={`h-8 w-8 rounded-lg bg-gradient-to-br ${idx === 0 ? 'from-green-500 to-emerald-600' : 'from-[#013E37] to-[#025C52]'} flex items-center justify-center text-white font-bold text-sm`}>
                                   {idx + 1}
                                 </div>
                                 <span className="font-medium text-gray-900">{item.product}</span>
@@ -312,7 +312,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                   <Card>
                     <CardContent className="p-5">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center">
                           <Clock className="h-5 w-5 text-white" />
                         </div>
                         <div>
@@ -340,7 +340,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                   <Card>
                     <CardContent className="p-5">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#EEF7F5]0 to-pink-600 flex items-center justify-center">
                           <Users className="h-5 w-5 text-white" />
                         </div>
                         <div>
@@ -366,7 +366,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                   </Card>
                 </div>
 
-                <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
+                <Card className="bg-gradient-to-r bg-[#EEF7F5] border-[#C3DDD9]">
                   <CardContent className="p-6">
                     <h3 className="font-semibold text-lg mb-4">Performance Insights</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -391,7 +391,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
 
               {/* FORECAST TAB */}
               <TabsContent value="forecast" className="space-y-6 mt-6">
-                <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                <Card className="bg-gradient-to-br from-[#013E37] to-[#025C52] text-white">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div>
@@ -407,7 +407,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Card>
                     <CardContent className="p-5">
-                      <Calendar className="h-8 w-8 text-indigo-600 mb-3" />
+                      <Calendar className="h-8 w-8 text-[#013E37] mb-3" />
                       <p className="text-sm text-gray-600">Renewals Q1</p>
                       <p className="text-xl font-bold mt-1">
                         {contracts.filter(c => {
@@ -420,7 +420,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
 
                   <Card>
                     <CardContent className="p-5">
-                      <Calendar className="h-8 w-8 text-purple-600 mb-3" />
+                      <Calendar className="h-8 w-8 text-[#013E37] mb-3" />
                       <p className="text-sm text-gray-600">Renewals Q2-Q3</p>
                       <p className="text-xl font-bold mt-1">
                         {contracts.filter(c => {

@@ -213,7 +213,7 @@ function AppContent() {
       {/* Sidebar */}
       <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-gray-200 transition-all duration-300 flex flex-col shadow-lg`}>
         {/* Logo */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 bg-[#01544e]">
+        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 bg-[#013E37]">
           {isSidebarOpen && (
             <h1 className="text-xl font-bold text-white">Sales Monitoring</h1>
           )}
@@ -248,8 +248,8 @@ function AppContent() {
                   }}
                   className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${
                     activeMenu === item.id
-                      ? 'bg-[#01544e] text-white shadow-md'
-                      : 'text-gray-700 hover:bg-[#e6f2f1] hover:text-[#01544e]'
+                      ? 'bg-[#013E37] text-white shadow-md'
+                      : 'text-gray-700 hover:bg-[#EEF7F5] hover:text-[#013E37]'
                   }`}
                 >
                   <item.icon className="h-5 w-5 flex-shrink-0" />
@@ -272,8 +272,8 @@ function AppContent() {
                         onClick={() => setActiveMenu(subItem.id)}
                         className={`w-full flex items-center gap-3 pl-11 pr-3 py-2.5 rounded-lg transition-all ${
                           activeMenu === subItem.id
-                            ? 'bg-[#01544e] text-white shadow-md'
-                            : 'text-gray-600 hover:bg-[#e6f2f1] hover:text-[#01544e]'
+                            ? 'bg-[#013E37] text-white shadow-md'
+                            : 'text-gray-600 hover:bg-[#EEF7F5] hover:text-[#013E37]'
                         }`}
                       >
                         <span className="text-sm truncate">{subItem.name}</span>
@@ -289,7 +289,7 @@ function AppContent() {
         {/* User Profile */}
         <div className="p-4 border-t border-gray-200 bg-gray-50">
           <div className={`flex items-center gap-3 ${!isSidebarOpen && 'justify-center'}`}>
-            <div className="h-10 w-10 rounded-full bg-[#01544e] flex items-center justify-center text-white font-semibold flex-shrink-0">
+            <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center text-white font-semibold flex-shrink-0">
               {userInitials}
             </div>
             {isSidebarOpen && (
@@ -318,7 +318,7 @@ function AppContent() {
         {/* Header */}
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm">
           <div className="flex items-center gap-4">
-            <h2 className="text-2xl font-bold text-[#01544e]">
+            <h2 className="text-2xl font-bold text-[#013E37]">
               {activeMenuName}
             </h2>
           </div>
@@ -371,13 +371,13 @@ function AppContent() {
               {showUserMenu && (
                 <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50">
                   <div className="flex items-center gap-3 pb-3 border-b border-gray-200">
-                    <div className="h-12 w-12 rounded-full bg-[#01544e] flex items-center justify-center text-white font-semibold">
+                    <div className="h-12 w-12 rounded-full bg-[#013E37] flex items-center justify-center text-white font-semibold">
                       {userInitials}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-900 truncate">{user?.name}</p>
                       <p className="text-xs text-gray-600 truncate">{user?.email}</p>
-                      <p className="text-xs text-[#01544e] font-medium mt-1">{user?.role}</p>
+                      <p className="text-xs text-[#013E37] font-medium mt-1">{user?.role}</p>
                     </div>
                   </div>
                   <Button

@@ -281,7 +281,7 @@ export function RiskDetailDialog({ open, onClose, risk }: RiskDetailDialogProps)
         </DialogDescription>
         
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-gradient-to-r from-[#01544e] to-[#023d39] text-white p-6 rounded-t-lg">
+        <div className="sticky top-0 z-10 bg-gradient-to-r from-[#013E37] to-[#025C52] text-white p-6 rounded-t-lg">
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
@@ -437,7 +437,7 @@ export function RiskDetailDialog({ open, onClose, risk }: RiskDetailDialogProps)
           {/* Metrics (for Target risk) */}
           {detailedData.metrics && (
             <Card>
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 pb-3">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-[#EEF7F5] pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Target className="h-5 w-5 text-blue-600" />
                   Performance Metrics
@@ -517,17 +517,17 @@ export function RiskDetailDialog({ open, onClose, risk }: RiskDetailDialogProps)
           )}
 
           {/* Root Causes */}
-          <Card className="border-2 border-purple-200 bg-purple-50">
+          <Card className="border-2 border-[#C3DDD9] bg-[#EEF7F5]">
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base text-purple-900">
-                <TrendingDown className="h-5 w-5 text-purple-600" />
+              <CardTitle className="flex items-center gap-2 text-base text-[#012D29]">
+                <TrendingDown className="h-5 w-5 text-[#013E37]" />
                 Root Causes Analysis
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               {detailedData.rootCauses.map((cause, idx) => (
                 <div key={idx} className="flex items-start gap-3 bg-white p-3 rounded-lg">
-                  <div className="h-6 w-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+                  <div className="h-6 w-6 rounded-full bg-[#013E37] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
                     {idx + 1}
                   </div>
                   <span className="text-sm text-gray-700">{cause}</span>
@@ -537,16 +537,16 @@ export function RiskDetailDialog({ open, onClose, risk }: RiskDetailDialogProps)
           </Card>
 
           {/* AI Recommendations */}
-          <Card className="border-2 border-[#01544e] bg-[#e6f2f1]">
+          <Card className="border-2 border-[#013E37] bg-[#EEF7F5]">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
-                <Zap className="h-5 w-5 text-[#01544e]" />
+                <Zap className="h-5 w-5 text-[#013E37]" />
                 AI-Recommended Actions
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {detailedData.recommendations.map((rec, idx) => (
-                <div key={idx} className="bg-white p-4 rounded-lg border-l-4 border-[#01544e]">
+                <div key={idx} className="bg-white p-4 rounded-lg border-l-4 border-[#013E37]">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
@@ -569,7 +569,7 @@ export function RiskDetailDialog({ open, onClose, risk }: RiskDetailDialogProps)
                     <Button 
                       size="sm"
                       onClick={() => toast.success(`Action assigned to ${rec.owner}`)}
-                      className="ml-4 bg-[#01544e] hover:bg-[#023d39]"
+                      className="ml-4 bg-[#013E37] hover:bg-[#025C52]"
                     >
                       Assign
                       <ArrowRight className="h-4 w-4 ml-1" />
@@ -622,7 +622,7 @@ export function RiskDetailDialog({ open, onClose, risk }: RiskDetailDialogProps)
                 toast.success('Action plan created and assigned to team!');
                 onClose();
               }}
-              className="bg-[#01544e] hover:bg-[#023d39]"
+              className="bg-[#013E37] hover:bg-[#025C52]"
             >
               <CheckCircle className="h-4 w-4 mr-2" />
               Create Action Plan

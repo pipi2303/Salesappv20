@@ -227,7 +227,7 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
           AI-powered email generator with {EMAIL_TEMPLATES.length} professional templates for sales outreach, follow-ups, proposals, and re-engagement campaigns. Generate personalized emails to {recipientName || 'contacts'} at {recipientOrg || 'organizations'}.
         </DialogDescription>
         
-        <DialogHeader className="bg-gradient-to-r from-[#01544e] to-[#023d39] text-white p-6 -m-6 mb-4 rounded-t-lg">
+        <DialogHeader className="bg-gradient-to-r from-[#013E37] to-[#025C52] text-white p-6 -m-6 mb-4 rounded-t-lg">
           <DialogTitle className="flex items-center gap-3 text-xl">
             <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
               <Sparkles className="h-5 w-5" />
@@ -267,7 +267,7 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
               value={customContext}
               onChange={(e) => setCustomContext(e.target.value)}
               placeholder="e.g., Discussed BPJS integration, interested in 50-bed package, budget confirmed..."
-              className="w-full h-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#01544e] focus:border-transparent resize-none"
+              className="w-full h-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#013E37] focus:border-transparent resize-none"
             />
           </div>
 
@@ -282,7 +282,7 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
                   key={t}
                   onClick={() => setTone(t as any)}
                   variant={tone === t ? 'default' : 'outline'}
-                  className={tone === t ? 'bg-[#01544e] hover:bg-[#023d39]' : ''}
+                  className={tone === t ? 'bg-[#013E37] hover:bg-[#025C52]' : ''}
                 >
                   {t.charAt(0).toUpperCase() + t.slice(1)}
                 </Button>
@@ -299,14 +299,14 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
                   key={template.id}
                   className={`cursor-pointer hover:shadow-lg transition-all border-2 ${
                     selectedTemplate?.id === template.id
-                      ? 'border-[#01544e] bg-[#e6f2f1]'
-                      : 'border-gray-200 hover:border-[#01544e]'
+                      ? 'border-[#013E37] bg-[#EEF7F5]'
+                      : 'border-gray-200 hover:border-[#013E37]'
                   }`}
                   onClick={() => generateEmail(template)}
                 >
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-2">
-                      <Mail className="h-5 w-5 text-[#01544e]" />
+                      <Mail className="h-5 w-5 text-[#013E37]" />
                       <Badge variant="outline" className="text-xs">
                         {template.tone}
                       </Badge>
@@ -321,8 +321,8 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
 
           {/* Generated Email Preview */}
           {generatedEmail && (
-            <Card className="border-2 border-[#01544e]">
-              <CardHeader className="bg-gradient-to-r from-[#01544e] to-[#023d39] text-white pb-3">
+            <Card className="border-2 border-[#013E37]">
+              <CardHeader className="bg-gradient-to-r from-[#013E37] to-[#025C52] text-white pb-3">
                 <CardTitle className="flex items-center justify-between text-base">
                   <div className="flex items-center gap-2">
                     <Wand2 className="h-4 w-4" />
@@ -357,7 +357,7 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
                     type="text"
                     value={emailSubject}
                     onChange={(e) => setEmailSubject(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#01544e] focus:border-transparent font-semibold"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#013E37] focus:border-transparent font-semibold"
                   />
                 </div>
 
@@ -367,7 +367,7 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
                   <textarea
                     value={generatedEmail}
                     onChange={(e) => setGeneratedEmail(e.target.value)}
-                    className="w-full h-96 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#01544e] focus:border-transparent font-mono text-sm resize-none"
+                    className="w-full h-96 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#013E37] focus:border-transparent font-mono text-sm resize-none"
                   />
                 </div>
 
@@ -403,14 +403,14 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
                   <Button
                     onClick={copyToClipboard}
                     variant="outline"
-                    className="border-[#01544e] text-[#01544e] hover:bg-[#e6f2f1]"
+                    className="border-[#013E37] text-[#013E37] hover:bg-[#EEF7F5]"
                   >
                     <Copy className="h-4 w-4 mr-2" />
                     Copy to Clipboard
                   </Button>
                   <Button
                     onClick={handleSend}
-                    className="bg-[#01544e] hover:bg-[#023d39]"
+                    className="bg-[#013E37] hover:bg-[#025C52]"
                   >
                     <Send className="h-4 w-4 mr-2" />
                     Send Email
@@ -437,10 +437,10 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
 
           {/* Loading State */}
           {generating && (
-            <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+            <Card className="bg-gradient-to-r from-blue-50 to-[#EEF7F5] border-blue-200">
               <CardContent className="p-8 text-center">
                 <div className="animate-pulse">
-                  <Sparkles className="h-12 w-12 text-[#01544e] mx-auto mb-4 animate-bounce" />
+                  <Sparkles className="h-12 w-12 text-[#013E37] mx-auto mb-4 animate-bounce" />
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     🤖 AI is crafting your email...
                   </h3>

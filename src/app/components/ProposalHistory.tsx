@@ -184,8 +184,8 @@ export function ProposalHistory() {
                 <p className="text-sm text-gray-600">Total Proposal</p>
                 <p className="text-3xl font-bold text-gray-900 mt-1">{stats.total}</p>
               </div>
-              <div className="h-12 w-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-                <FileText className="h-6 w-6 text-indigo-600" />
+              <div className="h-12 w-12 bg-[#DFF0EC] rounded-lg flex items-center justify-center">
+                <FileText className="h-6 w-6 text-[#013E37]" />
               </div>
             </div>
           </CardContent>
@@ -224,12 +224,12 @@ export function ProposalHistory() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Nilai</p>
-                <p className="text-2xl font-bold text-indigo-600 mt-1">
+                <p className="text-2xl font-bold text-[#013E37] mt-1">
                   Rp {(stats.totalValue / 1000000000).toFixed(1)}M
                 </p>
               </div>
-              <div className="h-12 w-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-indigo-600" />
+              <div className="h-12 w-12 bg-[#DFF0EC] rounded-lg flex items-center justify-center">
+                <DollarSign className="h-6 w-6 text-[#013E37]" />
               </div>
             </div>
           </CardContent>
@@ -291,7 +291,7 @@ export function ProposalHistory() {
         <CardContent>
           {loading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37] mx-auto"></div>
               <p className="text-gray-600 mt-4">Memuat data...</p>
             </div>
           ) : filteredProposals.length === 0 ? (
@@ -336,7 +336,7 @@ export function ProposalHistory() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm text-gray-600">Total</p>
-                      <p className="text-2xl font-bold text-indigo-600">
+                      <p className="text-2xl font-bold text-[#013E37]">
                         Rp {(proposal.total / 1000000000).toFixed(2)}M
                       </p>
                       <p className="text-xs text-gray-500 mt-1">

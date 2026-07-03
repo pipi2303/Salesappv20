@@ -98,7 +98,7 @@ export function QuotationManagement() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-[#01544e] tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-black text-[#013E37] tracking-tight flex items-center gap-3">
             <FileText className="h-8 w-8" />
             Quotation Management
           </h1>
@@ -109,7 +109,7 @@ export function QuotationManagement() {
             <Download className="mr-2 h-4 w-4" /> Export Report
           </Button>
           <Button 
-            className="bg-[#01544e] hover:bg-[#02665c] text-white font-bold h-11 px-8 shadow-lg shadow-emerald-900/10"
+            className="bg-[#013E37] hover:bg-[#02665c] text-white font-bold h-11 px-8 shadow-lg shadow-emerald-900/10"
             onClick={() => setShowNewQuoteDialog(true)}
           >
             <Plus className="mr-2 h-5 w-5" /> New Quotation
@@ -122,28 +122,28 @@ export function QuotationManagement() {
         <TabsList className="w-full h-auto p-1.5 bg-gray-100/80 backdrop-blur-md rounded-2xl border border-gray-200 grid grid-cols-4 gap-1.5">
           <TabsTrigger 
             value="list" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-black text-xs uppercase tracking-tight">Quotations</span>
-            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest group-data-[state=active]:text-[#01544e]/70">Daftar Penawaran</span>
+            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest group-data-[state=active]:text-[#013E37]/70">Daftar Penawaran</span>
           </TabsTrigger>
           <TabsTrigger 
             value="analytics" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-black text-xs uppercase tracking-tight">Analytics</span>
             <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Metrik Performa</span>
           </TabsTrigger>
           <TabsTrigger 
             value="templates" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-black text-xs uppercase tracking-tight">Templates</span>
             <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Master Dokumen</span>
           </TabsTrigger>
           <TabsTrigger 
             value="settings" 
-            className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
+            className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-xl py-3 flex flex-col gap-0.5 transition-all duration-300"
           >
             <span className="font-black text-xs uppercase tracking-tight">Settings</span>
             <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Konfigurasi</span>
@@ -157,7 +157,7 @@ export function QuotationManagement() {
               { label: 'Total Quotations', value: '156', icon: FileText, color: 'text-blue-600', bg: 'bg-blue-50' },
               { label: 'Approved Value', value: 'Rp 2.4B', icon: TrendingUp, color: 'text-emerald-600', bg: 'bg-emerald-50' },
               { label: 'Pending Approval', value: '24', icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
-              { label: 'Conversion Rate', value: '68%', icon: Percent, color: 'text-purple-600', bg: 'bg-purple-50' },
+              { label: 'Conversion Rate', value: '68%', icon: Percent, color: 'text-[#013E37]', bg: 'bg-[#EEF7F5]' },
             ].map((stat, i) => (
               <Card key={i} className="border-none shadow-sm bg-white overflow-hidden group hover:shadow-md transition-all">
                 <CardContent className="p-6">
@@ -182,7 +182,7 @@ export function QuotationManagement() {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input 
                     placeholder="Search by quote number, client or company..." 
-                    className="pl-10 h-11 bg-gray-50/50 border-gray-200 focus:ring-[#01544e]"
+                    className="pl-10 h-11 bg-gray-50/50 border-gray-200 focus:ring-[#013E37]"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -212,13 +212,13 @@ export function QuotationManagement() {
                     <tr key={quote.id} className="group hover:bg-gray-50/80 transition-colors">
                       <td className="px-6 py-5">
                         <div className="flex flex-col">
-                          <span className="text-sm font-black text-gray-900 group-hover:text-[#01544e] transition-colors">{quote.quoteNumber}</span>
+                          <span className="text-sm font-black text-gray-900 group-hover:text-[#013E37] transition-colors">{quote.quoteNumber}</span>
                           <span className="text-[10px] font-bold text-gray-400 mt-1 uppercase">CREATED: {formatDate(quote.createdDate)}</span>
                         </div>
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-[#01544e]/10 flex items-center justify-center text-[#01544e] font-black text-xs">
+                          <div className="h-10 w-10 rounded-full bg-[#013E37]/10 flex items-center justify-center text-[#013E37] font-black text-xs">
                             {quote.clientName.charAt(0)}
                           </div>
                           <div className="flex flex-col">
@@ -242,7 +242,7 @@ export function QuotationManagement() {
                       </td>
                       <td className="px-6 py-5 text-right">
                         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button variant="ghost" size="icon" className="h-9 w-9 text-[#01544e] hover:bg-[#01544e]/10" onClick={() => {
+                          <Button variant="ghost" size="icon" className="h-9 w-9 text-[#013E37] hover:bg-[#013E37]/10" onClick={() => {
                             setSelectedQuote(quote);
                             setShowDetailDialog(true);
                           }}>
@@ -251,7 +251,7 @@ export function QuotationManagement() {
                           <Button variant="ghost" size="icon" className="h-9 w-9 text-blue-600 hover:bg-blue-50">
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-9 w-9 text-purple-600 hover:bg-purple-50">
+                          <Button variant="ghost" size="icon" className="h-9 w-9 text-[#013E37] hover:bg-[#EEF7F5]">
                             <Send className="h-4 w-4" />
                           </Button>
                         </div>
@@ -268,7 +268,7 @@ export function QuotationManagement() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="border-none shadow-sm overflow-hidden">
               <CardHeader className="bg-white border-b border-gray-100">
-                <CardTitle className="text-lg font-black text-[#01544e] uppercase tracking-tight">Revenue Trend</CardTitle>
+                <CardTitle className="text-lg font-black text-[#013E37] uppercase tracking-tight">Revenue Trend</CardTitle>
                 <CardDescription>Performa nilai penawaran dalam 6 bulan terakhir</CardDescription>
               </CardHeader>
               <CardContent className="p-6">
@@ -277,8 +277,8 @@ export function QuotationManagement() {
                     <AreaChart data={ANALYTICS_DATA}>
                       <defs>
                         <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#01544e" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="#01544e" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#013E37" stopOpacity={0.1}/>
+                          <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -288,7 +288,7 @@ export function QuotationManagement() {
                         contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}} 
                         formatter={(value: any) => [formatCurrency(value), 'Value']}
                       />
-                      <Area type="monotone" dataKey="value" stroke="#01544e" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
+                      <Area type="monotone" dataKey="value" stroke="#013E37" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
@@ -297,7 +297,7 @@ export function QuotationManagement() {
 
             <Card className="border-none shadow-sm overflow-hidden">
               <CardHeader className="bg-white border-b border-gray-100">
-                <CardTitle className="text-lg font-black text-[#01544e] uppercase tracking-tight">Status Distribution</CardTitle>
+                <CardTitle className="text-lg font-black text-[#013E37] uppercase tracking-tight">Status Distribution</CardTitle>
                 <CardDescription>Proporsi status penawaran saat ini</CardDescription>
               </CardHeader>
               <CardContent className="p-6 flex items-center justify-center">
@@ -337,16 +337,16 @@ export function QuotationManagement() {
                { title: 'Healthcare Package', desc: 'Khusus untuk instalasi alat kesehatan RS.', icon: Package },
                { title: 'Enterprise Suite', desc: 'Penawaran kompleks dengan multi-year support.', icon: Layout },
              ].map((tpl, i) => (
-               <Card key={i} className="hover:border-[#01544e] transition-colors cursor-pointer group">
+               <Card key={i} className="hover:border-[#013E37] transition-colors cursor-pointer group">
                  <CardHeader>
-                   <div className="h-12 w-12 rounded-xl bg-gray-100 flex items-center justify-center mb-4 group-hover:bg-[#01544e] group-hover:text-white transition-colors">
+                   <div className="h-12 w-12 rounded-xl bg-gray-100 flex items-center justify-center mb-4 group-hover:bg-[#013E37] group-hover:text-white transition-colors">
                      <tpl.icon className="h-6 w-6" />
                    </div>
                    <CardTitle className="text-lg font-black uppercase tracking-tight">{tpl.title}</CardTitle>
                    <CardDescription className="font-medium text-gray-500">{tpl.desc}</CardDescription>
                  </CardHeader>
                  <CardContent>
-                    <Button variant="outline" className="w-full font-bold group-hover:bg-[#01544e] group-hover:text-white transition-colors">Use Template</Button>
+                    <Button variant="outline" className="w-full font-bold group-hover:bg-[#013E37] group-hover:text-white transition-colors">Use Template</Button>
                  </CardContent>
                </Card>
              ))}
@@ -356,7 +356,7 @@ export function QuotationManagement() {
         <TabsContent value="settings" className="space-y-6">
           <Card className="max-w-2xl border-none shadow-sm">
             <CardHeader>
-              <CardTitle className="text-xl font-black uppercase tracking-tight flex items-center gap-3 text-[#01544e]">
+              <CardTitle className="text-xl font-black uppercase tracking-tight flex items-center gap-3 text-[#013E37]">
                 <Settings className="h-6 w-6" /> General Configuration
               </CardTitle>
             </CardHeader>
@@ -378,7 +378,7 @@ export function QuotationManagement() {
                  <Input type="number" defaultValue="11" className="h-12" />
                </div>
                <div className="pt-4">
-                 <Button className="bg-[#01544e] text-white font-bold h-12 px-8">Save Configuration</Button>
+                 <Button className="bg-[#013E37] text-white font-bold h-12 px-8">Save Configuration</Button>
                </div>
             </CardContent>
           </Card>
@@ -393,7 +393,7 @@ export function QuotationManagement() {
             <DialogDescription>Form to generate a new professional sales quotation</DialogDescription>
           </VisuallyHidden>
 
-          <div className="bg-[#01544e] p-8 text-white relative">
+          <div className="bg-[#013E37] p-8 text-white relative">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl" />
             <div className="relative z-10 flex items-center justify-between">
               <div>
@@ -448,7 +448,7 @@ export function QuotationManagement() {
 
           <div className="p-6 bg-gray-50 border-t flex justify-end gap-3">
             <Button variant="outline" onClick={() => setShowNewQuoteDialog(false)} className="h-12 px-8 font-bold">Cancel</Button>
-            <Button className="bg-[#01544e] hover:bg-[#02665c] text-white h-12 px-10 font-bold shadow-lg shadow-emerald-900/20">
+            <Button className="bg-[#013E37] hover:bg-[#02665c] text-white h-12 px-10 font-bold shadow-lg shadow-emerald-900/20">
               Generate Quotation
             </Button>
           </div>
@@ -474,7 +474,7 @@ export function QuotationManagement() {
                           Company Logo Here
                         </div>
                         <div className="text-right">
-                          <h3 className="text-2xl font-black text-[#01544e] uppercase">Quotation</h3>
+                          <h3 className="text-2xl font-black text-[#013E37] uppercase">Quotation</h3>
                           <p className="text-xs font-bold text-gray-400 mt-1">{selectedQuote.quoteNumber}</p>
                         </div>
                       </div>
@@ -515,7 +515,7 @@ export function QuotationManagement() {
                         </div>
                         <div className="flex justify-between w-48 pt-4 border-t-2 border-gray-900">
                           <span className="text-xs font-black text-gray-900 uppercase">Grand Total</span>
-                          <span className="text-lg font-black text-[#01544e]">{formatCurrency(selectedQuote.totalAmount)}</span>
+                          <span className="text-lg font-black text-[#013E37]">{formatCurrency(selectedQuote.totalAmount)}</span>
                         </div>
                       </div>
                    </div>
@@ -532,7 +532,7 @@ export function QuotationManagement() {
 
                    <div className="space-y-4">
                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Main Actions</Label>
-                     <Button className="w-full bg-[#01544e] text-white font-bold h-12 gap-2 shadow-lg shadow-emerald-900/10">
+                     <Button className="w-full bg-[#013E37] text-white font-bold h-12 gap-2 shadow-lg shadow-emerald-900/10">
                        <Send className="h-4 w-4" /> Send to Client
                      </Button>
                      <Button variant="outline" className="w-full font-bold h-12 gap-2 border-gray-200">
@@ -545,7 +545,7 @@ export function QuotationManagement() {
                      <Button variant="ghost" className="w-full justify-start font-bold text-blue-600 hover:bg-blue-50 h-11 gap-3">
                        <Edit className="h-4 w-4" /> Edit Content
                      </Button>
-                     <Button variant="ghost" className="w-full justify-start font-bold text-purple-600 hover:bg-purple-50 h-11 gap-3">
+                     <Button variant="ghost" className="w-full justify-start font-bold text-[#013E37] hover:bg-[#EEF7F5] h-11 gap-3">
                        <Copy className="h-4 w-4" /> Duplicate
                      </Button>
                      <Button variant="ghost" className="w-full justify-start font-bold text-rose-600 hover:bg-rose-50 h-11 gap-3">

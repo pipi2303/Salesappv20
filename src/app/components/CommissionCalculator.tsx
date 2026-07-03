@@ -147,7 +147,7 @@ export function CommissionCalculator() {
       {/* Premium Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2 border-b border-gray-100">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight uppercase bg-gradient-to-r from-[#01544e] via-[#02847c] to-[#01544e] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-extrabold tracking-tight uppercase bg-gradient-to-r from-[#013E37] via-[#02847c] to-[#013E37] bg-clip-text text-transparent">
             Commission Control
           </h1>
           <p className="text-sm font-medium text-gray-500 mt-2 uppercase tracking-[0.2em] flex items-center gap-2">
@@ -159,7 +159,7 @@ export function CommissionCalculator() {
             <Download className="h-4 w-4" /> Export Payroll
           </Button>
           <Button 
-            className="bg-[#01544e] hover:bg-[#023d39] text-white shadow-lg shadow-emerald-900/20 gap-2"
+            className="bg-[#013E37] hover:bg-[#025C52] text-white shadow-lg shadow-emerald-900/20 gap-2"
             onClick={handleApproveAll}
           >
             <ArrowUpRight className="h-4 w-4" /> Approve All Pending
@@ -170,13 +170,13 @@ export function CommissionCalculator() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Total Payout', value: formatCurrency(stats.totalCommission), icon: Wallet, color: 'text-[#01544e]', bg: 'bg-emerald-50' },
+          { label: 'Total Payout', value: formatCurrency(stats.totalCommission), icon: Wallet, color: 'text-[#013E37]', bg: 'bg-emerald-50' },
           { label: 'Pending Approval', value: formatCurrency(stats.pending), icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
           { label: 'Approved Ready', value: formatCurrency(stats.approved), icon: CheckCircle, color: 'text-blue-600', bg: 'bg-blue-50' },
-          { label: 'Avg Achievement', value: `${stats.avgRate.toFixed(1)}%`, icon: TrendingUp, color: 'text-purple-600', bg: 'bg-purple-50' },
+          { label: 'Avg Achievement', value: `${stats.avgRate.toFixed(1)}%`, icon: TrendingUp, color: 'text-[#013E37]', bg: 'bg-[#EEF7F5]' },
         ].map((stat, i) => (
           <Card key={i} className="border-none shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group">
-            <div className={`h-1 w-full ${stat.bg.replace('bg-', 'bg-')}`} style={{backgroundColor: i === 0 ? '#01544e' : undefined}}></div>
+            <div className={`h-1 w-full ${stat.bg.replace('bg-', 'bg-')}`} style={{backgroundColor: i === 0 ? '#013E37' : undefined}}></div>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -205,7 +205,7 @@ export function CommissionCalculator() {
             <TabsTrigger 
               key={tab.id}
               value={tab.id} 
-              className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
+              className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-2.5 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[72px]"
             >
               <div className="flex flex-col items-center justify-center h-full">
                 <div className="font-bold text-[10px] sm:text-[11px] uppercase tracking-tight leading-[1.1] mb-1">
@@ -226,7 +226,7 @@ export function CommissionCalculator() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
                 placeholder="Cari tenaga sales..." 
-                className="pl-10 h-11 border-gray-200 focus:ring-[#01544e]" 
+                className="pl-10 h-11 border-gray-200 focus:ring-[#013E37]" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -261,7 +261,7 @@ export function CommissionCalculator() {
                     <tr key={record.id} className="hover:bg-gray-50/50 transition-colors group cursor-pointer" onClick={() => { setSelectedRecord(record); setShowDetailDialog(true); }}>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#01544e] to-[#02847c] flex items-center justify-center text-white font-bold text-sm">
+                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#013E37] to-[#02847c] flex items-center justify-center text-white font-bold text-sm">
                             {record.salesPerson.charAt(0)}
                           </div>
                           <div>
@@ -300,7 +300,7 @@ export function CommissionCalculator() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             <Card className="border-none shadow-sm">
               <CardHeader>
-                <CardTitle className="text-xl text-[#01544e]">Incentive Simulator</CardTitle>
+                <CardTitle className="text-xl text-[#013E37]">Incentive Simulator</CardTitle>
                 <CardDescription>Simulasikan estimasi komisi berdasarkan total penjualan pribadi</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6 p-6 pt-2">
@@ -314,11 +314,11 @@ export function CommissionCalculator() {
                         type="number" 
                         value={simAmount} 
                         onChange={(e) => setSimAmount(e.target.value)}
-                        className="pl-10 h-14 text-xl font-bold border-gray-200 focus:ring-[#01544e]" 
+                        className="pl-10 h-14 text-xl font-bold border-gray-200 focus:ring-[#013E37]" 
                       />
                     </div>
                   </div>
-                  <Button className="w-full h-12 bg-[#01544e] hover:bg-[#023d39] text-white gap-2 text-lg font-bold" onClick={calculateSim}>
+                  <Button className="w-full h-12 bg-[#013E37] hover:bg-[#025C52] text-white gap-2 text-lg font-bold" onClick={calculateSim}>
                     <Calculator className="h-5 w-5" /> Hitung Estimasi
                   </Button>
                 </div>
@@ -327,11 +327,11 @@ export function CommissionCalculator() {
                   <div className="mt-8 p-6 bg-emerald-50 rounded-2xl border border-emerald-100 space-y-4 animate-in slide-in-from-bottom-4">
                     <div className="flex justify-between items-center border-b border-emerald-100 pb-4">
                       <span className="text-sm font-semibold text-emerald-800">Tier Terapan</span>
-                      <Badge className="bg-[#01544e] text-white text-lg px-3 py-1">{simResults.tier}% Rate</Badge>
+                      <Badge className="bg-[#013E37] text-white text-lg px-3 py-1">{simResults.tier}% Rate</Badge>
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Estimasi Komisi Dasar</p>
-                      <p className="text-4xl font-black text-[#01544e]">{formatCurrency(simResults.base)}</p>
+                      <p className="text-4xl font-black text-[#013E37]">{formatCurrency(simResults.base)}</p>
                     </div>
                     <p className="text-[11px] text-emerald-700/70 italic">
                       *Estimasi ini belum termasuk bonus performa, pajak, dan insentif khusus lainnya.
@@ -355,8 +355,8 @@ export function CommissionCalculator() {
                     ]}>
                       <defs>
                         <linearGradient id="colorComm" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#01544e" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#01544e" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#013E37" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f1f1" />
@@ -367,7 +367,7 @@ export function CommissionCalculator() {
                         labelFormatter={(label) => `Sales: ${formatCurrency(label)}`}
                         contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                       />
-                      <Area type="monotone" dataKey="comm" stroke="#01544e" strokeWidth={3} fillOpacity={1} fill="url(#colorComm)" />
+                      <Area type="monotone" dataKey="comm" stroke="#013E37" strokeWidth={3} fillOpacity={1} fill="url(#colorComm)" />
                     </AreaChart>
                   </ResponsiveContainer>
                   <div className="text-center mt-4">
@@ -383,13 +383,13 @@ export function CommissionCalculator() {
         <TabsContent value="tiers" className="outline-none">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {tiers.map((tier, idx) => (
-              <Card key={tier.id} className="border-none shadow-sm hover:ring-2 hover:ring-[#01544e] transition-all group relative overflow-hidden">
+              <Card key={tier.id} className="border-none shadow-sm hover:ring-2 hover:ring-[#013E37] transition-all group relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                   <Percent className="h-16 w-16" />
                 </div>
                 <CardContent className="p-8">
                   <div className="h-12 w-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-6">
-                    <span className="text-xl font-black text-[#01544e]">{tier.rate}%</span>
+                    <span className="text-xl font-black text-[#013E37]">{tier.rate}%</span>
                   </div>
                   <h4 className="text-lg font-bold text-gray-900 mb-2">Tier {idx + 1}</h4>
                   <div className="space-y-1 mb-6">
@@ -415,17 +415,17 @@ export function CommissionCalculator() {
             {bonuses.map((bonus) => (
               <Card key={bonus.id} className="border-none shadow-sm group hover:shadow-md transition-all overflow-hidden">
                 <CardContent className="p-0 flex flex-col sm:flex-row">
-                  <div className="w-full sm:w-[120px] bg-gray-50 flex items-center justify-center p-6 border-b sm:border-b-0 sm:border-r border-gray-100 group-hover:bg-[#01544e] transition-colors">
-                    <bonus.icon className="h-10 w-10 text-[#01544e] group-hover:text-white transition-colors" />
+                  <div className="w-full sm:w-[120px] bg-gray-50 flex items-center justify-center p-6 border-b sm:border-b-0 sm:border-r border-gray-100 group-hover:bg-[#013E37] transition-colors">
+                    <bonus.icon className="h-10 w-10 text-[#013E37] group-hover:text-white transition-colors" />
                   </div>
                   <div className="flex-1 p-6 space-y-3">
                     <div className="flex justify-between items-start">
                       <h4 className="text-xl font-black text-gray-900">{bonus.name}</h4>
-                      <Badge className="bg-emerald-100 text-[#01544e] border-none text-base px-3">
+                      <Badge className="bg-emerald-100 text-[#013E37] border-none text-base px-3">
                         {bonus.type === 'flat' ? formatCurrency(bonus.value) : `+${bonus.value}%`}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-[#01544e] font-bold">
+                    <div className="flex items-center gap-2 text-sm text-[#013E37] font-bold">
                       <Zap className="h-4 w-4" /> Syarat: {bonus.condition}
                     </div>
                     <p className="text-xs text-gray-500 leading-relaxed">
@@ -457,7 +457,7 @@ export function CommissionCalculator() {
                       contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                     />
                     <Legend iconType="circle" />
-                    <Bar dataKey="base" stackId="a" fill="#01544e" name="Base Commission" radius={[0, 0, 0, 0]} barSize={24} />
+                    <Bar dataKey="base" stackId="a" fill="#013E37" name="Base Commission" radius={[0, 0, 0, 0]} barSize={24} />
                     <Bar dataKey="bonus" stackId="a" fill="#02847c" name="Total Bonuses" radius={[0, 4, 4, 0]} barSize={24} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -506,20 +506,20 @@ export function CommissionCalculator() {
       <Dialog open={showDetailDialog} onOpenChange={setShowDetailDialog}>
         <DialogContent className="max-w-2xl border-none shadow-2xl">
           <DialogHeader className="pb-4 border-b border-gray-100">
-            <DialogTitle className="text-2xl text-[#01544e]">Rincian Insentif Payroll</DialogTitle>
+            <DialogTitle className="text-2xl text-[#013E37]">Rincian Insentif Payroll</DialogTitle>
             <DialogDescription>Detail kalkulasi komisi dan bonus untuk periode {selectedRecord?.period}</DialogDescription>
           </DialogHeader>
           {selectedRecord && (
             <div className="space-y-8 py-6">
               <div className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-gray-50 rounded-3xl border border-gray-100">
-                <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#01544e] to-[#02847c] flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+                <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#013E37] to-[#02847c] flex items-center justify-center text-white font-bold text-2xl shadow-lg">
                   {selectedRecord.salesPerson.charAt(0)}
                 </div>
                 <div className="text-center sm:text-left space-y-1">
                   <h2 className="text-2xl font-black text-gray-900">{selectedRecord.salesPerson}</h2>
                   <div className="flex flex-wrap justify-center sm:justify-start gap-2">
                     <Badge variant="outline" className="border-gray-200">{selectedRecord.deals} Deals Closed</Badge>
-                    <Badge className="bg-[#01544e] text-white">Achievement: {selectedRecord.achievementRate}%</Badge>
+                    <Badge className="bg-[#013E37] text-white">Achievement: {selectedRecord.achievementRate}%</Badge>
                   </div>
                 </div>
                 <div className="sm:ml-auto text-center sm:text-right">
@@ -539,12 +539,12 @@ export function CommissionCalculator() {
                 </div>
               </div>
 
-              <div className="p-6 bg-[#01544e] text-white rounded-3xl shadow-xl shadow-emerald-900/20 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="p-6 bg-[#013E37] text-white rounded-3xl shadow-xl shadow-emerald-900/20 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div>
                   <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1">Total Pencairan Komisi</p>
                   <p className="text-4xl font-black">{formatCurrency(selectedRecord.totalCommission)}</p>
                 </div>
-                <Button className="bg-white text-[#01544e] hover:bg-emerald-50 h-12 px-8 font-bold text-base rounded-xl">
+                <Button className="bg-white text-[#013E37] hover:bg-emerald-50 h-12 px-8 font-bold text-base rounded-xl">
                   Konfirmasi Pembayaran
                 </Button>
               </div>

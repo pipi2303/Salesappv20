@@ -71,7 +71,7 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
         </VisuallyHidden>
         
         {/* HEADER - REDUCED 50% */}
-        <div className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-4 py-3">
+        <div className="relative bg-gradient-to-r from-[#013E37] via-[#013E37] to-pink-600 text-white px-4 py-3">
           <button
             onClick={onClose}
             className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors z-10"
@@ -98,7 +98,7 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
                   </Badge>
                 )}
               </div>
-              <p className="text-purple-100 text-xs">
+              <p className="text-[#DFF0EC] text-xs">
                 {contract.company} • {contract.clientName}
               </p>
             </div>
@@ -106,7 +106,7 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
         </div>
 
         {/* QUICK STATS */}
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 px-6 py-4 grid grid-cols-3 gap-4 border-b border-indigo-100">
+        <div className="bg-gradient-to-br bg-[#EEF7F5] px-6 py-4 grid grid-cols-3 gap-4 border-b border-[#DFF0EC]">
           <div className="bg-white rounded-lg p-4 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
@@ -154,14 +154,14 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
 
         {/* PROGRESS BAR */}
         {contract.status === 'active' && (
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 px-6 py-4 border-b border-purple-100">
+          <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 px-6 py-4 border-b border-[#DFF0EC]">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-semibold text-gray-700">Progress Kontrak</span>
-              <span className="text-sm font-bold text-purple-600">{progressPercentage.toFixed(1)}%</span>
+              <span className="text-sm font-bold text-[#013E37]">{progressPercentage.toFixed(1)}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 rounded-full"
+                className="h-full bg-gradient-to-r from-[#013E37] to-[#025C52] transition-all duration-300 rounded-full"
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
@@ -175,7 +175,7 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
         {/* CONTENT */}
         <div className="px-6 py-6 overflow-y-auto max-h-[400px] space-y-6">
           {/* Client Information */}
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-5 border border-blue-100">
+          <div className="bg-gradient-to-br from-blue-50 to-[#EEF7F5] rounded-xl p-5 border border-blue-100">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
                 <Building2 className="w-5 h-5 text-white" />
@@ -227,12 +227,12 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
           </div>
 
           {/* Timeline */}
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-5 border border-purple-100">
+          <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-xl p-5 border border-[#DFF0EC]">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-[#013E37] flex items-center justify-center">
                 <Calendar className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-bold text-purple-900">Timeline & Periode</h3>
+              <h3 className="text-lg font-bold text-[#012D29]">Timeline & Periode</h3>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -299,7 +299,7 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
             </Button>
             <Button 
               onClick={onEdit}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white gap-2"
+              className="bg-gradient-to-r from-[#013E37] to-[#013E37] hover:from-[#013E37] hover:to-[#013E37] text-white gap-2"
             >
               <Edit2 className="w-4 h-4" />
               Edit Kontrak

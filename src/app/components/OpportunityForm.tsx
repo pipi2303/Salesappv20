@@ -155,7 +155,7 @@ export function OpportunityForm({ opportunity, products, onSave, onCancel }: Opp
     <Dialog open={true} onOpenChange={onCancel}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-[#01544e]">
+          <DialogTitle className="text-2xl font-bold text-[#013E37]">
             {opportunity ? 'Edit Opportunity' : 'New Opportunity'}
           </DialogTitle>
           <DialogDescription>
@@ -306,7 +306,7 @@ export function OpportunityForm({ opportunity, products, onSave, onCancel }: Opp
 
                       <div className="col-span-3">
                         <Label>Total</Label>
-                        <div className="h-10 flex items-center font-semibold text-indigo-600">
+                        <div className="h-10 flex items-center font-semibold text-[#013E37]">
                           {formatCurrency(product.totalPrice)}
                         </div>
                       </div>
@@ -332,7 +332,7 @@ export function OpportunityForm({ opportunity, products, onSave, onCancel }: Opp
                 <div className="flex justify-end pt-3 border-t">
                   <div className="text-right">
                     <div className="text-sm text-gray-600 mb-1">Total Deal Value</div>
-                    <div className="text-2xl font-bold text-indigo-600">
+                    <div className="text-2xl font-bold text-[#013E37]">
                       {formatCurrency(formData.totalValue || 0)}
                     </div>
                   </div>
@@ -436,7 +436,7 @@ export function OpportunityForm({ opportunity, products, onSave, onCancel }: Opp
             </Button>
             <Button
               type="submit"
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
+              className="bg-gradient-to-r from-[#013E37] to-[#013E37] text-white"
             >
               {opportunity ? 'Update Opportunity' : 'Create Opportunity'}
             </Button>

@@ -54,7 +54,7 @@ export function OpportunityList({ opportunities, onEdit, onDelete, onView }: Opp
   const getStageColor = (stage: string) => {
     const colors: Record<string, string> = {
       'prospecting': 'bg-blue-100 text-blue-800',
-      'proposal': 'bg-purple-100 text-purple-800',
+      'proposal': 'bg-[#DFF0EC] text-[#012D29]',
       'negotiation': 'bg-orange-100 text-orange-800',
       'closed-won': 'bg-green-100 text-green-800',
       'closed-lost': 'bg-red-100 text-red-800',
@@ -185,7 +185,7 @@ export function OpportunityList({ opportunities, onEdit, onDelete, onView }: Opp
           sortedOpportunities.map((opportunity) => (
             <Card 
               key={opportunity.id} 
-              className="hover:shadow-lg transition-all cursor-pointer hover:scale-[1.01] hover:bg-gradient-to-r hover:from-indigo-50/30 hover:to-purple-50/30"
+              className="hover:shadow-lg transition-all cursor-pointer hover:scale-[1.01] hover:bg-gradient-to-r hover:from-[#EEF7F5]/30 hover:to-[#EEF7F5]/30"
               onClick={() => onEdit(opportunity)}
             >
               <CardContent className="p-4">
@@ -243,7 +243,7 @@ export function OpportunityList({ opportunities, onEdit, onDelete, onView }: Opp
                     {/* Value */}
                     <div className="text-right">
                       <div className="text-xs text-gray-500 mb-1">Deal Value</div>
-                      <div className="text-xl font-bold text-indigo-600 flex items-center gap-1">
+                      <div className="text-xl font-bold text-[#013E37] flex items-center gap-1">
                         <DollarSign className="w-5 h-5" />
                         {formatCurrency(opportunity.totalValue)}
                       </div>
@@ -253,7 +253,7 @@ export function OpportunityList({ opportunities, onEdit, onDelete, onView }: Opp
                     <div className="flex items-center gap-2">
                       <div className="w-20 bg-gray-200 rounded-full h-2">
                         <div
-                          className="bg-indigo-600 h-2 rounded-full transition-all"
+                          className="bg-[#013E37] h-2 rounded-full transition-all"
                           style={{ width: `${opportunity.probability}%` }}
                         />
                       </div>
@@ -283,7 +283,7 @@ export function OpportunityList({ opportunities, onEdit, onDelete, onView }: Opp
                           e.stopPropagation(); // Prevent card click
                           onEdit(opportunity);
                         }}
-                        className="hover:bg-indigo-50 hover:text-indigo-600"
+                        className="hover:bg-[#EEF7F5] hover:text-[#013E37]"
                       >
                         <Edit2 className="w-4 h-4 mr-1" />
                         Edit

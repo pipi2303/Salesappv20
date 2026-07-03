@@ -634,7 +634,7 @@ export function KPIAIEnhanced() {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01544e] mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37] mx-auto"></div>
           <p className="text-gray-600">Loading AI-powered insights...</p>
         </div>
       </div>
@@ -646,8 +646,8 @@ export function KPIAIEnhanced() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#01544e] flex items-center gap-3">
-            <Brain className="w-8 h-8 text-[#01544e]" />
+          <h1 className="text-3xl font-bold text-[#013E37] flex items-center gap-3">
+            <Brain className="w-8 h-8 text-[#013E37]" />
             AI-Powered KPI Management
           </h1>
           <p className="text-gray-600 mt-1 flex items-center gap-2">
@@ -686,7 +686,7 @@ export function KPIAIEnhanced() {
                 }
                 exportKPIToExcel(filtered, `KPI_Summary_${exportDateRange.from}_to_${exportDateRange.to}.xlsx`);
               }}
-              className="text-[#01544e] h-8 px-2"
+              className="text-[#013E37] h-8 px-2"
               title="Export filtered Excel"
             >
               <FileSpreadsheet className="w-4 h-4" />
@@ -702,7 +702,7 @@ export function KPIAIEnhanced() {
                 }
                 exportKPIToPDF(filtered, `KPI_Summary_${exportDateRange.from}_to_${exportDateRange.to}.pdf`);
               }}
-              className="text-[#01544e] h-8 px-2"
+              className="text-[#013E37] h-8 px-2"
               title="Export filtered PDF"
             >
               <FilePdf className="w-4 h-4" />
@@ -717,7 +717,7 @@ export function KPIAIEnhanced() {
           </Button>
           <Button 
             onClick={() => handleOpenModal()}
-            className="bg-[#01544e] hover:bg-[#023d39]"
+            className="bg-[#013E37] hover:bg-[#025C52]"
           >
             <Plus className="w-4 h-4 mr-2" />
             Set New Target
@@ -726,10 +726,10 @@ export function KPIAIEnhanced() {
       </div>
 
       {/* Manager & Team Member Filters */}
-      <Card className="border-2 border-[#01544e]/20 bg-[#e6f2f1]">
+      <Card className="border-2 border-[#013E37]/20 bg-[#EEF7F5]">
         <CardContent className="p-4">
           <div className="flex items-center gap-4">
-            <Users className="w-5 h-5 text-[#01544e]" />
+            <Users className="w-5 h-5 text-[#013E37]" />
             <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Manager Selector */}
               <div className="space-y-2">
@@ -741,7 +741,7 @@ export function KPIAIEnhanced() {
                     setSelectedTeamMember(null);
                   }}
                 >
-                  <SelectTrigger className="border-[#01544e]/30">
+                  <SelectTrigger className="border-[#013E37]/30">
                     <SelectValue placeholder="All Managers" />
                   </SelectTrigger>
                   <SelectContent>
@@ -763,7 +763,7 @@ export function KPIAIEnhanced() {
                   onValueChange={setSelectedTeamMember}
                   disabled={!selectedManager || selectedManager === 'all'}
                 >
-                  <SelectTrigger className="border-[#01544e]/30">
+                  <SelectTrigger className="border-[#013E37]/30">
                     <SelectValue placeholder={selectedManager && selectedManager !== 'all' ? 'All Team Members' : 'Select Manager First'} />
                   </SelectTrigger>
                   <SelectContent>
@@ -782,7 +782,7 @@ export function KPIAIEnhanced() {
               {/* Summary Info */}
               <div className="space-y-2">
                 <Label className="text-sm font-semibold text-gray-700">Viewing</Label>
-                <div className="flex items-center gap-2 p-2 bg-white rounded border border-[#01544e]/20">
+                <div className="flex items-center gap-2 p-2 bg-white rounded border border-[#013E37]/20">
                   <div className="flex items-center gap-2">
                     {selectedManager && selectedManager !== 'all' ? (
                       selectedTeamMember && selectedTeamMember !== 'all' ? (
@@ -802,7 +802,7 @@ export function KPIAIEnhanced() {
                       )
                     ) : (
                       <>
-                        <Badge className="bg-[#01544e]">All</Badge>
+                        <Badge className="bg-[#013E37]">All</Badge>
                         <span className="text-sm font-medium">All Sales Team</span>
                       </>
                     )}
@@ -814,9 +814,9 @@ export function KPIAIEnhanced() {
 
           {/* Manager Team Overview */}
           {selectedManager && selectedManager !== 'all' && (
-            <div className="mt-4 pt-4 border-t border-[#01544e]/20">
+            <div className="mt-4 pt-4 border-t border-[#013E37]/20">
               <div className="flex items-center gap-2 mb-3">
-                <Building2 className="w-4 h-4 text-[#01544e]" />
+                <Building2 className="w-4 h-4 text-[#013E37]" />
                 <h3 className="font-semibold text-gray-800">
                   {managers.find(m => m.id === selectedManager)?.department}
                 </h3>
@@ -828,7 +828,7 @@ export function KPIAIEnhanced() {
                     variant={selectedTeamMember === member.id ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setSelectedTeamMember(member.id)}
-                    className={`text-xs ${selectedTeamMember === member.id ? 'bg-[#01544e]' : ''}`}
+                    className={`text-xs ${selectedTeamMember === member.id ? 'bg-[#013E37]' : ''}`}
                   >
                     {member.name.split(' ')[0]}
                   </Button>
@@ -840,7 +840,7 @@ export function KPIAIEnhanced() {
       </Card>
 
       {/* Period Filter */}
-      <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-cyan-50">
+      <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-[#EEF7F5]">
         <CardContent className="p-4">
           <div className="flex items-center gap-4">
             <Calendar className="w-5 h-5 text-blue-600" />
@@ -990,7 +990,7 @@ export function KPIAIEnhanced() {
                     <p className="text-gray-500 mb-4">
                       No KPI targets found for the selected period and filters.
                     </p>
-                    <Button onClick={() => handleOpenModal()} className="bg-[#01544e]">
+                    <Button onClick={() => handleOpenModal()} className="bg-[#013E37]">
                       <Plus className="w-4 h-4 mr-2" />
                       Create New Target
                     </Button>
@@ -1005,9 +1005,9 @@ export function KPIAIEnhanced() {
             const overallProgress = calculateOverallProgress(target);
 
             return (
-              <Card key={target.id} className="border-2 border-[#01544e]/20 overflow-hidden">
+              <Card key={target.id} className="border-2 border-[#013E37]/20 overflow-hidden">
                 {/* Header */}
-                <CardHeader className="bg-[#01544e] text-white">
+                <CardHeader className="bg-[#013E37] text-white">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white font-bold text-2xl border-2 border-white/30">
@@ -1070,7 +1070,7 @@ export function KPIAIEnhanced() {
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {/* Revenue - Clickable */}
                         <Card 
-                          className="border-2 border-[#01544e]/10 cursor-pointer hover:border-[#01544e]/40 hover:shadow-lg transition-all group"
+                          className="border-2 border-[#013E37]/10 cursor-pointer hover:border-[#013E37]/40 hover:shadow-lg transition-all group"
                           onClick={() => {
                             setSelectedEmployeeForRevenue(target.employeeName);
                             setRevenueDetailOpen(true);
@@ -1079,7 +1079,7 @@ export function KPIAIEnhanced() {
                           <CardContent className="pt-6">
                             <div className="flex items-center justify-between mb-3">
                               <div className="flex items-center gap-2">
-                                <DollarSign className="w-5 h-5 text-[#01544e] group-hover:scale-110 transition-transform" />
+                                <DollarSign className="w-5 h-5 text-[#013E37] group-hover:scale-110 transition-transform" />
                                 <span className="font-semibold">Revenue</span>
                               </div>
                               <span className={`text-sm font-bold px-2 py-1 rounded ${getProgressColor(calculateProgress(target.revenueActual, target.revenueTarget))}`}>
@@ -1089,7 +1089,7 @@ export function KPIAIEnhanced() {
                             <Progress value={calculateProgress(target.revenueActual, target.revenueTarget)} className="h-2 mb-2" />
                             <div className="text-xs text-gray-600">
                               <div>Target: {formatCurrency(target.revenueTarget)}</div>
-                              <div className="font-semibold text-[#01544e]">Actual: {formatCurrency(target.revenueActual)}</div>
+                              <div className="font-semibold text-[#013E37]">Actual: {formatCurrency(target.revenueActual)}</div>
                               {(() => {
                                 const gap = calculateGap(target.revenueActual, target.revenueTarget);
                                 const { label, value, isPositive } = formatGap(gap);
@@ -1100,8 +1100,8 @@ export function KPIAIEnhanced() {
                                 );
                               })()}
                             </div>
-                            <div className="mt-2 pt-2 border-t border-[#01544e]/10">
-                              <p className="text-xs text-[#01544e] font-semibold group-hover:text-[#023d39]">
+                            <div className="mt-2 pt-2 border-t border-[#013E37]/10">
+                              <p className="text-xs text-[#013E37] font-semibold group-hover:text-[#025C52]">
                                 🔍 Click for detailed breakdown
                               </p>
                             </div>
@@ -1183,9 +1183,9 @@ export function KPIAIEnhanced() {
 
                     {/* AI Insights Tab */}
                     <TabsContent value="insights" className="space-y-4">
-                      <div className="bg-[#e6f2f1] p-4 rounded-lg border-2 border-[#01544e]/20">
+                      <div className="bg-[#EEF7F5] p-4 rounded-lg border-2 border-[#013E37]/20">
                         <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                          <Brain className="w-5 h-5 text-[#01544e]" />
+                          <Brain className="w-5 h-5 text-[#013E37]" />
                           AI-Generated Insights
                         </h3>
                         <p className="text-sm text-gray-600">Based on real-time analysis of your performance data</p>
@@ -1237,7 +1237,7 @@ export function KPIAIEnhanced() {
                                   
                                   <div className="bg-white/50 rounded p-3">
                                     <p className="text-xs font-semibold mb-2 flex items-center gap-1">
-                                      <Sparkles className="w-3 h-3 text-[#01544e]" />
+                                      <Sparkles className="w-3 h-3 text-[#013E37]" />
                                       AI Suggestions:
                                     </p>
                                     <ul className="text-xs space-y-1">
@@ -1260,16 +1260,16 @@ export function KPIAIEnhanced() {
                     {/* Recommendations Tab */}
                     <TabsContent value="recommendations" className="space-y-4">
                       {recommendations.map((rec) => (
-                        <Card key={rec.id} className="border-2 border-purple-100">
+                        <Card key={rec.id} className="border-2 border-[#DFF0EC]">
                           <CardContent className="pt-6">
                             <div className="flex items-start gap-4">
-                              <div className="p-3 bg-purple-100 rounded-lg">
-                                <Rocket className="w-6 h-6 text-purple-600" />
+                              <div className="p-3 bg-[#DFF0EC] rounded-lg">
+                                <Rocket className="w-6 h-6 text-[#013E37]" />
                               </div>
                               <div className="flex-1">
                                 <div className="flex items-center justify-between mb-2">
-                                  <h4 className="font-semibold text-lg text-purple-900">{rec.title}</h4>
-                                  <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">
+                                  <h4 className="font-semibold text-lg text-[#012D29]">{rec.title}</h4>
+                                  <Badge className="bg-[#DFF0EC] text-[#013E37] hover:bg-[#C3DDD9]">
                                     Priority {rec.priority}
                                   </Badge>
                                 </div>
@@ -1311,11 +1311,11 @@ export function KPIAIEnhanced() {
                     <TabsContent value="predictions" className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {predictions.map((pred, idx) => (
-                          <Card key={idx} className="border-2 border-indigo-100">
+                          <Card key={idx} className="border-2 border-[#DFF0EC]">
                             <CardContent className="pt-6">
                               <h4 className="font-semibold text-gray-600 mb-4">{pred.metric} Forecast</h4>
                               <div className="flex items-end gap-2 mb-2">
-                                <span className="text-2xl font-bold text-indigo-900">
+                                <span className="text-2xl font-bold text-[#012D29]">
                                   {pred.metric === 'Revenue' 
                                     ? formatCurrency(pred.predictedValue)
                                     : pred.metric === 'Conversion Rate'
@@ -1347,7 +1347,7 @@ export function KPIAIEnhanced() {
                               <div className="space-y-2">
                                 <div className="flex items-center justify-between text-xs">
                                   <span className="text-gray-500">Confidence</span>
-                                  <span className="font-semibold text-indigo-700">{pred.confidence}%</span>
+                                  <span className="font-semibold text-[#013E37]">{pred.confidence}%</span>
                                 </div>
                                 <Progress value={pred.confidence} className="h-1.5" />
                               </div>
@@ -1356,12 +1356,12 @@ export function KPIAIEnhanced() {
                         ))}
                       </div>
                       
-                      <Card className="bg-indigo-50 border-indigo-200">
+                      <Card className="bg-[#EEF7F5] border-[#C3DDD9]">
                         <CardContent className="p-4 flex items-center gap-4">
-                          <Brain className="w-8 h-8 text-indigo-600" />
+                          <Brain className="w-8 h-8 text-[#013E37]" />
                           <div>
-                            <p className="font-semibold text-indigo-900">AI Forecasting Analysis</p>
-                            <p className="text-sm text-indigo-800">
+                            <p className="font-semibold text-[#012D29]">AI Forecasting Analysis</p>
+                            <p className="text-sm text-[#012D29]">
                                Based on historical trends and current velocity, you are likely to end the month at 
                               <span className="font-bold"> {calculateOverallProgress(target).toFixed(1)}% </span> 
                               of your overall target.
@@ -1418,10 +1418,10 @@ export function KPIAIEnhanced() {
                 {filteredTargets.map((target) => (
                   <Card 
                     key={target.id} 
-                    className="hover:shadow-lg transition-all cursor-pointer border-[#01544e]/20 group" 
+                    className="hover:shadow-lg transition-all cursor-pointer border-[#013E37]/20 group" 
                     onClick={() => handleOpenSummary(target)}
                   >
-                    <CardHeader className="bg-gradient-to-r from-[#01544e] to-[#027870] text-white p-4">
+                    <CardHeader className="bg-gradient-to-r from-[#013E37] to-[#027870] text-white p-4">
                       <div className="flex justify-between items-start">
                         <div>
                           <CardTitle className="text-lg text-white group-hover:underline">{target.employeeName}</CardTitle>
@@ -1436,18 +1436,18 @@ export function KPIAIEnhanced() {
                       <div>
                         <div className="flex justify-between text-sm mb-1">
                           <span className="text-gray-600">Revenue</span>
-                          <span className="font-semibold text-[#01544e]">{formatCurrency(target.revenueActual)}</span>
+                          <span className="font-semibold text-[#013E37]">{formatCurrency(target.revenueActual)}</span>
                         </div>
                         <Progress value={calculateProgress(target.revenueActual, target.revenueTarget)} className="h-1.5" />
                       </div>
                       <div>
                         <div className="flex justify-between text-sm mb-1">
                           <span className="text-gray-600">Deals</span>
-                          <span className="font-semibold text-[#01544e]">{target.dealsActual} / {target.dealsTarget}</span>
+                          <span className="font-semibold text-[#013E37]">{target.dealsActual} / {target.dealsTarget}</span>
                         </div>
                         <Progress value={calculateProgress(target.dealsActual, target.dealsTarget)} className="h-1.5" />
                       </div>
-                      <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs text-[#01544e] font-medium">
+                      <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs text-[#013E37] font-medium">
                         <span>Click to view details</span>
                         <Maximize2 className="w-3 h-3" />
                       </div>
@@ -1476,11 +1476,11 @@ export function KPIAIEnhanced() {
                         {filteredTargets.map((target) => (
                           <tr 
                             key={target.id} 
-                            className="hover:bg-[#e6f2f1] cursor-pointer transition-colors group"
+                            className="hover:bg-[#EEF7F5] cursor-pointer transition-colors group"
                             onClick={() => handleOpenSummary(target)}
                           >
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="font-medium text-gray-900 group-hover:text-[#01544e]">{target.employeeName}</div>
+                              <div className="font-medium text-gray-900 group-hover:text-[#013E37]">{target.employeeName}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                               {target.period}
@@ -1495,7 +1495,7 @@ export function KPIAIEnhanced() {
                             >
                               <div className="text-sm text-gray-900 font-semibold">{formatCurrency(target.revenueActual)}</div>
                               <div className="text-xs text-gray-500">Target: {formatCurrency(target.revenueTarget)}</div>
-                              <div className="text-[10px] text-[#01544e] opacity-0 group-hover:opacity-100 font-medium">Click for breakdown</div>
+                              <div className="text-[10px] text-[#013E37] opacity-0 group-hover:opacity-100 font-medium">Click for breakdown</div>
                             </td>
                             <td 
                               className="px-6 py-4 whitespace-nowrap hover:bg-white/50 transition-colors"
@@ -1534,7 +1534,7 @@ export function KPIAIEnhanced() {
                                   e.stopPropagation();
                                   handleOpenModal(target);
                                 }}
-                                className="text-[#01544e] hover:text-[#023d39] hover:bg-white"
+                                className="text-[#013E37] hover:text-[#025C52] hover:bg-white"
                               >
                                 <Edit className="w-4 h-4" />
                               </Button>
@@ -1664,7 +1664,7 @@ export function KPIAIEnhanced() {
           
           <div className="flex justify-end gap-3 mt-4">
             <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button onClick={handleSaveTarget} className="bg-[#01544e] text-white">Save Changes</Button>
+            <Button onClick={handleSaveTarget} className="bg-[#013E37] text-white">Save Changes</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -1674,8 +1674,8 @@ export function KPIAIEnhanced() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex justify-between items-start">
-              <DialogTitle className="flex items-center gap-3 text-2xl text-[#01544e]">
-                <div className="w-10 h-10 rounded-full bg-[#01544e] text-white flex items-center justify-center font-bold">
+              <DialogTitle className="flex items-center gap-3 text-2xl text-[#013E37]">
+                <div className="w-10 h-10 rounded-full bg-[#013E37] text-white flex items-center justify-center font-bold">
                   {selectedTargetForSummary?.employeeName.charAt(0)}
                 </div>
                 <div>
@@ -1686,7 +1686,7 @@ export function KPIAIEnhanced() {
               <div className="flex gap-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="text-[#01544e] border-[#01544e]/20 hover:bg-[#01544e]/5">
+                    <Button variant="outline" size="sm" className="text-[#013E37] border-[#013E37]/20 hover:bg-[#013E37]/5">
                       <Share2 className="w-4 h-4 mr-2" />
                       Share
                     </Button>
@@ -1723,7 +1723,7 @@ export function KPIAIEnhanced() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Revenue Card */}
                 <Card 
-                  className="border-2 border-[#01544e]/10 cursor-pointer hover:border-[#01544e]/40 hover:shadow-lg transition-all group bg-gradient-to-br from-white to-[#f0f9f8]"
+                  className="border-2 border-[#013E37]/10 cursor-pointer hover:border-[#013E37]/40 hover:shadow-lg transition-all group bg-gradient-to-br from-white to-[#f0f9f8]"
                   onClick={() => {
                     setSelectedEmployeeForRevenue(selectedTargetForSummary.employeeName);
                     setRevenueDetailOpen(true);
@@ -1732,17 +1732,17 @@ export function KPIAIEnhanced() {
                 >
                   <CardContent className="pt-6">
                     <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2 text-[#01544e]">
+                      <div className="flex items-center gap-2 text-[#013E37]">
                         <DollarSign className="w-5 h-5" />
                         <span className="font-semibold">Revenue</span>
                       </div>
-                      <ArrowUpRight className="w-4 h-4 text-[#01544e] opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ArrowUpRight className="w-4 h-4 text-[#013E37] opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="text-xl font-bold mb-1">{formatCurrency(selectedTargetForSummary.revenueActual)}</div>
                     <Progress value={calculateProgress(selectedTargetForSummary.revenueActual, selectedTargetForSummary.revenueTarget)} className="h-1.5 mb-2" />
                     <div className="flex justify-between text-xs text-gray-500">
                       <span>{calculateProgress(selectedTargetForSummary.revenueActual, selectedTargetForSummary.revenueTarget).toFixed(0)}% of target</span>
-                      <span className="font-medium text-[#01544e]">{formatCurrency(selectedTargetForSummary.revenueTarget)}</span>
+                      <span className="font-medium text-[#013E37]">{formatCurrency(selectedTargetForSummary.revenueTarget)}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -1805,7 +1805,7 @@ export function KPIAIEnhanced() {
                 <CardHeader className="bg-gray-50 py-3 border-b">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 font-semibold text-gray-700">
-                      <LineChart className="w-5 h-5 text-[#01544e]" />
+                      <LineChart className="w-5 h-5 text-[#013E37]" />
                       Revenue & Deals Trend (Last 7 Months)
                     </div>
                     <Badge variant="outline" className="bg-white text-xs font-normal">
@@ -1819,8 +1819,8 @@ export function KPIAIEnhanced() {
                       <AreaChart data={getTrendData(selectedTargetForSummary)}>
                         <defs>
                           <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#01544e" stopOpacity={0.1}/>
-                            <stop offset="95%" stopColor="#01544e" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#013E37" stopOpacity={0.1}/>
+                            <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -1846,7 +1846,7 @@ export function KPIAIEnhanced() {
                         <Area 
                           type="monotone" 
                           dataKey="revenue" 
-                          stroke="#01544e" 
+                          stroke="#013E37" 
                           strokeWidth={3}
                           fillOpacity={1} 
                           fill="url(#colorRev)" 
@@ -1863,7 +1863,7 @@ export function KPIAIEnhanced() {
                   </div>
                   <div className="flex justify-center gap-6 mt-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-[#01544e]" />
+                      <div className="w-3 h-3 rounded-full bg-[#013E37]" />
                       <span className="text-xs text-gray-600 font-medium">Monthly Revenue</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -1875,25 +1875,25 @@ export function KPIAIEnhanced() {
               </Card>
 
               {/* AI Forecast & Actions */}
-              <div className="bg-[#e6f2f1] rounded-xl p-5 border-2 border-[#01544e]/10">
+              <div className="bg-[#EEF7F5] rounded-xl p-5 border-2 border-[#013E37]/10">
                 <div className="flex items-start gap-4">
                   <div className="p-3 bg-white rounded-lg shadow-sm">
-                    <Brain className="w-8 h-8 text-[#01544e]" />
+                    <Brain className="w-8 h-8 text-[#013E37]" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-bold text-[#01544e] flex items-center gap-2">
+                      <h4 className="font-bold text-[#013E37] flex items-center gap-2">
                         AI Executive Prediction
-                        <Badge className="bg-[#01544e] text-[10px] h-4">Confidence 92%</Badge>
+                        <Badge className="bg-[#013E37] text-[10px] h-4">Confidence 92%</Badge>
                       </h4>
-                      <div className="text-xs text-[#01544e] font-semibold flex items-center gap-1">
+                      <div className="text-xs text-[#013E37] font-semibold flex items-center gap-1">
                         <TrendingUp className="w-3 h-3" />
                         +12% projected growth
                       </div>
                     </div>
                     <p className="text-sm text-gray-700 leading-relaxed mb-4">
                       Based on current velocity and historical {selectedTargetForSummary.period} data, {selectedTargetForSummary.employeeName} is projected to achieve 
-                      <span className="font-bold text-[#01544e]"> {formatCurrency(selectedTargetForSummary.revenueActual * 1.15)} </span> 
+                      <span className="font-bold text-[#013E37]"> {formatCurrency(selectedTargetForSummary.revenueActual * 1.15)} </span> 
                       by the end of the period, representing a <span className="font-bold text-green-600">stretch goal achievement</span>.
                     </p>
                     
@@ -1901,7 +1901,7 @@ export function KPIAIEnhanced() {
                       <Button 
                         size="sm" 
                         variant="outline"
-                        className="bg-white border-[#01544e]/20 text-[#01544e] hover:bg-[#01544e]/5"
+                        className="bg-white border-[#013E37]/20 text-[#013E37] hover:bg-[#013E37]/5"
                         onClick={() => {
                           setAiChatOpen(true);
                           setIsSummaryModalOpen(false);
@@ -1913,7 +1913,7 @@ export function KPIAIEnhanced() {
                       </Button>
                       <Button 
                         size="sm" 
-                        className="bg-[#01544e]"
+                        className="bg-[#013E37]"
                         onClick={() => {
                           handleOpenModal(selectedTargetForSummary);
                           setIsSummaryModalOpen(false);
@@ -1956,7 +1956,7 @@ export function KPIAIEnhanced() {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Brain className="w-5 h-5 text-[#01544e]" />
+              <Brain className="w-5 h-5 text-[#013E37]" />
               AI KPI Assistant
             </DialogTitle>
             <DialogDescription>
@@ -1976,7 +1976,7 @@ export function KPIAIEnhanced() {
                 {chatMessages.map((msg, i) => (
                   <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] p-3 rounded-lg ${
-                      msg.role === 'user' ? 'bg-[#01544e] text-white' : 'bg-gray-100 text-gray-800'
+                      msg.role === 'user' ? 'bg-[#013E37] text-white' : 'bg-gray-100 text-gray-800'
                     }`}>
                       <p className="text-sm whitespace-pre-line">{msg.message}</p>
                     </div>
@@ -1991,7 +1991,7 @@ export function KPIAIEnhanced() {
                 onKeyDown={(e) => e.key === 'Enter' && handleAIChat(chatInput)}
                 placeholder="Type your question..."
               />
-              <Button size="icon" onClick={() => handleAIChat(chatInput)} className="bg-[#01544e]">
+              <Button size="icon" onClick={() => handleAIChat(chatInput)} className="bg-[#013E37]">
                 <Rocket className="w-4 h-4" />
               </Button>
             </div>

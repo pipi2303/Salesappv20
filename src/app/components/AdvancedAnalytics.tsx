@@ -16,9 +16,9 @@ import {
 } from 'recharts';
 
 // ─── Color Palette ────────────────────────────────────────────────
-const BRAND = '#01544e';
-const BRAND_LIGHT = '#e6f2f1';
-const COLORS = ['#01544e', '#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4', '#EC4899'];
+const BRAND = '#013E37';
+const BRAND_LIGHT = '#EEF7F5';
+const COLORS = ['#013E37', '#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4', '#EC4899'];
 
 // ─── Mock Data ────────────────────────────────────────────────────
 const monthlyData = [
@@ -227,7 +227,7 @@ export function AdvancedAnalytics() {
           <select
             value={selectedRegion}
             onChange={e => setSelectedRegion(e.target.value)}
-            className="text-xs border border-gray-200 rounded-lg px-3 py-1.5 bg-white shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#01544e]/20">
+            className="text-xs border border-gray-200 rounded-lg px-3 py-1.5 bg-white shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#013E37]/20">
             <option value="all">Semua Region</option>
             <option value="jakarta">Jakarta</option>
             <option value="surabaya">Surabaya</option>
@@ -246,7 +246,7 @@ export function AdvancedAnalytics() {
       {/* ── KPI Summary Cards ──────────────────────────────────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <KPICard title="Total Revenue" value={`Rp ${fmt(totalRevenue)}`} sub="Tahun berjalan"
-          delta={revGrowth} icon={DollarSign} color="#01544e" />
+          delta={revGrowth} icon={DollarSign} color="#013E37" />
         <KPICard title="Total Deals Won" value={totalDeals} sub={`${lastMonth.deals} bulan ini`}
           delta={dealsGrowth} icon={Award} color="#3B82F6" />
         <KPICard title="Total Leads" value={totalLeads.toLocaleString()} sub={`${lastMonth.leads} bulan ini`}
@@ -267,7 +267,7 @@ export function AdvancedAnalytics() {
             { value: 'products', label: 'Produk', icon: ShoppingBag },
           ].map(tab => (
             <TabsTrigger key={tab.value} value={tab.value}
-              className="data-[state=active]:bg-white data-[state=active]:text-[#01544e] data-[state=active]:shadow-sm rounded-lg py-2 flex items-center gap-1.5 transition-all text-xs font-semibold">
+              className="data-[state=active]:bg-white data-[state=active]:text-[#013E37] data-[state=active]:shadow-sm rounded-lg py-2 flex items-center gap-1.5 transition-all text-xs font-semibold">
               <tab.icon className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">{tab.label}</span>
             </TabsTrigger>
@@ -529,7 +529,7 @@ export function AdvancedAnalytics() {
                   <tfoot>
                     <tr className="border-t-2 border-gray-300 bg-gray-50">
                       <td className="py-2.5 px-2 font-bold text-gray-900">Total</td>
-                      <td className="py-2.5 px-2 font-bold text-[#01544e]">Rp {monthlyData.reduce((a,c)=>a+c.revenue,0).toLocaleString()}</td>
+                      <td className="py-2.5 px-2 font-bold text-[#013E37]">Rp {monthlyData.reduce((a,c)=>a+c.revenue,0).toLocaleString()}</td>
                       <td className="py-2.5 px-2 font-bold text-gray-600">Rp {monthlyData.reduce((a,c)=>a+c.target,0).toLocaleString()}</td>
                       <td className="py-2.5 px-2 font-bold text-emerald-700">
                         {Math.round((monthlyData.reduce((a,c)=>a+c.revenue,0)/monthlyData.reduce((a,c)=>a+c.target,0))*100)}%

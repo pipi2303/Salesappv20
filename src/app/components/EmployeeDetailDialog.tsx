@@ -57,12 +57,12 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
         </DialogHeader>
 
         {/* Gradient Header */}
-        <div className="relative bg-[#01544e] px-5 py-3 text-white flex-shrink-0">
+        <div className="relative bg-[#013E37] px-5 py-3 text-white flex-shrink-0">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               <div className="relative">
                 <div className="h-16 w-16 rounded-xl bg-white shadow-lg flex items-center justify-center">
-                  <span className="text-2xl font-bold text-[#01544e]">
+                  <span className="text-2xl font-bold text-[#013E37]">
                     {employee.nama_lengkap?.charAt(0) || 'K'}
                   </span>
                 </div>
@@ -99,9 +99,9 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
         <div className="px-6 py-4 space-y-5 overflow-y-auto flex-1">
           {/* Quick Info Cards */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-lg p-4 border border-teal-100">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-[#EEF7F5] rounded-lg p-4 border border-[#013E37]/10">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-[#01544e] flex items-center justify-center flex-shrink-0">
+                <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center flex-shrink-0">
                   <User className="h-5 w-5 text-white" />
                 </div>
                 <div className="min-w-0">
@@ -111,7 +111,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-lg p-4 border border-emerald-100">
+            <div className="bg-gradient-to-br from-emerald-50 to-[#EEF7F5] rounded-lg p-4 border border-emerald-100">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-lg bg-emerald-600 flex items-center justify-center flex-shrink-0">
                   <Calendar className="h-5 w-5 text-white" />
@@ -123,9 +123,9 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-100">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-lg p-4 border border-[#DFF0EC]">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-purple-600 flex items-center justify-center flex-shrink-0">
+                <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center flex-shrink-0">
                   <Shield className="h-5 w-5 text-white" />
                 </div>
                 <div className="min-w-0">
@@ -137,20 +137,20 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
           </div>
 
           {/* Informasi Pribadi */}
-          <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-6 border border-teal-100">
+          <div className="bg-gradient-to-br from-[#EEF7F5] to-[#EEF7F5] rounded-xl p-6 border border-[#013E37]/10">
             <div className="flex items-center gap-3 mb-5">
-              <div className="h-10 w-10 rounded-lg bg-[#01544e] flex items-center justify-center">
+              <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center">
                 <User className="h-5 w-5 text-white" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900 leading-none">Informasi Pribadi</h3>
-                <p className="text-[10px] text-teal-700 mt-1 uppercase tracking-wider font-semibold opacity-70">IDENTITAS & DATA KONTAK PERSONAL</p>
+                <p className="text-[10px] text-[#025C52] mt-1 uppercase tracking-wider font-semibold opacity-70">IDENTITAS & DATA KONTAK PERSONAL</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-x-6 gap-y-4">
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <Calendar className="h-5 w-5 text-[#01544e] mt-0.5" />
+                  <Calendar className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Tempat, Tanggal Lahir</p>
                     <p className="font-semibold text-gray-900">{employee.tempat_lahir}, {employee.tanggal_lahir}</p>
@@ -159,7 +159,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               </div>
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <User className="h-5 w-5 text-[#01544e] mt-0.5" />
+                  <User className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Jenis Kelamin</p>
                     <p className="font-semibold text-gray-900">{employee.jenis_kelamin}</p>
@@ -168,7 +168,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               </div>
               <div className="bg-white rounded-lg p-4 col-span-2">
                 <div className="flex items-start gap-3">
-                  <MapPin className="h-5 w-5 text-[#01544e] mt-0.5" />
+                  <MapPin className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Alamat</p>
                     <p className="font-semibold text-gray-900">{employee.alamat}</p>
@@ -179,7 +179,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
           </div>
 
           {/* Kontak */}
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-100">
+          <div className="bg-gradient-to-br from-emerald-50 to-[#EEF7F5] rounded-xl p-6 border border-emerald-100">
             <div className="flex items-center gap-3 mb-5">
               <div className="h-10 w-10 rounded-lg bg-emerald-600 flex items-center justify-center">
                 <Mail className="h-5 w-5 text-white" />
@@ -221,7 +221,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
           </div>
 
           {/* Informasi Kepegawaian */}
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-100">
+          <div className="bg-gradient-to-br from-blue-50 to-[#EEF7F5] rounded-xl p-6 border border-blue-100">
             <div className="flex items-center gap-3 mb-5">
               <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
                 <Briefcase className="h-5 w-5 text-white" />
@@ -290,20 +290,20 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
           </div>
 
           {/* Informasi Keuangan & BPJS */}
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100">
+          <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-xl p-6 border border-[#DFF0EC]">
             <div className="flex items-center gap-3 mb-5">
-              <div className="h-10 w-10 rounded-lg bg-purple-600 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center">
                 <CreditCard className="h-5 w-5 text-white" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900 leading-none">Informasi Keuangan & BPJS</h3>
-                <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">PAYROLL & COMPLIANCE DATA</p>
+                <p className="text-[10px] text-[#013E37] mt-1 uppercase tracking-wider font-semibold opacity-70">PAYROLL & COMPLIANCE DATA</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <FileText className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <FileText className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">NPWP</p>
                     <p className="font-semibold text-gray-900">{employee.npwp}</p>
@@ -312,7 +312,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               </div>
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <CreditCard className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <CreditCard className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Nomor Rekening</p>
                     <p className="font-semibold text-gray-900">{employee.nomor_rekening}</p>
@@ -321,7 +321,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               </div>
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <Building2 className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <Building2 className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Nama Bank</p>
                     <p className="font-semibold text-gray-900">{employee.nama_bank}</p>
@@ -330,7 +330,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               </div>
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <Shield className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <Shield className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">BPJS Ketenagakerjaan</p>
                     <p className="font-semibold text-gray-900">{employee.bpjs_ketenagakerjaan}</p>
@@ -339,7 +339,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
               </div>
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <Shield className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <Shield className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">BPJS Kesehatan</p>
                     <p className="font-semibold text-gray-900">{employee.bpjs_kesehatan}</p>
@@ -406,7 +406,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
           </Button>
           <Button
             onClick={onEdit}
-            className="min-w-28 h-8 text-sm font-semibold bg-[#01544e] hover:bg-[#023d39] text-white shadow-md"
+            className="min-w-28 h-8 text-sm font-semibold bg-[#013E37] hover:bg-[#025C52] text-white shadow-md"
           >
             <Briefcase className="w-4 h-4 mr-2" />
             Edit Data

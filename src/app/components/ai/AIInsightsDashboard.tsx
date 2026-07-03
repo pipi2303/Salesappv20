@@ -196,10 +196,10 @@ export function AIInsightsDashboard() {
 
   if (loading) {
     return (
-      <Card className="bg-gradient-to-br from-purple-50 to-blue-50">
+      <Card className="bg-gradient-to-br from-[#EEF7F5] to-blue-50">
         <CardContent className="p-12 text-center">
           <div className="animate-pulse">
-            <Brain className="h-16 w-16 text-[#01544e] mx-auto mb-4 animate-bounce" />
+            <Brain className="h-16 w-16 text-[#013E37] mx-auto mb-4 animate-bounce" />
             <h3 className="text-xl font-bold text-gray-900 mb-2">
               🤖 AI Analyzing Your Sales Data...
             </h3>
@@ -253,7 +253,7 @@ export function AIInsightsDashboard() {
       )}
       
       {/* Header */}
-      <Card className="bg-gradient-to-r from-[#01544e] to-[#023d39] text-white">
+      <Card className="bg-gradient-to-r from-[#013E37] to-[#025C52] text-white">
         <CardContent className="p-6">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-14 w-14 rounded-full bg-white/20 flex items-center justify-center">
@@ -354,7 +354,7 @@ export function AIInsightsDashboard() {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
-            <Target className="h-6 w-6 text-[#01544e]" />
+            <Target className="h-6 w-6 text-[#013E37]" />
             Top 5 Opportunities to Close This Month
           </CardTitle>
         </CardHeader>
@@ -367,13 +367,13 @@ export function AIInsightsDashboard() {
                   setSelectedOpportunity(opp);
                   setShowOpportunityDetail(true);
                 }}
-                className="bg-gradient-to-r from-[#e6f2f1] to-white p-4 rounded-lg border-2 border-[#01544e]/20 cursor-pointer hover:shadow-xl hover:border-[#01544e] hover:scale-[1.02] hover:bg-gradient-to-r hover:from-[#d4e9e7] hover:to-[#e6f2f1] transition-all duration-300 active:scale-[0.98]"
+                className="bg-gradient-to-r from-[#EEF7F5] to-white p-4 rounded-lg border-2 border-[#013E37]/20 cursor-pointer hover:shadow-xl hover:border-[#013E37] hover:scale-[1.02] hover:bg-gradient-to-r hover:from-[#d4e9e7] hover:to-[#EEF7F5] transition-all duration-300 active:scale-[0.98]"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-lg font-bold text-gray-900">{index + 1}. {opp.name}</span>
-                      <Badge className="bg-[#01544e]">{opp.stage}</Badge>
+                      <Badge className="bg-[#013E37]">{opp.stage}</Badge>
                     </div>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
                       <span>💰 {formatCurrency(opp.value)}</span>
@@ -385,7 +385,7 @@ export function AIInsightsDashboard() {
                 <div className="mt-2">
                   <div className="flex items-center justify-between text-xs mb-1">
                     <span className="text-gray-600">Close Probability</span>
-                    <span className="font-semibold text-[#01544e]">{opp.probability}%</span>
+                    <span className="font-semibold text-[#013E37]">{opp.probability}%</span>
                   </div>
                   <Progress value={opp.probability} className="h-2" />
                 </div>
@@ -441,10 +441,10 @@ export function AIInsightsDashboard() {
       </Card>
 
       {/* AI Recommendations */}
-      <Card className="border-2 border-[#01544e] bg-[#e6f2f1]">
+      <Card className="border-2 border-[#013E37] bg-[#EEF7F5]">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
-            <Zap className="h-6 w-6 text-[#01544e]" />
+            <Zap className="h-6 w-6 text-[#013E37]" />
             AI Strategic Recommendations
           </CardTitle>
         </CardHeader>
@@ -456,10 +456,10 @@ export function AIInsightsDashboard() {
                 setSelectedRecommendation(rec);
                 setShowRecommendationDetail(true);
               }}
-              className="bg-white p-4 rounded-lg border-2 border-[#01544e]/20 cursor-pointer hover:shadow-xl hover:border-[#01544e] hover:scale-[1.02] hover:bg-[#f0f9f8] transition-all duration-300 active:scale-[0.98]"
+              className="bg-white p-4 rounded-lg border-2 border-[#013E37]/20 cursor-pointer hover:shadow-xl hover:border-[#013E37] hover:scale-[1.02] hover:bg-[#f0f9f8] transition-all duration-300 active:scale-[0.98]"
             >
               <div className="flex items-start gap-3">
-                <div className="h-8 w-8 rounded-full bg-[#01544e] text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
+                <div className="h-8 w-8 rounded-full bg-[#013E37] text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
                   {index + 1}
                 </div>
                 <div className="flex-1">
@@ -484,26 +484,26 @@ export function AIInsightsDashboard() {
       </Card>
 
       {/* Team Performance */}
-      <Card className="bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+      <Card className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 border-[#C3DDD9]">
         <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-purple-900">
-            <Award className="h-6 w-6 text-purple-600" />
+          <CardTitle className="flex items-center gap-2 text-[#012D29]">
+            <Award className="h-6 w-6 text-[#013E37]" />
             Team Performance Snapshot
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-white p-4 rounded-lg border border-purple-200">
+            <div className="bg-white p-4 rounded-lg border border-[#C3DDD9]">
               <p className="text-sm text-gray-600 mb-1">🏆 Top Performer</p>
               <p className="text-2xl font-bold text-gray-900">{insights.teamPerformance.topPerformer}</p>
               <p className="text-xs text-gray-500 mt-1">Leads the team in conversions</p>
             </div>
-            <div className="bg-white p-4 rounded-lg border border-purple-200">
+            <div className="bg-white p-4 rounded-lg border border-[#C3DDD9]">
               <p className="text-sm text-gray-600 mb-1">📊 Team Avg Score</p>
               <p className="text-2xl font-bold text-gray-900">{insights.teamPerformance.avgScore}/100</p>
               <p className="text-xs text-gray-500 mt-1">Across all performance metrics</p>
             </div>
-            <div className="bg-white p-4 rounded-lg border border-purple-200">
+            <div className="bg-white p-4 rounded-lg border border-[#C3DDD9]">
               <p className="text-sm text-gray-600 mb-1">✅ Deals Closed</p>
               <p className="text-2xl font-bold text-gray-900">{insights.teamPerformance.dealsClosedThisMonth}</p>
               <p className="text-xs text-gray-500 mt-1">This month so far</p>

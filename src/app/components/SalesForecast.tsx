@@ -161,8 +161,8 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
                   Expected revenue
                 </p>
               </div>
-              <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-6 w-6 text-purple-600" />
+              <div className="h-12 w-12 bg-[#DFF0EC] rounded-lg flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-[#013E37]" />
               </div>
             </div>
           </CardContent>
@@ -345,7 +345,7 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
               topOpportunities.map((opp, index) => (
                 <div key={opp.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center justify-center w-8 h-8 bg-indigo-100 text-indigo-600 font-bold rounded-full">
+                    <div className="flex items-center justify-center w-8 h-8 bg-[#DFF0EC] text-[#013E37] font-bold rounded-full">
                       {index + 1}
                     </div>
                     <div>
@@ -354,7 +354,7 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold text-indigo-600">
+                    <p className="text-lg font-bold text-[#013E37]">
                       {formatCurrency(opp.totalValue)}
                     </p>
                     <div className="flex items-center gap-2 mt-1">

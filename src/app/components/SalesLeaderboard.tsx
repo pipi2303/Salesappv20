@@ -84,14 +84,14 @@ export function SalesLeaderboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-800 to-purple-900 border-purple-700">
+        <Card className="bg-gradient-to-br from-[#012D29] to-[#012D29] border-[#013E37]">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full bg-purple-600/50 flex items-center justify-center">
-                <Target className="h-6 w-6 text-purple-200" />
+              <div className="h-12 w-12 rounded-full bg-[#013E37]/50 flex items-center justify-center">
+                <Target className="h-6 w-6 text-[#C3DDD9]" />
               </div>
               <div>
-                <p className="text-purple-200 text-sm">Avg Achievement</p>
+                <p className="text-[#C3DDD9] text-sm">Avg Achievement</p>
                 <p className="text-2xl font-bold text-white">{kpiSummary.average_achievement.toFixed(1)}%</p>
               </div>
             </div>
@@ -282,7 +282,7 @@ export function SalesLeaderboard() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Badge 
                         className={
-                          entry.top_module === 'E-Sign' ? 'bg-purple-600 text-white' :
+                          entry.top_module === 'E-Sign' ? 'bg-[#013E37] text-white' :
                           entry.top_module === 'LIS' ? 'bg-blue-600 text-white' :
                           'bg-green-600 text-white'
                         }

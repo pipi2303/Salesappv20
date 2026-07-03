@@ -124,9 +124,9 @@ export function ContractNotifications({ contracts, onViewContract }: ContractNot
         };
       default:
         return {
-          bgGradient: 'bg-gradient-to-br from-blue-50 to-indigo-50',
+          bgGradient: 'bg-gradient-to-br bg-[#EEF7F5]',
           borderColor: 'border-l-4 border-blue-500',
-          iconBg: 'bg-gradient-to-br from-blue-500 to-indigo-500',
+          iconBg: 'bg-gradient-to-br from-[#013E37] to-[#025C52]',
           icon: <CheckCircle className="w-5 h-5 text-white" />,
           badge: 'bg-blue-500',
           textColor: 'text-blue-900',

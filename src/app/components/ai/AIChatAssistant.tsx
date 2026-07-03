@@ -306,7 +306,7 @@ export function AIChatAssistant() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gradient-to-r from-[#01544e] to-[#023d39] text-white shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center z-50 group hover:scale-110"
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gradient-to-r from-[#013E37] to-[#025C52] text-white shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center z-50 group hover:scale-110"
       >
         <MessageCircle className="h-6 w-6" />
         <div className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 flex items-center justify-center">
@@ -320,9 +320,9 @@ export function AIChatAssistant() {
   }
 
   return (
-    <Card className={`fixed ${isMinimized ? 'bottom-6 right-6 w-80' : 'bottom-6 right-6 w-96'} shadow-2xl z-50 transition-all duration-300 border-2 border-[#01544e]`}>
+    <Card className={`fixed ${isMinimized ? 'bottom-6 right-6 w-80' : 'bottom-6 right-6 w-96'} shadow-2xl z-50 transition-all duration-300 border-2 border-[#013E37]`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#01544e] to-[#023d39] text-white p-4 rounded-t-lg">
+      <div className="bg-gradient-to-r from-[#013E37] to-[#025C52] text-white p-4 rounded-t-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -363,7 +363,7 @@ export function AIChatAssistant() {
                   <div className={`max-w-[80%] ${message.type === 'user' ? 'order-2' : 'order-1'}`}>
                     <div className={`rounded-2xl px-4 py-2.5 ${
                       message.type === 'user' 
-                        ? 'bg-[#01544e] text-white' 
+                        ? 'bg-[#013E37] text-white' 
                         : 'bg-white border border-gray-200'
                     }`}>
                       <p className="text-sm whitespace-pre-line">{message.content}</p>
@@ -379,7 +379,7 @@ export function AIChatAssistant() {
                           <button
                             key={idx}
                             onClick={() => handleSuggestionClick(suggestion)}
-                            className="text-xs px-3 py-1 rounded-full border border-[#01544e] text-[#01544e] hover:bg-[#e6f2f1] transition-colors"
+                            className="text-xs px-3 py-1 rounded-full border border-[#013E37] text-[#013E37] hover:bg-[#EEF7F5] transition-colors"
                           >
                             {suggestion}
                           </button>
@@ -416,9 +416,9 @@ export function AIChatAssistant() {
                   <button
                     key={idx}
                     onClick={() => handleQuickAction(action.query)}
-                    className="flex items-center gap-2 px-2 py-1.5 text-xs rounded-lg border border-gray-200 hover:border-[#01544e] hover:bg-[#e6f2f1] transition-colors text-left"
+                    className="flex items-center gap-2 px-2 py-1.5 text-xs rounded-lg border border-gray-200 hover:border-[#013E37] hover:bg-[#EEF7F5] transition-colors text-left"
                   >
-                    <Icon className="h-3 w-3 text-[#01544e] flex-shrink-0" />
+                    <Icon className="h-3 w-3 text-[#013E37] flex-shrink-0" />
                     <span className="truncate">{action.label}</span>
                   </button>
                 );
@@ -435,12 +435,12 @@ export function AIChatAssistant() {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Ask me anything..."
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-[#01544e] focus:border-transparent text-sm"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-[#013E37] focus:border-transparent text-sm"
               />
               <button
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim()}
-                className="h-10 w-10 rounded-full bg-[#01544e] hover:bg-[#023d39] disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+                className="h-10 w-10 rounded-full bg-[#013E37] hover:bg-[#025C52] disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
               >
                 <Send className="h-4 w-4 text-white" />
               </button>

@@ -78,11 +78,11 @@ export function AccountManagerDetailDialog({
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
-            <div className="h-14 w-14 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl">
+            <div className="h-14 w-14 rounded-full bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center text-white font-bold text-xl">
               {selectedAccountManager.avatar}
             </div>
             <div>
-              <div className="text-xl font-bold text-[#01544e]">{selectedAccountManager.name}</div>
+              <div className="text-xl font-bold text-[#013E37]">{selectedAccountManager.name}</div>
               <div className="text-sm text-gray-600 font-normal">{selectedAccountManager.position}</div>
             </div>
           </DialogTitle>
@@ -92,17 +92,17 @@ export function AccountManagerDetailDialog({
         </DialogHeader>
 
         {/* Contact Info */}
-        <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-gradient-to-r from-[#e6f2f1] to-white rounded-lg border border-[#01544e]/20">
+        <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-gradient-to-r from-[#EEF7F5] to-white rounded-lg border border-[#013E37]/20">
           <div className="flex items-center gap-2 text-sm">
-            <Mail className="h-4 w-4 text-[#01544e]" />
+            <Mail className="h-4 w-4 text-[#013E37]" />
             <span className="text-gray-700">{selectedAccountManager.email}</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
-            <Phone className="h-4 w-4 text-[#01544e]" />
+            <Phone className="h-4 w-4 text-[#013E37]" />
             <span className="text-gray-700">+62 812-3456-{selectedAccountManager.id.slice(-4)}</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
-            <Briefcase className="h-4 w-4 text-[#01544e]" />
+            <Briefcase className="h-4 w-4 text-[#013E37]" />
             <span className="text-gray-700">{selectedAccountManager.totalDeals} Active Accounts</span>
           </div>
         </div>
@@ -133,14 +133,14 @@ export function AccountManagerDetailDialog({
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-purple-500">
+          <Card className="border-l-4 border-l-[#EEF7F5]0">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-600 font-medium">Performance</p>
-                  <p className="text-xl font-bold text-purple-600">{selectedAccountManager.performance.toFixed(1)}%</p>
+                  <p className="text-xl font-bold text-[#013E37]">{selectedAccountManager.performance.toFixed(1)}%</p>
                 </div>
-                <Award className="h-8 w-8 text-purple-500" />
+                <Award className="h-8 w-8 text-[#EEF7F5]0" />
               </div>
             </CardContent>
           </Card>
@@ -247,7 +247,7 @@ export function AccountManagerDetailDialog({
                   {clientSegments.map((segment) => (
                     <div key={segment.segment} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                       <div>
-                        <div className="font-semibold text-[#01544e]">{segment.segment}</div>
+                        <div className="font-semibold text-[#013E37]">{segment.segment}</div>
                         <div className="text-xs text-gray-600">{segment.deals} deals • Avg: {formatCurrency(segment.avgDeal)}</div>
                       </div>
                       <div className="text-right">
@@ -265,20 +265,20 @@ export function AccountManagerDetailDialog({
             <Card>
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
-                  <Users className="h-5 w-5 text-[#01544e]" />
+                  <Users className="h-5 w-5 text-[#013E37]" />
                   Strategic Accounts Portfolio
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {keyAccounts.map((account) => (
-                  <div key={account.name} className="p-4 border border-gray-200 rounded-lg hover:border-[#01544e] transition-all">
+                  <div key={account.name} className="p-4 border border-gray-200 rounded-lg hover:border-[#013E37] transition-all">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#01544e] to-[#02796f] flex items-center justify-center text-white font-bold">
+                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#013E37] to-[#02796f] flex items-center justify-center text-white font-bold">
                           {account.name.charAt(0)}
                         </div>
                         <div>
-                          <div className="font-bold text-[#01544e]">{account.name}</div>
+                          <div className="font-bold text-[#013E37]">{account.name}</div>
                           <div className="text-xs text-gray-500">Last contact: {account.lastContact}</div>
                         </div>
                       </div>
@@ -353,12 +353,12 @@ export function AccountManagerDetailDialog({
               </TabsContent>
 
               <TabsContent value="recommendations" className="space-y-4 mt-4">
-                <Card className="border-l-4 border-l-purple-500">
+                <Card className="border-l-4 border-l-[#EEF7F5]0">
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
-                      <Lightbulb className="h-5 w-5 text-purple-600 mt-1" />
+                      <Lightbulb className="h-5 w-5 text-[#013E37] mt-1" />
                       <div>
-                        <h4 className="font-semibold text-purple-900 mb-2">Account Expansion Strategy</h4>
+                        <h4 className="font-semibold text-[#012D29] mb-2">Account Expansion Strategy</h4>
                         <p className="text-sm text-gray-700 mb-3">Focus on expanding wallet share with existing enterprise accounts. Identified 4 accounts with 40%+ expansion potential.</p>
                         <div className="space-y-2">
                           <div className="flex items-center gap-2 text-sm">
@@ -394,12 +394,12 @@ export function AccountManagerDetailDialog({
               </TabsContent>
 
               <TabsContent value="predictions" className="space-y-4 mt-4">
-                <Card className="border-l-4 border-l-indigo-500">
+                <Card className="border-l-4 border-l-[#EEF7F5]0">
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
-                      <BarChart3 className="h-5 w-5 text-indigo-600 mt-1" />
+                      <BarChart3 className="h-5 w-5 text-[#013E37] mt-1" />
                       <div>
-                        <h4 className="font-semibold text-indigo-900 mb-2">Q3 2026 Forecast</h4>
+                        <h4 className="font-semibold text-[#012D29] mb-2">Q3 2026 Forecast</h4>
                         <div className="grid grid-cols-2 gap-4 mt-3">
                           <div>
                             <p className="text-xs text-gray-600">Predicted Achievement</p>
@@ -446,7 +446,7 @@ export function AccountManagerDetailDialog({
                     onChange={(e) => onNewNoteChange(e.target.value)}
                     className="min-h-[100px]"
                   />
-                  <Button onClick={onAddNote} className="bg-[#01544e] hover:bg-[#023d39]">
+                  <Button onClick={onAddNote} className="bg-[#013E37] hover:bg-[#025C52]">
                     Add Note
                   </Button>
                 </div>

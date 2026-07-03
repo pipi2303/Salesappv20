@@ -76,7 +76,7 @@ export function CollaborationIndicator() {
   const getStatusColor = (status: OnlineUser['status']) => {
     switch (status) {
       case 'online':
-        return 'text-[#01544e]'; // Changed from text-green-500
+        return 'text-[#013E37]'; // Changed from text-green-500
       case 'away':
         return 'text-yellow-500';
       case 'busy':
@@ -127,10 +127,10 @@ export function CollaborationIndicator() {
           {displayUsers.map((user) => (
             <Tooltip key={user.id}>
               <TooltipTrigger asChild>
-                <button className="relative focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-full">
+                <button className="relative focus:outline-none focus:ring-2 focus:ring-[#EEF7F5]0 rounded-full">
                   <Avatar className="border-2 border-white hover:z-10 transition-all cursor-pointer hover:scale-110">
                     <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback className="bg-[#01544e] text-white text-xs">
+                    <AvatarFallback className="bg-[#013E37] text-white text-xs">
                       {getInitials(user.name)}
                     </AvatarFallback>
                   </Avatar>
@@ -141,7 +141,7 @@ export function CollaborationIndicator() {
                   />
                 </button>
               </TooltipTrigger>
-              <TooltipContent side="bottom" className="p-3 max-w-xs bg-[#01544e] border-[#01544e]">
+              <TooltipContent side="bottom" className="p-3 max-w-xs bg-[#013E37] border-[#013E37]">
                 <div className="space-y-1">
                   <p className="font-semibold text-sm text-white">{user.name}</p>
                   <p className="text-xs text-white/70">{user.email}</p>
@@ -166,7 +166,7 @@ export function CollaborationIndicator() {
               <TooltipTrigger asChild>
                 <button
                   onClick={() => setShowAll(true)}
-                  className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 border-2 border-white hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 border-2 border-white hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-[#EEF7F5]0"
                 >
                   <span className="text-xs font-semibold text-gray-600">+{remainingCount}</span>
                 </button>

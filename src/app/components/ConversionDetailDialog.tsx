@@ -183,13 +183,13 @@ export function ConversionDetailDialog({
             </Card>
 
             {/* Hospital Segment */}
-            <Card className="border-2 border-indigo-400 bg-gradient-to-br from-indigo-50 to-purple-50">
+            <Card className="border-2 border-[#038E7D] bg-gradient-to-br bg-[#EEF7F5]">
               <CardContent className="p-4">
                 <div className="flex items-center gap-1 mb-1">
-                  <Building2 className="w-3.5 h-3.5 text-indigo-600" />
+                  <Building2 className="w-3.5 h-3.5 text-[#013E37]" />
                   <div className="text-xs font-semibold text-gray-600">Hospital Average</div>
                 </div>
-                <div className="text-xl font-bold text-indigo-600 mb-1">
+                <div className="text-xl font-bold text-[#013E37] mb-1">
                   {hospitalAvg.actual.toFixed(1)}%
                 </div>
                 <div className="text-xs text-gray-600 space-y-0.5 mb-2">
@@ -204,7 +204,7 @@ export function ConversionDetailDialog({
             </Card>
 
             {/* Retail Segment */}
-            <Card className="border-2 border-emerald-400 bg-gradient-to-br from-emerald-50 to-teal-50">
+            <Card className="border-2 border-emerald-400 bg-gradient-to-br from-emerald-50 to-emerald-50">
               <CardContent className="p-4">
                 <div className="flex items-center gap-1 mb-1">
                   <Stethoscope className="w-3.5 h-3.5 text-emerald-600" />
@@ -244,9 +244,9 @@ export function ConversionDetailDialog({
 
             {/* Hospital Monthly View */}
             <TabsContent value="hospital" className="space-y-4">
-              <div className="p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
+              <div className="p-4 bg-gradient-to-r bg-[#EEF7F5] rounded-lg border border-[#C3DDD9]">
                 <h3 className="font-semibold flex items-center gap-2 mb-3">
-                  <Building2 className="w-4 h-4 text-indigo-600" />
+                  <Building2 className="w-4 h-4 text-[#013E37]" />
                   Hospital Segment - Monthly Conversion {year}
                 </h3>
                 
@@ -262,7 +262,7 @@ export function ConversionDetailDialog({
                           <div className="text-xs font-semibold text-gray-600 mb-2">{month.month}</div>
                           
                           <div className="space-y-1">
-                            <div className="text-sm font-bold text-indigo-600">
+                            <div className="text-sm font-bold text-[#013E37]">
                               {month.actual.toFixed(1)}%
                             </div>
                             <div className="text-xs text-gray-600">
@@ -298,7 +298,7 @@ export function ConversionDetailDialog({
 
             {/* Retail Monthly View */}
             <TabsContent value="retail" className="space-y-4">
-              <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
+              <div className="p-4 bg-gradient-to-r from-emerald-50 to-emerald-50 rounded-lg border border-emerald-200">
                 <h3 className="font-semibold flex items-center gap-2 mb-3">
                   <Stethoscope className="w-4 h-4 text-emerald-600" />
                   IntraClinic - Monthly Conversion {year}

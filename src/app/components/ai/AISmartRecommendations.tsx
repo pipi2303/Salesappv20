@@ -213,7 +213,7 @@ export function AISmartRecommendations({ leadData, onActionClick }: AISmartRecom
       case 'urgent': return 'from-red-500 to-orange-600';
       case 'opportunity': return 'from-green-500 to-emerald-600';
       case 'risk': return 'from-yellow-500 to-orange-500';
-      case 'optimization': return 'from-blue-500 to-cyan-500';
+      case 'optimization': return 'from-blue-500 to-[#013E37]';
       default: return 'from-gray-500 to-gray-600';
     }
   };
@@ -247,10 +247,10 @@ export function AISmartRecommendations({ leadData, onActionClick }: AISmartRecom
 
   if (loading) {
     return (
-      <Card className="bg-gradient-to-r from-purple-50 to-blue-50">
+      <Card className="bg-gradient-to-r from-[#EEF7F5] to-blue-50">
         <CardContent className="p-8 text-center">
           <div className="animate-pulse">
-            <Brain className="h-12 w-12 text-[#01544e] mx-auto mb-4 animate-bounce" />
+            <Brain className="h-12 w-12 text-[#013E37] mx-auto mb-4 animate-bounce" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               🤖 AI Analyzing Opportunities...
             </h3>
@@ -266,7 +266,7 @@ export function AISmartRecommendations({ leadData, onActionClick }: AISmartRecom
   return (
     <div className="space-y-4">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-[#01544e] to-[#023d39] text-white">
+      <Card className="bg-gradient-to-r from-[#013E37] to-[#025C52] text-white">
         <CardContent className="p-4">
           <div className="flex items-center gap-3">
             <Sparkles className="h-6 w-6" />
@@ -319,7 +319,7 @@ export function AISmartRecommendations({ leadData, onActionClick }: AISmartRecom
               {/* Reasoning */}
               <div className="bg-white p-3 rounded-lg border border-gray-200">
                 <div className="flex items-start gap-2">
-                  <Brain className="h-4 w-4 text-[#01544e] mt-0.5 flex-shrink-0" />
+                  <Brain className="h-4 w-4 text-[#013E37] mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-xs font-semibold text-gray-700 mb-1">AI Reasoning:</p>
                     <p className="text-xs text-gray-600">{rec.reasoning}</p>
@@ -328,7 +328,7 @@ export function AISmartRecommendations({ leadData, onActionClick }: AISmartRecom
               </div>
 
               {/* Impact */}
-              <div className="bg-white p-3 rounded-lg border-2 border-[#01544e]/20">
+              <div className="bg-white p-3 rounded-lg border-2 border-[#013E37]/20">
                 <div className="flex items-start gap-2">
                   <TrendingUp className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
                   <div>
@@ -371,7 +371,7 @@ export function AISmartRecommendations({ leadData, onActionClick }: AISmartRecom
                         key={idx}
                         size="sm"
                         onClick={() => handleActionClick(action.action)}
-                        className="bg-[#01544e] hover:bg-[#023d39] text-xs"
+                        className="bg-[#013E37] hover:bg-[#025C52] text-xs"
                       >
                         <ActionIcon className="h-3 w-3 mr-1.5" />
                         {action.label}
@@ -401,7 +401,7 @@ export function AISmartRecommendations({ leadData, onActionClick }: AISmartRecom
       )}
 
       {/* Summary Stats */}
-      <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+      <Card className="bg-gradient-to-r from-blue-50 to-[#EEF7F5] border-blue-200">
         <CardContent className="p-4">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>

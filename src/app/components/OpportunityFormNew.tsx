@@ -515,11 +515,11 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
     const colorMap = {
       blue: { icon: 'text-blue-500 hover:text-blue-700', border: 'border-blue-200', text: 'text-blue-900', borderL: 'border-blue-300' },
       green: { icon: 'text-green-500 hover:text-green-700', border: 'border-green-200', text: 'text-green-900', borderL: 'border-green-300' },
-      purple: { icon: 'text-purple-500 hover:text-purple-700', border: 'border-purple-200', text: 'text-purple-900', borderL: 'border-purple-300' },
+      purple: { icon: 'text-[#EEF7F5]0 hover:text-[#013E37]', border: 'border-[#C3DDD9]', text: 'text-[#012D29]', borderL: 'border-[#5BB5AB]' },
       orange: { icon: 'text-orange-500 hover:text-orange-700', border: 'border-orange-200', text: 'text-orange-900', borderL: 'border-orange-300' },
-      teal: { icon: 'text-teal-500 hover:text-teal-700', border: 'border-teal-200', text: 'text-teal-900', borderL: 'border-teal-300' },
+      teal: { icon: 'text-[#013E37] hover:text-[#025C52]', border: 'border-[#013E37]/20', text: 'text-[#012D29]', borderL: 'border-[#013E37]/30' },
       rose: { icon: 'text-rose-500 hover:text-rose-700', border: 'border-rose-200', text: 'text-rose-900', borderL: 'border-rose-300' },
-      indigo: { icon: 'text-indigo-500 hover:text-indigo-700', border: 'border-indigo-200', text: 'text-indigo-900', borderL: 'border-indigo-300' },
+      indigo: { icon: 'text-[#EEF7F5]0 hover:text-[#013E37]', border: 'border-[#C3DDD9]', text: 'text-[#012D29]', borderL: 'border-[#5BB5AB]' },
       amber: { icon: 'text-amber-500 hover:text-amber-700', border: 'border-amber-200', text: 'text-amber-900', borderL: 'border-amber-300' },
     };
     const colors = colorMap[color];
@@ -559,7 +559,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
     <Dialog open={true} onOpenChange={onCancel}>
       <DialogContent className="!max-w-[1100px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
         {/* HEADER */}
-        <DialogHeader className="relative bg-[#01544e] text-white px-5 py-3 space-y-0 flex-shrink-0">
+        <DialogHeader className="relative bg-[#013E37] text-white px-5 py-3 space-y-0 flex-shrink-0">
           <button
             onClick={onCancel}
             className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
@@ -585,31 +585,31 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
 
         <form onSubmit={handleSubmit} className="flex flex-col max-h-[calc(90vh-120px)] overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-            <TabsList className="w-full grid grid-cols-4 h-auto p-4 bg-[#01544e] gap-2 rounded-none flex-shrink-0">
+            <TabsList className="w-full grid grid-cols-4 h-auto p-4 bg-[#013E37] gap-2 rounded-none flex-shrink-0">
               <TabsTrigger 
                 value="basic" 
-                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-white text-[#01544e] data-[state=inactive]:bg-white/20 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-white/30 font-medium text-sm transition-all shadow-sm"
+                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-white text-[#013E37] data-[state=inactive]:bg-white/20 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-white/30 font-medium text-sm transition-all shadow-sm"
               >
                 <Building2 className="w-4 h-4" />
                 <span>Basic Info</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="sales" 
-                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-white text-[#01544e] data-[state=inactive]:bg-white/20 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-white/30 font-medium text-sm transition-all shadow-sm"
+                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-white text-[#013E37] data-[state=inactive]:bg-white/20 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-white/30 font-medium text-sm transition-all shadow-sm"
               >
                 <TrendingUp className="w-4 h-4" />
                 <span>Sales Details</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="overview" 
-                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-white text-[#01544e] data-[state=inactive]:bg-white/20 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-white/30 font-medium text-sm transition-all shadow-sm"
+                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-white text-[#013E37] data-[state=inactive]:bg-white/20 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-white/30 font-medium text-sm transition-all shadow-sm"
               >
                 <FileText className="w-4 h-4" />
                 <span>Overview Opportunity</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="ai" 
-                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-white text-[#01544e] data-[state=inactive]:bg-white/20 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-white/30 font-medium text-sm transition-all shadow-sm"
+                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-white text-[#013E37] data-[state=inactive]:bg-white/20 data-[state=inactive]:text-white data-[state=inactive]:hover:bg-white/30 font-medium text-sm transition-all shadow-sm"
               >
                 <Brain className="w-4 h-4" />
                 <span>AI Overview</span>
@@ -624,7 +624,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                 {/* Opportunity Name */}
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-[#01544e]" />
+                    <FileText className="w-4 h-4 text-[#013E37]" />
                     Opportunity Name *
                   </Label>
                   <Input
@@ -632,7 +632,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g., 50 Unit Laptop untuk PT ABC"
-                    className="text-sm h-11 border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+                    className="text-sm h-11 border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
                     required
                   />
                   <p className="text-xs text-gray-500 flex items-center gap-1.5">
@@ -645,7 +645,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <Label className="text-sm font-semibold text-gray-900">Quick Fill from Existing Data</Label>
-                    <Badge variant="outline" className="text-xs bg-[#e6f2f1] text-[#01544e] border-[#01544e]/30">Optional</Badge>
+                    <Badge variant="outline" className="text-xs bg-[#EEF7F5] text-[#013E37] border-[#013E37]/30">Optional</Badge>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-3">
@@ -670,7 +670,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                           onClick={() => setQuickFillType('partner')}
                           className={`py-2 px-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                             quickFillType === 'partner' 
-                              ? 'bg-[#01544e] text-white shadow-sm' 
+                              ? 'bg-[#013E37] text-white shadow-sm' 
                               : 'text-gray-600 hover:text-gray-900'
                           }`}
                         >
@@ -721,7 +721,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                     </div>
                   </div>
 
-                  <p className="text-xs text-[#01544e] flex items-center gap-1.5">
+                  <p className="text-xs text-[#013E37] flex items-center gap-1.5">
                     <AlertCircle className="w-3 h-3" />
                     Select to auto-fill contact details, or fill manually below
                   </p>
@@ -731,7 +731,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="clientName" className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                      <Building2 className="w-4 h-4 text-[#01544e]" />
+                      <Building2 className="w-4 h-4 text-[#013E37]" />
                       Client Name *
                     </Label>
                     <Input
@@ -739,14 +739,14 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                       value={formData.clientName}
                       onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
                       placeholder="Company name"
-                      className="text-sm h-11 border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+                      className="text-sm h-11 border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="contactPerson" className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                      <UserCircle2 className="w-4 h-4 text-[#01544e]" />
+                      <UserCircle2 className="w-4 h-4 text-[#013E37]" />
                       Contact Person *
                     </Label>
                     <Input
@@ -754,7 +754,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                       value={formData.contactPerson}
                       onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
                       placeholder="Contact name"
-                      className="text-sm h-11 border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+                      className="text-sm h-11 border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
                       required
                     />
                   </div>
@@ -764,7 +764,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-[#01544e]" />
+                      <Mail className="w-4 h-4 text-[#013E37]" />
                       Email
                     </Label>
                     <Input
@@ -773,13 +773,13 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="contact@company.com"
-                      className="text-sm h-11 border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+                      className="text-sm h-11 border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
                     />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="phone" className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                      <PhoneIcon className="w-4 h-4 text-[#01544e]" />
+                      <PhoneIcon className="w-4 h-4 text-[#013E37]" />
                       Phone
                     </Label>
                     <Input
@@ -787,7 +787,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+62 812 3456 7890"
-                      className="text-sm h-11 border-gray-300 focus:border-[#01544e] focus:ring-[#01544e]"
+                      className="text-sm h-11 border-gray-300 focus:border-[#013E37] focus:ring-[#013E37]"
                     />
                   </div>
                 </div>
@@ -800,9 +800,9 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
               <Accordion type="multiple" className="space-y-4">
                 {/* Section 1: Sales Process */}
                 <AccordionItem value="section-1" className="border rounded-lg bg-white shadow-sm">
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#e6f2f1]/50 rounded-t-lg">
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#EEF7F5]/50 rounded-t-lg">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#01544e] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-lg bg-[#013E37] flex items-center justify-center">
                         <TrendingUp className="w-5 h-5 text-white" />
                       </div>
                       <div className="text-left">
@@ -822,7 +822,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <button type="button" className="inline-flex items-center justify-center">
-                              <Info className="h-3.5 w-3.5 text-gray-400 hover:text-purple-600 transition-colors cursor-help" />
+                              <Info className="h-3.5 w-3.5 text-gray-400 hover:text-[#013E37] transition-colors cursor-help" />
                             </button>
                           </TooltipTrigger>
                           <TooltipContent 
@@ -839,45 +839,45 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                               onWheel={(e) => e.stopPropagation()}
                             >
                               <div>
-                                <h4 className="font-semibold text-sm text-purple-700 mb-1">1. Engage (Prospecting/Initial Contact)</h4>
+                                <h4 className="font-semibold text-sm text-[#013E37] mb-1">1. Engage (Prospecting/Initial Contact)</h4>
                                 <p className="text-xs text-gray-700 mb-1"><strong>Purpose:</strong> Menghubungi kontak awal, membangun kesadaran, dan menentukan apakah prospek layak dikejar.</p>
                                 <p className="text-xs text-gray-600 mb-1"><strong>Explanation:</strong> Pada tahap ini, perwakilan penjualan (atau sistem otomatis) terhubung dengan pelanggan potensial untuk memicu minat. Ini melibatkan pengiriman email pemasaran yang disesuaikan, memulai panggilan telepon, dan menggunakan alat untuk mulai membangun hubungan.</p>
-                                <p className="text-xs text-purple-600"><strong>Key Focus:</strong> Mengubah prospek mentah menjadi prospek yang memenuhi syarat.</p>
+                                <p className="text-xs text-[#013E37]"><strong>Key Focus:</strong> Mengubah prospek mentah menjadi prospek yang memenuhi syarat.</p>
                               </div>
                               
                               <div>
-                                <h4 className="font-semibold text-sm text-purple-700 mb-1">2. Understand (Discovery & Qualification)</h4>
+                                <h4 className="font-semibold text-sm text-[#013E37] mb-1">2. Understand (Discovery & Qualification)</h4>
                                 <p className="text-xs text-gray-700 mb-1"><strong>Purpose:</strong> Memahami secara mendalam kebutuhan bisnis pelanggan, titik masalah (pain points), dan anggaran.</p>
                                 <p className="text-xs text-gray-600 mb-1"><strong>Explanation:</strong> Tim penjualan melakukan panggilan penemuan untuk menganalisis lingkungan pelanggan saat ini, mengidentifikasi pemangku kepentingan utama, dan menentukan apakah peluang tersebut selaras dengan solusi. Tahap ini sering melibatkan penggunaan "Assessments" untuk menilai kemungkinan keberhasilan peluang tersebut.</p>
-                                <p className="text-xs text-purple-600"><strong>Key Focus:</strong> Kualifikasi, mengidentifikasi titik masalah, dan mengumpulkan informasi utama pelanggan.</p>
+                                <p className="text-xs text-[#013E37]"><strong>Key Focus:</strong> Kualifikasi, mengidentifikasi titik masalah, dan mengumpulkan informasi utama pelanggan.</p>
                               </div>
                               
                               <div>
-                                <h4 className="font-semibold text-sm text-purple-700 mb-1">3. Solution (Building the Vision)</h4>
+                                <h4 className="font-semibold text-sm text-[#013E37] mb-1">3. Solution (Building the Vision)</h4>
                                 <p className="text-xs text-gray-700 mb-1"><strong>Purpose:</strong> Mengembangkan dan mempresentasikan solusi khusus yang menjawab kebutuhan yang telah diidentifikasi.</p>
                                 <p className="text-xs text-gray-600 mb-1"><strong>Explanation:</strong> Penjual mendemonstrasikan bagaimana produk atau layanan secara spesifik memecahkan masalah pelanggan. Ini melibatkan pembuatan proposal, mengonfigurasi penawaran awal, dan membangun kasus bisnis yang meyakinkan.</p>
-                                <p className="text-xs text-purple-600"><strong>Key Focus:</strong> Mendemonstrasikan nilai, membuat demonstrasi/presentasi, dan menentukan solusi yang diusulkan.</p>
+                                <p className="text-xs text-[#013E37]"><strong>Key Focus:</strong> Mendemonstrasikan nilai, membuat demonstrasi/presentasi, dan menentukan solusi yang diusulkan.</p>
                               </div>
                               
                               <div>
-                                <h4 className="font-semibold text-sm text-purple-700 mb-1">4. Align (Consensus & Verification)</h4>
+                                <h4 className="font-semibold text-sm text-[#013E37] mb-1">4. Align (Consensus & Verification)</h4>
                                 <p className="text-xs text-gray-700 mb-1"><strong>Purpose:</strong> Memastikan semua pemangku kepentingan setuju dengan solusi dan proposisi nilai yang diusulkan.</p>
                                 <p className="text-xs text-gray-600 mb-1"><strong>Explanation:</strong> Tahap ini berfokus pada mendapatkan konsensus di antara para pembuat keputusan pelanggan dan menyelaraskan solusi dengan tujuan bisnis mereka. Ini menjembatani kesenjangan antara solusi teknis dan tujuan bisnis strategis.</p>
-                                <p className="text-xs text-purple-600"><strong>Key Focus:</strong> Multi-threading (melibatkan banyak kontak), menyelesaikan keberatan, dan menyelaraskan dengan prioritas pelanggan.</p>
+                                <p className="text-xs text-[#013E37]"><strong>Key Focus:</strong> Multi-threading (melibatkan banyak kontak), menyelesaikan keberatan, dan menyelaraskan dengan prioritas pelanggan.</p>
                               </div>
                               
                               <div>
-                                <h4 className="font-semibold text-sm text-purple-700 mb-1">5. Execute (Negotiation & Finalization)</h4>
+                                <h4 className="font-semibold text-sm text-[#013E37] mb-1">5. Execute (Negotiation & Finalization)</h4>
                                 <p className="text-xs text-gray-700 mb-1"><strong>Purpose:</strong> Menegosiasikan persyaratan akhir dan membuat kontrak formal.</p>
                                 <p className="text-xs text-gray-600 mb-1"><strong>Explanation:</strong> Pada tahap Eksekusi, fokus beralih ke penyelesaian kesepakatan. Ini melibatkan penggunaan CPQ (Configure, Price, Quote) untuk membuat kutipan harga yang akurat, menegosiasikan persyaratan kontrak, dan memastikan semua persetujuan internal yang diperlukan diperoleh.</p>
-                                <p className="text-xs text-purple-600"><strong>Key Focus:</strong> Finalisasi proposal, negosiasi, dan pembuatan kontrak.</p>
+                                <p className="text-xs text-[#013E37]"><strong>Key Focus:</strong> Finalisasi proposal, negosiasi, dan pembuatan kontrak.</p>
                               </div>
                               
                               <div>
-                                <h4 className="font-semibold text-sm text-purple-700 mb-1">6. Close (Win/Loss)</h4>
+                                <h4 className="font-semibold text-sm text-[#013E37] mb-1">6. Close (Win/Loss)</h4>
                                 <p className="text-xs text-gray-700 mb-1"><strong>Purpose:</strong> Secara resmi memenangkan atau kehilangan peluang dan menyelesaikan transaksi.</p>
                                 <p className="text-xs text-gray-600 mb-1"><strong>Explanation:</strong> Langkah terakhir di mana kontrak ditandatangani (Closed/Won) atau peluang hilang (Closed/Lost). Sistem mencatat hasilnya, yang membantu prakiraan masa depan dan analitik penjualan.</p>
-                                <p className="text-xs text-purple-600"><strong>Key Focus:</strong> Tanda tangan akhir, memperbarui CRM dengan hasil akhir, dan pindah ke fase implementasi.</p>
+                                <p className="text-xs text-[#013E37]"><strong>Key Focus:</strong> Tanda tangan akhir, memperbarui CRM dengan hasil akhir, dan pindah ke fase implementasi.</p>
                               </div>
                             </div>
                           </TooltipContent>
@@ -901,14 +901,14 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                       </Select>
                       
                       {/* Auto-Sync Info */}
-                      <div className="mt-2 p-3 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg">
+                      <div className="mt-2 p-3 bg-gradient-to-r from-blue-50 to-[#EEF7F5] border border-blue-200 rounded-lg">
                         <div className="flex items-start gap-2">
                           <Info className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
                           <div className="space-y-1">
                             <p className="text-xs font-semibold text-blue-900">Auto-Sync with Pipeline</p>
                             <div className="text-xs text-gray-700 space-y-0.5">
                               <p>• <span className="font-medium text-blue-700">Prospecting</span> → Engage</p>
-                              <p>• <span className="font-medium text-purple-700">Proposal</span> → Solution</p>
+                              <p>• <span className="font-medium text-[#013E37]">Proposal</span> → Solution</p>
                               <p>• <span className="font-medium text-orange-700">Negotiation</span> → Align</p>
                               <p>• <span className="font-medium text-green-700">Closed Won</span> → Execute</p>
                               <p>• <span className="font-medium text-red-700">Closed Lost</span> → Close</p>
@@ -1039,20 +1039,20 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                       <Label>Notes</Label>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <button type="button" className="text-purple-500 hover:text-purple-700">
+                          <button type="button" className="text-[#EEF7F5]0 hover:text-[#013E37]">
                             <Info className="w-4 h-4" />
                           </button>
                         </TooltipTrigger>
                         <TooltipContent 
                           side="right" 
-                          className="max-w-sm max-h-64 overflow-y-auto bg-white border-2 border-purple-200 shadow-lg p-3"
+                          className="max-w-sm max-h-64 overflow-y-auto bg-white border-2 border-[#C3DDD9] shadow-lg p-3"
                         >
                           <div className="space-y-2">
-                            <p className="font-semibold text-sm text-purple-900 mb-2">📝 History of Changes</p>
+                            <p className="font-semibold text-sm text-[#012D29] mb-2">📝 History of Changes</p>
                             {fieldHistory.notes.length > 0 ? (
                               <div className="space-y-2 text-xs">
                                 {fieldHistory.notes.map((entry, idx) => (
-                                  <div key={idx} className="border-l-2 border-purple-300 pl-2 py-1">
+                                  <div key={idx} className="border-l-2 border-[#5BB5AB] pl-2 py-1">
                                     <p className="text-gray-600 font-medium">⏰ {entry.timestamp}</p>
                                     <p className="text-gray-800 mt-0.5">{entry.value}</p>
                                   </div>
@@ -1086,9 +1086,9 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
 
                 {/* Section 2: Opportunity Qualification */}
                 <AccordionItem value="section-2" className="border rounded-lg bg-white shadow-sm">
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#e6f2f1]/50 rounded-t-lg">
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#EEF7F5]/50 rounded-t-lg">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#01544e] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-lg bg-[#013E37] flex items-center justify-center">
                         <Target className="w-5 h-5 text-white" />
                       </div>
                       <div className="text-left">
@@ -1283,9 +1283,9 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
 
                 {/* Section 3: Solution & Competition */}
                 <AccordionItem value="section-3" className="border rounded-lg bg-white shadow-sm">
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#e6f2f1]/50 rounded-t-lg">
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#EEF7F5]/50 rounded-t-lg">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-[#013E37] flex items-center justify-center">
                         <Briefcase className="w-5 h-5 text-white" />
                       </div>
                       <div className="text-left">
@@ -1404,7 +1404,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
 
                 {/* Section 4: Team & Partnership */}
                 <AccordionItem value="section-4" className="border rounded-lg bg-white shadow-sm">
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#e6f2f1]/50 rounded-t-lg">
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#EEF7F5]/50 rounded-t-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
                         <Users className="w-5 h-5 text-white" />
@@ -1465,7 +1465,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
 
                 {/* Section 5: Financial Details */}
                 <AccordionItem value="section-5" className="border rounded-lg bg-white shadow-sm">
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#e6f2f1]/50 rounded-t-lg">
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-[#EEF7F5]/50 rounded-t-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
                         <DollarSign className="w-5 h-5 text-white" />
@@ -1720,10 +1720,10 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                 <Accordion type="single" collapsible className="w-full space-y-4">
                   
                   {/* Commercial Detail Section - Collapsible */}
-                  <AccordionItem value="commercial" className="border rounded-lg bg-gradient-to-r from-teal-50 to-cyan-50">
+                  <AccordionItem value="commercial" className="border rounded-lg bg-gradient-to-r from-[#EEF7F5] to-[#EEF7F5]">
                     <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-white/50">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#013E37] to-[#013E37] flex items-center justify-center">
                           <DollarSign className="w-5 h-5 text-white" />
                         </div>
                         <div className="text-left">
@@ -2117,9 +2117,9 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
               <div className="space-y-4">
 
                 {/* AI Section Header */}
-                <div className="border rounded-lg bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 shadow-sm p-6">
+                <div className="border rounded-lg bg-gradient-to-r from-[#EEF7F5] via-[#EEF7F5] to-pink-50 shadow-sm p-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center animate-pulse">
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#013E37] to-[#013E37] flex items-center justify-center animate-pulse">
                       <Brain className="w-6 h-6 text-white" />
                     </div>
                     <div className="text-left">
@@ -2127,7 +2127,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                       <p className="text-sm text-gray-600">Leverage AI to maximize your sales potential</p>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-500 bg-white/70 p-3 rounded-lg border border-indigo-100">
+                  <p className="text-xs text-gray-500 bg-white/70 p-3 rounded-lg border border-[#DFF0EC]">
                     Our AI analyzes customer data, conversations, and behavior patterns to provide actionable insights and recommendations.
                   </p>
                 </div>
@@ -2216,37 +2216,37 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
                 </Card>
 
                 {/* 3. AI SMART RECOMMENDATIONS */}
-                <Card className="border-2 border-purple-200 hover:border-purple-400 transition-all hover:shadow-lg">
+                <Card className="border-2 border-[#C3DDD9] hover:border-[#038E7D] transition-all hover:shadow-lg">
                   <CardContent className="pt-6">
                     <div className="flex items-start gap-4 mb-4">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#EEF7F5]0 to-[#013E37] flex items-center justify-center flex-shrink-0">
                         <Sparkles className="w-5 h-5 text-white" />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-bold text-lg text-gray-900 mb-1">AI Smart Recommendations</h4>
                         <p className="text-sm text-gray-600 mb-3">AI-suggested products, pricing strategies, and cross-sell opportunities</p>
                         
-                        <div className="bg-purple-50 p-4 rounded-lg space-y-3">
+                        <div className="bg-[#EEF7F5] p-4 rounded-lg space-y-3">
                           <div className="flex items-start gap-2">
-                            <Target className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
+                            <Target className="w-4 h-4 text-[#013E37] mt-0.5 flex-shrink-0" />
                             <div>
                               <p className="text-sm font-semibold text-gray-900">Recommended Products</p>
                               <div className="flex flex-wrap gap-1.5 mt-1.5">
-                                <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">Premium Package</Badge>
-                                <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">Implementation Support</Badge>
-                                <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">Training Module</Badge>
+                                <Badge className="bg-[#DFF0EC] text-[#013E37] hover:bg-[#C3DDD9]">Premium Package</Badge>
+                                <Badge className="bg-[#DFF0EC] text-[#013E37] hover:bg-[#C3DDD9]">Implementation Support</Badge>
+                                <Badge className="bg-[#DFF0EC] text-[#013E37] hover:bg-[#C3DDD9]">Training Module</Badge>
                               </div>
                             </div>
                           </div>
                           <div className="flex items-start gap-2">
-                            <Target className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
+                            <Target className="w-4 h-4 text-[#013E37] mt-0.5 flex-shrink-0" />
                             <div>
                               <p className="text-sm font-semibold text-gray-900">Optimal Pricing Strategy</p>
                               <p className="text-xs text-gray-600">Suggest bundling with 15% discount to increase deal size by ~$12,000</p>
                             </div>
                           </div>
                           <div className="flex items-start gap-2">
-                            <Target className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
+                            <Target className="w-4 h-4 text-[#013E37] mt-0.5 flex-shrink-0" />
                             <div>
                               <p className="text-sm font-semibold text-gray-900">Cross-Sell Opportunity</p>
                               <p className="text-xs text-gray-600">85% of similar customers also purchased Analytics Dashboard within 6 months</p>
@@ -2380,7 +2380,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
             </Button>
             <Button
               type="submit"
-              className="min-w-28 h-8 text-sm font-semibold bg-[#01544e] hover:bg-[#023d39] text-white shadow-md"
+              className="min-w-28 h-8 text-sm font-semibold bg-[#013E37] hover:bg-[#025C52] text-white shadow-md"
             >
               <CheckCircle2 className="w-4 h-4 mr-2" />
               {opportunity ? 'Update' : 'Create'} Opportunity

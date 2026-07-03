@@ -55,12 +55,12 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
         </DialogHeader>
 
         {/* Gradient Header */}
-        <div className="relative bg-[#01544e] px-5 py-3 text-white flex-shrink-0">
+        <div className="relative bg-[#013E37] px-5 py-3 text-white flex-shrink-0">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               <div className="relative">
                 <div className="h-16 w-16 rounded-xl bg-white shadow-lg flex items-center justify-center">
-                  <span className="text-2xl font-bold bg-gradient-to-br from-[#01544e] to-[#023d39] bg-clip-text text-transparent">
+                  <span className="text-2xl font-bold bg-gradient-to-br from-[#013E37] to-[#025C52] bg-clip-text text-transparent">
                     {partner.nama_perusahaan?.charAt(0) || 'P'}
                   </span>
                 </div>
@@ -97,7 +97,7 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
         <div className="px-6 py-4 space-y-5 overflow-y-auto flex-1">
           {/* Quick Info Cards */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
+            <div className="bg-gradient-to-br bg-[#EEF7F5] rounded-lg p-4 border border-blue-100">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
                   <Clipboard className="h-5 w-5 text-white" />
@@ -109,9 +109,9 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-100">
+            <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-lg p-4 border border-[#DFF0EC]">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-purple-600 flex items-center justify-center flex-shrink-0">
+                <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center flex-shrink-0">
                   <Handshake className="h-5 w-5 text-white" />
                 </div>
                 <div className="min-w-0">
@@ -135,20 +135,20 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
           </div>
 
           {/* Profil Identitas Partner */}
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100">
+          <div className="bg-gradient-to-br from-[#EEF7F5] to-pink-50 rounded-xl p-6 border border-[#DFF0EC]">
             <div className="flex items-center gap-3 mb-5">
-              <div className="h-10 w-10 rounded-lg bg-purple-600 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-lg bg-[#013E37] flex items-center justify-center">
                 <Building2 className="h-5 w-5 text-white" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900 leading-none">Profil Identitas Partner</h3>
-                <p className="text-[10px] text-purple-700 mt-1 uppercase tracking-wider font-semibold opacity-70">PROFIL PERUSAHAAN & KLASIFIKASI</p>
+                <p className="text-[10px] text-[#013E37] mt-1 uppercase tracking-wider font-semibold opacity-70">PROFIL PERUSAHAAN & KLASIFIKASI</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-x-6 gap-y-4">
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <Clipboard className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <Clipboard className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">ID Customer</p>
                     <p className="font-semibold text-gray-900">{partner.id_customer || '-'}</p>
@@ -157,7 +157,7 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
               </div>
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <Building2 className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <Building2 className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Nama Perusahaan</p>
                     <p className="font-semibold text-gray-900">{partner.nama_perusahaan}</p>
@@ -166,7 +166,7 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
               </div>
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <Handshake className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <Handshake className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Tipe Partner</p>
                     <p className="font-semibold text-gray-900">{partner.tipe_partner}</p>
@@ -175,7 +175,7 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
               </div>
               <div className="bg-white rounded-lg p-4 col-span-2">
                 <div className="flex items-start gap-3">
-                  <Briefcase className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <Briefcase className="h-5 w-5 text-[#013E37] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Spesialisasi</p>
                     <p className="font-semibold text-gray-900">{partner.spesialisasi || '-'}</p>
@@ -186,7 +186,7 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
           </div>
 
           {/* Kontak & Relasi Bisnis */}
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-100">
+          <div className="bg-gradient-to-br from-blue-50 to-[#EEF7F5] rounded-xl p-6 border border-blue-100">
             <div className="flex items-center gap-3 mb-5">
               <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
                 <Users className="h-5 w-5 text-white" />
@@ -421,7 +421,7 @@ export function PartnerDetailDialog({ open, onOpenChange, partner, onEdit }: Par
           </Button>
           <Button
             onClick={onEdit}
-            className="min-w-28 h-8 text-sm font-semibold bg-[#01544e] hover:bg-[#023d39] text-white shadow-md transition-colors"
+            className="min-w-28 h-8 text-sm font-semibold bg-[#013E37] hover:bg-[#025C52] text-white shadow-md transition-colors"
           >
             <Handshake className="w-4 h-4 mr-2" />
             Edit Data
