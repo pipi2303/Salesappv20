@@ -40,7 +40,7 @@ const demoAccounts = [
   },
   {
     email: 'rivelino.hasugian@gmail.com',
-    password: 'Rivelin0',
+    password: 'R1vel1n0777!',
     name: 'Rivelino Hasugian',
     role: 'Sales Manager',
     icon: Users,
