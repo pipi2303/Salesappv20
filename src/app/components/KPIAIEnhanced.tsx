@@ -23,6 +23,7 @@ import { Progress } from '@/app/components/ui/progress';
 import { Textarea } from '@/app/components/ui/textarea';
 import { ScrollArea } from '@/app/components/ui/scroll-area';
 import { Separator } from '@/app/components/ui/separator';
+import { AchievementBadge } from '@/app/components/AchievementBadge';
 import { RevenueDetailDialog } from '@/app/components/RevenueDetailDialog';
 import { DealsDetailDialog } from '@/app/components/DealsDetailDialog';
 import { ConversionDetailDialog } from '@/app/components/ConversionDetailDialog';
@@ -451,6 +452,17 @@ export function KPIAIEnhanced() {
   const calculateProgress = (actual: number, target: number) => {
     if (target === 0) return 0;
     return Math.min((actual / target) * 100, 150);
+  };
+
+  // FR-08: simple run-rate projection for the AchievementBadge's "Forecast" value.
+  // Reuses the same day-18-of-30 mock month-progress assumption already used elsewhere in this
+  // file (see generateAIPredictions below) rather than inventing a different formula — this is a
+  // simplified placeholder, not a real calendar-aware projection; wiring it to the actual current
+  // date is a reasonable follow-up once real historical data exists to validate against.
+  const calculateForecast = (actual: number) => {
+    const daysInMonth = 30;
+    const daysElapsed = 18;
+    return actual * (daysInMonth / daysElapsed);
   };
 
   const calculateOverallProgress = (target: KPITargetData) => {
@@ -1100,6 +1112,15 @@ export function KPIAIEnhanced() {
                                 );
                               })()}
                             </div>
+                            <div className="mt-3" onClick={(e) => e.stopPropagation()}>
+                              <AchievementBadge
+                                label="Target vs Actual vs Forecast"
+                                targetValue={target.revenueTarget}
+                                actualValue={target.revenueActual}
+                                forecastValue={calculateForecast(target.revenueActual)}
+                                formatValue={formatCurrency}
+                              />
+                            </div>
                             <div className="mt-2 pt-2 border-t border-[#013E37]/10">
                               <p className="text-xs text-[#013E37] font-semibold group-hover:text-[#025C52]">
                                 🔍 Click for detailed breakdown
@@ -1139,6 +1160,15 @@ export function KPIAIEnhanced() {
                                   </div>
                                 );
                               })()}
+                            </div>
+                            <div className="mt-3" onClick={(e) => e.stopPropagation()}>
+                              <AchievementBadge
+                                label="Target vs Actual vs Forecast"
+                                targetValue={target.dealsTarget}
+                                actualValue={target.dealsActual}
+                                forecastValue={calculateForecast(target.dealsActual)}
+                                formatValue={(v) => `${Math.round(v)} deals`}
+                              />
                             </div>
                             <div className="mt-2 pt-2 border-t border-blue-200">
                               <p className="text-xs text-blue-600 font-semibold group-hover:text-blue-800">

@@ -362,10 +362,32 @@ export function ClientDetailDialog({ open, onOpenChange, client, onEdit }: Clien
                 </div>
                 <div className="bg-white rounded-lg p-4">
                   <div className="flex items-start gap-3">
+                    <Hospital className="h-5 w-5 text-emerald-600 mt-0.5" />
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Sektor Kepemilikan</p>
+                      <p className="font-semibold text-gray-900">{(client as any).sektor_client || '-'}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg p-4">
+                  <div className="flex items-start gap-3">
                     <MapPin className="h-5 w-5 text-emerald-600 mt-0.5" />
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Alamat Lengkap</p>
-                      <p className="font-semibold text-gray-900">{client.alamat_lengkap || '-'}</p>
+                      <p className="text-sm text-gray-500 mb-1">Alamat Penagihan (Billing)</p>
+                      <p className="font-semibold text-gray-900">
+                        {(client as any).alamat_penagihan || client.alamat_lengkap || '-'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="h-5 w-5 text-emerald-600 mt-0.5" />
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Alamat Kunjungan / Pengiriman</p>
+                      <p className="font-semibold text-gray-900">
+                        {(client as any).alamat_pengiriman || client.alamat_lengkap || '-'}
+                      </p>
                     </div>
                   </div>
                 </div>

@@ -113,7 +113,6 @@ export function DemoScheduler() {
         console.log('📝 First demo sample:', result.data[0]);
         
         setDemos(result.data);
-        toast.success('Demos loaded successfully');
       } else {
         toast.error(result.error || 'Failed to load demos');
       }

@@ -63,7 +63,6 @@ export function LeadManagement() {
       
       if (result.success && result.data) {
         setLeads(result.data);
-        toast.success('Leads loaded successfully');
       } else {
         toast.error(result.error || 'Failed to load leads');
       }

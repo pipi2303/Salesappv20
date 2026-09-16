@@ -98,7 +98,6 @@ export function Home() {
         setStats(prev => ({ ...prev, demosScheduled: upcomingDemos }));
       }
 
-      toast.success('Dashboard data loaded');
     } catch (error: any) {
       console.error('Error fetching dashboard data:', error);
       toast.error('Failed to load dashboard data');

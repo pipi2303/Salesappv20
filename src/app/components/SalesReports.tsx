@@ -112,7 +112,6 @@ export function SalesReports() {
           forecast: totalRevenue * 0.65
         });
       }
-      toast.success('Reports data loaded successfully');
     } catch (error: any) {
       console.error('Error fetching reports data:', error);
       toast.error('Failed to load reports data');

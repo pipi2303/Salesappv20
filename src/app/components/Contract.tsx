@@ -55,7 +55,6 @@ export function Contract() {
           endDate: contract.endDate instanceof Date ? contract.endDate : new Date(contract.endDate)
         }));
         setContracts(contractsWithDates);
-        toast.success('Contracts loaded successfully');
       } else {
         toast.error(result.error || 'Failed to load contracts');
       }

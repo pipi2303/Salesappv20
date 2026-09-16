@@ -51,8 +51,16 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
     id_customer: '', // NEW FIELD - ID Customer
     nama_entitas: '',
     kategori_client: '',
+    // FR-05: Sektor kepemilikan faskes (Type/Sub Type/Sector dari FSD, diadaptasi ke konteks
+    // faskes kesehatan — bukan Distributor/Installer/Kontraktor ala Onduline yang ada di FSD asli,
+    // karena Salesappv20 memang mengelola Rumah Sakit/Puskesmas/Klinik, bukan proyek atap/bangunan).
+    sektor_client: '',
     owner: '',
-    alamat_lengkap: '',
+    alamat_lengkap: '', // deprecated: dipertahankan untuk kompatibilitas data lama, lihat alamat_penagihan/alamat_pengiriman
+    // FR-06: pemisahan alamat penagihan vs alamat kunjungan/pengiriman
+    alamat_penagihan: '',
+    alamat_pengiriman: '',
+    alamat_sama_dengan_penagihan: true,
     koordinat_gps: '',
     nomor_telepon: '',
     email_resmi: '',
@@ -93,8 +101,18 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
         id_customer: client.id_customer || '', // NEW FIELD - ID Customer
         nama_entitas: client.nama_entitas || '',
         kategori_client: client.kategori_client || '',
+        sektor_client: client.sektor_client || '',
         owner: client.owner || '',
         alamat_lengkap: client.alamat_lengkap || '',
+        // Migration fallback: data lama hanya punya alamat_lengkap. Kalau alamat_penagihan belum
+        // pernah diisi, tampilkan alamat_lengkap di kedua field dan anggap "sama dengan penagihan"
+        // dicentang, supaya user tidak kehilangan data lama dan tinggal koreksi kalau memang berbeda.
+        alamat_penagihan: client.alamat_penagihan || client.alamat_lengkap || '',
+        alamat_pengiriman: client.alamat_pengiriman || client.alamat_lengkap || '',
+        alamat_sama_dengan_penagihan:
+          client.alamat_penagihan !== undefined
+            ? client.alamat_penagihan === client.alamat_pengiriman
+            : true,
         koordinat_gps: client.koordinat_gps || '',
         nomor_telepon: client.nomor_telepon || '',
         email_resmi: client.email_resmi || '',
@@ -152,10 +170,17 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
 
     try {
       setLoading(true);
-      
-      const result = client 
-        ? await clientsApi.update(client.id, formData)
-        : await clientsApi.create(formData);
+
+      // Keep legacy alamat_lengkap in sync (billing address) so any older code/report still
+      // reading that field doesn't silently break after the FR-06 billing/shipping split.
+      const payload = {
+        ...formData,
+        alamat_lengkap: formData.alamat_penagihan,
+      };
+
+      const result = client
+        ? await clientsApi.update(client.id, payload)
+        : await clientsApi.create(payload);
       
       if (result.success) {
         toast.success(client ? 'Data client berhasil diupdate!' : 'Data client berhasil ditambahkan!');
@@ -385,6 +410,28 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
                           className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-11"
                         />
                       </div>
+
+                      {/* FR-05: Sektor kepemilikan faskes — draft awal, mohon direview tim Sales/Product Owner */}
+                      <div className="col-span-3 space-y-2">
+                        <Label className="text-sm font-semibold text-gray-700">
+                          Sektor Kepemilikan
+                        </Label>
+                        <Select
+                          value={formData.sektor_client}
+                          onValueChange={(value) => setFormData(prev => ({ ...prev, sektor_client: value }))}
+                        >
+                          <SelectTrigger className="bg-white border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-11">
+                            <SelectValue placeholder="Pilih sektor" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Pemerintah">Pemerintah (Pemda/Kemenkes)</SelectItem>
+                            <SelectItem value="BUMN/BUMD">BUMN / BUMD</SelectItem>
+                            <SelectItem value="Swasta">Swasta</SelectItem>
+                            <SelectItem value="TNI/Polri">TNI / Polri</SelectItem>
+                            <SelectItem value="Yayasan/Nirlaba">Yayasan / Nirlaba</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </div>
 
@@ -396,17 +443,59 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
                     </div>
 
                     <div className="grid grid-cols-6 gap-4">
+                      {/* FR-06: Alamat Penagihan (Billing) vs Alamat Kunjungan/Pengiriman (Shipping) */}
                       <div className="col-span-6 space-y-2">
-                        <Label className="text-sm font-semibold text-gray-700">Alamat Lengkap</Label>
+                        <Label className="text-sm font-semibold text-gray-700">Alamat Penagihan (Billing)</Label>
                         <textarea
-                          name="alamat_lengkap"
-                          value={formData.alamat_lengkap}
-                          onChange={handleChange}
+                          name="alamat_penagihan"
+                          value={formData.alamat_penagihan}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setFormData(prev => ({
+                              ...prev,
+                              alamat_penagihan: value,
+                              alamat_pengiriman: prev.alamat_sama_dengan_penagihan ? value : prev.alamat_pengiriman,
+                            }));
+                          }}
                           rows={2}
                           className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm bg-white transition-all"
                           placeholder="Jl. Sudirman Kav. 52, Jakarta Pusat 10210"
                         />
                       </div>
+
+                      <div className="col-span-6 flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          id="alamat_sama_dengan_penagihan"
+                          checked={formData.alamat_sama_dengan_penagihan}
+                          onChange={(e) => {
+                            const checked = e.target.checked;
+                            setFormData(prev => ({
+                              ...prev,
+                              alamat_sama_dengan_penagihan: checked,
+                              alamat_pengiriman: checked ? prev.alamat_penagihan : prev.alamat_pengiriman,
+                            }));
+                          }}
+                          className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                        />
+                        <Label htmlFor="alamat_sama_dengan_penagihan" className="text-sm text-gray-600 cursor-pointer">
+                          Alamat kunjungan/pengiriman sama dengan alamat penagihan
+                        </Label>
+                      </div>
+
+                      {!formData.alamat_sama_dengan_penagihan && (
+                        <div className="col-span-6 space-y-2">
+                          <Label className="text-sm font-semibold text-gray-700">Alamat Kunjungan / Pengiriman (Shipping)</Label>
+                          <textarea
+                            name="alamat_pengiriman"
+                            value={formData.alamat_pengiriman}
+                            onChange={handleChange}
+                            rows={2}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm bg-white transition-all"
+                            placeholder="Alamat untuk kunjungan sales / pengiriman, bila berbeda dari alamat penagihan"
+                          />
+                        </div>
+                      )}
 
                       <div className="col-span-3 space-y-2">
                         <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
