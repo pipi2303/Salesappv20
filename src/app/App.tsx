@@ -261,7 +261,7 @@ function AppContent() {
                 className="h-9 w-9 rounded-lg bg-white object-contain p-0.5 shadow-sm flex-shrink-0"
               />
               <div className="min-w-0 leading-tight">
-                <h1 className="text-lg font-bold text-white truncate">Sales & CRM</h1>
+                <h1 className="text-lg font-bold text-white truncate tracking-[1.6px]">Sales & CRM</h1>
                 <p className="text-[7.5px] font-medium tracking-[0.06em] text-white/70 whitespace-nowrap overflow-hidden text-ellipsis">
                   PEOPLE . PIPELINE . GROWTH
                 </p>
