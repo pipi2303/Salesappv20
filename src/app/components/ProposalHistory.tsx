@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Badge } from '@/app/components/ui/badge';
+import { useConfirm } from '@/app/components/ui/confirm-dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
@@ -31,6 +32,7 @@ interface ProposalData {
 }
 
 export function ProposalHistory() {
+  const confirm = useConfirm();
   const [proposals, setProposals] = useState<ProposalData[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -66,7 +68,7 @@ export function ProposalHistory() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Yakin ingin menghapus proposal ini?')) return;
+    if (!(await confirm('Yakin ingin menghapus proposal ini?', { variant: 'destructive', confirmText: 'Hapus' }))) return;
 
     try {
       setDeleteLoading(id);

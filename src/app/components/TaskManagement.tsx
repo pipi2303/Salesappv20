@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, CheckCircle, Circle, Clock, AlertCircle, Calendar, User, Tag, Filter, Trash2, Edit, Flag, Star, Eye, MapPin, CornerDownRight, Navigation } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
+import { useConfirm } from '@/app/components/ui/confirm-dialog';
 import { Badge } from '@/app/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/app/components/ui/dialog';
@@ -205,6 +206,7 @@ const emptyTaskForm = (): TaskFormState => ({
 
 export function TaskManagement() {
   const { user } = useAuth();
+  const confirm = useConfirm();
   // FR-07: role Super Admin / Sales Manager boleh override lock status Completed
   // (menghubungkan role system yang sudah ada di Admin System ke rule ini).
   const isAdminOverride = user?.role === 'Super Admin' || user?.role === 'Sales Manager';
@@ -318,8 +320,9 @@ export function TaskManagement() {
         toast.error('Task yang sudah Completed tidak bisa diubah lagi (butuh akses Admin).');
         return;
       }
-      const proceedOverride = window.confirm(
-        `Task ini sudah Completed. Sebagai ${user?.role}, Anda bisa membuka kembali task ini. Lanjutkan reopen ke "${newStatus === 'todo' ? 'Not Started' : 'Ongoing'}"?`
+      const proceedOverride = await confirm(
+        `Task ini sudah Completed. Sebagai ${user?.role}, Anda bisa membuka kembali task ini. Lanjutkan reopen ke "${newStatus === 'todo' ? 'Not Started' : 'Ongoing'}"?`,
+        { title: 'Reopen Task (Admin Override)' }
       );
       if (!proceedOverride) return;
     }
@@ -327,7 +330,7 @@ export function TaskManagement() {
     if (task.status === newStatus) return;
 
     if (task.status === 'todo' && newStatus === 'completed') {
-      const proceed = window.confirm(
+      const proceed = await confirm(
         'Task ini belum melalui status "Ongoing". Tandai langsung sebagai Completed?'
       );
       if (!proceed) return;
@@ -383,12 +386,12 @@ export function TaskManagement() {
   // FR-03: GPS check-in for Visit-type tasks. check_in_at uses the device clock as a stand-in for a
   // server timestamp — there's no backend clock available yet in the localStorage-only architecture,
   // which is a known limitation worth flagging (see business rule: server time, not device time).
-  const handleCheckIn = (taskId: string) => {
+  const handleCheckIn = async (taskId: string) => {
     const task = tasks.find(t => t.id === taskId);
     if (!task) return;
 
     if (task.checkInAt) {
-      const overwrite = window.confirm(
+      const overwrite = await confirm(
         'Task ini sudah memiliki data check-in sebelumnya. Timpa dengan lokasi baru?'
       );
       if (!overwrite) return;

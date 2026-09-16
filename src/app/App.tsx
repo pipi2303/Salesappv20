@@ -38,6 +38,7 @@ import { ComponentLoader } from '@/app/components/ComponentLoader';
 import { Login } from '@/app/components/Login';
 import { AuthProvider, useAuth } from '@/app/contexts/AuthContext';
 import { ModalPortalProvider } from '@/app/contexts/ModalPortalContext';
+import { ConfirmDialogProvider } from '@/app/components/ui/confirm-dialog';
 import { initializeAllData } from '@/utils/initializeAllData';
 import '@/utils/demoDebug'; // Load debug utilities
 import { toast } from 'sonner';
@@ -60,7 +61,9 @@ type MenuItem = {
 function AppContent() {
   const { user, logout, login, isAuthenticated } = useAuth();
   const [activeMenu, setActiveMenu] = useState('home');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(
+    () => typeof window === 'undefined' || window.innerWidth >= 768
+  );
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -106,6 +109,23 @@ function AppContent() {
       clearTimeout(timer);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
+  }, []);
+
+  // FIX: gap mobile responsiveness - sidebar auto-collapse ke mode icon-only
+  // (bukan disembunyikan total, supaya tetap sesuai requirement "Sidebar harus
+  // selalu tetap terlihat") saat lebar layar < 768px, supaya .content-area
+  // (tempat modal/dialog center) tidak terlalu sempit di HP. User tetap bisa
+  // toggle manual seperti biasa - effect ini cuma auto-collapse saat resize
+  // KE mobile, tidak memaksa buka lagi saat kembali ke desktop.
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsSidebarOpen(false);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Close user menu when clicking outside
@@ -227,19 +247,25 @@ function AppContent() {
 
   return (
     <ModalPortalProvider container={modalPortalRoot}>
+    <ConfirmDialogProvider>
     <div className="h-screen w-screen flex overflow-hidden bg-gray-50">
       {/* Sidebar */}
       <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-gray-200 transition-all duration-300 flex flex-col shadow-lg`}>
         {/* Logo */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 bg-[#013E37]">
           {isSidebarOpen && (
-            <div className="flex items-center gap-2 min-w-0">
+            <div className="flex items-center gap-1.5 min-w-0">
               <img
                 src="/logo-sales-crm.png"
                 alt="Sales & CRM"
                 className="h-9 w-9 rounded-lg bg-white object-contain p-0.5 shadow-sm flex-shrink-0"
               />
-              <h1 className="text-xl font-bold text-white truncate">Sales & CRM</h1>
+              <div className="min-w-0 leading-tight">
+                <h1 className="text-lg font-bold text-white truncate">Sales & CRM</h1>
+                <p className="text-[7.5px] font-medium tracking-[0.06em] text-white/70 whitespace-nowrap overflow-hidden text-ellipsis">
+                  PEOPLE . PIPELINE . GROWTH
+                </p>
+              </div>
             </div>
           )}
           <Button
@@ -446,6 +472,7 @@ function AppContent() {
       {/* Toast Notifications */}
       {/* <Toaster position="top-right" richColors /> dihapus atas permintaan user - popup notifikasi kanan atas */}
     </div>
+    </ConfirmDialogProvider>
     </ModalPortalProvider>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Search, Filter, Edit2, Trash2, Eye, Phone, Mail, Building2, RefreshCw, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
+import { useConfirm } from '@/app/components/ui/confirm-dialog';
 import { Input } from '@/app/components/ui/input';
 import { Badge } from '@/app/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/app/components/ui/dialog';
@@ -27,6 +28,7 @@ interface ExtendedLead extends Lead {
 }
 
 export function LeadManagement() {
+  const confirm = useConfirm();
   const [leads, setLeads] = useState<ExtendedLead[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -166,7 +168,7 @@ export function LeadManagement() {
   };
 
   const handleDeleteLead = async (leadId: string) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus lead ini?')) {
+    if (!(await confirm('Apakah Anda yakin ingin menghapus lead ini?', { variant: 'destructive', confirmText: 'Hapus' }))) {
       return;
     }
 
@@ -186,7 +188,7 @@ export function LeadManagement() {
   };
 
   const handleClearAllLeads = async () => {
-    if (!confirm('⚠️ PERHATIAN: Apakah Anda yakin ingin menghapus SEMUA lead? Tindakan ini tidak dapat dibatalkan!')) {
+    if (!(await confirm('⚠️ PERHATIAN: Apakah Anda yakin ingin menghapus SEMUA lead? Tindakan ini tidak dapat dibatalkan!', { variant: 'destructive', confirmText: 'Hapus Semua', title: 'Hapus Semua Lead' }))) {
       return;
     }
 

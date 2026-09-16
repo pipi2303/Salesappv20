@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Filter, Package, DollarSign, Edit, Trash2, Star, AlertCircle, Check, RefreshCw } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
+import { useConfirm } from '@/app/components/ui/confirm-dialog';
 import { Input } from '@/app/components/ui/input';
 import { Badge } from '@/app/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
@@ -27,6 +28,7 @@ interface ProposalItem {
 }
 
 export function ProductCatalog() {
+  const confirm = useConfirm();
   const { user } = useAuth();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -223,7 +225,7 @@ export function ProductCatalog() {
   };
 
   const handleDelete = async (product: any) => {
-    if (!confirm(`Apakah Anda yakin ingin menghapus produk "${product.name}"?`)) {
+    if (!(await confirm(`Apakah Anda yakin ingin menghapus produk "${product.name}"?`, { variant: 'destructive', confirmText: 'Hapus' }))) {
       return;
     }
 
@@ -704,8 +706,8 @@ export function ProductCatalog() {
         onRemoveItem={(id) => {
           setProposalItems(proposalItems.filter(item => item.id !== id));
         }}
-        onClearAll={() => {
-          if (confirm('Hapus semua item dari proposal?')) {
+        onClearAll={async () => {
+          if (await confirm('Hapus semua item dari proposal?', { variant: 'destructive', confirmText: 'Hapus' })) {
             setProposalItems([]);
             setShowProposal(false);
           }

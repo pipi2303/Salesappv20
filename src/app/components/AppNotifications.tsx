@@ -6,6 +6,7 @@ import {
   Award, Pin, Archive, History, Settings, RefreshCw, Volume2, Mail
 } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
+import { useConfirm } from '@/app/components/ui/confirm-dialog';
 import { Badge } from '@/app/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/app/components/ui/tooltip';
 import { NotificationSettings, NotificationSettingsType } from '@/app/components/NotificationSettings';
@@ -36,6 +37,7 @@ interface AppNotificationsProps {
 }
 
 export const AppNotifications = React.memo(function AppNotifications({ className, contracts = [], onViewContract }: AppNotificationsProps) {
+  const confirm = useConfirm();
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [filter, setFilter] = useState<'all' | 'unread' | 'urgent' | 'pinned' | 'archived'>('all');
@@ -524,8 +526,8 @@ export const AppNotifications = React.memo(function AppNotifications({ className
     toast.success('Semua notifikasi ditandai sudah dibaca');
   };
 
-  const handleClearAll = () => {
-    if (window.confirm('Hapus semua notifikasi?')) {
+  const handleClearAll = async () => {
+    if (await confirm('Hapus semua notifikasi?', { variant: 'destructive', confirmText: 'Hapus' })) {
       setNotifications([]);
       localStorage.removeItem('notifications');
       toast.success('Semua notifikasi dihapus');

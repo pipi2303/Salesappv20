@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
+import { useConfirm } from '@/app/components/ui/confirm-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Badge } from '@/app/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/app/components/ui/dialog';
@@ -171,6 +172,7 @@ const LOST_CLOSE_REASONS = [
 ];
 
 export function OpportunityManagement() {
+  const confirm = useConfirm();
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -290,7 +292,7 @@ export function OpportunityManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this opportunity?')) {
+    if (!(await confirm('Are you sure you want to delete this opportunity?', { variant: 'destructive', confirmText: 'Hapus' }))) {
       return;
     }
     
@@ -364,7 +366,7 @@ export function OpportunityManagement() {
     }
   };
 
-  const handleStageChange = (id: string, newStage: string) => {
+  const handleStageChange = async (id: string, newStage: string) => {
     const opportunity = opportunities.find(o => o.id === id);
     if (!opportunity) return;
 
@@ -373,7 +375,7 @@ export function OpportunityManagement() {
 
     // FR-04 alt flow A2: reopening a closed opportunity needs confirmation and clears Close Reason/Detail.
     if (wasClosed && !willBeClosed) {
-      const proceed = window.confirm(
+      const proceed = await confirm(
         'Membuka kembali opportunity yang sudah ditutup? Close Reason/Detail akan dikosongkan.'
       );
       if (!proceed) return;

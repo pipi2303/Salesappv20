@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Plus, Eye, Edit, Trash2, Users, Mail, Phone, Calendar, Building2, MapPin, FileText, Check, X, Shield, CreditCard, Briefcase, Target, TrendingUp, Award, Activity, UserPlus, Download, Upload, RefreshCw, MessageSquare, Clock, Star, ChevronRight, User, Sparkles, Handshake, Database } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
+import { useConfirm } from '@/app/components/ui/confirm-dialog';
 import { Input } from '@/app/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Badge } from '@/app/components/ui/badge';
@@ -52,6 +53,7 @@ interface Karyawan {
 }
 
 export function SalesTeam() {
+  const confirm = useConfirm();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('client');
   const [loading, setLoading] = useState(false);
@@ -164,7 +166,7 @@ export function SalesTeam() {
   };
 
   const handleDeleteKaryawan = async (id: string) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus data karyawan ini?')) return;
+    if (!(await confirm('Apakah Anda yakin ingin menghapus data karyawan ini?', { variant: 'destructive', confirmText: 'Hapus' }))) return;
     
     try {
       const result = await employeesApi.delete(id);
@@ -199,7 +201,7 @@ export function SalesTeam() {
   };
 
   const handleDeleteClient = async (id: string) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus data client ini?')) return;
+    if (!(await confirm('Apakah Anda yakin ingin menghapus data client ini?', { variant: 'destructive', confirmText: 'Hapus' }))) return;
     
     try {
       const result = await clientsApi.delete(id);
@@ -234,7 +236,7 @@ export function SalesTeam() {
   };
 
   const handleDeletePartner = async (id: string) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus data partner ini?')) return;
+    if (!(await confirm('Apakah Anda yakin ingin menghapus data partner ini?', { variant: 'destructive', confirmText: 'Hapus' }))) return;
     
     try {
       const result = await partnersApi.delete(id);

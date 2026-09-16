@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Users, RefreshCw, Database } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
+import { useConfirm } from '@/app/components/ui/confirm-dialog';
 import { Card, CardContent } from '@/app/components/ui/card';
 import { toast } from 'sonner';
 import { useAuth } from '@/app/contexts/AuthContext';
@@ -39,6 +40,7 @@ interface Karyawan {
 }
 
 export function SalesRepresentative() {
+  const confirm = useConfirm();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   
@@ -102,7 +104,7 @@ export function SalesRepresentative() {
   };
 
   const handleDeleteKaryawan = async (id: string) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus data karyawan ini?')) return;
+    if (!(await confirm('Apakah Anda yakin ingin menghapus data karyawan ini?', { variant: 'destructive', confirmText: 'Hapus' }))) return;
     
     try {
       const result = await employeesApi.delete(id);
