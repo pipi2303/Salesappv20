@@ -5,6 +5,7 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
 
 import { cn } from "./utils";
+import { useModalPortalContainer } from "@/app/contexts/ModalPortalContext";
 
 function DropdownMenu({
   ...props
@@ -13,10 +14,18 @@ function DropdownMenu({
 }
 
 function DropdownMenuPortal({
+  container,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) {
+  // FIX: default ke #modal-portal-root (di dalam .content-area) kalau container
+  // tidak diberikan secara eksplisit - konsisten dgn Dialog/Select/Popover/Tooltip.
+  const contentAreaPortalRoot = useModalPortalContainer();
   return (
-    <DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />
+    <DropdownMenuPrimitive.Portal
+      data-slot="dropdown-menu-portal"
+      container={container ?? contentAreaPortalRoot ?? undefined}
+      {...props}
+    />
   );
 }
 
@@ -36,8 +45,9 @@ function DropdownMenuContent({
   sideOffset = 4,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+  const contentAreaPortalRoot = useModalPortalContainer();
   return (
-    <DropdownMenuPrimitive.Portal>
+    <DropdownMenuPrimitive.Portal container={contentAreaPortalRoot ?? undefined}>
       <DropdownMenuPrimitive.Content
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}

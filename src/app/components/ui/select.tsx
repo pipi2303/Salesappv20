@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "./utils";
+import { useModalPortalContainer } from "@/app/contexts/ModalPortalContext";
 
 function Select({
   ...props
@@ -60,8 +61,12 @@ function SelectContent({
   position = "popper",
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
+  // FIX: portal ke #modal-portal-root (di dalam .content-area) - lihat App.tsx &
+  // ModalPortalContext - supaya dropdown Select tetap ter-scope ke area content,
+  // konsisten dgn Dialog. Fallback ke document.body kalau context tidak ada.
+  const contentAreaPortalRoot = useModalPortalContainer();
   return (
-    <SelectPrimitive.Portal>
+    <SelectPrimitive.Portal container={contentAreaPortalRoot ?? undefined}>
       <SelectPrimitive.Content
         data-slot="select-content"
         className={cn(

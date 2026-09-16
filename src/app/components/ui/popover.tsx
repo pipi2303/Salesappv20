@@ -4,6 +4,7 @@ import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
 import { cn } from "./utils";
+import { useModalPortalContainer } from "@/app/contexts/ModalPortalContext";
 
 function Popover({
   ...props
@@ -23,8 +24,11 @@ function PopoverContent({
   sideOffset = 4,
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+  // FIX: sama seperti SelectContent - portal ke #modal-portal-root supaya tetap
+  // ter-scope ke .content-area.
+  const contentAreaPortalRoot = useModalPortalContainer();
   return (
-    <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Portal container={contentAreaPortalRoot ?? undefined}>
       <PopoverPrimitive.Content
         data-slot="popover-content"
         align={align}

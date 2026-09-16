@@ -4,6 +4,7 @@ import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
 import { cn } from "./utils";
+import { useModalPortalContainer } from "@/app/contexts/ModalPortalContext";
 
 function TooltipProvider({
   delayDuration = 0,
@@ -40,8 +41,11 @@ function TooltipContent({
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  // FIX: sama seperti SelectContent - portal ke #modal-portal-root supaya tetap
+  // ter-scope ke .content-area.
+  const contentAreaPortalRoot = useModalPortalContainer();
   return (
-    <TooltipPrimitive.Portal>
+    <TooltipPrimitive.Portal container={contentAreaPortalRoot ?? undefined}>
       <TooltipPrimitive.Content
         data-slot="tooltip-content"
         sideOffset={sideOffset}

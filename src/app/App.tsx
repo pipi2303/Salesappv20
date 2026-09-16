@@ -456,11 +456,16 @@ function AppContent() {
           </div>
           {/* Portal target untuk modal/dialog: sibling dari div yang di-scroll di atas,
               supaya modal "lock" (tidak ikut bergerak saat konten discroll) dan tetap
-              terbatas di area content (tidak menutupi sidebar/header). */}
+              terbatas di area content (tidak menutupi sidebar/header).
+              style transform: bikin elemen ini jadi "containing block" utk descendant
+              position:fixed (dipakai Select/Popover/DropdownMenu/Tooltip via Radix
+              Popper) - tanpa ini, portal container saja tidak cukup karena fixed selalu
+              relatif ke viewport kecuali ada ancestor dgn transform/filter/perspective. */}
           <div
             id="modal-portal-root"
             ref={setModalPortalRoot}
             className="absolute inset-0 pointer-events-none z-40"
+            style={{ transform: 'translateZ(0)' }}
           />
         </div>
       </main>
