@@ -83,7 +83,10 @@ export function LeadManagement() {
   });
 
   const handleAddLead = () => {
-    setFormData({});
+    // FIX: default status 'new' agar konsisten dgn tampilan Select di form
+    // (sebelumnya formData.status kosong sampai user membuka dropdown,
+    // menyebabkan badge status lead baru tampil kosong di daftar)
+    setFormData({ status: 'new' });
     setSelectedLead(null);
     setCompanies([{ name: '', position: '' }]);
     setIsDialogOpen(true);
@@ -140,7 +143,8 @@ export function LeadManagement() {
         }
       } else {
         // Create new lead
-        const result = await leadsApi.create(formData);
+        // Defensive default: pastikan status tidak pernah kosong walau form belum disentuh
+        const result = await leadsApi.create({ status: 'new', ...formData });
         
         if (result.success && result.data) {
           setLeads([...leads, result.data]);

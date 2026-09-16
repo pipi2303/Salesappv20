@@ -15,7 +15,7 @@ import { ContractRenewalReminders, ContractTemplates, ContractRiskScoring } from
 import { ContractAnalytics } from '@/app/components/ContractAnalytics';
 import { ContractAmendments, ContractCompliance, ContractESignature, ContractRevenue } from '@/app/components/ContractAdvancedFeatures';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
-import { formatCurrency } from '@/utils/formatters';
+import { formatCurrency, getEffectiveContractStatus } from '@/utils/formatters';
 
 export function Contract() {
   const [contracts, setContracts] = useState<ContractType[]>([]);
@@ -86,15 +86,16 @@ export function Contract() {
     const matchesSearch = contract.contractNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          contract.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          contract.company.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || contract.status === filterStatus;
+    const matchesStatus = filterStatus === 'all' || getEffectiveContractStatus(contract.status, contract.endDate) === filterStatus;
     return matchesSearch && matchesStatus;
   });
 
   const stats = {
     total: contracts.length,
-    active: contracts.filter(c => c.status === 'active').length,
+    // FIX: kontrak yang endDate-nya sudah lewat tidak lagi dihitung sebagai 'active'
+    active: contracts.filter(c => getEffectiveContractStatus(c.status, c.endDate) === 'active').length,
     pending: contracts.filter(c => c.status === 'pending').length,
-    totalValue: contracts.filter(c => c.status === 'active').reduce((sum, c) => sum + c.value, 0)
+    totalValue: contracts.filter(c => getEffectiveContractStatus(c.status, c.endDate) === 'active').reduce((sum, c) => sum + c.value, 0)
   };
 
   const handleAddContract = () => {
@@ -294,7 +295,7 @@ export function Contract() {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">{contract.contractNumber}</h3>
-                      <Badge className={statusColors[contract.status]}>{contract.status.toUpperCase()}</Badge>
+                      <Badge className={statusColors[getEffectiveContractStatus(contract.status, contract.endDate)]}>{getEffectiveContractStatus(contract.status, contract.endDate).toUpperCase()}</Badge>
                     </div>
                   </div>
 

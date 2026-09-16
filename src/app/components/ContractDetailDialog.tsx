@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/app/com
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
 import { Contract as ContractType } from '@/app/data/dummyData';
+import { getEffectiveContractStatus } from '@/utils/formatters';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 interface ContractDetailDialogProps {
@@ -59,6 +60,8 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
   const daysRemaining = getDaysRemaining(contract.endDate);
   const totalDays = getDaysDifference(contract.startDate, contract.endDate);
   const progressPercentage = Math.max(0, Math.min(100, ((totalDays - daysRemaining) / totalDays) * 100));
+  // FIX: kontrak dgn status 'active' tapi endDate sudah lewat ditampilkan sebagai 'expired'
+  const effectiveStatus = getEffectiveContractStatus(contract.status, contract.endDate);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -86,10 +89,10 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
             <div className="flex-1">
               <h2 className="text-lg font-bold mb-1">{contract.contractNumber}</h2>
               <div className="flex items-center gap-2 mb-2">
-                <Badge className={getStatusColor(contract.status)}>
+                <Badge className={getStatusColor(effectiveStatus)}>
                   <span className="flex items-center gap-1 text-xs">
-                    {getStatusIcon(contract.status)}
-                    {contract.status.toUpperCase()}
+                    {getStatusIcon(effectiveStatus)}
+                    {effectiveStatus.toUpperCase()}
                   </span>
                 </Badge>
                 {contract.product && (
@@ -219,8 +222,8 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
               </div>
               <div>
                 <p className="text-xs text-gray-500 mb-1">Status</p>
-                <Badge className={getStatusColor(contract.status)}>
-                  {contract.status.toUpperCase()}
+                <Badge className={getStatusColor(effectiveStatus)}>
+                  {effectiveStatus.toUpperCase()}
                 </Badge>
               </div>
             </div>

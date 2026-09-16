@@ -13,6 +13,7 @@ import { Checkbox } from '@/app/components/ui/checkbox';
 import { toast } from 'sonner';
 import { formatDate } from '@/utils/formatters';
 import { tasksApi } from '@/services/api';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 // FR-03/FR-07: Task type drives whether GPS Check-in is available ('visit' only).
 export type TaskType = 'visit' | 'call' | 'email' | 'other';
@@ -203,6 +204,10 @@ const emptyTaskForm = (): TaskFormState => ({
 });
 
 export function TaskManagement() {
+  const { user } = useAuth();
+  // FR-07: role Super Admin / Sales Manager boleh override lock status Completed
+  // (menghubungkan role system yang sudah ada di Admin System ke rule ini).
+  const isAdminOverride = user?.role === 'Super Admin' || user?.role === 'Sales Manager';
   const [activeTab, setActiveTab] = useState('my-tasks');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterPriority, setFilterPriority] = useState('all');
@@ -301,14 +306,22 @@ export function TaskManagement() {
 
   // FR-07: Not Started (todo) -> Ongoing (in-progress) -> Completed, in order.
   // Skipping straight from todo to completed requires explicit confirmation.
-  // Completed tasks are locked (business rule: "tidak dapat diedit lagi kecuali Admin") — this UI has no Admin role check yet, so Completed is locked for everyone; flag this to the product owner if an Admin override is needed.
+  // Completed tasks terkunci untuk role biasa. Super Admin / Sales Manager bisa
+  // override (reopen) dengan konfirmasi eksplisit, memanfaatkan role system yang
+  // sudah ada di Admin System.
   const changeTaskStatus = async (taskId: string, newStatus: Task['status']) => {
     const task = tasks.find(t => t.id === taskId);
     if (!task) return;
 
     if (task.status === 'completed') {
-      toast.error('Task yang sudah Completed tidak bisa diubah lagi (butuh akses Admin).');
-      return;
+      if (!isAdminOverride) {
+        toast.error('Task yang sudah Completed tidak bisa diubah lagi (butuh akses Admin).');
+        return;
+      }
+      const proceedOverride = window.confirm(
+        `Task ini sudah Completed. Sebagai ${user?.role}, Anda bisa membuka kembali task ini. Lanjutkan reopen ke "${newStatus === 'todo' ? 'Not Started' : 'Ongoing'}"?`
+      );
+      if (!proceedOverride) return;
     }
 
     if (task.status === newStatus) return;
@@ -1022,10 +1035,15 @@ export function TaskManagement() {
               {/* FR-07: sequential status workflow (Not Started -> Ongoing -> Completed) */}
               <div className="flex items-center gap-2 flex-wrap p-3 bg-accent/30 rounded-lg">
                 <Label className="text-muted-foreground mr-1">Ubah Status:</Label>
+                {selectedTask.status === 'completed' && isAdminOverride && (
+                  <Badge variant="outline" className="text-xs text-amber-600 border-amber-300">
+                    Admin override aktif ({user?.role})
+                  </Badge>
+                )}
                 <Button
                   size="sm"
                   variant={selectedTask.status === 'todo' ? 'default' : 'outline'}
-                  disabled={selectedTask.status !== 'in-progress'}
+                  disabled={selectedTask.status !== 'in-progress' && !(isAdminOverride && selectedTask.status === 'completed')}
                   onClick={() => changeTaskStatus(selectedTask.id, 'todo')}
                 >
                   Not Started
@@ -1033,7 +1051,7 @@ export function TaskManagement() {
                 <Button
                   size="sm"
                   variant={selectedTask.status === 'in-progress' ? 'default' : 'outline'}
-                  disabled={selectedTask.status === 'completed'}
+                  disabled={selectedTask.status === 'completed' && !isAdminOverride}
                   onClick={() => changeTaskStatus(selectedTask.id, 'in-progress')}
                 >
                   Ongoing

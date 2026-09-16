@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/ca
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Contract as ContractType } from '@/app/data/dummyData';
+import { getEffectiveContractStatus } from '@/utils/formatters';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { toast } from 'sonner';
 import { getDaysUntilExpiry, calculateRiskScore, getRiskLevelBadge, getRiskLevelColor } from '@/app/components/ContractEnhancements';
@@ -75,6 +76,8 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
   const daysRemaining = getDaysUntilExpiry(contract.endDate);
   const totalDays = getDaysDifference(contract.startDate, contract.endDate);
   const progressPercentage = Math.max(0, Math.min(100, ((totalDays - daysRemaining) / totalDays) * 100));
+  // FIX: kontrak dgn status 'active' tapi endDate sudah lewat ditampilkan sebagai 'expired'
+  const effectiveStatus = getEffectiveContractStatus(contract.status, contract.endDate);
   const riskScore = calculateRiskScore(contract);
   const riskLevel = getRiskLevelBadge(riskScore);
   const monthlyValue = contract.value / 12;
@@ -113,10 +116,10 @@ export function ContractDetailView({ contract, isOpen, onClose, onEdit }: Contra
             <div className="flex-1">
               <h2 className="text-2xl font-bold mb-2">{contract.contractNumber}</h2>
               <div className="flex items-center gap-2 mb-3">
-                <Badge className={getStatusColor(contract.status)}>
+                <Badge className={getStatusColor(effectiveStatus)}>
                   <span className="flex items-center gap-1.5">
-                    {getStatusIcon(contract.status)}
-                    {contract.status.toUpperCase()}
+                    {getStatusIcon(effectiveStatus)}
+                    {effectiveStatus.toUpperCase()}
                   </span>
                 </Badge>
                 {contract.product && (

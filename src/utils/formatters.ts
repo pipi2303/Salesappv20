@@ -164,3 +164,19 @@ export const formatRelativeDate = (date: string | Date): string => {
 export const formatDateRange = (startDate: string | Date, endDate: string | Date): string => {
   return `${formatDate(startDate)} - ${formatDate(endDate)}`;
 };
+/**
+ * Menentukan status kontrak yang sebenarnya (effective status) berdasarkan tanggal.
+ * FIX: Kontrak dengan status 'active' di data tapi endDate sudah lewat akan
+ * ditampilkan sebagai 'expired', tanpa mengubah data tersimpan (agar histori
+ * & keputusan bisnis soal auto-expire tetap bisa direview/dikonfirmasi user).
+ * @param status - status kontrak yang tersimpan
+ * @param endDate - tanggal akhir kontrak
+ */
+export const getEffectiveContractStatus = (
+  status: 'draft' | 'pending' | 'active' | 'expired' | 'terminated',
+  endDate: Date | string
+): 'draft' | 'pending' | 'active' | 'expired' | 'terminated' => {
+  if (status !== 'active') return status;
+  const end = endDate instanceof Date ? endDate : new Date(endDate);
+  return end.getTime() < Date.now() ? 'expired' : 'active';
+};

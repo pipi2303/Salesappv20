@@ -28,7 +28,7 @@ export function SalesKPICards({ stats }: SalesKPICardsProps) {
             </div>
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wide">Total Revenue</p>
-              <p className="text-xl font-bold mt-1">{formatCurrency(stats.totalRevenue * 1000000)}</p>
+              <p className="text-xl font-bold mt-1">{formatCurrency(stats.totalRevenue)}</p>
               <p className="text-xs text-green-600 mt-0.5">+23.5% vs last month</p>
             </div>
           </div>

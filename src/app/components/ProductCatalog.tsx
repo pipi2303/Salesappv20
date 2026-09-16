@@ -54,9 +54,6 @@ export function ProductCatalog() {
       if (result.success && result.data) {
         console.log(`✅ Loaded ${result.data.length} products`);
         setProducts(result.data);
-        if (result.data.length > 0) {
-          toast.success(`Berhasil memuat ${result.data.length} produk`);
-        }
       } else {
         console.error('❌ API Error:', result.error);
         toast.error(result.error || 'Failed to load products');
