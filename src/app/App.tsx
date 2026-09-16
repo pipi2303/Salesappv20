@@ -339,23 +339,12 @@ function AppContent() {
 
         {/* User Profile */}
         <div className="p-4 border-t border-gray-200 bg-gray-50">
-          <div className={`flex items-center gap-3 ${!isSidebarOpen && 'justify-center'}`}>
-            <div className="h-10 w-10 rounded-full bg-[#013E37] flex items-center justify-center text-white font-semibold flex-shrink-0">
-              {userInitials}
-            </div>
-            {isSidebarOpen && (
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">{user?.name}</p>
-                <p className="text-xs text-gray-600 truncate">{user?.email}</p>
-              </div>
-            )}
-          </div>
           {isSidebarOpen && (
             <Button
               onClick={handleLogout}
               variant="ghost"
               size="sm"
-              className="w-full mt-3 text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="w-full text-red-600 hover:text-red-700 hover:bg-red-50"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
