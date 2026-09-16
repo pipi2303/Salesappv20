@@ -37,6 +37,7 @@ import { LoadingScreen } from '@/app/components/LoadingScreen';
 import { ComponentLoader } from '@/app/components/ComponentLoader';
 import { Login } from '@/app/components/Login';
 import { AuthProvider, useAuth } from '@/app/contexts/AuthContext';
+import { ModalPortalProvider } from '@/app/contexts/ModalPortalContext';
 import { initializeAllData } from '@/utils/initializeAllData';
 import '@/utils/demoDebug'; // Load debug utilities
 import { toast } from 'sonner';
@@ -66,6 +67,9 @@ function AppContent() {
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]); // All menus collapsed by default
   const [contracts, setContracts] = useState<ContractType[]>(dummyContracts);
   const [selectedContract, setSelectedContract] = useState<ContractType | null>(null);
+  // FIX: ref ke #modal-portal-root di dalam .content-area, dipakai ModalPortalProvider
+  // supaya Dialog (lihat ui/dialog.tsx) render di dalam area content, bukan document.body.
+  const [modalPortalRoot, setModalPortalRoot] = useState<HTMLElement | null>(null);
 
   // Reset to Home menu whenever authentication status changes
   useEffect(() => {
@@ -222,6 +226,7 @@ function AppContent() {
     .slice(0, 2) || 'U';
 
   return (
+    <ModalPortalProvider container={modalPortalRoot}>
     <div className="h-screen w-screen flex overflow-hidden bg-gray-50">
       {/* Sidebar */}
       <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-gray-200 transition-all duration-300 flex flex-col shadow-lg`}>
@@ -407,13 +412,23 @@ function AppContent() {
           </div>
         </header>
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-7xl mx-auto">
-            <Suspense fallback={<ComponentLoader />}>
-              <ActiveComponent />
-            </Suspense>
+        {/* Content Area — containing block untuk modal/dialog (lihat ui/dialog.tsx & ModalPortalContext) */}
+        <div className="content-area flex-1 relative overflow-hidden">
+          <div className="h-full overflow-y-auto p-6">
+            <div className="max-w-7xl mx-auto">
+              <Suspense fallback={<ComponentLoader />}>
+                <ActiveComponent />
+              </Suspense>
+            </div>
           </div>
+          {/* Portal target untuk modal/dialog: sibling dari div yang di-scroll di atas,
+              supaya modal "lock" (tidak ikut bergerak saat konten discroll) dan tetap
+              terbatas di area content (tidak menutupi sidebar/header). */}
+          <div
+            id="modal-portal-root"
+            ref={setModalPortalRoot}
+            className="absolute inset-0 pointer-events-none z-40"
+          />
         </div>
       </main>
 
@@ -424,6 +439,7 @@ function AppContent() {
       {/* Toast Notifications */}
       {/* <Toaster position="top-right" richColors /> dihapus atas permintaan user - popup notifikasi kanan atas */}
     </div>
+    </ModalPortalProvider>
   );
 }
 

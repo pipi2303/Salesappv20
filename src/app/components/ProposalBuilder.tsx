@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { useModalPortalContainer } from '@/app/contexts/ModalPortalContext';
 import { X, Plus, Minus, Trash2, Send, Download, FileText, DollarSign, Package, Calendar, Mail } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
@@ -47,6 +49,13 @@ export function ProposalBuilder({
   const [notes, setNotes] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
+  // FIX: hook harus dipanggil sebelum early return (Rules of Hooks).
+  // Portal ke #modal-portal-root (di dalam .content-area, lihat App.tsx &
+  // ModalPortalContext) supaya modal ini: (1) tidak menutupi sidebar/header,
+  // (2) tidak ikut ter-scroll/clip oleh div konten yang scrollable (karena
+  // secara DOM jadi sibling dari div tersebut, bukan descendant-nya).
+  const modalPortalRoot = useModalPortalContainer();
 
   if (!isOpen) return null;
 
@@ -276,8 +285,8 @@ export function ProposalBuilder({
     doc.save(fileName);
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+  const modalContent = (
+    <div className="absolute inset-0 bg-black/50 z-50 flex items-center justify-center p-4 pointer-events-auto">
       <div className="bg-white rounded-xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="bg-[#013E37] text-white p-6">
@@ -526,6 +535,8 @@ export function ProposalBuilder({
       </div>
     </div>
   );
+
+  return createPortal(modalContent, modalPortalRoot ?? document.body);
 }
 
 // Floating Button Component
