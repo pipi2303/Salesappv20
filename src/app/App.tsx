@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings, Menu, X, User, LogOut, Target, ChevronDown, ChevronRight, TrendingUp, Percent, CheckSquare, Book, Clipboard, UserPlus, MapPin, Mail, Plug, DollarSign } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
-import { Toaster } from '@/app/components/ui/sonner';
+// Toaster dihapus atas permintaan user (popup notifikasi kanan atas) - 2026-09-16
+// import { Toaster } from '@/app/components/ui/sonner';
 import { Home } from '@/app/components/Home';
 // Lazy load heavy components
 const OpportunityManagement = lazy(() => import('@/app/components/OpportunityManagement').then(m => ({ default: m.OpportunityManagement })));
@@ -421,7 +422,7 @@ function AppContent() {
       <AIChatAssistant />
 
       {/* Toast Notifications */}
-      <Toaster position="top-right" richColors />
+      {/* <Toaster position="top-right" richColors /> dihapus atas permintaan user - popup notifikasi kanan atas */}
     </div>
   );
 }
