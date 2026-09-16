@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings, Menu, X, User, LogOut, Target, ChevronDown, ChevronRight, TrendingUp, Percent, CheckSquare, Book, Clipboard } from 'lucide-react';
+import { Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings, Menu, X, User, LogOut, Target, ChevronDown, ChevronRight, TrendingUp, Percent, CheckSquare, Book, Clipboard, UserPlus, MapPin, Mail, Plug, DollarSign } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Toaster } from '@/app/components/ui/sonner';
 import { Home } from '@/app/components/Home';
@@ -22,6 +22,12 @@ const QuotationManagement = lazy(() => import('@/app/components/QuotationManagem
 const TaskManagement = lazy(() => import('@/app/components/TaskManagement').then(m => ({ default: m.TaskManagement })));
 const KnowledgeBase = lazy(() => import('@/app/components/KnowledgeBase').then(m => ({ default: m.KnowledgeBase })));
 const ConfigurePriceQuote = lazy(() => import('@/app/components/ConfigurePriceQuote').then(m => ({ default: m.ConfigurePriceQuote })));
+const LeadManagement = lazy(() => import('@/app/components/LeadManagement').then(m => ({ default: m.LeadManagement })));
+const TerritoryManagement = lazy(() => import('@/app/components/TerritoryManagement').then(m => ({ default: m.TerritoryManagement })));
+const EmailCommunicationHub = lazy(() => import('@/app/components/EmailCommunicationHub').then(m => ({ default: m.EmailCommunicationHub })));
+const IntegrationHub = lazy(() => import('@/app/components/IntegrationHub').then(m => ({ default: m.IntegrationHub })));
+const CommissionCalculator = lazy(() => import('@/app/components/CommissionCalculator').then(m => ({ default: m.CommissionCalculator })));
+const CustomReportBuilder = lazy(() => import('@/app/components/CustomReportBuilder').then(m => ({ default: m.CustomReportBuilder })));
 import { AIAssistant } from '@/app/components/AIAssistant';
 import { AIChatAssistant } from '@/app/components/ai/AIChatAssistant';
 import { AppNotifications } from '@/app/components/AppNotifications';
@@ -117,6 +123,7 @@ function AppContent() {
 
   const menuItems: MenuItem[] = [
     { id: 'home', name: 'Home', icon: HomeIcon, component: Home },
+    { id: 'leads', name: 'Lead Management', icon: UserPlus, component: LeadManagement },
     { id: 'opportunities', name: 'Opportunity Management', icon: TrendingUp, component: OpportunityManagement },
     { id: 'team', name: 'CRM', icon: Users, component: SalesTeam },
     { id: 'sales-representative', name: 'Sales Representative', icon: Users, component: SalesRepresentative },
@@ -138,6 +145,11 @@ function AppContent() {
       ]
     },
     { id: 'tasks', name: 'Task Management', icon: CheckSquare, component: TaskManagement },
+    { id: 'territory', name: 'Territory Management', icon: MapPin, component: TerritoryManagement },
+    { id: 'email-hub', name: 'Email Communication Hub', icon: Mail, component: EmailCommunicationHub },
+    { id: 'integration-hub', name: 'Integration Hub', icon: Plug, component: IntegrationHub },
+    { id: 'commission', name: 'Commission Calculator', icon: DollarSign, component: CommissionCalculator },
+    { id: 'custom-reports', name: 'Custom Report Builder', icon: BarChart3, component: CustomReportBuilder },
     { id: 'knowledge-base', name: 'Knowledge Base', icon: Book, component: KnowledgeBase },
     { id: 'analytics', name: 'Analytics', icon: BarChart3, component: AdvancedAnalytics },
     { id: 'admin', name: 'Admin System', icon: Settings, component: AdminSystem }

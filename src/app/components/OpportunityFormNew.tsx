@@ -490,7 +490,11 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
       ...overviewDetails,
       ...commercialDetails,
       ...technicalDetails,
-      status: 'open',
+      // Bug fix: this used to hardcode 'open' on every save, which silently reset status back to
+      // 'open' even for an already Closed Won/Lost opportunity whenever someone edited any other
+      // field via this form (stage itself can only be changed via the Kanban drag-and-drop, which
+      // now goes through the Close Reason flow in OpportunityManagement's handleStageChange).
+      status: formData.stage === 'closed-won' ? 'won' : formData.stage === 'closed-lost' ? 'lost' : 'open',
       reminderSent: false,
       activities: opportunity?.activities || [],
       createdAt: opportunity?.createdAt || new Date().toISOString(),

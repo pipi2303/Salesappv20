@@ -3,6 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/ca
 import { Button } from '@/app/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Badge } from '@/app/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/app/components/ui/dialog';
+import { Label } from '@/app/components/ui/label';
+import { Textarea } from '@/app/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { 
   LayoutGrid, 
   List, 
@@ -65,6 +69,9 @@ export interface Opportunity {
   stage: 'prospecting' | 'proposal' | 'negotiation' | 'closed-won' | 'closed-lost';
   status: 'open' | 'won' | 'lost';
   lossReason?: string;
+  // FR-04: Close Reason/Detail, required before an Opportunity can move to Closed Won/Lost.
+  closeReason?: string;
+  closeDetail?: string;
   
   // Assignment
   ownerId?: string;
@@ -151,6 +158,18 @@ export interface Opportunity {
   updatedAt: string;
 }
 
+// FR-04: Close Reason options differ for Won vs Lost. Mirrors the pattern found in the Salesforce
+// Onduline implementation reviewed during the FSD work — the Sales Manager should review/confirm this
+// list before it's treated as final.
+const WON_CLOSE_REASONS = [
+  'Product Quality', 'Delivery Time', 'Term of Payment', 'Brand Awareness', 'Commitment Service',
+  'Guarantee Period', 'Man Power', 'Availability of Product', 'Testing Certificate', 'User Decision', 'Other',
+];
+const LOST_CLOSE_REASONS = [
+  'Price Competition', 'Budget', 'Technical Aspect', 'Limited Size of Product', 'Local Content Material',
+  'Delivery Time', 'Other',
+];
+
 export function OpportunityManagement() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [products, setProducts] = useState<any[]>([]);
@@ -161,6 +180,13 @@ export function OpportunityManagement() {
   const [reminders, setReminders] = useState<any[]>([]);
   const [viewOpportunity, setViewOpportunity] = useState<Opportunity | null>(null);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
+
+  // FR-04: Close Opportunity dialog state (collects Close Reason/Detail before Won/Lost is saved)
+  const [closeDialogOpen, setCloseDialogOpen] = useState(false);
+  const [closeDialogOpp, setCloseDialogOpp] = useState<Opportunity | null>(null);
+  const [closeDialogStage, setCloseDialogStage] = useState<'closed-won' | 'closed-lost' | null>(null);
+  const [closeReasonValue, setCloseReasonValue] = useState('');
+  const [closeDetailValue, setCloseDetailValue] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -282,11 +308,16 @@ export function OpportunityManagement() {
     }
   };
 
-  const handleStageChange = async (id: string, newStage: string) => {
-    const opportunity = opportunities.find(o => o.id === id);
-    if (!opportunity) return;
-
-    // Auto-map Pipeline Stage to Sales Stage
+  // Applies a stage change plus any extra fields (close reason/detail, or clearing them on reopen).
+  // Also fixes a pre-existing bug: `status` (open/won/lost) was never actually set anywhere in the
+  // app — even though the stats below (stats.won, winRate) read `status === 'won'` — so win-rate and
+  // won-count KPIs were structurally broken regardless of real sales activity. Stage and status are
+  // now always kept in sync here.
+  const applyStageChange = async (
+    opportunity: Opportunity,
+    newStage: string,
+    extra: Partial<Opportunity> = {}
+  ) => {
     const pipelineToSalesStageMap: Record<string, string> = {
       'prospecting': 'Engage',
       'proposal': 'Solution',
@@ -296,11 +327,18 @@ export function OpportunityManagement() {
     };
 
     const autoSalesStage = pipelineToSalesStageMap[newStage] || opportunity.salesStage || 'Engage';
+    const newStatus: Opportunity['status'] =
+      newStage === 'closed-won' ? 'won' : newStage === 'closed-lost' ? 'lost' : 'open';
 
-    const updatedData = {
+    const updatedData: Opportunity = {
       ...opportunity,
-      stage: newStage,
+      stage: newStage as Opportunity['stage'],
+      status: newStatus,
       salesStage: autoSalesStage, // Auto-update sales stage based on pipeline stage
+      actualCloseDate: newStatus !== 'open'
+        ? new Date().toISOString().split('T')[0]
+        : undefined,
+      ...extra,
       activities: [
         ...opportunity.activities,
         {
@@ -313,10 +351,10 @@ export function OpportunityManagement() {
     };
 
     try {
-      const result = await opportunitiesApi.update(id, updatedData);
+      const result = await opportunitiesApi.update(opportunity.id, updatedData);
       if (result.success && result.data) {
-        setOpportunities(opportunities.map(o => 
-          o.id === id ? result.data : o
+        setOpportunities(prev => prev.map(o =>
+          o.id === opportunity.id ? result.data : o
         ));
         toast.success(`Moved to ${newStage} • Sales Stage: ${autoSalesStage}`);
       }
@@ -324,6 +362,61 @@ export function OpportunityManagement() {
       console.error('Error updating stage:', error);
       toast.error('Error updating stage');
     }
+  };
+
+  const handleStageChange = (id: string, newStage: string) => {
+    const opportunity = opportunities.find(o => o.id === id);
+    if (!opportunity) return;
+
+    const wasClosed = opportunity.stage === 'closed-won' || opportunity.stage === 'closed-lost';
+    const willBeClosed = newStage === 'closed-won' || newStage === 'closed-lost';
+
+    // FR-04 alt flow A2: reopening a closed opportunity needs confirmation and clears Close Reason/Detail.
+    if (wasClosed && !willBeClosed) {
+      const proceed = window.confirm(
+        'Membuka kembali opportunity yang sudah ditutup? Close Reason/Detail akan dikosongkan.'
+      );
+      if (!proceed) return;
+      applyStageChange(opportunity, newStage, { closeReason: undefined, closeDetail: undefined });
+      return;
+    }
+
+    // FR-04 main flow: moving to Won/Lost requires Close Reason first — the stage is not saved
+    // until the dialog below is confirmed, so a cancel leaves the opportunity in its original stage.
+    if (willBeClosed) {
+      setCloseDialogOpp(opportunity);
+      setCloseDialogStage(newStage as 'closed-won' | 'closed-lost');
+      setCloseReasonValue(opportunity.closeReason || '');
+      setCloseDetailValue(opportunity.closeDetail || '');
+      setCloseDialogOpen(true);
+      return;
+    }
+
+    applyStageChange(opportunity, newStage);
+  };
+
+  const handleConfirmClose = async () => {
+    if (!closeDialogOpp || !closeDialogStage) return;
+
+    if (!closeReasonValue) {
+      toast.error('Close Reason wajib dipilih');
+      return;
+    }
+    if (closeReasonValue === 'Other' && !closeDetailValue.trim()) {
+      toast.error('Close Detail wajib diisi ketika Close Reason = Other');
+      return;
+    }
+
+    await applyStageChange(closeDialogOpp, closeDialogStage, {
+      closeReason: closeReasonValue,
+      closeDetail: closeReasonValue === 'Other' ? closeDetailValue.trim() : undefined,
+    });
+
+    setCloseDialogOpen(false);
+    setCloseDialogOpp(null);
+    setCloseDialogStage(null);
+    setCloseReasonValue('');
+    setCloseDetailValue('');
   };
 
   // Calculate stats
@@ -613,6 +706,75 @@ export function OpportunityManagement() {
           onClose={() => setShowDetailDialog(false)}
         />
       )}
+
+      {/* FR-04: Close Opportunity dialog — Close Reason (and Close Detail if "Other") required before Won/Lost is saved */}
+      <Dialog
+        open={closeDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setCloseDialogOpen(false);
+            setCloseDialogOpp(null);
+            setCloseDialogStage(null);
+            setCloseReasonValue('');
+            setCloseDetailValue('');
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              Close Opportunity — {closeDialogStage === 'closed-won' ? 'Won' : 'Lost'}
+            </DialogTitle>
+            <DialogDescription>
+              {closeDialogOpp?.name}: pilih Close Reason sebelum opportunity ini ditandai{' '}
+              {closeDialogStage === 'closed-won' ? 'Won' : 'Lost'}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Close Reason *</Label>
+              <Select value={closeReasonValue || undefined} onValueChange={setCloseReasonValue}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih Close Reason" />
+                </SelectTrigger>
+                <SelectContent>
+                  {(closeDialogStage === 'closed-won' ? WON_CLOSE_REASONS : LOST_CLOSE_REASONS).map((reason) => (
+                    <SelectItem key={reason} value={reason}>{reason}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {closeReasonValue === 'Other' && (
+              <div>
+                <Label>Close Detail *</Label>
+                <Textarea
+                  rows={3}
+                  placeholder="Jelaskan alasan lainnya..."
+                  value={closeDetailValue}
+                  onChange={(e) => setCloseDetailValue(e.target.value)}
+                />
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setCloseDialogOpen(false);
+                setCloseDialogOpp(null);
+                setCloseDialogStage(null);
+                setCloseReasonValue('');
+                setCloseDetailValue('');
+              }}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmClose} className="bg-[#013E37] hover:bg-[#025C52] text-white">
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

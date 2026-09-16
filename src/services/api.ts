@@ -18,6 +18,7 @@ const LS_KEYS = {
   EMPLOYEES: 'sales_monitoring_employees',
   USERS: 'sales_monitoring_users',
   AUDIT_TRAIL: 'sales_monitoring_audit_trail',
+  TASKS: 'sales_monitoring_tasks', // FR-03/FR-07: Task & Activity Management persistence
 };
 
 // LocalStorage Helper Functions
@@ -193,6 +194,33 @@ export const leadsApi = {
   
   clearAll: () =>
     apiCallWithFallback<void>(`/leads`, LS_KEYS.LEADS, {
+      method: 'DELETE',
+    }),
+};
+
+// ===== TASKS API (FR-03/FR-07) =====
+export const tasksApi = {
+  getAll: () => apiCallWithFallback<any[]>(`/tasks`, LS_KEYS.TASKS),
+
+  create: (task: any) =>
+    apiCallWithFallback<any>(`/tasks`, LS_KEYS.TASKS, {
+      method: 'POST',
+      body: JSON.stringify(task),
+    }),
+
+  update: (id: string, task: any) =>
+    apiCallWithFallback<any>(`/tasks/${id}`, LS_KEYS.TASKS, {
+      method: 'PUT',
+      body: JSON.stringify(task),
+    }),
+
+  delete: (id: string) =>
+    apiCallWithFallback<void>(`/tasks/${id}`, LS_KEYS.TASKS, {
+      method: 'DELETE',
+    }),
+
+  clearAll: () =>
+    apiCallWithFallback<void>(`/tasks`, LS_KEYS.TASKS, {
       method: 'DELETE',
     }),
 };

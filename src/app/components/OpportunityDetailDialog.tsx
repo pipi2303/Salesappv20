@@ -330,6 +330,29 @@ export function OpportunityDetailDialog({ open, onClose, opportunity }: Opportun
                     <Badge className="mt-1 bg-yellow-600">{opportunity.budgetStatus}</Badge>
                   </div>
                 )}
+
+                {/* FR-04: Close Reason/Detail, shown once the opportunity is Closed Won/Lost */}
+                {(opportunity.stage === 'closed-won' || opportunity.stage === 'closed-lost') && (
+                  <div className={`mt-2 p-2 rounded ${opportunity.stage === 'closed-won' ? 'bg-green-50' : 'bg-red-50'}`}>
+                    <p className={`text-xs font-semibold ${opportunity.stage === 'closed-won' ? 'text-green-900' : 'text-red-900'}`}>
+                      Close Reason
+                    </p>
+                    {opportunity.closeReason ? (
+                      <>
+                        <Badge className={`mt-1 ${opportunity.stage === 'closed-won' ? 'bg-green-600' : 'bg-red-600'}`}>
+                          {opportunity.closeReason}
+                        </Badge>
+                        {opportunity.closeDetail && (
+                          <p className="text-xs text-gray-700 mt-1">{opportunity.closeDetail}</p>
+                        )}
+                      </>
+                    ) : (
+                      <p className="text-xs text-gray-500 mt-1 italic">
+                        Belum diisi (data lama sebelum FR-04 diaktifkan)
+                      </p>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
 

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Plus, CheckCircle, Circle, Clock, AlertCircle, Calendar, User, Tag, Filter, Trash2, Edit, Flag, Star, Eye } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Plus, CheckCircle, Circle, Clock, AlertCircle, Calendar, User, Tag, Filter, Trash2, Edit, Flag, Star, Eye, MapPin, CornerDownRight, Navigation } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
@@ -12,6 +12,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { toast } from 'sonner';
 import { formatDate } from '@/utils/formatters';
+import { tasksApi } from '@/services/api';
+
+// FR-03/FR-07: Task type drives whether GPS Check-in is available ('visit' only).
+export type TaskType = 'visit' | 'call' | 'email' | 'other';
 
 interface Task {
   id: string;
@@ -19,6 +23,7 @@ interface Task {
   description: string;
   status: 'todo' | 'in-progress' | 'completed';
   priority: 'low' | 'medium' | 'high' | 'urgent';
+  type: TaskType;
   dueDate: string;
   assignedTo: string;
   createdBy: string;
@@ -28,6 +33,14 @@ interface Task {
   tags: string[];
   subtasks?: SubTask[];
   completedDate?: string;
+  // FR-07: link a follow-up task back to the task it was created from
+  parentTaskId?: string;
+  // FR-03: GPS check-in evidence for Visit-type tasks. Read-only once set (no manual input field anywhere in the UI).
+  checkInAt?: string;
+  checkInLat?: number;
+  checkInLng?: number;
+  checkInAccuracy?: number;
+  locationValidated?: boolean;
 }
 
 interface SubTask {
@@ -36,24 +49,25 @@ interface SubTask {
   completed: boolean;
 }
 
-export function TaskManagement() {
-  const [activeTab, setActiveTab] = useState('my-tasks');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterPriority, setFilterPriority] = useState('all');
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [showTaskDialog, setShowTaskDialog] = useState(false);
-  const [showDetailDialog, setShowDetailDialog] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [viewMode, setViewMode] = useState<'list' | 'board'>('list');
+const TASK_TYPE_LABEL: Record<TaskType, string> = {
+  visit: 'Visit',
+  call: 'Call',
+  email: 'Email',
+  other: 'Other',
+};
 
-  // Dummy data - Tasks
-  const [tasks, setTasks] = useState<Task[]>([
+const TASK_CATEGORIES = ['Sales Follow-up', 'Reporting', 'Admin', 'Contract', 'Training', 'Customer Success', 'Approvals'];
+const TASK_ASSIGNEES = ['Budi Santoso', 'Ani Wijaya', 'Dewi Kartika', 'Eko Prasetyo', 'Sarah Manager'];
+
+// Seed/demo data — used only as a first-run fallback when localStorage has no tasks yet (see useEffect below).
+const SEED_TASKS: Task[] = [
     {
       id: '1',
       title: 'Follow up with PT Maju Jaya',
       description: 'Schedule demo presentation for Enterprise Plan',
       status: 'todo',
       priority: 'high',
+      type: 'visit',
       dueDate: '2024-02-20',
       assignedTo: 'Budi Santoso',
       createdBy: 'Sarah Manager',
@@ -73,6 +87,7 @@ export function TaskManagement() {
       description: 'Compile and analyze sales data for quarterly review',
       status: 'in-progress',
       priority: 'medium',
+      type: 'other',
       dueDate: '2024-02-25',
       assignedTo: 'Dewi Kartika',
       createdBy: 'John Director',
@@ -92,6 +107,7 @@ export function TaskManagement() {
       description: 'Clean up and update all client contact information',
       status: 'completed',
       priority: 'low',
+      type: 'other',
       dueDate: '2024-02-18',
       assignedTo: 'Ani Wijaya',
       createdBy: 'Ani Wijaya',
@@ -111,6 +127,7 @@ export function TaskManagement() {
       description: 'Negotiate contract renewal terms for 3-year agreement',
       status: 'todo',
       priority: 'urgent',
+      type: 'visit',
       dueDate: '2024-02-22',
       assignedTo: 'Dewi Kartika',
       createdBy: 'Sarah Manager',
@@ -125,6 +142,7 @@ export function TaskManagement() {
       description: 'Attend training session on new product features',
       status: 'in-progress',
       priority: 'medium',
+      type: 'other',
       dueDate: '2024-02-21',
       assignedTo: 'Eko Prasetyo',
       createdBy: 'John Director',
@@ -138,6 +156,7 @@ export function TaskManagement() {
       description: 'Send satisfaction survey to all active clients',
       status: 'todo',
       priority: 'low',
+      type: 'email',
       dueDate: '2024-02-28',
       assignedTo: 'Ani Wijaya',
       createdBy: 'Sarah Manager',
@@ -151,6 +170,7 @@ export function TaskManagement() {
       description: 'Process pending discount approval requests',
       status: 'todo',
       priority: 'high',
+      type: 'other',
       dueDate: '2024-02-19',
       assignedTo: 'Sarah Manager',
       createdBy: 'Sarah Manager',
@@ -158,7 +178,74 @@ export function TaskManagement() {
       category: 'Approvals',
       tags: ['Approval', 'Discount', 'Management']
     },
-  ]);
+];
+
+interface TaskFormState {
+  title: string;
+  description: string;
+  priority: Task['priority'];
+  type: TaskType;
+  category: string;
+  assignedTo: string;
+  dueDate: string;
+  relatedTo: string;
+}
+
+const emptyTaskForm = (): TaskFormState => ({
+  title: '',
+  description: '',
+  priority: 'medium',
+  type: 'other',
+  category: '',
+  assignedTo: '',
+  dueDate: '',
+  relatedTo: '',
+});
+
+export function TaskManagement() {
+  const [activeTab, setActiveTab] = useState('my-tasks');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterPriority, setFilterPriority] = useState('all');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [showTaskDialog, setShowTaskDialog] = useState(false);
+  const [showDetailDialog, setShowDetailDialog] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'board'>('list');
+
+  // Tasks are persisted via tasksApi (localStorage-backed for now — see api.ts LS_KEYS.TASKS).
+  // Previously this component held tasks in plain useState with no persistence at all (page refresh wiped all data).
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasksLoaded, setTasksLoaded] = useState(false);
+
+  const [taskForm, setTaskForm] = useState<TaskFormState>(emptyTaskForm());
+  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
+  const [parentTaskId, setParentTaskId] = useState<string | null>(null);
+  const [checkInBusy, setCheckInBusy] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const result = await tasksApi.getAll();
+        if (cancelled) return;
+        if (result.success && result.data && result.data.length > 0) {
+          setTasks(result.data as Task[]);
+        } else {
+          // First run on this browser: bootstrap with demo data and persist it.
+          setTasks(SEED_TASKS);
+          for (const seedTask of SEED_TASKS) {
+            await tasksApi.create(seedTask);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load tasks from storage:', error);
+        setTasks(SEED_TASKS);
+      } finally {
+        if (!cancelled) setTasksLoaded(true);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   // Statistics
   const stats = {
@@ -212,24 +299,263 @@ export function TaskManagement() {
     return colors[category] || 'bg-gray-100 text-gray-700';
   };
 
-  const handleToggleTask = (taskId: string) => {
-    setTasks(tasks.map(task => {
-      if (task.id === taskId) {
-        const newStatus = task.status === 'completed' ? 'todo' : 'completed';
-        return {
-          ...task,
-          status: newStatus,
-          completedDate: newStatus === 'completed' ? new Date().toISOString().split('T')[0] : undefined
-        };
+  // FR-07: Not Started (todo) -> Ongoing (in-progress) -> Completed, in order.
+  // Skipping straight from todo to completed requires explicit confirmation.
+  // Completed tasks are locked (business rule: "tidak dapat diedit lagi kecuali Admin") — this UI has no Admin role check yet, so Completed is locked for everyone; flag this to the product owner if an Admin override is needed.
+  const changeTaskStatus = async (taskId: string, newStatus: Task['status']) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    if (task.status === 'completed') {
+      toast.error('Task yang sudah Completed tidak bisa diubah lagi (butuh akses Admin).');
+      return;
+    }
+
+    if (task.status === newStatus) return;
+
+    if (task.status === 'todo' && newStatus === 'completed') {
+      const proceed = window.confirm(
+        'Task ini belum melalui status "Ongoing". Tandai langsung sebagai Completed?'
+      );
+      if (!proceed) return;
+    }
+
+    const updatedTask: Task = {
+      ...task,
+      status: newStatus,
+      completedDate: newStatus === 'completed' ? new Date().toISOString().split('T')[0] : task.completedDate,
+    };
+
+    try {
+      const result = await tasksApi.update(taskId, updatedTask);
+      if (result.success) {
+        setTasks(prev => prev.map(t => (t.id === taskId ? (result.data as Task) : t)));
+        toast.success('Status task diperbarui');
+      } else {
+        toast.error(result.error || 'Gagal memperbarui status task');
       }
-      return task;
-    }));
-    toast.success('Task status updated');
+    } catch (error) {
+      console.error('Failed to update task status:', error);
+      toast.error('Gagal memperbarui status task');
+    }
   };
 
-  const handleDeleteTask = (taskId: string) => {
-    setTasks(tasks.filter(task => task.id !== taskId));
-    toast.success('Task deleted successfully');
+  const handleToggleTask = (taskId: string) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+    const newStatus: Task['status'] = task.status === 'completed' ? 'todo' : 'completed';
+    if (task.status === 'completed' && newStatus === 'todo') {
+      // Reopening a completed task is also locked by the same "Completed is final" rule.
+      toast.error('Task yang sudah Completed tidak bisa diubah lagi (butuh akses Admin).');
+      return;
+    }
+    changeTaskStatus(taskId, newStatus);
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    try {
+      const result = await tasksApi.delete(taskId);
+      if (result.success) {
+        setTasks(prev => prev.filter(task => task.id !== taskId));
+        toast.success('Task deleted successfully');
+      } else {
+        toast.error(result.error || 'Gagal menghapus task');
+      }
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+      toast.error('Gagal menghapus task');
+    }
+  };
+
+  // FR-03: GPS check-in for Visit-type tasks. check_in_at uses the device clock as a stand-in for a
+  // server timestamp — there's no backend clock available yet in the localStorage-only architecture,
+  // which is a known limitation worth flagging (see business rule: server time, not device time).
+  const handleCheckIn = (taskId: string) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    if (task.checkInAt) {
+      const overwrite = window.confirm(
+        'Task ini sudah memiliki data check-in sebelumnya. Timpa dengan lokasi baru?'
+      );
+      if (!overwrite) return;
+    }
+
+    if (!navigator.geolocation) {
+      toast.error('Perangkat/browser ini tidak mendukung Geolocation API.');
+      return;
+    }
+
+    setCheckInBusy(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude, accuracy } = position.coords;
+        const updatedTask: Task = {
+          ...task,
+          checkInAt: new Date().toISOString(),
+          checkInLat: latitude,
+          checkInLng: longitude,
+          checkInAccuracy: accuracy,
+          locationValidated: true,
+        };
+        try {
+          const result = await tasksApi.update(taskId, updatedTask);
+          if (result.success) {
+            setTasks(prev => prev.map(t => (t.id === taskId ? (result.data as Task) : t)));
+            setSelectedTask(prev => (prev && prev.id === taskId ? (result.data as Task) : prev));
+            toast.success(`Check-in berhasil (± ${Math.round(accuracy)}m)`);
+          } else {
+            toast.error(result.error || 'Gagal menyimpan data check-in');
+          }
+        } catch (error) {
+          console.error('Failed to save check-in:', error);
+          toast.error('Gagal menyimpan data check-in');
+        } finally {
+          setCheckInBusy(false);
+        }
+      },
+      async (error) => {
+        setCheckInBusy(false);
+        if (error.code === error.PERMISSION_DENIED) {
+          toast.error('Izin lokasi diperlukan untuk validasi kunjungan. Task tetap disimpan tanpa data check-in.');
+          const updatedTask: Task = { ...task, locationValidated: false };
+          try {
+            const result = await tasksApi.update(taskId, updatedTask);
+            if (result.success) {
+              setTasks(prev => prev.map(t => (t.id === taskId ? (result.data as Task) : t)));
+              setSelectedTask(prev => (prev && prev.id === taskId ? (result.data as Task) : prev));
+            }
+          } catch (e) {
+            console.error('Failed to mark location unvalidated:', e);
+          }
+        } else {
+          toast.error('Gagal mengambil lokasi (sinyal lemah / timeout). Coba lagi.');
+        }
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+  };
+
+  const handleOpenNewTask = () => {
+    setTaskForm(emptyTaskForm());
+    setEditingTaskId(null);
+    setParentTaskId(null);
+    setShowTaskDialog(true);
+  };
+
+  const handleEditTask = (task: Task) => {
+    setTaskForm({
+      title: task.title,
+      description: task.description,
+      priority: task.priority,
+      type: task.type,
+      category: task.category,
+      assignedTo: task.assignedTo,
+      dueDate: task.dueDate,
+      relatedTo: task.relatedTo || '',
+    });
+    setEditingTaskId(task.id);
+    setParentTaskId(null);
+    setShowDetailDialog(false);
+    setShowTaskDialog(true);
+  };
+
+  // FR-07: pre-fills a new task from its parent, copying the related account/opportunity reference.
+  const handleCreateFollowUp = (task: Task) => {
+    setTaskForm({
+      title: `Follow-up: ${task.title}`,
+      description: '',
+      priority: task.priority,
+      type: task.type,
+      category: task.category,
+      assignedTo: task.assignedTo,
+      dueDate: '',
+      relatedTo: task.relatedTo || '',
+    });
+    setEditingTaskId(null);
+    setParentTaskId(task.id);
+    setShowDetailDialog(false);
+    setShowTaskDialog(true);
+  };
+
+  const handleSaveTask = async () => {
+    if (!taskForm.title.trim()) {
+      toast.error('Task Title wajib diisi');
+      return;
+    }
+    if (!taskForm.category) {
+      toast.error('Category wajib dipilih');
+      return;
+    }
+    if (!taskForm.assignedTo) {
+      toast.error('Assign To wajib dipilih');
+      return;
+    }
+    if (!taskForm.dueDate) {
+      toast.error('Due Date wajib diisi');
+      return;
+    }
+
+    if (editingTaskId) {
+      const existing = tasks.find(t => t.id === editingTaskId);
+      if (!existing) return;
+      const updatedTask: Task = {
+        ...existing,
+        title: taskForm.title.trim(),
+        description: taskForm.description.trim(),
+        priority: taskForm.priority,
+        type: taskForm.type,
+        category: taskForm.category,
+        assignedTo: taskForm.assignedTo,
+        dueDate: taskForm.dueDate,
+        relatedTo: taskForm.relatedTo.trim() || undefined,
+      };
+      try {
+        const result = await tasksApi.update(editingTaskId, updatedTask);
+        if (result.success) {
+          setTasks(prev => prev.map(t => (t.id === editingTaskId ? (result.data as Task) : t)));
+          toast.success('Task updated successfully!');
+          setShowTaskDialog(false);
+        } else {
+          toast.error(result.error || 'Gagal memperbarui task');
+        }
+      } catch (error) {
+        console.error('Failed to update task:', error);
+        toast.error('Gagal memperbarui task');
+      }
+      return;
+    }
+
+    const newTask: Task = {
+      id: `TASK-${Date.now()}`,
+      title: taskForm.title.trim(),
+      description: taskForm.description.trim(),
+      status: 'todo',
+      priority: taskForm.priority,
+      type: taskForm.type,
+      dueDate: taskForm.dueDate,
+      assignedTo: taskForm.assignedTo,
+      createdBy: taskForm.assignedTo,
+      createdDate: new Date().toISOString().split('T')[0],
+      category: taskForm.category,
+      relatedTo: taskForm.relatedTo.trim() || undefined,
+      tags: [],
+      parentTaskId: parentTaskId || undefined,
+    };
+
+    try {
+      const result = await tasksApi.create(newTask);
+      if (result.success && result.data) {
+        setTasks(prev => [...prev, result.data as Task]);
+        toast.success('Task created successfully!');
+        setShowTaskDialog(false);
+      } else {
+        toast.error(result.error || 'Gagal membuat task');
+      }
+    } catch (error) {
+      console.error('Failed to create task:', error);
+      toast.error('Gagal membuat task');
+    }
   };
 
   const isOverdue = (task: Task) => {
@@ -407,7 +733,7 @@ export function TaskManagement() {
                 <SelectItem value="completed">Completed</SelectItem>
               </SelectContent>
             </Select>
-            <Button onClick={() => setShowTaskDialog(true)} className="gap-2">
+            <Button onClick={handleOpenNewTask} className="gap-2">
               <Plus className="h-4 w-4" />
               New Task
             </Button>
@@ -452,6 +778,12 @@ export function TaskManagement() {
                                 <Tag className="h-3 w-3 mr-1" />
                                 {task.category}
                               </Badge>
+                              {task.type === 'visit' && (
+                                <Badge variant="outline" className="text-xs">
+                                  <MapPin className="h-3 w-3 mr-1" />
+                                  {task.checkInAt ? 'Sudah Check In' : 'Visit'}
+                                </Badge>
+                              )}
                               {task.tags.map((tag) => (
                                 <Badge key={tag} variant="outline" className="text-xs">
                                   {tag}
@@ -502,7 +834,7 @@ export function TaskManagement() {
                             <Eye className="h-3 w-3 mr-1" />
                             View
                           </Button>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" onClick={() => handleEditTask(task)}>
                             <Edit className="h-3 w-3 mr-1" />
                             Edit
                           </Button>
@@ -675,6 +1007,10 @@ export function TaskManagement() {
                   <Label className="text-muted-foreground">Category</Label>
                   <p className="font-semibold">{selectedTask.category}</p>
                 </div>
+                <div>
+                  <Label className="text-muted-foreground">Type</Label>
+                  <p className="font-semibold">{TASK_TYPE_LABEL[selectedTask.type]}</p>
+                </div>
                 {selectedTask.relatedTo && (
                   <div>
                     <Label className="text-muted-foreground">Related To</Label>
@@ -682,6 +1018,73 @@ export function TaskManagement() {
                   </div>
                 )}
               </div>
+
+              {/* FR-07: sequential status workflow (Not Started -> Ongoing -> Completed) */}
+              <div className="flex items-center gap-2 flex-wrap p-3 bg-accent/30 rounded-lg">
+                <Label className="text-muted-foreground mr-1">Ubah Status:</Label>
+                <Button
+                  size="sm"
+                  variant={selectedTask.status === 'todo' ? 'default' : 'outline'}
+                  disabled={selectedTask.status !== 'in-progress'}
+                  onClick={() => changeTaskStatus(selectedTask.id, 'todo')}
+                >
+                  Not Started
+                </Button>
+                <Button
+                  size="sm"
+                  variant={selectedTask.status === 'in-progress' ? 'default' : 'outline'}
+                  disabled={selectedTask.status === 'completed'}
+                  onClick={() => changeTaskStatus(selectedTask.id, 'in-progress')}
+                >
+                  Ongoing
+                </Button>
+                <Button
+                  size="sm"
+                  variant={selectedTask.status === 'completed' ? 'default' : 'outline'}
+                  disabled={selectedTask.status === 'completed'}
+                  onClick={() => changeTaskStatus(selectedTask.id, 'completed')}
+                >
+                  Completed
+                </Button>
+              </div>
+
+              {/* FR-03: GPS Check-in, only for Visit-type tasks not yet completed */}
+              {selectedTask.type === 'visit' && (
+                <div className="p-3 border rounded-lg space-y-2">
+                  <Label className="text-muted-foreground flex items-center gap-1">
+                    <MapPin className="h-3 w-3" /> GPS Check-in
+                  </Label>
+                  {selectedTask.checkInAt ? (
+                    <div className="text-sm">
+                      <p className="font-semibold text-green-700">
+                        Sudah Check In ({new Date(selectedTask.checkInAt).toLocaleString('id-ID')})
+                      </p>
+                      {selectedTask.checkInLat != null && selectedTask.checkInLng != null && (
+                        <p className="text-muted-foreground">
+                          Koordinat: {selectedTask.checkInLat.toFixed(5)}, {selectedTask.checkInLng.toFixed(5)}
+                          {selectedTask.checkInAccuracy != null && ` (± ${Math.round(selectedTask.checkInAccuracy)}m)`}
+                        </p>
+                      )}
+                      {selectedTask.locationValidated === false && (
+                        <p className="text-orange-600">Belum Tervalidasi Lokasi (izin lokasi ditolak saat disimpan)</p>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Belum Check In</p>
+                  )}
+                  {selectedTask.status !== 'completed' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={checkInBusy}
+                      onClick={() => handleCheckIn(selectedTask.id)}
+                    >
+                      <Navigation className="h-3 w-3 mr-1" />
+                      {checkInBusy ? 'Mengambil lokasi...' : 'Check In'}
+                    </Button>
+                  )}
+                </div>
+              )}
 
               {selectedTask.subtasks && selectedTask.subtasks.length > 0 && (
                 <div>
@@ -713,33 +1116,53 @@ export function TaskManagement() {
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowDetailDialog(false)}>Close</Button>
-            <Button>Edit Task</Button>
+            {selectedTask && (
+              <Button variant="outline" onClick={() => handleCreateFollowUp(selectedTask)}>
+                <CornerDownRight className="h-3 w-3 mr-1" />
+                Create Follow-Up Task
+              </Button>
+            )}
+            <Button onClick={() => selectedTask && handleEditTask(selectedTask)}>Edit Task</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* New Task Dialog */}
+      {/* New Task / Edit Task Dialog */}
       <Dialog open={showTaskDialog} onOpenChange={setShowTaskDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Create New Task</DialogTitle>
+            <DialogTitle>{editingTaskId ? 'Edit Task' : parentTaskId ? 'Create Follow-Up Task' : 'Create New Task'}</DialogTitle>
             <DialogDescription>
-              Add a new task to your pipeline with priority, deadline, and assignee
+              {editingTaskId
+                ? 'Update the task details below.'
+                : 'Add a new task to your pipeline with priority, deadline, and assignee'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
               <Label>Task Title *</Label>
-              <Input placeholder="Enter task title" />
+              <Input
+                placeholder="Enter task title"
+                value={taskForm.title}
+                onChange={(e) => setTaskForm({ ...taskForm, title: e.target.value })}
+              />
             </div>
             <div>
               <Label>Description</Label>
-              <Textarea rows={3} placeholder="Describe the task..." />
+              <Textarea
+                rows={3}
+                placeholder="Describe the task..."
+                value={taskForm.description}
+                onChange={(e) => setTaskForm({ ...taskForm, description: e.target.value })}
+              />
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <Label>Priority *</Label>
-                <Select defaultValue="medium">
+                <Select
+                  value={taskForm.priority}
+                  onValueChange={(v) => setTaskForm({ ...taskForm, priority: v as Task['priority'] })}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -752,52 +1175,76 @@ export function TaskManagement() {
                 </Select>
               </div>
               <div>
+                <Label>Type *</Label>
+                <Select
+                  value={taskForm.type}
+                  onValueChange={(v) => setTaskForm({ ...taskForm, type: v as TaskType })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="visit">Visit (GPS check-in tersedia)</SelectItem>
+                    <SelectItem value="call">Call</SelectItem>
+                    <SelectItem value="email">Email</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
                 <Label>Category *</Label>
-                <Select>
+                <Select
+                  value={taskForm.category || undefined}
+                  onValueChange={(v) => setTaskForm({ ...taskForm, category: v })}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="sales">Sales Follow-up</SelectItem>
-                    <SelectItem value="reporting">Reporting</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                    <SelectItem value="contract">Contract</SelectItem>
-                    <SelectItem value="training">Training</SelectItem>
-                    <SelectItem value="customer">Customer Success</SelectItem>
+                    {TASK_CATEGORIES.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
               <div>
                 <Label>Assign To *</Label>
-                <Select>
+                <Select
+                  value={taskForm.assignedTo || undefined}
+                  onValueChange={(v) => setTaskForm({ ...taskForm, assignedTo: v })}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select team member" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="budi">Budi Santoso</SelectItem>
-                    <SelectItem value="ani">Ani Wijaya</SelectItem>
-                    <SelectItem value="dewi">Dewi Kartika</SelectItem>
-                    <SelectItem value="eko">Eko Prasetyo</SelectItem>
+                    {TASK_ASSIGNEES.map((name) => (
+                      <SelectItem key={name} value={name}>{name}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
               <div>
                 <Label>Due Date *</Label>
-                <Input type="date" />
+                <Input
+                  type="date"
+                  value={taskForm.dueDate}
+                  onChange={(e) => setTaskForm({ ...taskForm, dueDate: e.target.value })}
+                />
               </div>
             </div>
             <div>
               <Label>Related To (Optional)</Label>
-              <Input placeholder="e.g., OPP-001, CONTRACT-003" />
+              <Input
+                placeholder="e.g., OPP-001, CONTRACT-003"
+                value={taskForm.relatedTo}
+                onChange={(e) => setTaskForm({ ...taskForm, relatedTo: e.target.value })}
+              />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowTaskDialog(false)}>Cancel</Button>
-            <Button onClick={() => {
-              toast.success('Task created successfully!');
-              setShowTaskDialog(false);
-            }}>
-              Create Task
+            <Button onClick={handleSaveTask}>
+              {editingTaskId ? 'Save Changes' : 'Create Task'}
             </Button>
           </DialogFooter>
         </DialogContent>
