@@ -84,7 +84,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="!max-w-[1200px] w-[95vw] max-h-[90vh] overflow-hidden p-0 gap-0">
+        <DialogContent className="!max-w-[1200px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0">
           <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">

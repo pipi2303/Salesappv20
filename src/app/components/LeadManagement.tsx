@@ -584,7 +584,7 @@ export function LeadManagement() {
 
       {/* Detail View Dialog */}
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="!max-w-[950px] w-[950px] max-h-[90vh] overflow-hidden flex flex-col p-0">
+        <DialogContent className="!max-w-[950px] w-full max-h-[calc(100%-2rem)] overflow-hidden flex flex-col p-0">
           <DialogHeader className="sr-only">
             <DialogTitle>Detail Lead - {selectedLead?.name}</DialogTitle>
             <DialogDescription>Informasi karyawan dan perusahaan yang di-lead</DialogDescription>

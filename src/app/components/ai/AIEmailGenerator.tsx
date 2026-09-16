@@ -222,7 +222,7 @@ export function AIEmailGenerator({ open, onClose, recipientName = '', recipientO
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl max-h-[calc(100%-2rem)] overflow-y-auto">
         <DialogDescription className="sr-only">
           AI-powered email generator with {EMAIL_TEMPLATES.length} professional templates for sales outreach, follow-ups, proposals, and re-engagement campaigns. Generate personalized emails to {recipientName || 'contacts'} at {recipientOrg || 'organizations'}.
         </DialogDescription>

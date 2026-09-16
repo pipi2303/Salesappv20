@@ -75,7 +75,7 @@ export function AccountManagerDetailDialog({
 
   return (
     <Dialog open={!!selectedAccountManager} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-6xl max-h-[calc(100%-2rem)] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <div className="h-14 w-14 rounded-full bg-gradient-to-br from-[#013E37] to-[#025C52] flex items-center justify-center text-white font-bold text-xl">

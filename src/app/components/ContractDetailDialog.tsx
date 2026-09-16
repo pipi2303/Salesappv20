@@ -65,7 +65,7 @@ export function ContractDetailDialog({ contract, isOpen, onClose, onEdit }: Cont
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="!max-w-[900px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden">
+      <DialogContent className="!max-w-[900px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden">
         <VisuallyHidden>
           <DialogTitle>Detail Kontrak {contract.contractNumber}</DialogTitle>
           <DialogDescription>

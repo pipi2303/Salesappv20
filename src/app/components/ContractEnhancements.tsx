@@ -113,7 +113,7 @@ export function ContractRenewalReminders({ contracts }: ContractEnhancementsProp
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="!max-w-[900px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
+        <DialogContent className="!max-w-[900px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0">
           <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
@@ -317,7 +317,7 @@ export function ContractTemplates() {
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="!max-w-[1100px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
+        <DialogContent className="!max-w-[1100px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0">
           <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
@@ -424,7 +424,7 @@ export function ContractRiskScoring({ contracts }: ContractEnhancementsProps) {
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="!max-w-[900px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
+        <DialogContent className="!max-w-[900px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0">
           <DialogHeader className="bg-[#013E37] text-white px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">

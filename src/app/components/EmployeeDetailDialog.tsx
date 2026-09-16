@@ -47,7 +47,7 @@ export function EmployeeDetailDialog({ open, onOpenChange, employee, onEdit }: E
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!max-w-[1100px] w-[90vw] max-h-[90vh] overflow-hidden p-0 flex flex-col [&>button]:hidden">
+      <DialogContent className="!max-w-[1100px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 flex flex-col [&>button]:hidden">
         {/* Hidden Accessibility Headers */}
         <DialogHeader className="sr-only">
           <DialogTitle>{employee.nama_lengkap} - Detail Karyawan</DialogTitle>

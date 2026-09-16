@@ -716,7 +716,7 @@ export function EmailCommunicationHub() {
 
       {/* Email Detail Dialog */}
       <Dialog open={showEmailDetail} onOpenChange={setShowEmailDetail}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[calc(100%-2rem)] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Email Details - {selectedEmail?.subject}</DialogTitle>
             <DialogDescription>

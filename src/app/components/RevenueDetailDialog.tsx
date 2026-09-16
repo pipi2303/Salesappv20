@@ -242,7 +242,7 @@ export function RevenueDetailDialog({
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="w-full max-w-[800px] max-h-[85vh] overflow-y-auto p-0 border-none shadow-2xl">
+        <DialogContent className="w-full max-w-[800px] max-h-[calc(100%-2rem)] overflow-y-auto p-0 border-none shadow-2xl">
           <VisuallyHidden>
             <DialogTitle>Revenue Breakdown - {employeeName}</DialogTitle>
             <DialogDescription>
@@ -523,7 +523,7 @@ export function RevenueDetailDialog({
       {/* Daily Calendar Dialog */}
       {selectedMonth && (
         <Dialog open={showDailyDialog} onOpenChange={setShowDailyDialog}>
-          <DialogContent className="max-w-5xl h-[90vh] flex flex-col p-0 border-none shadow-2xl">
+          <DialogContent className="max-w-5xl max-h-[calc(100%-2rem)] flex flex-col p-0 border-none shadow-2xl">
             <VisuallyHidden>
               <DialogTitle>Daily Breakdown - {selectedMonth.fullMonth} 2025</DialogTitle>
               <DialogDescription>

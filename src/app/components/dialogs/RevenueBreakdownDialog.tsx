@@ -24,7 +24,7 @@ export function RevenueBreakdownDialog({
 
   return (
     <Dialog open={!!selectedMember} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-[850px] w-[95vw] max-h-[90vh] overflow-hidden p-0 border-none shadow-2xl flex flex-col bg-white">
+      <DialogContent className="max-w-[850px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 border-none shadow-2xl flex flex-col bg-white">
         <DialogHeader className="sr-only">
           <DialogTitle>Revenue Breakdown - {selectedMember.name}</DialogTitle>
           <DialogDescription>

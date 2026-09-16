@@ -165,7 +165,7 @@ export function PartnerFormModal({ partner, onClose, onSuccess }: PartnerFormPro
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="!max-w-[950px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
+      <DialogContent className="!max-w-[950px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
         {/* HEADER */}
         <DialogHeader className="relative bg-[#013E37] text-white px-6 py-5 space-y-0 flex-shrink-0">
           <button

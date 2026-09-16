@@ -82,7 +82,7 @@ export function AddCommunicationDialog({ open, onClose, onAdd }: AddCommunicatio
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="!max-w-[650px] w-[90vw] p-0 overflow-hidden [&>button]:hidden">
+      <DialogContent className="!max-w-[650px] w-full p-0 overflow-hidden [&>button]:hidden">
         {/* Header */}
         <div className="relative bg-[#013E37] px-6 py-4 text-white">
           <div className="flex items-center justify-between">

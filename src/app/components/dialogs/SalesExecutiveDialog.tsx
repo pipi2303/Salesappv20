@@ -37,7 +37,7 @@ export function SalesExecutiveDialog({
 
   return (
     <Dialog open={!!selectedExecutive} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-y-auto p-0 border-none shadow-2xl">
+      <DialogContent className="max-w-4xl w-full max-h-[calc(100%-2rem)] overflow-y-auto p-0 border-none shadow-2xl">
         <DialogHeader className="sr-only">
           <DialogTitle>Sales Executive Performance - {selectedExecutive.name}</DialogTitle>
           <DialogDescription>

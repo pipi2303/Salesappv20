@@ -1025,7 +1025,7 @@ export function DemoScheduler() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="!max-w-[900px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
+        <DialogContent className="!max-w-[900px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
           <DialogDescription className="sr-only">
             {selectedDemo ? `Edit demo schedule for ${selectedDemo.clientName} - ${selectedDemo.title}` : 'Create new demo schedule with client information, demo details, participants, and logistics'}
           </DialogDescription>
@@ -1709,7 +1709,7 @@ export function DemoScheduler() {
 
       {/* Detail Dialog */}
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="!max-w-[900px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
+        <DialogContent className="!max-w-[900px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
           <DialogDescription className="sr-only">
             {selectedDemo ? `Complete details for demo ${selectedDemo.title} with ${selectedDemo.clientName} including participants, logistics, and follow-up actions` : 'Demo details'}
           </DialogDescription>
@@ -2073,7 +2073,7 @@ export function DemoScheduler() {
 
       {/* Smart Scheduling Assistant Dialog */}
       <Dialog open={showSmartScheduler} onOpenChange={setShowSmartScheduler}>
-        <DialogContent className="!max-w-[700px] w-[90vw] max-h-[85vh] overflow-hidden p-0 gap-0">
+        <DialogContent className="!max-w-[700px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0">
           <DialogDescription className="sr-only">
             AI-powered smart scheduling assistant with optimal time recommendations, conflict detection, and intelligent scheduling suggestions
           </DialogDescription>
@@ -2229,7 +2229,7 @@ export function DemoScheduler() {
 
       {/* Follow-up Actions Dialog */}
       <Dialog open={showFollowUp} onOpenChange={setShowFollowUp}>
-        <DialogContent className="!max-w-[600px] w-[90vw]">
+        <DialogContent className="!max-w-[600px] w-full">
           <DialogDescription className="sr-only">
             {selectedDemo ? `Follow-up actions and next steps for demo with ${selectedDemo.clientName}` : 'Demo follow-up actions'}
           </DialogDescription>

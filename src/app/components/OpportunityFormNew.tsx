@@ -561,7 +561,7 @@ export function OpportunityFormNew({ opportunity, products, onSave, onCancel }: 
 
   return (
     <Dialog open={true} onOpenChange={onCancel}>
-      <DialogContent className="!max-w-[1100px] w-[90vw] max-h-[90vh] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
+      <DialogContent className="!max-w-[1100px] w-full max-h-[calc(100%-2rem)] overflow-hidden p-0 gap-0 bg-white [&>button]:hidden flex flex-col">
         {/* HEADER */}
         <DialogHeader className="relative bg-[#013E37] text-white px-5 py-3 space-y-0 flex-shrink-0">
           <button

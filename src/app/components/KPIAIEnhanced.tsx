@@ -1701,7 +1701,7 @@ export function KPIAIEnhanced() {
 
       {/* Summary Quick View Dialog */}
       <Dialog open={isSummaryModalOpen} onOpenChange={setIsSummaryModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[calc(100%-2rem)] overflow-y-auto">
           <DialogHeader>
             <div className="flex justify-between items-start">
               <DialogTitle className="flex items-center gap-3 text-2xl text-[#013E37]">

@@ -283,7 +283,7 @@ export function ConfigurePriceQuote() {
               Create New Quote
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-4xl max-h-[calc(100%-2rem)] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create New Quote</DialogTitle>
               <DialogDescription>
@@ -694,7 +694,7 @@ export function ConfigurePriceQuote() {
 
       {/* View Quote Dialog */}
       <Dialog open={isViewQuoteOpen} onOpenChange={setIsViewQuoteOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[calc(100%-2rem)] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Quote Details</DialogTitle>
             <DialogDescription>

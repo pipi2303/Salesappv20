@@ -275,7 +275,7 @@ export function RiskDetailDialog({ open, onClose, risk }: RiskDetailDialogProps)
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto p-0">
+      <DialogContent className="max-w-6xl max-h-[calc(100%-2rem)] overflow-y-auto p-0">
         <DialogDescription className="sr-only">
           Detailed risk analysis and action plan for {risk.title}
         </DialogDescription>

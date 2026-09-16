@@ -185,7 +185,7 @@ export function RetailMonthlyBreakdown({ achievement, target }: RetailMonthlyBre
       {/* Daily Calendar Dialog */}
       {selectedMonth && (
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-6xl max-h-[calc(100%-2rem)] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-3 text-2xl text-[#013E37]">
                 <Calendar className="h-7 w-7" />

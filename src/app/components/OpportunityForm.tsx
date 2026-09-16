@@ -153,7 +153,7 @@ export function OpportunityForm({ opportunity, products, onSave, onCancel }: Opp
 
   return (
     <Dialog open={true} onOpenChange={onCancel}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[calc(100%-2rem)] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[#013E37]">
             {opportunity ? 'Edit Opportunity' : 'New Opportunity'}

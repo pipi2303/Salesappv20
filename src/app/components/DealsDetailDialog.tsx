@@ -151,7 +151,7 @@ export function DealsDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-full max-w-[800px] max-h-[85vh] overflow-y-auto p-0 border-none shadow-2xl">
+      <DialogContent className="w-full max-w-[800px] max-h-[calc(100%-2rem)] overflow-y-auto p-0 border-none shadow-2xl">
         <VisuallyHidden>
           <DialogTitle>Deals Breakdown - {employeeName}</DialogTitle>
           <DialogDescription>
