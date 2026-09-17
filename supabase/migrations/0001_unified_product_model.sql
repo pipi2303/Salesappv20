@@ -14,6 +14,12 @@
 -- Supabase project is provisioned for this app as of this migration being
 -- written. It is a ready-to-run artifact for when that project exists
 -- (Tahap B of the roadmap discussed with the product owner).
+--
+-- Revision (after checking the actual ProductCatalog.tsx / ConfigurePriceQuote.tsx
+-- code, not just the original discussion): `stock`, `features`, and `sold` are
+-- used by the UI for EVERY product regardless of type, so they moved from
+-- product_physical_attrs into the shared `products` table. See src/types/product.ts
+-- for the matching TypeScript-side note.
 -- =====================================================================
 
 create extension if not exists pgcrypto; -- for gen_random_uuid()
@@ -34,6 +40,17 @@ create table if not exists products (
   description   text,
   status        text not null default 'active' check (status in ('active','discontinued')),
   product_type  text not null check (product_type in ('software','physical')),
+  -- Available quota: license/seat slots for software, warehouse units for physical.
+  -- Same business meaning ("units still sellable") regardless of product_type —
+  -- confirmed with product owner, not two concepts that happen to share a name.
+  stock         integer not null default 0 check (stock >= 0),
+  -- Marketing/spec bullet list shown on the product card and in quote builders.
+  features      text[] not null default '{}',
+  -- Cumulative units/licenses sold to date. Aggregate display field, not a
+  -- true product attribute — kept here only because the current UI already
+  -- models it this way; replacing it with a real aggregation over
+  -- performance_targets is a Tahap B candidate, not done in this migration.
+  sold          integer not null default 0 check (sold >= 0),
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
@@ -61,13 +78,14 @@ create table if not exists product_software_attrs (
 -- 3. product_physical_attrs — 1:1 extension, only populated when
 --    product_type = 'physical'. Carries the Onduline-style attributes
 --    (m2, warna, spesifikasi) without polluting the shared products table.
+--    NOTE: stock moved OUT of this table into products (see above) —
+--    it is not physical-only.
 -- ---------------------------------------------------------------------
 create table if not exists product_physical_attrs (
   product_id      uuid primary key references products(id) on delete cascade,
   unit_of_measure text not null, -- e.g. 'm2', 'pcs', 'roll'
   color           text,
   specification   text,
-  stock           integer not null default 0 check (stock >= 0),
   weight_kg       numeric(10,3)
 );
 

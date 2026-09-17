@@ -21,7 +21,8 @@ import {
   User
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { opportunitiesApi, productsApi } from '@/services/api';
+import { opportunitiesApi } from '@/services/api';
+import { productsRepository } from '@/services/productsRepository';
 import { OpportunityPipeline } from './OpportunityPipeline';
 import { OpportunityList } from './OpportunityList';
 import { OpportunityFormNew } from './OpportunityFormNew';
@@ -203,7 +204,7 @@ export function OpportunityManagement() {
       
       const [oppResult, prodResult] = await Promise.all([
         opportunitiesApi.getAll(),
-        productsApi.getAll(),
+        productsRepository.getAll(),
       ]);
       
       if (oppResult.success && oppResult.data) {

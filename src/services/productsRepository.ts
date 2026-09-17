@@ -51,6 +51,9 @@ function validate(input: NewProduct): string | null {
   if (typeof input.price !== 'number' || input.price < 0) return 'Harga harus angka >= 0';
   if (!input.currency?.trim()) return 'Mata uang wajib diisi';
   if (input.status !== 'active' && input.status !== 'discontinued') return 'Status tidak valid';
+  if (!Array.isArray(input.features)) return 'Features harus berupa array (boleh kosong)';
+  if (typeof input.stock !== 'number' || input.stock < 0) return 'Stock harus angka >= 0';
+  if (typeof input.sold !== 'number' || input.sold < 0) return 'Sold harus angka >= 0';
 
   if (input.productType === 'software') {
     const p = input as Omit<SoftwareProduct, 'id' | 'createdAt' | 'updatedAt'>;
@@ -61,7 +64,6 @@ function validate(input: NewProduct): string | null {
     const p = input as Omit<PhysicalProduct, 'id' | 'createdAt' | 'updatedAt'>;
     if (!p.unitOfMeasure?.trim()) return 'Unit of measure wajib diisi untuk produk fisik';
     if (!p.specification?.trim()) return 'Spesifikasi wajib diisi untuk produk fisik';
-    if (typeof p.stock !== 'number' || p.stock < 0) return 'Stock harus angka >= 0';
   } else {
     return 'productType harus "software" atau "physical"';
   }

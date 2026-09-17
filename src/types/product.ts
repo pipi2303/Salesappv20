@@ -9,12 +9,38 @@
 // - Type-specific fields live only on the matching variant, enforced by
 //   TypeScript's discriminated union on `productType` — so
 //   `product.productType === 'physical'` narrows the type and gives you
-//   `stock`/`color` with compiler-checked safety, not `any`.
+//   `color`/`weightKg` with compiler-checked safety, not `any`.
 // - This mirrors the Postgres schema in
 //   supabase/migrations/0001_unified_product_model.sql: ProductBase ~
 //   the `products` table, SoftwareProduct/PhysicalProduct-only fields ~
 //   the `product_software_attrs` / `product_physical_attrs` extension
 //   tables.
+//
+// Revision note (post-review against the actual ProductCatalog.tsx /
+// ConfigurePriceQuote.tsx code, not just the original discussion):
+// the real UI already depends on three fields for EVERY product,
+// regardless of productType — these were missing from the first draft
+// of this file and have been moved here to ProductBase:
+//   - `stock`      : available quota (for software: license/seat quota
+//                    available to sell; for physical: warehouse stock).
+//                    Confirmed with product owner — same field, same
+//                    business meaning ("units still sellable"), not two
+//                    different concepts that happen to share a name.
+//   - `features`   : marketing/spec bullet list shown on the product
+//                    card and in the quote builder (ConfigurePriceQuote
+//                    reads `product.features` directly). Distinct from
+//                    SoftwareProduct.modules (which is a licensing/
+//                    entitlement concept, not a display list) even
+//                    though the two can overlap in content.
+//   - `sold`       : cumulative units/licenses sold to date, used for
+//                    the "Best Seller" stat and revenue-to-date display
+//                    in ProductCatalog. This is really an aggregate
+//                    derived from sales/performance data, not a true
+//                    product attribute — kept here for now only because
+//                    that's how the current UI already models it, and
+//                    replacing it with a real aggregation over
+//                    performance_targets is out of scope for Tahap A.
+//                    Flagged as an improvement candidate for Tahap B.
 //
 // This file replaces the divergent local `interface Product` definitions
 // previously scattered across src/app/data/dummyData.ts and individual
@@ -33,6 +59,12 @@ interface ProductBase {
   currency: string; // ISO 4217, e.g. 'IDR'
   description: string;
   status: ProductStatus;
+  /** Marketing/spec bullet points shown on the product card and in quote builders. */
+  features: string[];
+  /** Available quota: license/seat slots for software, warehouse units for physical. */
+  stock: number;
+  /** Cumulative units/licenses sold to date (aggregate display field — see revision note above). */
+  sold: number;
   createdAt: string; // ISO 8601
   updatedAt: string; // ISO 8601
 }
@@ -54,7 +86,6 @@ export interface PhysicalProduct extends ProductBase {
   unitOfMeasure: string; // e.g. 'm2', 'pcs', 'roll'
   color?: string;
   specification: string;
-  stock: number;
   weightKg?: number;
 }
 
