@@ -14,21 +14,11 @@ import { productsRepository } from '@/services/productsRepository';
 import type { Product, NewProduct } from '@/types/product';
 import { ProductFormModal } from '@/app/components/forms/ProductForm';
 import { ProposalBuilder, ProposalFloatingButton } from '@/app/components/ProposalBuilder';
+import type { ProposalItem } from '@/types/proposal';
 
 // Data source: productsRepository (localStorage-backed, unified Product model).
 // Migrated from the legacy productsApi/`sales_monitoring_products` key — see
 // src/services/productsRepository.ts for why this uses a different storage key.
-
-interface ProposalItem {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  quantity: number;
-  description: string;
-  features: string[];
-  proposalType?: 'teknis'; // Add proposal type for technical proposals
-}
 
 export function ProductCatalog() {
   const confirm = useConfirm();

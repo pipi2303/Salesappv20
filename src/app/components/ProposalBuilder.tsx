@@ -9,21 +9,12 @@ import { Badge } from '@/app/components/ui/badge';
 import { toast } from 'sonner';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import type { ProposalItem } from '@/types/proposal';
 
 const publicAnonKey = 'mock-anon-key';
 
 // Mock API URL - using localStorage only
 const API_URL = 'https://mock-project-id.supabase.co/functions/v1/make-server-67367fc1';
-
-interface ProposalItem {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  quantity: number;
-  description: string;
-  features: string[];
-}
 
 interface ProposalBuilderProps {
   isOpen: boolean;

@@ -17,3 +17,22 @@ export interface TerritoryProfile {
 }
 
 export type NewTerritoryProfile = Omit<TerritoryProfile, 'id' | 'createdAt' | 'updatedAt'>;
+
+// View-model combining TerritoryProfile with its performance-period figures
+// (target/actual/achievement from performanceTargetsRepository, via
+// computeAchievementPct). This is what TerritoryManagement.tsx builds and
+// passes down to TerritoryMap.tsx — previously each file re-declared this
+// same 10-field shape independently with no shared import, so the two could
+// silently drift out of sync. `revenue` here is the period's actual figure.
+export interface TerritoryWithPerformance {
+  id: string;
+  name: string;
+  region: string;
+  assignedTo: string;
+  leads: number;
+  opportunities: number;
+  revenue: number;
+  target: number;
+  achievement: number;
+  coverage: number;
+}

@@ -18,6 +18,7 @@ import { territoriesRepository } from '@/services/territoriesRepository';
 import { performanceTargetsRepository } from '@/services/performanceTargetsRepository';
 import { computeAchievementPct } from '@/types/performanceTarget';
 import type { PerformanceTarget } from '@/types/performanceTarget';
+import type { TerritoryWithPerformance } from '@/types/territory';
 
 // Data source: territoriesRepository (profile: name/region/assignedTo/leads/
 // opportunities/coverage) joined with performanceTargetsRepository (target/
@@ -26,19 +27,6 @@ import type { PerformanceTarget } from '@/types/performanceTarget';
 // (a page refresh silently reverted every edit). `achievement` is now
 // always computeAchievementPct(target, actual), never a separately stored
 // number that could drift from the two figures it's derived from.
-
-interface Territory {
-  id: string;
-  name: string;
-  region: string;
-  assignedTo: string;
-  leads: number;
-  opportunities: number;
-  revenue: number;
-  target: number;
-  achievement: number;
-  coverage: number;
-}
 
 function getCurrentPeriod(): string {
   const now = new Date();
@@ -59,11 +47,11 @@ export function TerritoryManagement() {
   const [activeTab, setActiveTab] = useState('territories');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  const [selectedTerritory, setSelectedTerritory] = useState<Territory | null>(null);
+  const [selectedTerritory, setSelectedTerritory] = useState<TerritoryWithPerformance | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [newTerritory, setNewTerritory] = useState<Partial<Territory>>({
+  const [newTerritory, setNewTerritory] = useState<Partial<TerritoryWithPerformance>>({
     name: '',
     region: 'DKI Jakarta',
     assignedTo: '',
@@ -75,7 +63,7 @@ export function TerritoryManagement() {
     coverage: 0
   });
 
-  const [territories, setTerritories] = useState<Territory[]>([]);
+  const [territories, setTerritories] = useState<TerritoryWithPerformance[]>([]);
   // Maps territoryId -> its performance_targets record id for the current
   // period, so edits know whether to update an existing target row or
   // create a new one (a territory can exist with no target set yet).
@@ -115,7 +103,7 @@ export function TerritoryManagement() {
       const currentPeriod = getCurrentPeriod();
 
       const idMap: Record<string, string> = {};
-      const merged: Territory[] = profiles.map((p) => {
+      const merged: TerritoryWithPerformance[] = profiles.map((p) => {
         const t = targets.find((x) => (x as any).territoryId === p.id && x.period === currentPeriod);
         if (t) idMap[p.id] = t.id;
         const target = t?.target ?? 0;
@@ -144,12 +132,12 @@ export function TerritoryManagement() {
     }
   };
 
-  const handleOpenDetail = (territory: Territory) => {
+  const handleOpenDetail = (territory: TerritoryWithPerformance) => {
     setSelectedTerritory(territory);
     setIsDetailOpen(true);
   };
 
-  const handleOpenEdit = (territory: Territory) => {
+  const handleOpenEdit = (territory: TerritoryWithPerformance) => {
     setSelectedTerritory(territory);
     setIsEditOpen(true);
   };

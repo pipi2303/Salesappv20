@@ -2,23 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, Users, Target, TrendingUp, Info } from 'lucide-react';
 import { formatCurrency } from '@/utils/formatters';
-
-interface Territory {
-  id: string;
-  name: string;
-  region: string;
-  assignedTo: string;
-  leads: number;
-  opportunities: number;
-  revenue: number;
-  target: number;
-  achievement: number;
-  coverage: number;
-}
+import type { TerritoryWithPerformance } from '@/types/territory';
 
 interface TerritoryMapProps {
-  territories: Territory[];
-  onSelectTerritory: (territory: Territory) => void;
+  territories: TerritoryWithPerformance[];
+  onSelectTerritory: (territory: TerritoryWithPerformance) => void;
 }
 
 export function TerritoryMap({ territories, onSelectTerritory }: TerritoryMapProps) {
