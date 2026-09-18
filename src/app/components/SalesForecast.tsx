@@ -12,7 +12,7 @@ import {
   Activity
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart as RePieChart, Pie, Cell, LineChart, Line } from 'recharts';
-import { Opportunity } from './OpportunityManagement';
+import type { Opportunity } from '@/types/opportunity';
 
 interface SalesForecastProps {
   opportunities: Opportunity[];

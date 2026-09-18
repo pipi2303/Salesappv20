@@ -11,7 +11,7 @@ import { Badge } from '@/app/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Progress } from '@/app/components/ui/progress';
 import { toast } from 'sonner';
-import { Opportunity } from './OpportunityManagement';
+import type { Opportunity } from '@/types/opportunity';
 
 interface OpportunityDetailDialogProps {
   open: boolean;

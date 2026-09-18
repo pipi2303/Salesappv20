@@ -42,7 +42,7 @@ import {
   MessageSquare,
   Activity
 } from 'lucide-react';
-import { Opportunity, ProductItem } from './OpportunityManagement';
+import type { Opportunity, ProductItem } from '@/types/opportunity';
 import { clientsApi, partnersApi, employeesApi } from '@/services/api';
 
 interface OpportunityFormNewProps {

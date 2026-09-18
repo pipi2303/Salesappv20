@@ -22,7 +22,7 @@ import {
   TrendingUp,
   ArrowUpDown
 } from 'lucide-react';
-import { Opportunity } from './OpportunityManagement';
+import type { Opportunity } from '@/types/opportunity';
 
 interface OpportunityListProps {
   opportunities: Opportunity[];

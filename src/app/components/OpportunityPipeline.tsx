@@ -27,7 +27,7 @@ import {
   Trash2,
   Building2 
 } from 'lucide-react';
-import { Opportunity } from './OpportunityManagement';
+import type { Opportunity } from '@/types/opportunity';
 import { formatCurrency, formatNumber } from '@/utils/formatters';
 
 interface OpportunityPipelineProps {
