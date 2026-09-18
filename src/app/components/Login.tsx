@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Lock, Mail, Eye, EyeOff, Mic, User, Shield, Users, LogIn, Database } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, Mic, User, Shield, Users, LogIn } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { VoiceInput } from '@/app/components/VoiceInput';
-import { initializeDatabase, isDataInitialized } from '@/utils/initializeDatabase';
 import { toast } from 'sonner';
 
 interface LoginProps {
@@ -120,23 +119,6 @@ export function Login({ onLogin }: LoginProps) {
     setTimeout(() => {
       onLogin(account.email, account.role, account.name);
     }, 500);
-  };
-
-  const handleInitializeDatabase = async () => {
-    if (isDataInitialized()) {
-      toast.info('Database sudah diinisialisasi sebelumnya.');
-      return;
-    }
-    
-    setIsLoading(true);
-    const result = await initializeDatabase();
-    setIsLoading(false);
-    
-    if (result.success) {
-      toast.success('✅ Database berhasil diinisialisasi!');
-    } else {
-      toast.error('❌ Gagal menginisialisasi database: ' + result.error);
-    }
   };
 
   return (
