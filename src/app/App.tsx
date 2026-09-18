@@ -444,9 +444,9 @@ function AppContent() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm">
+        <header className="h-16 bg-[#013E37] border-b border-white/10 text-white flex items-center justify-between px-6 shadow-sm">
           <div className="flex items-center gap-4">
-            <h2 className="text-2xl font-bold text-[#013E37]">
+            <h2 className="text-2xl font-bold text-white">
               {activeMenuName}
             </h2>
           </div>
