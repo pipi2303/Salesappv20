@@ -15,18 +15,6 @@ export interface SalesPerson {
   performance: number;
 }
 
-export interface Product {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  description: string;
-  features: string[];
-  image: string;
-  stock: number;
-  sold: number;
-}
-
 export interface Demo {
   id: string;
   title: string;
@@ -252,98 +240,6 @@ export const salesTeam: SalesPerson[] = [
     joinDate: new Date(2024, 8, 20),
     region: 'Medan',
     performance: 104.0
-  }
-];
-
-export const products: Product[] = [
-  {
-    id: 'P001',
-    name: 'Starter Plan',
-    category: 'Subscription',
-    price: 5000000,
-    description: 'Paket sempurna untuk bisnis kecil yang baru memulai',
-    features: [
-      'Hingga 10 pengguna',
-      'Dashboard analytics dasar',
-      '10 GB penyimpanan',
-      'Email support',
-      'Mobile app access'
-    ],
-    image: 'starter-plan',
-    stock: 999,
-    sold: 45
-  },
-  {
-    id: 'P002',
-    name: 'Professional Plan',
-    category: 'Subscription',
-    price: 15000000,
-    description: 'Solusi lengkap untuk bisnis menengah yang sedang berkembang',
-    features: [
-      'Hingga 50 pengguna',
-      'Dashboard analytics advanced',
-      '100 GB penyimpanan',
-      'Priority support 24/7',
-      'API integration',
-      'Custom reports'
-    ],
-    image: 'professional-plan',
-    stock: 999,
-    sold: 32
-  },
-  {
-    id: 'P003',
-    name: 'Enterprise Plan',
-    category: 'Subscription',
-    price: 35000000,
-    description: 'Platform enterprise dengan fitur unlimited untuk perusahaan besar',
-    features: [
-      'Unlimited pengguna',
-      'Dashboard analytics premium',
-      'Unlimited penyimpanan',
-      'Dedicated account manager',
-      'Advanced API integration',
-      'White-label options',
-      'Custom development',
-      'SLA guarantee'
-    ],
-    image: 'enterprise-plan',
-    stock: 999,
-    sold: 23
-  },
-  {
-    id: 'P004',
-    name: 'Consulting Services',
-    category: 'Services',
-    price: 25000000,
-    description: 'Layanan konsultasi bisnis dan implementasi sistem',
-    features: [
-      'Business analysis',
-      'System implementation',
-      'Training & workshop',
-      'Ongoing support',
-      'Best practice guidance'
-    ],
-    image: 'consulting',
-    stock: 999,
-    sold: 18
-  },
-  {
-    id: 'P005',
-    name: 'Custom Development',
-    category: 'Services',
-    price: 50000000,
-    description: 'Pengembangan solusi custom sesuai kebutuhan bisnis Anda',
-    features: [
-      'Requirement analysis',
-      'Custom feature development',
-      'Integration services',
-      'Testing & QA',
-      'Deployment & maintenance'
-    ],
-    image: 'custom-dev',
-    stock: 999,
-    sold: 12
   }
 ];
 
