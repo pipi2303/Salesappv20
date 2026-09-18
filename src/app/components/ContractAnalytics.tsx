@@ -396,7 +396,7 @@ export function ContractAnalytics({ contracts }: ContractAnalyticsProps) {
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <p className="text-blue-100 text-sm">12-Month Revenue Forecast</p>
-                        <p className="text-3xl font-bold mt-1">Rp {(forecastRevenue / 1000000000).toFixed(2)} M</p>
+                        <p className="text-2xl font-bold mt-1">Rp {(forecastRevenue / 1000000000).toFixed(2)} M</p>
                       </div>
                       <TrendingUp className="h-12 w-12 text-blue-200" />
                     </div>

@@ -1,7 +1,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --font-size: 16px;
+  --font-size: 14px; /* was 16px - global density reduction, see App-wide sizing note */
 
   /* Layout */
   --background:         #EEF7F5;

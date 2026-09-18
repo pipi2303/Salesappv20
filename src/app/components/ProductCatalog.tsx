@@ -351,7 +351,7 @@ export function ProductCatalog() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">
+          <h1 className="text-2xl font-bold text-[#013E37]">
             Katalog Produk
           </h1>
           <p className="text-gray-600 mt-1">Jelajahi dan kelola semua produk & layanan</p>
@@ -655,7 +655,7 @@ export function ProductCatalog() {
                 <div className="flex items-center gap-4">
                   <div>
                     <p className="text-sm text-white/80">Total Terjual</p>
-                    <p className="text-3xl font-bold">{stats.bestSeller.sold}</p>
+                    <p className="text-2xl font-bold">{stats.bestSeller.sold}</p>
                   </div>
                   <div>
                     <p className="text-sm text-white/80">Revenue</p>

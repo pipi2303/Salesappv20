@@ -162,7 +162,7 @@ export function ProposalHistory() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Riwayat Proposal</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Riwayat Proposal</h1>
           <p className="text-gray-600 mt-1">Kelola semua proposal penjualan Anda</p>
         </div>
         <div className="flex gap-2">
@@ -184,7 +184,7 @@ export function ProposalHistory() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Proposal</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">{stats.total}</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">{stats.total}</p>
               </div>
               <div className="h-12 w-12 bg-[#DFF0EC] rounded-lg flex items-center justify-center">
                 <FileText className="h-6 w-6 text-[#013E37]" />
@@ -198,7 +198,7 @@ export function ProposalHistory() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Terkirim</p>
-                <p className="text-3xl font-bold text-blue-600 mt-1">{stats.sent}</p>
+                <p className="text-2xl font-bold text-blue-600 mt-1">{stats.sent}</p>
               </div>
               <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <Mail className="h-6 w-6 text-blue-600" />
@@ -212,7 +212,7 @@ export function ProposalHistory() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Diterima</p>
-                <p className="text-3xl font-bold text-green-600 mt-1">{stats.accepted}</p>
+                <p className="text-2xl font-bold text-green-600 mt-1">{stats.accepted}</p>
               </div>
               <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
                 <FileText className="h-6 w-6 text-green-600" />

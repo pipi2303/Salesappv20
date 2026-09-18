@@ -98,7 +98,7 @@ export function QuotationManagement() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-[#013E37] tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl font-black text-[#013E37] tracking-tight flex items-center gap-3">
             <FileText className="h-8 w-8" />
             Quotation Management
           </h1>
@@ -398,7 +398,7 @@ export function QuotationManagement() {
             <div className="relative z-10 flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-white/20 px-3 py-1 rounded-full">New Submission</span>
-                <h2 className="text-3xl font-black mt-4 uppercase tracking-tighter">Draft Quotation</h2>
+                <h2 className="text-2xl font-black mt-4 uppercase tracking-tighter">Draft Quotation</h2>
                 <p className="text-white/70 text-sm mt-1">Lengkapi detail untuk membuat penawaran harga baru.</p>
               </div>
               <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">

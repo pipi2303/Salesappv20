@@ -658,7 +658,7 @@ export function KPIAIEnhanced() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37] flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-[#013E37] flex items-center gap-3">
             <Brain className="w-8 h-8 text-[#013E37]" />
             AI-Powered KPI Management
           </h1>
@@ -1034,7 +1034,7 @@ export function KPIAIEnhanced() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-3xl font-bold text-white">{overallProgress.toFixed(0)}%</div>
+                      <div className="text-2xl font-bold text-white">{overallProgress.toFixed(0)}%</div>
                       <p className="text-white/90 text-sm">Overall Progress</p>
                     </div>
                   </div>

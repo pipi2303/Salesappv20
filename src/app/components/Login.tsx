@@ -162,7 +162,7 @@ export function Login({ onLogin }: LoginProps) {
               <div className="inline-block lg:hidden p-3 bg-[#013E37] rounded-2xl shadow-xl mb-4">
                 <BarChart className="h-10 w-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Selamat Datang</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Selamat Datang</h2>
               <p className="text-gray-600">Masuk ke akun Anda untuk melanjutkan</p>
             </div>
 

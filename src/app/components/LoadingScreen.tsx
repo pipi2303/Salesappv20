@@ -13,7 +13,7 @@ export function LoadingScreen() {
             </div>
           </div>
         </div>
-        <h1 className="text-3xl font-bold text-[#FFEFB2] mb-2">Sales Monitoring Pro</h1>
+        <h1 className="text-2xl font-bold text-[#FFEFB2] mb-2">Sales Monitoring Pro</h1>
         <p className="text-[#FFEFB2]/70">Memuat aplikasi...</p>
       </div>
     </div>

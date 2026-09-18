@@ -275,19 +275,19 @@ export function AIInsightsDashboard() {
           <div className="grid grid-cols-4 gap-4">
             <div className="bg-white/10 rounded-lg p-4">
               <p className="text-white/70 text-xs mb-1">Pipeline Health</p>
-              <p className="text-3xl font-bold">{insights.pipelineHealth.score}/100</p>
+              <p className="text-2xl font-bold">{insights.pipelineHealth.score}/100</p>
             </div>
             <div className="bg-white/10 rounded-lg p-4">
               <p className="text-white/70 text-xs mb-1">Active Deals</p>
-              <p className="text-3xl font-bold">{insights.pipelineHealth.totalDeals}</p>
+              <p className="text-2xl font-bold">{insights.pipelineHealth.totalDeals}</p>
             </div>
             <div className="bg-white/10 rounded-lg p-4">
               <p className="text-white/70 text-xs mb-1">Conversion Rate</p>
-              <p className="text-3xl font-bold">{insights.pipelineHealth.conversionRate}%</p>
+              <p className="text-2xl font-bold">{insights.pipelineHealth.conversionRate}%</p>
             </div>
             <div className="bg-white/10 rounded-lg p-4">
               <p className="text-white/70 text-xs mb-1">Target Achievement</p>
-              <p className="text-3xl font-bold">{insights.teamPerformance.targetAchievement}%</p>
+              <p className="text-2xl font-bold">{insights.teamPerformance.targetAchievement}%</p>
             </div>
           </div>
         </CardContent>

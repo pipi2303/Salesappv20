@@ -205,7 +205,7 @@ export function CustomReportBuilder() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-black text-gray-900">{stat.value}</div>
+                <div className="text-2xl font-black text-gray-900">{stat.value}</div>
                 <p className="text-xs text-gray-500 font-medium mt-1 uppercase tracking-tighter">{stat.sub}</p>
               </CardContent>
             </Card>

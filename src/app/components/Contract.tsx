@@ -146,7 +146,7 @@ export function Contract() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">
+          <h1 className="text-2xl font-bold text-[#013E37]">
             Contract Management
           </h1>
           <p className="text-gray-600 mt-1">Kelola semua kontrak dan perjanjian</p>

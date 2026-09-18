@@ -629,7 +629,7 @@ export function DiscountApprovalSystem() {
             <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -mr-24 -mt-24 blur-2xl" />
             <div className="relative z-10 space-y-2">
               <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-white/20 px-3 py-1 rounded-full text-white">New Submission</span>
-              <h2 className="text-3xl font-black uppercase tracking-tight text-white mt-4">Draft Request</h2>
+              <h2 className="text-2xl font-black uppercase tracking-tight text-white mt-4">Draft Request</h2>
               <p className="text-white/70 text-sm font-medium italic">Sistem akan otomatis menentukan Level Persetujuan berdasarkan besaran diskon.</p>
             </div>
           </div>
@@ -811,7 +811,7 @@ export function DiscountApprovalSystem() {
                       <span className="text-xs font-bold uppercase tracking-widest">{selectedRequest.region}</span>
                     </div>
                   </div>
-                  <h2 className="text-3xl font-black uppercase tracking-tight leading-none">{selectedRequest.clientName}</h2>
+                  <h2 className="text-2xl font-black uppercase tracking-tight leading-none">{selectedRequest.clientName}</h2>
                 </div>
               </div>
 

@@ -592,7 +592,7 @@ export function TaskManagement() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight uppercase text-[#013E37]">
+        <h1 className="text-2xl font-bold tracking-tight uppercase text-[#013E37]">
           Task & Activity Management
         </h1>
         <p className="text-sm text-muted-foreground mt-1">

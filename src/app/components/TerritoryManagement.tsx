@@ -278,7 +278,7 @@ export function TerritoryManagement() {
             <MapPin className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-gray-900">{stats.total}</div>
+            <div className="text-2xl font-black text-gray-900">{stats.total}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Active regions</p>
           </CardContent>
         </Card>
@@ -289,7 +289,7 @@ export function TerritoryManagement() {
             <TrendingUp className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-[#013E37]">{formatCurrency(stats.totalRevenue)}</div>
+            <div className="text-2xl font-black text-[#013E37]">{formatCurrency(stats.totalRevenue)}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">YTD performance</p>
           </CardContent>
         </Card>
@@ -300,7 +300,7 @@ export function TerritoryManagement() {
             <Target className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-emerald-600">
+            <div className="text-2xl font-black text-emerald-600">
               {stats.totalTarget > 0 ? ((stats.totalRevenue / stats.totalTarget) * 100).toFixed(1) : '0.0'}%
             </div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Average attainment</p>
@@ -313,7 +313,7 @@ export function TerritoryManagement() {
             <MapPin className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-amber-600">{stats.avgCoverage.toFixed(1)}%</div>
+            <div className="text-2xl font-black text-amber-600">{stats.avgCoverage.toFixed(1)}%</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Market share</p>
           </CardContent>
         </Card>
@@ -324,7 +324,7 @@ export function TerritoryManagement() {
             <Award className="h-4 w-4 text-[#EEF7F5]0" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-[#013E37] truncate">{stats.topPerformer.name}</div>
+            <div className="text-2xl font-black text-[#013E37] truncate">{stats.topPerformer.name}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">{stats.topPerformer.achievement.toFixed(1)}% Attainment</p>
           </CardContent>
         </Card>
@@ -556,7 +556,7 @@ export function TerritoryManagement() {
                 <Badge className="bg-white/20 hover:bg-white/30 text-white border-none font-black text-[10px] uppercase tracking-widest mb-4">
                   Territory ID: #{selectedTerritory?.id}
                 </Badge>
-                <h2 className="text-3xl font-black uppercase tracking-tight leading-none mb-2">
+                <h2 className="text-2xl font-black uppercase tracking-tight leading-none mb-2">
                   {selectedTerritory?.name}
                 </h2>
                 <p className="text-emerald-100/70 font-bold uppercase tracking-widest text-xs flex items-center gap-2">

@@ -203,7 +203,7 @@ export function Home() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">
+          <h1 className="text-2xl font-bold text-[#013E37]">
             Dashboard Sales Monitoring
           </h1>
           <p className="text-gray-600 mt-1">Selamat datang kembali! Berikut ringkasan aktivitas sales Anda hari ini.</p>
@@ -224,12 +224,14 @@ export function Home() {
           <Card key={index} className="hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
-                <div className={`h-12 w-12 rounded-full bg-gradient-to-br ${stat.color} flex items-center justify-center flex-shrink-0`}>
-                  <stat.icon className="h-6 w-6 text-white" />
+                <div className={`h-10 w-10 rounded-full bg-gradient-to-br ${stat.color} flex items-center justify-center flex-shrink-0`}>
+                  <stat.icon className="h-5 w-5 text-white" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs text-gray-500 uppercase tracking-wide truncate">{stat.title}</p>
-                  <p className="text-2xl font-bold mt-1 truncate">{stat.value}</p>
+                  {/* No truncate here - uppercase + tracking-wide labels like "Total Revenue"
+                      need to wrap to 2 lines rather than get cut off ("TOTAL REV..."). */}
+                  <p className="text-xs text-gray-500 uppercase tracking-wide leading-snug">{stat.title}</p>
+                  <p className="text-xl font-bold mt-1 truncate">{stat.value}</p>
                   <p className={`text-xs ${stat.textColor} mt-0.5 truncate`}>{stat.change}</p>
                 </div>
               </div>

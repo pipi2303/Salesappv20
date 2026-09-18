@@ -98,7 +98,7 @@ export function SalesRepresentative() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">Sales Representative</h1>
+          <h1 className="text-2xl font-bold text-[#013E37]">Sales Representative</h1>
           <p className="text-gray-500 mt-1">Kelola data tim sales internal</p>
         </div>
         

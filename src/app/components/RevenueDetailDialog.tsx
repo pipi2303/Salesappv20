@@ -551,21 +551,21 @@ export function RevenueDetailDialog({
               <div className="grid grid-cols-4 gap-3 p-5 bg-gradient-to-r from-[#013E37] to-[#025C52] rounded-xl text-white flex-shrink-0">
                 <div>
                   <p className="text-xs opacity-90 mb-1">Total Actual</p>
-                  <p className="text-3xl font-bold">{(selectedMonth.actual / 1000000).toFixed(0)}M</p>
+                  <p className="text-2xl font-bold">{(selectedMonth.actual / 1000000).toFixed(0)}M</p>
                 </div>
                 <div>
                   <p className="text-xs opacity-90 mb-1">Target</p>
-                  <p className="text-3xl font-bold">{(selectedMonth.target / 1000000).toFixed(0)}M</p>
+                  <p className="text-2xl font-bold">{(selectedMonth.target / 1000000).toFixed(0)}M</p>
                 </div>
                 <div>
                   <p className="text-xs opacity-90 mb-1">Achievement</p>
-                  <p className="text-3xl font-bold">{selectedMonth.progress.toFixed(0)}%</p>
+                  <p className="text-2xl font-bold">{selectedMonth.progress.toFixed(0)}%</p>
                 </div>
                 <div>
                   <p className="text-xs opacity-90 mb-1">
                     {selectedMonth.actual >= selectedMonth.target ? 'Surplus' : 'Short'}
                   </p>
-                  <p className="text-3xl font-bold">
+                  <p className="text-2xl font-bold">
                     {Math.abs((selectedMonth.actual - selectedMonth.target) / 1000000).toFixed(0)}M
                   </p>
                 </div>

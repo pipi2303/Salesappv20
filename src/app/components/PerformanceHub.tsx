@@ -45,7 +45,7 @@ export function PerformanceHub() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">
+          <h1 className="text-2xl font-bold text-[#013E37]">
             Performance Hub
           </h1>
           <p className="text-gray-600 mt-1">Real-time KPI Tracking & Incentive Calculator</p>
@@ -98,7 +98,7 @@ export function PerformanceHub() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-bold">{currentUserKPI.pencapaian_target_persen}%</span>
+                  <span className="text-2xl font-bold">{currentUserKPI.pencapaian_target_persen}%</span>
                   <span className="text-xs text-[#C3DDD9]">Target Achieved</span>
                 </div>
               </div>
@@ -222,7 +222,7 @@ export function PerformanceHub() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-4">
-                <div className="text-3xl font-bold text-blue-600 mb-1">
+                <div className="text-2xl font-bold text-blue-600 mb-1">
                   {currentUserKPI.total_kunjungan_faskes}
                 </div>
                 <p className="text-xs text-gray-600 mb-3">Total kunjungan via geo-tagging</p>
@@ -244,7 +244,7 @@ export function PerformanceHub() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-4">
-                <div className="text-3xl font-bold text-[#013E37] mb-1">
+                <div className="text-2xl font-bold text-[#013E37] mb-1">
                   {currentUserKPI.total_sesi_demo}
                 </div>
                 <p className="text-xs text-gray-600 mb-3">Presentasi RME/LIS/BPJS</p>
@@ -266,7 +266,7 @@ export function PerformanceHub() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-4">
-                <div className="text-3xl font-bold text-green-600 mb-1">
+                <div className="text-2xl font-bold text-green-600 mb-1">
                   {currentUserKPI.jumlah_leads_baru}
                 </div>
                 <p className="text-xs text-gray-600 mb-3">Prospek masuk pipeline</p>
@@ -371,7 +371,7 @@ export function PerformanceHub() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-4">
-                <div className="text-3xl font-bold text-green-600 mb-2">
+                <div className="text-2xl font-bold text-green-600 mb-2">
                   {currentUserKPI.persentase_upsell_bpjs.toFixed(0)}%
                 </div>
                 <p className="text-xs text-gray-600 mb-3">Rasio upsell BPJS Automation</p>
@@ -391,7 +391,7 @@ export function PerformanceHub() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-4">
-                <div className="text-3xl font-bold text-blue-600 mb-2">
+                <div className="text-2xl font-bold text-blue-600 mb-2">
                   {currentUserKPI.unit_lis_sold}
                 </div>
                 <p className="text-xs text-gray-600 mb-3">Laboratory Information System</p>
@@ -416,7 +416,7 @@ export function PerformanceHub() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-4">
-                <div className="text-3xl font-bold text-[#013E37] mb-2">
+                <div className="text-2xl font-bold text-[#013E37] mb-2">
                   {currentUserKPI.adopsi_esign_klien}
                 </div>
                 <p className="text-xs text-gray-600 mb-3">Digital Integrity Adoption</p>
