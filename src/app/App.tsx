@@ -58,6 +58,12 @@ type MenuItem = {
   subMenus?: SubMenuItem[];
 };
 
+type MenuGroup = {
+  id: string;
+  label: string;
+  items: MenuItem[];
+};
+
 function AppContent() {
   const { user, logout, login, isAuthenticated } = useAuth();
   const [activeMenu, setActiveMenu] = useState('home');
@@ -68,6 +74,9 @@ function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]); // All menus collapsed by default
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(
+    ['dashboard', 'sales-pipeline', 'produk-wilayah', 'tim-penjualan', 'kinerja-laporan', 'komunikasi', 'sistem']
+  ); // All groups expanded by default
   const [contracts, setContracts] = useState<ContractType[]>(dummyContracts);
   const [selectedContract, setSelectedContract] = useState<ContractType | null>(null);
   // FIX: ref ke #modal-portal-root di dalam .content-area, dipakai ModalPortalProvider
@@ -146,39 +155,88 @@ function AppContent() {
     };
   }, [showUserMenu]);
 
-  const menuItems: MenuItem[] = [
-    { id: 'home', name: 'Home', icon: HomeIcon, component: Home },
-    { id: 'leads', name: 'Lead Management', icon: UserPlus, component: LeadManagement },
-    { id: 'opportunities', name: 'Opportunity Management', icon: TrendingUp, component: OpportunityManagement },
-    { id: 'team', name: 'CRM', icon: Users, component: SalesTeam },
-    { id: 'sales-representative', name: 'Sales Representative', icon: Users, component: SalesRepresentative },
-    { id: 'products', name: 'Product Catalog', icon: Package, component: ProductCatalog },
-    { id: 'cpq', name: 'Configure, Propose & Quote', icon: Clipboard, component: ConfigurePriceQuote },
-    { id: 'quotations', name: 'Quotation Management', icon: FileText, component: QuotationManagement },
-    { id: 'demos', name: 'Demo Scheduler', icon: Calendar, component: DemoScheduler },
-    { id: 'contracts', name: 'Contract', icon: FileText, component: Contract },
-    { id: 'discount-approval', name: 'Discount Approval', icon: Percent, component: DiscountApprovalSystem },
-    { id: 'reports', name: 'Sales Reports', icon: BarChart3, component: SalesReports },
-    { 
-      id: 'kpi', 
-      name: 'KPI', 
-      icon: Target,
-      subMenus: [
-        { id: 'kpi-tracker', name: 'KPI Tracker', component: PerformanceHub },
-        { id: 'leaderboard', name: 'Leaderboard', component: SalesLeaderboard },
-        { id: 'kpi-ai-enhanced', name: 'KPI Target', component: KPIAIEnhanced }
-      ]
+  // Sidebar menu, grouped into sections (see menuGroups.map render below).
+  // Each group can be collapsed/expanded independently via expandedGroups.
+  const menuGroups: MenuGroup[] = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      items: [
+        { id: 'home', name: 'Home', icon: HomeIcon, component: Home },
+      ],
     },
-    { id: 'tasks', name: 'Task Management', icon: CheckSquare, component: TaskManagement },
-    { id: 'territory', name: 'Territory Management', icon: MapPin, component: TerritoryManagement },
-    { id: 'email-hub', name: 'Email Communication Hub', icon: Mail, component: EmailCommunicationHub },
-    { id: 'integration-hub', name: 'Integration Hub', icon: Plug, component: IntegrationHub },
-    { id: 'commission', name: 'Commission Calculator', icon: DollarSign, component: CommissionCalculator },
-    { id: 'custom-reports', name: 'Custom Report Builder', icon: BarChart3, component: CustomReportBuilder },
-    { id: 'knowledge-base', name: 'Knowledge Base', icon: Book, component: KnowledgeBase },
-    { id: 'analytics', name: 'Analytics', icon: BarChart3, component: AdvancedAnalytics },
-    { id: 'admin', name: 'Admin System', icon: Settings, component: AdminSystem }
+    {
+      id: 'sales-pipeline',
+      label: 'Sales Pipeline',
+      items: [
+        { id: 'leads', name: 'Lead Management', icon: UserPlus, component: LeadManagement },
+        { id: 'opportunities', name: 'Opportunity Management', icon: TrendingUp, component: OpportunityManagement },
+        { id: 'cpq', name: 'Configure, Propose & Quote', icon: Clipboard, component: ConfigurePriceQuote },
+        { id: 'quotations', name: 'Quotation Management', icon: FileText, component: QuotationManagement },
+        { id: 'discount-approval', name: 'Discount Approval', icon: Percent, component: DiscountApprovalSystem },
+        { id: 'contracts', name: 'Contract', icon: FileText, component: Contract },
+        { id: 'demos', name: 'Demo Scheduler', icon: Calendar, component: DemoScheduler },
+      ],
+    },
+    {
+      id: 'produk-wilayah',
+      label: 'Produk & Wilayah',
+      items: [
+        { id: 'products', name: 'Product Catalog', icon: Package, component: ProductCatalog },
+        { id: 'territory', name: 'Territory Management', icon: MapPin, component: TerritoryManagement },
+      ],
+    },
+    {
+      id: 'tim-penjualan',
+      label: 'Tim Penjualan',
+      items: [
+        { id: 'team', name: 'CRM', icon: Users, component: SalesTeam },
+        { id: 'sales-representative', name: 'Sales Representative', icon: Users, component: SalesRepresentative },
+        { id: 'commission', name: 'Commission Calculator', icon: DollarSign, component: CommissionCalculator },
+      ],
+    },
+    {
+      id: 'kinerja-laporan',
+      label: 'Kinerja & Laporan',
+      items: [
+        {
+          id: 'kpi',
+          name: 'KPI',
+          icon: Target,
+          subMenus: [
+            { id: 'kpi-tracker', name: 'KPI Tracker', component: PerformanceHub },
+            { id: 'leaderboard', name: 'Leaderboard', component: SalesLeaderboard },
+            { id: 'kpi-ai-enhanced', name: 'KPI Target', component: KPIAIEnhanced },
+          ],
+        },
+        { id: 'tasks', name: 'Task Management', icon: CheckSquare, component: TaskManagement },
+        { id: 'reports', name: 'Sales Reports', icon: BarChart3, component: SalesReports },
+        { id: 'custom-reports', name: 'Custom Report Builder', icon: BarChart3, component: CustomReportBuilder },
+        { id: 'analytics', name: 'Analytics', icon: BarChart3, component: AdvancedAnalytics },
+      ],
+    },
+    {
+      id: 'komunikasi',
+      label: 'Komunikasi',
+      items: [
+        { id: 'email-hub', name: 'Email Communication Hub', icon: Mail, component: EmailCommunicationHub },
+      ],
+    },
+    {
+      id: 'sistem',
+      label: 'Sistem',
+      items: [
+        { id: 'integration-hub', name: 'Integration Hub', icon: Plug, component: IntegrationHub },
+        { id: 'knowledge-base', name: 'Knowledge Base', icon: Book, component: KnowledgeBase },
+        { id: 'admin', name: 'Admin System', icon: Settings, component: AdminSystem },
+      ],
+    },
   ];
+
+  // Flat view of every menu item across all groups - kept so findActiveComponent/
+  // findActiveMenuName (and anything else that used to scan the old flat
+  // menuItems array) don't need their own group-traversal logic.
+  const menuItems: MenuItem[] = menuGroups.flatMap(group => group.items);
 
   const handleLogout = () => {
     logout();
@@ -278,62 +336,92 @@ function AppContent() {
           </Button>
         </div>
 
-        {/* Menu Items */}
+        {/* Menu Items - grouped into collapsible sections */}
         <nav className="flex-1 overflow-y-auto py-4 sidebar-nav-scroll">
           <div className="space-y-1 px-2">
-            {menuItems.map((item) => (
-              <div key={item.id}>
-                <button
-                  onClick={() => {
-                    if (item.subMenus) {
-                      setExpandedMenus(prev => {
-                        if (prev.includes(item.id)) {
-                          return prev.filter(id => id !== item.id);
-                        } else {
-                          return [...prev, item.id];
-                        }
-                      });
-                    } else {
-                      setActiveMenu(item.id);
-                    }
-                  }}
-                  className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${
-                    activeMenu === item.id
-                      ? 'bg-[#013E37] text-white shadow-md'
-                      : 'text-gray-700 hover:bg-[#EEF7F5] hover:text-[#013E37]'
-                  }`}
-                >
-                  <item.icon className="h-5 w-5 flex-shrink-0" />
+            {menuGroups.map((group) => {
+              const isGroupExpanded = expandedGroups.includes(group.id);
+              return (
+                <div key={group.id} className="mb-1">
                   {isSidebarOpen && (
-                    <>
-                      <span className="font-medium text-sm truncate flex-1 text-left">{item.name}</span>
-                      {item.subMenus && (
-                        expandedMenus.includes(item.id) 
-                          ? <ChevronDown className="h-4 w-4 flex-shrink-0" />
-                          : <ChevronRight className="h-4 w-4 flex-shrink-0" />
+                    <button
+                      onClick={() => {
+                        setExpandedGroups(prev =>
+                          prev.includes(group.id)
+                            ? prev.filter(id => id !== group.id)
+                            : [...prev, group.id]
+                        );
+                      }}
+                      className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-gray-400 hover:text-[#013E37] transition-colors"
+                    >
+                      <span className="truncate">{group.label}</span>
+                      {isGroupExpanded ? (
+                        <ChevronDown className="h-3.5 w-3.5 flex-shrink-0" />
+                      ) : (
+                        <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" />
                       )}
-                    </>
+                    </button>
                   )}
-                </button>
-                {isSidebarOpen && item.subMenus && expandedMenus.includes(item.id) && (
-                  <div className="mt-1 space-y-1">
-                    {item.subMenus.map(subItem => (
-                      <button
-                        key={subItem.id}
-                        onClick={() => setActiveMenu(subItem.id)}
-                        className={`w-full flex items-center gap-3 pl-11 pr-3 py-2.5 rounded-lg transition-all ${
-                          activeMenu === subItem.id
-                            ? 'bg-[#013E37] text-white shadow-md'
-                            : 'text-gray-600 hover:bg-[#EEF7F5] hover:text-[#013E37]'
-                        }`}
-                      >
-                        <span className="text-sm truncate">{subItem.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+                  {(!isSidebarOpen || isGroupExpanded) && (
+                    <div className="space-y-1">
+                      {group.items.map((item) => (
+                        <div key={item.id}>
+                          <button
+                            onClick={() => {
+                              if (item.subMenus) {
+                                setExpandedMenus(prev => {
+                                  if (prev.includes(item.id)) {
+                                    return prev.filter(id => id !== item.id);
+                                  } else {
+                                    return [...prev, item.id];
+                                  }
+                                });
+                              } else {
+                                setActiveMenu(item.id);
+                              }
+                            }}
+                            className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${
+                              activeMenu === item.id
+                                ? 'bg-[#013E37] text-white shadow-md'
+                                : 'text-gray-700 hover:bg-[#EEF7F5] hover:text-[#013E37]'
+                            }`}
+                          >
+                            <item.icon className="h-5 w-5 flex-shrink-0" />
+                            {isSidebarOpen && (
+                              <>
+                                <span className="font-medium text-sm truncate flex-1 text-left">{item.name}</span>
+                                {item.subMenus && (
+                                  expandedMenus.includes(item.id) 
+                                    ? <ChevronDown className="h-4 w-4 flex-shrink-0" />
+                                    : <ChevronRight className="h-4 w-4 flex-shrink-0" />
+                                )}
+                              </>
+                            )}
+                          </button>
+                          {isSidebarOpen && item.subMenus && expandedMenus.includes(item.id) && (
+                            <div className="mt-1 space-y-1">
+                              {item.subMenus.map(subItem => (
+                                <button
+                                  key={subItem.id}
+                                  onClick={() => setActiveMenu(subItem.id)}
+                                  className={`w-full flex items-center gap-3 pl-11 pr-3 py-2.5 rounded-lg transition-all ${
+                                    activeMenu === subItem.id
+                                      ? 'bg-[#013E37] text-white shadow-md'
+                                      : 'text-gray-600 hover:bg-[#EEF7F5] hover:text-[#013E37]'
+                                  }`}
+                                >
+                                  <span className="text-sm truncate">{subItem.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </nav>
 
