@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app
 import { toast } from 'sonner';
 import { formatCurrency, formatDate } from '@/utils/formatters';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Legend, AreaChart, Area } from 'recharts';
+import { CHART_PRIMARY, CHART_COLORS, CHART_GRID, CHART_TOOLTIP_STYLE, AREA_GRADIENT_STOPS, chartColor } from '@/styles/chartTheme';
 import { salesRepsRepository } from '@/services/salesRepsRepository';
 import { commissionsRepository } from '@/services/commissionsRepository';
 import { performanceTargetsRepository } from '@/services/performanceTargetsRepository';
@@ -498,19 +499,19 @@ export function CommissionCalculator() {
                     ]}>
                       <defs>
                         <linearGradient id="colorComm" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#013E37" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
+                          <stop offset="5%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.from}/>
+                          <stop offset="95%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.to}/>
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f1f1" />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                       <XAxis dataKey="sales" hide />
                       <YAxis hide />
                       <Tooltip 
                         formatter={(val: number) => formatCurrency(val)} 
                         labelFormatter={(label) => `Sales: ${formatCurrency(label)}`}
-                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                        contentStyle={CHART_TOOLTIP_STYLE}
                       />
-                      <Area type="monotone" dataKey="comm" stroke="#013E37" strokeWidth={3} fillOpacity={1} fill="url(#colorComm)" />
+                      <Area type="monotone" dataKey="comm" stroke={CHART_PRIMARY} strokeWidth={3} fillOpacity={1} fill="url(#colorComm)" />
                     </AreaChart>
                   </ResponsiveContainer>
                   <div className="text-center mt-4">
@@ -592,16 +593,16 @@ export function CommissionCalculator() {
               <CardContent className="h-[350px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={commissionByPersonData} layout="vertical" margin={{ left: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f1f1" />
+                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke={CHART_GRID} />
                     <XAxis type="number" hide />
                     <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 700 }} />
                     <Tooltip 
                       formatter={(val: number) => formatCurrency(val)}
-                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                      contentStyle={CHART_TOOLTIP_STYLE}
                     />
                     <Legend iconType="circle" />
-                    <Bar dataKey="base" stackId="a" fill="#013E37" name="Base Commission" radius={[0, 0, 0, 0]} barSize={24} />
-                    <Bar dataKey="bonus" stackId="a" fill="#02847c" name="Total Bonuses" radius={[0, 4, 4, 0]} barSize={24} />
+                    <Bar dataKey="base" stackId="a" fill={CHART_COLORS[0]} name="Base Commission" radius={[0, 0, 0, 0]} barSize={24} />
+                    <Bar dataKey="bonus" stackId="a" fill={CHART_COLORS[1]} name="Total Bonuses" radius={[0, 4, 4, 0]} barSize={24} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -625,17 +626,17 @@ export function CommissionCalculator() {
                       dataKey="value"
                     >
                       {statusDistributionData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={index === 0 ? '#f59e0b' : index === 1 ? '#10b981' : '#3b82f6'} />
+                        <Cell key={`cell-${index}`} fill={index === 0 ? chartColor(0) : index === 1 ? chartColor(1) : chartColor(2)} />
                       ))}
                     </Pie>
-                    <Tooltip contentStyle={{ borderRadius: '12px', border: 'none' }} />
+                    <Tooltip contentStyle={CHART_TOOLTIP_STYLE} />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="grid grid-cols-3 gap-4 w-full mt-4">
                   {statusDistributionData.map((s, i) => (
                     <div key={i} className="text-center">
                       <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{s.name}</p>
-                      <p className="text-lg font-black" style={{ color: i === 0 ? '#f59e0b' : i === 1 ? '#10b981' : '#3b82f6' }}>{s.value}</p>
+                      <p className="text-lg font-black" style={{ color: i === 0 ? chartColor(0) : i === 1 ? chartColor(1) : chartColor(2) }}>{s.value}</p>
                     </div>
                   ))}
                 </div>

@@ -87,6 +87,7 @@ import {
   Area,
   Legend
 } from 'recharts';
+import { CHART_PRIMARY, CHART_COLORS, CHART_GRID, CHART_MUTED_TEXT, AREA_GRADIENT_STOPS, CHART_TOOLTIP_STYLE } from '@/styles/chartTheme';
 import { toast } from 'sonner';
 import { employeesApi } from '@/services/api';
 import { KPITargetData, AIInsight, AIRecommendation, AIPrediction, AIAlert, Manager } from '@/types/kpi-enhanced';
@@ -1849,25 +1850,25 @@ export function KPIAIEnhanced() {
                       <AreaChart data={getTrendData(selectedTargetForSummary)}>
                         <defs>
                           <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#013E37" stopOpacity={0.1}/>
-                            <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
+                            <stop offset="5%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.from}/>
+                            <stop offset="95%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.to}/>
                           </linearGradient>
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                         <XAxis 
                           dataKey="name" 
                           axisLine={false} 
                           tickLine={false} 
-                          tick={{ fontSize: 12, fill: '#666' }} 
+                          tick={{ fontSize: 12, fill: CHART_MUTED_TEXT }} 
                         />
                         <YAxis 
                           axisLine={false} 
                           tickLine={false} 
-                          tick={{ fontSize: 10, fill: '#999' }}
+                          tick={{ fontSize: 10, fill: CHART_MUTED_TEXT }}
                           tickFormatter={(val) => `Rp${val / 1000000}M`}
                         />
                         <ReTooltip 
-                          contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                          contentStyle={CHART_TOOLTIP_STYLE}
                           formatter={(value: any, name: string) => [
                             name === 'revenue' ? formatCurrency(value) : value,
                             name.charAt(0).toUpperCase() + name.slice(1)
@@ -1876,7 +1877,7 @@ export function KPIAIEnhanced() {
                         <Area 
                           type="monotone" 
                           dataKey="revenue" 
-                          stroke="#013E37" 
+                          stroke={CHART_PRIMARY} 
                           strokeWidth={3}
                           fillOpacity={1} 
                           fill="url(#colorRev)" 
@@ -1884,9 +1885,9 @@ export function KPIAIEnhanced() {
                         <Line 
                           type="monotone" 
                           dataKey="deals" 
-                          stroke="#3b82f6" 
+                          stroke={CHART_COLORS[1]} 
                           strokeWidth={2}
-                          dot={{ r: 4, fill: '#3b82f6' }}
+                          dot={{ r: 4, fill: CHART_COLORS[1] }}
                         />
                       </AreaChart>
                     </ResponsiveContainer>

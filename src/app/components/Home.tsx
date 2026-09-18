@@ -3,6 +3,10 @@ import { TrendingUp, Users, Target, DollarSign, Calendar, FileText, Award, Activ
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
 import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  CHART_COLORS, CHART_PRIMARY, CHART_GRID, CHART_MUTED_TEXT,
+  CHART_TOOLTIP_STYLE, BAR_RADIUS_UP, AREA_GRADIENT_STOPS,
+} from '@/styles/chartTheme';
 import { salesData, leadSourceData, performanceData } from '@/app/data/dummyData';
 import { leadsApi, demosApi, contractsApi, salesTeamApi } from '@/services/api';
 import { toast } from 'sonner';
@@ -188,7 +192,7 @@ export function Home() {
     },
   ];
 
-  const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
+  const COLORS = CHART_COLORS;
 
   if (loading) {
     return (
@@ -255,22 +259,15 @@ export function Home() {
               <AreaChart data={salesData}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#013E37" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
+                    <stop offset="5%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.from} />
+                    <stop offset="95%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.to} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="month" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-                  }}
-                />
-                <Area type="monotone" dataKey="value" stroke="#013E37" fillOpacity={1} fill="url(#colorValue)" />
+                <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} vertical={false} />
+                <XAxis dataKey="month" stroke={CHART_MUTED_TEXT} tick={{ fontSize: 12, fill: CHART_MUTED_TEXT }} axisLine={false} tickLine={false} />
+                <YAxis stroke={CHART_MUTED_TEXT} tick={{ fontSize: 12, fill: CHART_MUTED_TEXT }} axisLine={false} tickLine={false} />
+                <Tooltip contentStyle={CHART_TOOLTIP_STYLE} />
+                <Area type="monotone" dataKey="value" stroke={CHART_PRIMARY} strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -319,20 +316,13 @@ export function Home() {
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={performanceData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="name" stroke="#94a3b8" />
-              <YAxis stroke="#94a3b8" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'white', 
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-                }}
-              />
+              <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} vertical={false} />
+              <XAxis dataKey="name" stroke={CHART_MUTED_TEXT} tick={{ fontSize: 12, fill: CHART_MUTED_TEXT }} axisLine={false} tickLine={false} />
+              <YAxis stroke={CHART_MUTED_TEXT} tick={{ fontSize: 12, fill: CHART_MUTED_TEXT }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={CHART_TOOLTIP_STYLE} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
               <Legend />
-              <Bar dataKey="target" fill="#94a3b8" name="Target" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="achievement" fill="#013E37" name="Achievement" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="target" fill="var(--border)" name="Target" radius={BAR_RADIUS_UP} />
+              <Bar dataKey="achievement" fill={CHART_PRIMARY} name="Achievement" radius={BAR_RADIUS_UP} />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>

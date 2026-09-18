@@ -45,6 +45,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app
 import { toast } from 'sonner';
 import { formatCurrency, formatDate } from '@/utils/formatters';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Legend, AreaChart, Area, ComposedChart, Line } from 'recharts';
+import { CHART_PRIMARY, CHART_GRID, CHART_STATUS, CHART_TOOLTIP_STYLE, CHART_TOOLTIP_CURSOR, AREA_GRADIENT_STOPS } from '@/styles/chartTheme';
 import { motion, AnimatePresence } from 'motion/react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
@@ -557,17 +558,17 @@ export function DiscountApprovalSystem() {
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <ComposedChart data={marginData}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                         <XAxis dataKey="category" axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 'bold' }} />
                         <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 'bold' }} unit="%" />
                         <Tooltip 
-                          cursor={{ fill: '#f8fafc' }}
-                          contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                          cursor={CHART_TOOLTIP_CURSOR}
+                          contentStyle={CHART_TOOLTIP_STYLE}
                         />
                         <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase' }} />
-                        <Bar name="Original Margin" dataKey="original" fill="#013E37" radius={[4, 4, 0, 0]} barSize={30} />
-                        <Bar name="Proposed Margin" dataKey="proposed" fill="#028076" radius={[4, 4, 0, 0]} barSize={30} />
-                        <Line name="Discount %" type="monotone" dataKey="discount" stroke="#f43f5e" strokeWidth={3} dot={{ r: 4, fill: '#f43f5e', strokeWidth: 2, stroke: '#fff' }} />
+                        <Bar name="Original Margin" dataKey="original" fill="var(--border)" radius={[4, 4, 0, 0]} barSize={30} />
+                        <Bar name="Proposed Margin" dataKey="proposed" fill={CHART_PRIMARY} radius={[4, 4, 0, 0]} barSize={30} />
+                        <Line name="Discount %" type="monotone" dataKey="discount" stroke={CHART_STATUS.critical} strokeWidth={3} dot={{ r: 4, fill: CHART_STATUS.critical, strokeWidth: 2, stroke: '#fff' }} />
                       </ComposedChart>
                     </ResponsiveContainer>
                   </motion.div>
@@ -598,16 +599,16 @@ export function DiscountApprovalSystem() {
                     ]}>
                       <defs>
                         <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#013E37" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
+                          <stop offset="5%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.from}/>
+                          <stop offset="95%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.to}/>
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
-                      <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }} />
-                      <Area type="monotone" dataKey="revenue" stroke="#013E37" fillOpacity={1} fill="url(#colorRev)" strokeWidth={3} />
-                      <Area type="monotone" dataKey="saved" stroke="#f43f5e" fill="#f43f5e" fillOpacity={0.05} strokeWidth={2} strokeDasharray="5 5" />
+                      <Tooltip contentStyle={CHART_TOOLTIP_STYLE} />
+                      <Area type="monotone" dataKey="revenue" stroke={CHART_PRIMARY} fillOpacity={1} fill="url(#colorRev)" strokeWidth={3} />
+                      <Area type="monotone" dataKey="saved" stroke={CHART_STATUS.critical} fill={CHART_STATUS.critical} fillOpacity={0.05} strokeWidth={2} strokeDasharray="5 5" />
                     </AreaChart>
                   </ResponsiveContainer>
                 )}

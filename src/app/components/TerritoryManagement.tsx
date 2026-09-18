@@ -13,6 +13,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { toast } from 'sonner';
 import { formatCurrency } from '@/utils/formatters';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { CHART_PRIMARY, CHART_GRID, CHART_TOOLTIP_STYLE, chartColor } from '@/styles/chartTheme';
 import { TerritoryMap } from './TerritoryMap';
 import { territoriesRepository } from '@/services/territoriesRepository';
 import { performanceTargetsRepository } from '@/services/performanceTargetsRepository';
@@ -242,7 +243,7 @@ export function TerritoryManagement() {
   const regionData = Array.from(new Set(territories.map(t => t.region))).map((region, idx) => ({
     name: region,
     value: territories.filter(t => t.region === region).length,
-    color: ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b'][idx % 4],
+    color: chartColor(idx),
   }));
 
   return (
@@ -472,15 +473,15 @@ export function TerritoryManagement() {
                 <div className="h-80 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={territories} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold'}} />
                       <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold'}} tickFormatter={(value) => `Rp${value/1000000}jt`} />
                       <Tooltip 
-                        contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                        contentStyle={CHART_TOOLTIP_STYLE}
                         formatter={(value: any) => [formatCurrency(value), 'Value']}
                       />
-                      <Bar dataKey="revenue" fill="#013E37" radius={[4, 4, 0, 0]} name="Actual Revenue" />
-                      <Bar dataKey="target" fill="#e2e8f0" radius={[4, 4, 0, 0]} name="Quota Target" />
+                      <Bar dataKey="revenue" fill={CHART_PRIMARY} radius={[4, 4, 0, 0]} name="Actual Revenue" />
+                      <Bar dataKey="target" fill="var(--border)" radius={[4, 4, 0, 0]} name="Quota Target" />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -510,7 +511,7 @@ export function TerritoryManagement() {
                         ))}
                       </Pie>
                       <Tooltip 
-                        contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                        contentStyle={CHART_TOOLTIP_STYLE}
                       />
                       <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase'}} />
                     </PieChart>

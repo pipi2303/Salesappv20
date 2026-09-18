@@ -5,6 +5,7 @@ import { Button } from '@/app/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { CHART_PRIMARY, CHART_COLORS, CHART_GRID } from '@/styles/chartTheme';
 import { salesData, leadSourceData } from '@/app/data/dummyData';
 import { leadsApi, contractsApi, salesTeamApi } from '@/services/api';
 import { toast } from 'sonner';
@@ -25,7 +26,7 @@ import { teamHierarchy, monthlyData, productPerformance, regionalData, conversio
 import { TeamMember, Manager, AreaManager, Director, SalesExecutive, Note } from '@/app/components/dialogs/sales-dialog-types';
 
 export function SalesReports() {
-  const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
+  const COLORS = CHART_COLORS;
 
   const [loading, setLoading] = useState(true);
   const [periodType, setPeriodType] = useState<'monthly' | 'quarterly' | 'yearly'>('monthly');
@@ -244,8 +245,8 @@ export function SalesReports() {
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={salesData}>
-                    <defs><linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#6366f1" stopOpacity={0.8}/><stop offset="95%" stopColor="#6366f1" stopOpacity={0}/></linearGradient></defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" /><XAxis dataKey="month" /><YAxis /><Tooltip /><Area type="monotone" dataKey="value" stroke="#6366f1" fill="url(#colorRevenue)" />
+                    <defs><linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor={CHART_PRIMARY} stopOpacity={0.35}/><stop offset="95%" stopColor={CHART_PRIMARY} stopOpacity={0.02}/></linearGradient></defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} /><XAxis dataKey="month" /><YAxis /><Tooltip /><Area type="monotone" dataKey="value" stroke={CHART_PRIMARY} fill="url(#colorRevenue)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -254,7 +255,7 @@ export function SalesReports() {
               <CardHeader><CardTitle className="flex items-center gap-2"><PieChartIcon className="h-5 w-5 text-[#013E37]" />Lead Sources</CardTitle></CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <PieChart><Pie data={leadSourceData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value" label={({name, percent}) => `${name} ${(percent*100).toFixed(0)}%`}>{leadSourceData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie><Tooltip /></PieChart>
+                  <PieChart><Pie data={leadSourceData} cx="50%" cy="50%" outerRadius={100} fill={CHART_PRIMARY} dataKey="value" label={({name, percent}) => `${name} ${(percent*100).toFixed(0)}%`}>{leadSourceData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie><Tooltip /></PieChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
@@ -280,10 +281,10 @@ export function SalesReports() {
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart data={monthlyData}>
-                  <CartesianGrid strokeDasharray="3 3" /><XAxis dataKey="month" /><YAxis /><Tooltip /><Legend />
-                  <Line type="monotone" dataKey="leads" stroke="#6366f1" strokeWidth={2} />
-                  <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} />
-                  <Line type="monotone" dataKey="forecast" stroke="#14b8a6" strokeDasharray="5 5" />
+                  <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} /><XAxis dataKey="month" /><YAxis /><Tooltip /><Legend />
+                  <Line type="monotone" dataKey="leads" stroke={CHART_COLORS[0]} strokeWidth={2} />
+                  <Line type="monotone" dataKey="revenue" stroke={CHART_COLORS[1]} strokeWidth={2} />
+                  <Line type="monotone" dataKey="forecast" stroke={CHART_COLORS[1]} strokeDasharray="5 5" />
                 </LineChart>
               </ResponsiveContainer>
             </CardContent>
@@ -445,9 +446,9 @@ export function SalesReports() {
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={getChartData()}>
-                  <CartesianGrid strokeDasharray="3 3" /><XAxis dataKey="name" /><YAxis /><Tooltip /><Legend />
-                  <Bar dataKey="target" fill="#94a3b8" radius={[8, 8, 0, 0]} />
-                  <Bar dataKey="achievement" fill="#6366f1" radius={[8, 8, 0, 0]} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} /><XAxis dataKey="name" /><YAxis /><Tooltip /><Legend />
+                  <Bar dataKey="target" fill="var(--border)" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="achievement" fill={CHART_PRIMARY} radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -459,7 +460,7 @@ export function SalesReports() {
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={productPerformance} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" /><XAxis type="number" /><YAxis dataKey="name" type="category" width={150} /><Tooltip /><Bar dataKey="revenue" fill="#10b981" />
+                  <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} /><XAxis type="number" /><YAxis dataKey="name" type="category" width={150} /><Tooltip /><Bar dataKey="revenue" fill={CHART_PRIMARY} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -471,7 +472,7 @@ export function SalesReports() {
             <Card><CardHeader><CardTitle>Sales by Region</CardTitle></CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <PieChart><Pie data={regionalData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value" label={({region, percentage}) => `${region} ${percentage}%`}>{regionalData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie><Tooltip /></PieChart>
+                  <PieChart><Pie data={regionalData} cx="50%" cy="50%" outerRadius={100} fill={CHART_PRIMARY} dataKey="value" label={({region, percentage}) => `${region} ${percentage}%`}>{regionalData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie><Tooltip /></PieChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
