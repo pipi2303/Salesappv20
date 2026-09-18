@@ -11,7 +11,7 @@
 //   `product.productType === 'physical'` narrows the type and gives you
 //   `color`/`weightKg` with compiler-checked safety, not `any`.
 // - This mirrors the Postgres schema in
-//   supabase/migrations/0001_unified_product_model.sql: ProductBase ~
+//   db/migrations/0001_unified_product_model.sql: ProductBase ~
 //   the `products` table, SoftwareProduct/PhysicalProduct-only fields ~
 //   the `product_software_attrs` / `product_physical_attrs` extension
 //   tables.

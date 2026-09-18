@@ -1,6 +1,6 @@
 // Sales rep profile — identity only (name/email/role). Deliberately minimal,
 // same spirit as the `sales_reps` placeholder table in
-// supabase/migrations/0001_unified_product_model.sql: just enough for
+// db/migrations/0001_unified_product_model.sql: just enough for
 // performance_targets / commissions to have a real entity to reference,
 // not a full HR record. src/app/components/SalesTeam.tsx already has its
 // own separate `Karyawan` (employee) model for HR purposes — reconciling

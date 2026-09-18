@@ -14,7 +14,7 @@
 //     candidate for a later pass)
 //
 // Mirrors the `performance_targets` table in
-// supabase/migrations/0001_unified_product_model.sql, including the
+// db/migrations/0001_unified_product_model.sql, including the
 // "exclusive arc" rule: exactly one of productId / salesRepId /
 // territoryId is set per record — never zero, never more than one.
 
