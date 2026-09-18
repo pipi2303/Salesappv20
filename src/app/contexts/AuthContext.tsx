@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-interface AuthUser {
+export interface AuthUser {
   email: string;
   name: string;
   role: string;
