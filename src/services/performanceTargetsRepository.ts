@@ -8,8 +8,8 @@
 // component happens to write a target/achievement number.
 
 import type { PerformanceTarget, NewPerformanceTarget } from '@/types/performanceTarget';
+import type { Result } from '@/types/result';
 
-type Result<T> = { success: boolean; data?: T; error?: string };
 
 const STORAGE_KEY = 'sales_monitoring_performance_targets';
 

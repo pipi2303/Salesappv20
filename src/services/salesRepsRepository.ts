@@ -1,8 +1,8 @@
 // Sales reps repository — localStorage-backed, same adapter shape as
 // productsRepository.ts / performanceTargetsRepository.ts.
 import type { SalesRep, NewSalesRep } from '@/types/salesRep';
+import type { Result } from '@/types/result';
 
-type Result<T> = { success: boolean; data?: T; error?: string };
 
 const STORAGE_KEY = 'sales_monitoring_sales_reps_v2';
 

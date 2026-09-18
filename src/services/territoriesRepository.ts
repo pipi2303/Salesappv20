@@ -3,8 +3,8 @@
 // figures are NOT stored here — see performanceTargetsRepository, keyed by
 // territoryId.
 import type { TerritoryProfile, NewTerritoryProfile } from '@/types/territory';
+import type { Result } from '@/types/result';
 
-type Result<T> = { success: boolean; data?: T; error?: string };
 
 const STORAGE_KEY = 'sales_monitoring_territories_v2';
 

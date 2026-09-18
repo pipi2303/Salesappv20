@@ -5,15 +5,7 @@ import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Textarea } from '@/app/components/ui/textarea';
 import { X, Send, Phone, Mail, Users, MessageSquare, Calendar } from 'lucide-react';
-
-interface Communication {
-  id: string;
-  type: 'Telepon' | 'Email' | 'Meeting' | 'WhatsApp' | 'Visit';
-  title: string;
-  description: string;
-  timestamp: string;
-  categories: string[];
-}
+import type { Communication } from '@/types/communication';
 
 interface AddCommunicationDialogProps {
   open: boolean;

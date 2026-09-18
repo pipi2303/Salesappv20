@@ -19,15 +19,7 @@ import { AISmartRecommendations } from '@/app/components/ai/AISmartRecommendatio
 import { AddCommunicationDialog } from '@/app/components/AddCommunicationDialog';
 
 import type { Client } from '@/types/client';
-
-interface Communication {
-  id: string;
-  type: 'Telepon' | 'Email' | 'Meeting' | 'WhatsApp' | 'Visit';
-  title: string;
-  description: string;
-  timestamp: string;
-  categories: string[];
-}
+import type { Communication } from '@/types/communication';
 
 interface ClientDetailDialogProps {
   open: boolean;

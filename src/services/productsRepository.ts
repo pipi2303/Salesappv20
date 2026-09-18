@@ -14,8 +14,8 @@
 // repository does not inherit that gap.
 
 import type { Product, NewProduct, SoftwareProduct, PhysicalProduct } from '@/types/product';
+import type { Result } from '@/types/result';
 
-type Result<T> = { success: boolean; data?: T; error?: string };
 
 const STORAGE_KEY = 'sales_monitoring_products_v2';
 // Deliberately a NEW key, not the existing `sales_monitoring_products`.

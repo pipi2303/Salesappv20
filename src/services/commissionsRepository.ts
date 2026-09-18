@@ -5,8 +5,8 @@
 // performanceTargetsRepository + computeAchievementPct, instead of being
 // duplicated here.
 import type { CommissionRecord, NewCommissionRecord } from '@/types/commission';
+import type { Result } from '@/types/result';
 
-type Result<T> = { success: boolean; data?: T; error?: string };
 
 const STORAGE_KEY = 'sales_monitoring_commissions_v2';
 
