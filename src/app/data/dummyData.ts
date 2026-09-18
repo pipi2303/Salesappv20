@@ -1,17 +1,4 @@
-export interface Lead {
-  id: string;
-  name: string;
-  company: string;
-  email: string;
-  phone: string;
-  status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'negotiation' | 'won' | 'lost';
-  value: number;
-  source: string;
-  assignedTo: string;
-  createdAt: Date;
-  lastContact: Date;
-  notes: string;
-}
+import type { Lead } from '@/types/lead';
 
 export interface SalesPerson {
   id: string;

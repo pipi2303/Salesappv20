@@ -18,37 +18,7 @@ import { AILeadScoring } from '@/app/components/ai/AILeadScoring';
 import { AISmartRecommendations } from '@/app/components/ai/AISmartRecommendations';
 import { AddCommunicationDialog } from '@/app/components/AddCommunicationDialog';
 
-interface Client {
-  id: string;
-  id_customer: string; // NEW FIELD - ID Customer
-  nama_entitas: string;
-  kategori_client: string;
-  owner: string;
-  alamat_lengkap: string;
-  koordinat_gps: string;
-  nomor_telepon: string;
-  email_resmi: string;
-  id_satusehat: string;
-  id_faskes_bpjs: string;
-  status_akreditasi: string;
-  sistem_lama: string;
-  volume_pasien: string;
-  jumlah_tempat_tidur: string;
-  nama_pic: string;
-  jabatan_pic: string;
-  whatsapp_pic: string;
-  status_hubungan: string;
-  paket_aktif: string;
-  modul_tambahan: string;
-  status_kontrak: string;
-  status_subscription?: string; // NEW FIELD
-  tanggal_mulai_langganan: string;
-  tanggal_habis_kontrak: string;
-  total_nilai_kontrak: string;
-  file_kontrak_digital: string;
-  status_esign: string;
-  npwp_faskes: string;
-}
+import type { Client } from '@/types/client';
 
 interface Communication {
   id: string;

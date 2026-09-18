@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Label } from '@/app/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Textarea } from '@/app/components/ui/textarea';
-import { Lead } from '@/app/data/dummyData';
+import type { Lead } from '@/types/lead';
 import { toast } from 'sonner';
 import { leadsApi } from '@/services/api';
 import { formatCurrency } from '@/utils/formatters';
