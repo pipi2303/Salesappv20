@@ -4,7 +4,7 @@
 // which item is active, whether the sidebar itself is collapsed to icon-only)
 // lives in App.tsx and is passed down as props, so behavior is unchanged.
 import React from 'react';
-import { Menu, X, ChevronDown, ChevronRight, LogOut } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ChevronRight, LogOut } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import type { MenuGroup } from '@/types/menu';
 
@@ -34,9 +34,9 @@ export function Sidebar({
   onLogout,
 }: SidebarProps) {
   return (
-    <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-gray-200 transition-all duration-300 flex flex-col shadow-lg`}>
+    <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} relative bg-white border-r border-gray-200 transition-all duration-300 flex flex-col shadow-lg`}>
       {/* Logo */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 bg-[#013E37]">
+      <div className="h-16 flex items-center px-4 border-b border-gray-200 bg-[#013E37]">
         {isSidebarOpen && (
           <div className="flex items-center gap-1.5 min-w-0">
             <img
@@ -52,15 +52,18 @@ export function Sidebar({
             </div>
           </div>
         )}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="text-white hover:bg-white/20"
-        >
-          {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </Button>
       </div>
+
+      {/* Floating collapse/expand toggle - sits astride the sidebar/content
+          boundary (absolute to the <aside>, so it slides with the width
+          transition instead of jumping when isSidebarOpen flips). */}
+      <button
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        aria-label={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+        className="absolute -right-3.5 top-5 z-30 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-[#013E37] text-white shadow-md transition-colors hover:bg-[#025C52]"
+      >
+        {isSidebarOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+      </button>
 
       {/* Menu Items - grouped into collapsible sections */}
       <nav className="flex-1 overflow-y-auto py-4 sidebar-nav-scroll">
