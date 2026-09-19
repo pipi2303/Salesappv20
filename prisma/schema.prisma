@@ -1,0 +1,569 @@
+// =====================================================================
+// Fase 1 — Fondasi (backend & auth nyata)
+// =====================================================================
+// This schema is the executable source of truth for Fase 1's five items
+// (see the plan doc, Bab 4): a single real backend, a home for data that
+// today lives only in localStorage, real password-hashed auth with
+// backend-validated sessions, RBAC enforced at the API level (not just
+// UI), and one consistent model for Client/Opportunity/Lead/Product.
+//
+// STATUS: schema only — no DATABASE_URL is configured yet, so nothing
+// here has been run against a live database (per the plan doc's own
+// checklist item, the Vercel Postgres/Neon project itself isn't
+// provisioned). `npx prisma validate` / `generate` work without a live
+// DB; `npx prisma migrate dev` needs DATABASE_URL set first — see
+// .env.example.
+//
+// Supersedes db/migrations/0001_unified_product_model.sql as the
+// design-of-record for products/sales_reps/territories/performance_targets
+// (that file's rationale comments are preserved here); once a real DB
+// exists, Prisma Migrate generates the actual SQL from this file instead
+// of that hand-written one.
+//
+// Modeling calls worth flagging:
+// - Opportunity in src/types/opportunity.ts has ~40 UI-only optional
+//   fields (Overview/Commercial/Technical Detail sections, sales-process
+//   scoring) that are still evolving and mostly not queried by anything
+//   except the detail dialog. Turning each into its own nullable column
+//   would make the table unreviewable, so the stable/queried fields are
+//   real columns and the long tail lives in `extra Json`. If a specific
+//   field there needs to be filtered/sorted on later, promote it to a
+//   real column then.
+// - Client/Opportunity keep their existing free-text clientName/
+//   contactPerson columns (matches current UI + localStorage data, so
+//   migration doesn't require backfilling a relation that doesn't exist
+//   yet) AND get a new optional clientId FK, so the UI can start linking
+//   to real Client records incrementally without a breaking migration.
+// - Distributor/Store/Client all carry `code` (Bab 4/5 "kode distributor/
+//   toko/customer") as a plain unique column rather than a separate code
+//   table — there's no indication codes are reused across entities or
+//   have their own lifecycle independent of the record they identify.
+// - GPS + dated-photo fields exist now on Store/Distributor/Task per the
+//   plan doc's explicit warning (Bab 4): adding hierarchy/GPS/photo later
+//   is much more expensive than designing for it from Fase 1, even though
+//   the check-in UI feature itself is not part of Fase 1's own 5 items.
+// =====================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------
+// Auth & RBAC (Fase 1 items 3 & 4)
+// ---------------------------------------------------------------------
+
+// Mirrors the roles already in use by src/app/components/Login.tsx's demo
+// accounts. MASTER_DATA_ADMIN is added as a candidate approver for
+// Distributor/Store verification — Bab 9's open question ("Sales Manager
+// regional atau tim Master Data/Admin?") isn't decided yet, so both
+// candidates exist in the enum rather than blocking the schema on it.
+enum Role {
+  SUPER_ADMIN
+  SALES_MANAGER
+  SALES_REPRESENTATIVE
+  SALES_EXECUTIVE
+  MASTER_DATA_ADMIN
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  // Hashed server-side (bcrypt/argon2) — never store or accept a plaintext
+  // password past the login request. Item 3: "password di-hash di server".
+  passwordHash String    @map("password_hash")
+  name         String
+  role         Role
+  isActive     Boolean   @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  sessions              Session[]
+  auditEntries          AuditLogEntry[]
+  distributorsSubmitted Distributor[]   @relation("DistributorSubmittedBy")
+  distributorsDecided   Distributor[]   @relation("DistributorDecidedBy")
+  storesSubmitted       Store[]         @relation("StoreSubmittedBy")
+  storesDecided         Store[]         @relation("StoreDecidedBy")
+  opportunitiesOwned    Opportunity[]   @relation("OpportunityOwner")
+  tasksOwned            Task[]          @relation("TaskOwner")
+
+  @@map("users")
+}
+
+// A backend-issued, backend-validated session — item 3: "session/token
+// divalidasi backend", not just trusted from whatever the client sends.
+// Only the token's hash is stored; the raw token is returned to the
+// client once at login/refresh and never persisted.
+model Session {
+  id         String    @id @default(uuid())
+  userId     String    @map("user_id")
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String    @unique @map("token_hash")
+  expiresAt  DateTime  @map("expires_at")
+  revokedAt  DateTime? @map("revoked_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@map("sessions")
+  @@index([userId])
+}
+
+// ---------------------------------------------------------------------
+// Distributor / Store hierarchy + approval workflow (Bab 4, Bab 5, Bab 9)
+// ---------------------------------------------------------------------
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Distributor {
+  id            String         @id @default(uuid())
+  code          String         @unique // "kode distributor"
+  name          String
+  address       String?
+  gpsLat        Float?         @map("gps_lat")
+  gpsLng        Float?         @map("gps_lng")
+
+  // Bab 9 approval workflow — field list matches "Field minimal" exactly.
+  status         ApprovalStatus @default(PENDING)
+  submittedById  String?        @map("submitted_by_id")
+  submittedBy    User?          @relation("DistributorSubmittedBy", fields: [submittedById], references: [id])
+  submittedAt    DateTime?      @map("submitted_at")
+  decidedById    String?        @map("decided_by_id")
+  decidedBy      User?          @relation("DistributorDecidedBy", fields: [decidedById], references: [id])
+  decidedAt      DateTime?      @map("decided_at")
+  rejectionNote  String?        @map("rejection_note") // "khusus jika ditolak"
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  stores  Store[]
+  clients Client[]
+
+  @@map("distributors")
+}
+
+model Store {
+  id            String         @id @default(uuid())
+  code          String         @unique // "kode toko"
+  name          String
+  distributorId String?        @map("distributor_id")
+  distributor   Distributor?   @relation(fields: [distributorId], references: [id])
+  address       String?
+  gpsLat        Float?         @map("gps_lat")
+  gpsLng        Float?         @map("gps_lng")
+
+  status         ApprovalStatus @default(PENDING)
+  submittedById  String?        @map("submitted_by_id")
+  submittedBy    User?          @relation("StoreSubmittedBy", fields: [submittedById], references: [id])
+  submittedAt    DateTime?      @map("submitted_at")
+  decidedById    String?        @map("decided_by_id")
+  decidedBy      User?          @relation("StoreDecidedBy", fields: [decidedById], references: [id])
+  decidedAt      DateTime?      @map("decided_at")
+  rejectionNote  String?        @map("rejection_note")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  clients Client[]
+  tasks   Task[]
+
+  @@map("stores")
+}
+
+// Sales project (B2B) vs sales retail (toko) — "dua alur kerja berbeda"
+// (Bab 5). Lives on Client and Opportunity since both need to know which
+// flow a record belongs to.
+enum SalesFlow {
+  PROJECT
+  RETAIL
+}
+
+// ---------------------------------------------------------------------
+// Client / Lead / Opportunity — unified model (Fase 1 item 5) + item 2's
+// migration target (localStorage -> here). Column shapes mirror
+// src/types/client.ts, src/types/lead.ts, src/types/opportunity.ts as
+// they exist today (that unification already happened at the TS layer;
+// this schema is the DB-side counterpart).
+// ---------------------------------------------------------------------
+
+model Client {
+  id                    String   @id @default(uuid())
+  idCustomer            String   @unique @map("id_customer") // "kode customer"
+  namaEntitas           String   @map("nama_entitas")
+  kategoriClient        String   @map("kategori_client")
+  owner                 String
+  alamatLengkap         String?  @map("alamat_lengkap")
+  koordinatGps          String?  @map("koordinat_gps")
+  nomorTelepon          String?  @map("nomor_telepon")
+  emailResmi            String?  @map("email_resmi")
+  idSatusehat           String?  @map("id_satusehat")
+  idFaskesBpjs          String?  @map("id_faskes_bpjs")
+  statusAkreditasi      String?  @map("status_akreditasi")
+  sistemLama            String?  @map("sistem_lama")
+  volumePasien          String?  @map("volume_pasien")
+  jumlahTempatTidur     String?  @map("jumlah_tempat_tidur")
+  namaPic               String?  @map("nama_pic")
+  jabatanPic            String?  @map("jabatan_pic")
+  whatsappPic           String?  @map("whatsapp_pic")
+  statusHubungan        String?  @map("status_hubungan")
+  paketAktif            String?  @map("paket_aktif")
+  modulTambahan         String?  @map("modul_tambahan")
+  statusKontrak         String?  @map("status_kontrak")
+  statusSubscription    String?  @map("status_subscription")
+  tanggalMulaiLangganan String?  @map("tanggal_mulai_langganan")
+  tanggalHabisKontrak   String?  @map("tanggal_habis_kontrak")
+  totalNilaiKontrak     String?  @map("total_nilai_kontrak")
+  fileKontrakDigital    String?  @map("file_kontrak_digital")
+  statusEsign           String?  @map("status_esign")
+  npwpFaskes            String?  @map("npwp_faskes")
+
+  // New with Fase 1: which hierarchy/flow this client belongs to (Bab 4/5).
+  salesFlow     SalesFlow?
+  distributorId String?      @map("distributor_id")
+  distributor   Distributor? @relation(fields: [distributorId], references: [id])
+  storeId       String?      @map("store_id")
+  store         Store?       @relation(fields: [storeId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  opportunities Opportunity[]
+
+  @@map("clients")
+}
+
+enum LeadStatus {
+  NEW         @map("new")
+  CONTACTED   @map("contacted")
+  QUALIFIED   @map("qualified")
+  PROPOSAL    @map("proposal")
+  NEGOTIATION @map("negotiation")
+  WON         @map("won")
+  LOST        @map("lost")
+}
+
+model Lead {
+  id          String     @id @default(uuid())
+  name        String
+  company     String
+  email       String?
+  phone       String?
+  status      LeadStatus @default(NEW)
+  value       Decimal    @db.Decimal(14, 2)
+  source      String?
+  assignedTo  String?    @map("assigned_to")
+  lastContact DateTime?  @map("last_contact")
+  notes       String?
+  createdAt   DateTime   @default(now()) @map("created_at")
+
+  opportunities Opportunity[]
+
+  @@map("leads")
+}
+
+enum OpportunityStage {
+  PROSPECTING @map("prospecting")
+  PROPOSAL    @map("proposal")
+  NEGOTIATION @map("negotiation")
+  CLOSED_WON  @map("closed-won")
+  CLOSED_LOST @map("closed-lost")
+}
+
+enum OpportunityStatus {
+  OPEN @map("open")
+  WON  @map("won")
+  LOST @map("lost")
+}
+
+model Opportunity {
+  id            String  @id @default(uuid())
+  name          String
+  leadId        String? @map("lead_id")
+  lead          Lead?   @relation(fields: [leadId], references: [id])
+  // Kept as free text (matches today's UI/data); clientId is the new,
+  // optional link — see the modeling note at the top of this file.
+  clientId      String? @map("client_id")
+  client        Client? @relation(fields: [clientId], references: [id])
+  clientName    String  @map("client_name")
+  contactPerson String  @map("contact_person")
+  email         String?
+  phone         String?
+
+  totalValue  Decimal @default(0) @map("total_value") @db.Decimal(14, 2)
+  currency    String  @default("IDR")
+  probability Int     @default(0)
+
+  createdDate     DateTime? @map("created_date")
+  closeDate       DateTime  @map("close_date")
+  actualCloseDate DateTime? @map("actual_close_date")
+
+  stage       OpportunityStage  @default(PROSPECTING)
+  status      OpportunityStatus @default(OPEN)
+  lossReason  String?           @map("loss_reason")
+  closeReason String?           @map("close_reason")
+  closeDetail String?           @map("close_detail")
+
+  ownerId   String? @map("owner_id")
+  owner     User?   @relation("OpportunityOwner", fields: [ownerId], references: [id])
+  ownerName String  @map("owner_name")
+
+  source      String?
+  description String?
+  notes       String?
+
+  nextFollowUpDate DateTime? @map("next_follow_up_date")
+  reminderSent     Boolean   @default(false) @map("reminder_sent")
+
+  // Bab 5: sales project (B2B) vs sales retail — which flow this
+  // opportunity belongs to.
+  salesFlow SalesFlow? @map("sales_flow")
+
+  // The ~40 optional Overview/Commercial/Technical-Detail fields from
+  // src/types/opportunity.ts (opportunityMaturity, budgetStatus,
+  // forecastType, salesStage, functionFit, etc.) — see modeling note.
+  extra Json?
+
+  createdBy String?  @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  products   OpportunityProduct[]
+  activities OpportunityActivity[]
+
+  @@map("opportunities")
+  @@index([status])
+  @@index([ownerId])
+}
+
+model OpportunityProduct {
+  id            String      @id @default(uuid())
+  opportunityId String      @map("opportunity_id")
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  productId     String?     @map("product_id")
+  product       Product?    @relation(fields: [productId], references: [id])
+  productName   String      @map("product_name")
+  quantity      Int
+  unitPrice     Decimal     @map("unit_price") @db.Decimal(14, 2)
+  totalPrice    Decimal     @map("total_price") @db.Decimal(14, 2)
+
+  @@map("opportunity_products")
+}
+
+model OpportunityActivity {
+  id            String      @id @default(uuid())
+  opportunityId String      @map("opportunity_id")
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  type          String
+  description   String
+  createdBy     String?     @map("created_by")
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@map("opportunity_activities")
+}
+
+// ---------------------------------------------------------------------
+// Task — schema-level groundwork only (Bab 4's GPS/photo warning); the
+// check-in UI feature itself is not one of Fase 1's 5 items.
+// ---------------------------------------------------------------------
+
+model Task {
+  id              String    @id @default(uuid())
+  title           String
+  description     String?
+  opportunityId   String?   @map("opportunity_id")
+  storeId         String?   @map("store_id")
+  store           Store?    @relation(fields: [storeId], references: [id])
+  ownerId         String?   @map("owner_id")
+  owner           User?     @relation("TaskOwner", fields: [ownerId], references: [id])
+  checkInLat      Float?    @map("check_in_lat")
+  checkInLng      Float?    @map("check_in_lng")
+  checkInAt       DateTime? @map("check_in_at")
+  checkInPhotoUrl String?   @map("check_in_photo_url") // "foto display toko dengan tanggal & jam"
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@map("tasks")
+}
+
+// ---------------------------------------------------------------------
+// Product — ported as-is from db/migrations/0001_unified_product_model.sql
+// (same supertype/subtype split, same rationale). RBAC + audit apply on
+// top of this via User/AuditLogEntry, which didn't exist when that file
+// was written.
+// ---------------------------------------------------------------------
+
+enum ProductType {
+  SOFTWARE @map("software")
+  PHYSICAL @map("physical")
+}
+
+enum ProductStatus {
+  ACTIVE       @map("active")
+  DISCONTINUED @map("discontinued")
+}
+
+enum BillingCycle {
+  MONTHLY  @map("monthly")
+  YEARLY   @map("yearly")
+  ONE_TIME @map("one-time")
+}
+
+enum DeploymentType {
+  CLOUD      @map("cloud")
+  ON_PREMISE @map("on-premise")
+  HYBRID     @map("hybrid")
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  sku         String        @unique
+  name        String
+  category    String
+  price       Decimal       @db.Decimal(14, 2)
+  currency    String        @default("IDR")
+  description String?
+  status      ProductStatus @default(ACTIVE)
+  productType ProductType   @map("product_type")
+  stock       Int           @default(0)
+  features    String[]      @default([])
+  sold        Int           @default(0)
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  softwareAttrs      ProductSoftwareAttrs?
+  physicalAttrs      ProductPhysicalAttrs?
+  performanceTargets PerformanceTarget[]
+  opportunityLines   OpportunityProduct[]
+
+  @@map("products")
+  @@index([category])
+  @@index([productType])
+  @@index([status])
+}
+
+model ProductSoftwareAttrs {
+  productId      String          @id @map("product_id")
+  product        Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  licenseTier    String?         @map("license_tier")
+  billingCycle   BillingCycle?   @map("billing_cycle")
+  modules        String[]        @default([])
+  seatLimit      Int?            @map("seat_limit")
+  deploymentType DeploymentType? @map("deployment_type")
+
+  @@map("product_software_attrs")
+}
+
+model ProductPhysicalAttrs {
+  productId     String   @id @map("product_id")
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  unitOfMeasure String   @map("unit_of_measure")
+  color         String?
+  specification String?
+  weightKg      Decimal? @map("weight_kg") @db.Decimal(10, 3)
+
+  @@map("product_physical_attrs")
+}
+
+// ---------------------------------------------------------------------
+// Sales reps / territories / performance targets — ported from the same
+// SQL file. The exclusive-arc check (exactly one of productId/
+// salesRepId/territoryId set) can't be expressed in the Prisma schema
+// language itself; keep enforcing it with the same raw-SQL CHECK
+// constraint the old migration used, added as a `migration.sql` edit
+// once `prisma migrate dev` generates the base migration.
+// ---------------------------------------------------------------------
+
+model SalesRep {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  performanceTargets PerformanceTarget[]
+  commissionRecords  CommissionRecord[]
+
+  @@map("sales_reps")
+}
+
+model Territory {
+  id        String   @id @default(uuid())
+  name      String
+  region    String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  performanceTargets PerformanceTarget[]
+
+  @@map("territories")
+}
+
+model PerformanceTarget {
+  id          String     @id @default(uuid())
+  productId   String?    @map("product_id")
+  product     Product?   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  salesRepId  String?    @map("sales_rep_id")
+  salesRep    SalesRep?  @relation(fields: [salesRepId], references: [id], onDelete: Cascade)
+  territoryId String?    @map("territory_id")
+  territory   Territory? @relation(fields: [territoryId], references: [id], onDelete: Cascade)
+  period      DateTime   @db.Date // first day of the month, e.g. 2026-09-01
+  target      Decimal    @db.Decimal(14, 2)
+  actual      Decimal    @default(0) @db.Decimal(14, 2)
+  forecast    Decimal?   @db.Decimal(14, 2)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  @@map("performance_targets")
+  @@unique([productId, period])
+  @@unique([salesRepId, period])
+  @@unique([territoryId, period])
+}
+
+enum CommissionStatus {
+  PENDING  @map("pending")
+  APPROVED @map("approved")
+  PAID     @map("paid")
+}
+
+model CommissionRecord {
+  id              String           @id @default(uuid())
+  salesRepId      String           @map("sales_rep_id")
+  salesRep        SalesRep         @relation(fields: [salesRepId], references: [id], onDelete: Cascade)
+  period          DateTime         @db.Date
+  baseCommission  Decimal          @map("base_commission") @db.Decimal(14, 2)
+  bonuses         Decimal          @db.Decimal(14, 2)
+  totalCommission Decimal          @map("total_commission") @db.Decimal(14, 2)
+  status          CommissionStatus @default(PENDING)
+  deals           Int
+  paymentDate     DateTime?        @map("payment_date")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@map("commission_records")
+}
+
+// ---------------------------------------------------------------------
+// Audit trail — src/services/api.ts already reserves a localStorage key
+// for this (LS_KEYS.AUDIT_TRAIL); this is its real-backend home.
+// ---------------------------------------------------------------------
+
+model AuditLogEntry {
+  id         String   @id @default(uuid())
+  actorId    String?  @map("actor_id")
+  actor      User?    @relation(fields: [actorId], references: [id])
+  action     String
+  entityType String   @map("entity_type")
+  entityId   String   @map("entity_id")
+  beforeJson Json?    @map("before_json")
+  afterJson  Json?    @map("after_json")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("audit_log_entries")
+  @@index([entityType, entityId])
+}
