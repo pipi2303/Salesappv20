@@ -93,7 +93,7 @@ export function Sidebar({
                               setActiveMenu(item.id);
                             }
                           }}
-                          className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${
+                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${
                             activeMenu === item.id
                               ? 'bg-[#013E37] text-white shadow-md'
                               : 'text-gray-700 hover:bg-[#EEF7F5] hover:text-[#013E37]'
@@ -117,7 +117,7 @@ export function Sidebar({
                               <button
                                 key={subItem.id}
                                 onClick={() => setActiveMenu(subItem.id)}
-                                className={`w-full flex items-center gap-3 pl-11 pr-3 py-2.5 rounded-lg transition-all ${
+                                className={`w-full flex items-center gap-3 pl-11 pr-3 py-2 rounded-lg transition-all ${
                                   activeMenu === subItem.id
                                     ? 'bg-[#013E37] text-white shadow-md'
                                     : 'text-gray-600 hover:bg-[#EEF7F5] hover:text-[#013E37]'
