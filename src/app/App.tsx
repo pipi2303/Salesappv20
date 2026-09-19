@@ -167,59 +167,64 @@ function AppContent() {
   return (
     <ModalPortalProvider container={modalPortalRoot}>
     <ConfirmDialogProvider>
-    <div className="h-screen w-screen flex overflow-hidden bg-gray-50">
-      <Sidebar
-        menuGroups={menuGroups}
-        activeMenu={activeMenu}
+    <div className="h-screen w-screen flex flex-col overflow-hidden bg-gray-50">
+      {/* Full-width top bar - spans edge to edge above the sidebar, so the
+          brand + active page title never narrow down or disappear when the
+          sidebar collapses (that only affects the row below). */}
+      <Header
+        activeMenuName={activeMenuName}
+        deferredPrompt={deferredPrompt}
+        setDeferredPrompt={setDeferredPrompt}
+        contracts={contracts}
+        setSelectedContract={setSelectedContract}
         setActiveMenu={setActiveMenu}
-        expandedGroups={expandedGroups}
-        setExpandedGroups={setExpandedGroups}
-        expandedMenus={expandedMenus}
-        setExpandedMenus={setExpandedMenus}
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
+        showUserMenu={showUserMenu}
+        setShowUserMenu={setShowUserMenu}
+        user={user}
         onLogout={handleLogout}
       />
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col overflow-hidden">
-        <Header
-          activeMenuName={activeMenuName}
-          deferredPrompt={deferredPrompt}
-          setDeferredPrompt={setDeferredPrompt}
-          contracts={contracts}
-          setSelectedContract={setSelectedContract}
+      {/* Sidebar + main content, side by side, below the full-width header */}
+      <div className="flex-1 flex overflow-hidden">
+        <Sidebar
+          menuGroups={menuGroups}
+          activeMenu={activeMenu}
           setActiveMenu={setActiveMenu}
-          showUserMenu={showUserMenu}
-          setShowUserMenu={setShowUserMenu}
-          user={user}
+          expandedGroups={expandedGroups}
+          setExpandedGroups={setExpandedGroups}
+          expandedMenus={expandedMenus}
+          setExpandedMenus={setExpandedMenus}
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
           onLogout={handleLogout}
         />
 
-        {/* Content Area — containing block untuk modal/dialog (lihat ui/dialog.tsx & ModalPortalContext) */}
-        <div className="content-area flex-1 relative overflow-hidden">
-          <div className="h-full overflow-y-auto p-6">
-            <div className="max-w-7xl mx-auto">
-              <Suspense fallback={<ComponentLoader />}>
-                <ActiveComponent />
-              </Suspense>
+        <main className="flex-1 flex flex-col overflow-hidden">
+          {/* Content Area — containing block untuk modal/dialog (lihat ui/dialog.tsx & ModalPortalContext) */}
+          <div className="content-area flex-1 relative overflow-hidden">
+            <div className="h-full overflow-y-auto p-6">
+              <div className="max-w-7xl mx-auto">
+                <Suspense fallback={<ComponentLoader />}>
+                  <ActiveComponent />
+                </Suspense>
+              </div>
             </div>
+            {/* Portal target untuk modal/dialog: sibling dari div yang di-scroll di atas,
+                supaya modal "lock" (tidak ikut bergerak saat konten discroll) dan tetap
+                terbatas di area content (tidak menutupi sidebar/header).
+                style transform: bikin elemen ini jadi "containing block" utk descendant
+                position:fixed (dipakai Select/Popover/DropdownMenu/Tooltip via Radix
+                Popper) - tanpa ini, portal container saja tidak cukup karena fixed selalu
+                relatif ke viewport kecuali ada ancestor dgn transform/filter/perspective. */}
+            <div
+              id="modal-portal-root"
+              ref={setModalPortalRoot}
+              className="absolute inset-0 pointer-events-none z-40"
+              style={{ transform: 'translateZ(0)' }}
+            />
           </div>
-          {/* Portal target untuk modal/dialog: sibling dari div yang di-scroll di atas,
-              supaya modal "lock" (tidak ikut bergerak saat konten discroll) dan tetap
-              terbatas di area content (tidak menutupi sidebar/header).
-              style transform: bikin elemen ini jadi "containing block" utk descendant
-              position:fixed (dipakai Select/Popover/DropdownMenu/Tooltip via Radix
-              Popper) - tanpa ini, portal container saja tidak cukup karena fixed selalu
-              relatif ke viewport kecuali ada ancestor dgn transform/filter/perspective. */}
-          <div
-            id="modal-portal-root"
-            ref={setModalPortalRoot}
-            className="absolute inset-0 pointer-events-none z-40"
-            style={{ transform: 'translateZ(0)' }}
-          />
-        </div>
-      </main>
+        </main>
+      </div>
 
       {/* AI Assistant */}
       <AIAssistant />
