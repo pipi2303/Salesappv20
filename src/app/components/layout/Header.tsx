@@ -59,7 +59,7 @@ export function Header({
             <p className="text-[7px] font-medium tracking-[0.08em] text-white/60 whitespace-nowrap">PEOPLE . PIPELINE . GROWTH</p>
           </div>
         </div>
-        <h2 className="text-xl font-bold text-white truncate">
+        <h2 className="text-[15px] font-bold text-white truncate">
           {activeMenuName}
         </h2>
       </div>
