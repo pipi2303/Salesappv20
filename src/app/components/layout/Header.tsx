@@ -45,8 +45,21 @@ export function Header({
 
   return (
     <header className="h-16 bg-[#013E37] border-b border-white/10 text-white flex items-center justify-between px-6 shadow-sm">
-      <div className="flex items-center gap-4">
-        <h2 className="text-2xl font-bold text-white">
+      <div className="flex items-center gap-4 min-w-0">
+        {/* Brand - lives here (not in Sidebar) so it's always visible no
+            matter whether the sidebar is expanded or collapsed. */}
+        <div className="flex items-center gap-1.5 pr-4 border-r border-white/20 flex-shrink-0">
+          <img
+            src="/logo-sales-crm.png"
+            alt="Sales & CRM"
+            className="h-8 w-8 rounded-lg bg-white object-contain p-0.5 shadow-sm flex-shrink-0"
+          />
+          <div className="leading-tight hidden sm:block">
+            <p className="text-sm font-bold text-white tracking-[1.2px] whitespace-nowrap">Sales & CRM</p>
+            <p className="text-[7px] font-medium tracking-[0.08em] text-white/60 whitespace-nowrap">PEOPLE . PIPELINE . GROWTH</p>
+          </div>
+        </div>
+        <h2 className="text-2xl font-bold text-white truncate">
           {activeMenuName}
         </h2>
       </div>

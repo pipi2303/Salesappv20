@@ -1,5 +1,8 @@
-// App-shell sidebar (logo, grouped/collapsible nav, logout footer) - moved
-// out of App.tsx so it's a self-contained unit, separate from Header.tsx.
+// App-shell sidebar (grouped/collapsible nav, logout footer) - moved out of
+// App.tsx so it's a self-contained unit, separate from Header.tsx. The app's
+// brand/logo lives in Header.tsx instead of here, because Header spans the
+// full remaining width regardless of sidebar state - putting it there means
+// the brand never disappears when the sidebar collapses to icon-only.
 // Pure presentational component: all state (which group/menu is expanded,
 // which item is active, whether the sidebar itself is collapsed to icon-only)
 // lives in App.tsx and is passed down as props, so behavior is unchanged.
@@ -35,30 +38,13 @@ export function Sidebar({
 }: SidebarProps) {
   return (
     <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} relative bg-white border-r border-gray-200 transition-all duration-300 flex flex-col shadow-lg`}>
-      {/* Logo */}
-      <div className={`h-16 flex items-center gap-1.5 px-4 border-b border-gray-200 bg-[#013E37] ${isSidebarOpen ? '' : 'justify-center'}`}>
-        <img
-          src="/logo-sales-crm.png"
-          alt="Sales & CRM"
-          className="h-9 w-9 rounded-lg bg-white object-contain p-0.5 shadow-sm flex-shrink-0"
-        />
-        {isSidebarOpen && (
-          <div className="min-w-0 leading-tight">
-            <h1 className="text-lg font-bold text-white truncate tracking-[1.6px]">Sales & CRM</h1>
-            <p className="text-[7.5px] font-medium tracking-[0.06em] text-white/70 whitespace-nowrap overflow-hidden text-ellipsis">
-              PEOPLE . PIPELINE . GROWTH
-            </p>
-          </div>
-        )}
-      </div>
-
       {/* Floating collapse/expand toggle - sits astride the sidebar/content
           boundary (absolute to the <aside>, so it slides with the width
           transition instead of jumping when isSidebarOpen flips). */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         aria-label={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
-        className="absolute -right-2.5 top-20 z-30 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-[#013E37] text-white shadow-md transition-colors hover:bg-[#025C52]"
+        className="absolute -right-2.5 top-4 z-30 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-[#013E37] text-white shadow-md transition-colors hover:bg-[#025C52]"
       >
         {isSidebarOpen ? <ChevronLeft className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
       </button>
