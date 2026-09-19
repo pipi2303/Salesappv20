@@ -58,9 +58,9 @@ export function Sidebar({
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         aria-label={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
-        className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-30 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-[#013E37] text-white shadow-md transition-colors hover:bg-[#025C52]"
+        className="absolute -right-2.5 top-20 z-30 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-[#013E37] text-white shadow-md transition-colors hover:bg-[#025C52]"
       >
-        {isSidebarOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+        {isSidebarOpen ? <ChevronLeft className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
       </button>
 
       {/* Menu Items - grouped into collapsible sections */}
