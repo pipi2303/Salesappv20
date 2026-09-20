@@ -17,7 +17,7 @@ import { contracts as dummyContracts, Contract as ContractType } from '@/app/dat
 import { menuGroups, menuItems } from '@/app/config/menuConfig';
 
 function AppContent() {
-  const { user, logout, login, isAuthenticated } = useAuth();
+  const { user, logout, login, loginWithCredentials, isAuthenticated } = useAuth();
   const [activeMenu, setActiveMenu] = useState('home');
   const [isSidebarOpen, setIsSidebarOpen] = useState(
     () => typeof window === 'undefined' || window.innerWidth >= 768
@@ -121,9 +121,12 @@ function AppContent() {
   if (!isAuthenticated) {
     return (
       <Login 
-        onLogin={(email, role, name) => {
-          login(email, role, name);
-          toast.success('Login berhasil! Selamat datang.');
+        onLogin={async (email, password) => {
+          const result = await loginWithCredentials(email, password);
+          if (result.success) {
+            toast.success('Login berhasil! Selamat datang.');
+          }
+          return result;
         }} 
       />
     );
