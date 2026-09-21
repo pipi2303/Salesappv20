@@ -381,27 +381,82 @@ model OpportunityActivity {
 }
 
 // ---------------------------------------------------------------------
-// Task — schema-level groundwork only (Bab 4's GPS/photo warning); the
-// check-in UI feature itself is not one of Fase 1's 5 items.
+// Task — Bab 8 gap 2 ("Tidak ada verifikasi display produk di toko" /
+// "foto toko bertanggal"). checkInLat/Lng/At/PhotoUrl already existed as
+// schema-level groundwork; checkInAccuracy and locationValidated are new
+// here, added because TaskManagement.tsx's frontend Task interface
+// already had them (a real GPS check-in flow was already built there,
+// localStorage-only) with nowhere on the server to land.
+//
+// This model was previously just the check-in groundwork -- Task itself
+// was never wired to a real backend (comment used to say "the check-in
+// UI feature itself is not one of Fase 1's 5 items"). Implementing the
+// photo half of check-in needs a real Task row to attach to, so this
+// pass gives Task the same full CRUD treatment as Products/Leads/
+// Opportunities got earlier: real columns for the fields every task
+// always has (status/priority/type/dueDate/assignedTo/createdBy/
+// createdDate/category/completedDate), and `extra Json?` for the
+// long-tail ones that are either genuinely nested (subtasks) or a soft
+// link that doesn't need referential integrity yet (relatedTo,
+// parentTaskId) -- same reasoning as Lead's companies/position.
 // ---------------------------------------------------------------------
 
+enum TaskStatus {
+  TODO        @map("todo")
+  IN_PROGRESS @map("in-progress")
+  COMPLETED   @map("completed")
+}
+
+enum TaskPriority {
+  LOW    @map("low")
+  MEDIUM @map("medium")
+  HIGH   @map("high")
+  URGENT @map("urgent")
+}
+
+enum TaskType {
+  VISIT @map("visit")
+  CALL  @map("call")
+  EMAIL @map("email")
+  OTHER @map("other")
+}
+
 model Task {
-  id              String    @id @default(uuid())
-  title           String
-  description     String?
-  opportunityId   String?   @map("opportunity_id")
-  storeId         String?   @map("store_id")
-  store           Store?    @relation(fields: [storeId], references: [id])
-  ownerId         String?   @map("owner_id")
-  owner           User?     @relation("TaskOwner", fields: [ownerId], references: [id])
-  checkInLat      Float?    @map("check_in_lat")
-  checkInLng      Float?    @map("check_in_lng")
-  checkInAt       DateTime? @map("check_in_at")
-  checkInPhotoUrl String?   @map("check_in_photo_url") // "foto display toko dengan tanggal & jam"
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(MEDIUM)
+  type        TaskType     @default(OTHER)
+  category    String?
+  dueDate     DateTime?    @map("due_date")
+  completedDate DateTime?  @map("completed_date")
+
+  assignedTo String? @map("assigned_to") // free text (matches today's UI) -- see modeling note
+  createdBy  String? @map("created_by")
+
+  opportunityId String?      @map("opportunity_id")
+  storeId       String?      @map("store_id")
+  store         Store?       @relation(fields: [storeId], references: [id])
+  ownerId       String?      @map("owner_id")
+  owner         User?        @relation("TaskOwner", fields: [ownerId], references: [id])
+
+  checkInLat        Float?    @map("check_in_lat")
+  checkInLng        Float?    @map("check_in_lng")
+  checkInAt         DateTime? @map("check_in_at")
+  checkInPhotoUrl   String?   @map("check_in_photo_url") // "foto display toko dengan tanggal & jam"
+  checkInAccuracy   Float?    @map("check_in_accuracy") // GPS accuracy radius in meters, from Geolocation API
+  locationValidated Boolean?  @map("location_validated") // false = check-in saved but location permission was denied
+
+  // tags[], subtasks[], relatedTo, parentTaskId -- see modeling note above.
+  extra Json?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("tasks")
+  @@index([status])
+  @@index([ownerId])
 }
 
 // ---------------------------------------------------------------------
