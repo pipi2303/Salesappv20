@@ -11,7 +11,7 @@
 import { PrismaClient, Role } from '@prisma/client';
 import { hashPassword } from '../lib/auth.js';
 import { distributorSeeds, storeSeeds } from './seedData/distributorsAndStores.js';
-import { productFamilySeeds } from './seedData/productCatalog.js';
+import { productCategorySeeds, productFamilySeeds, productInstanceSeeds } from './seedData/productCatalog.js';
 
 const prisma = new PrismaClient();
 
@@ -79,20 +79,89 @@ async function seedDistributorsAndStores() {
 // "bukan SKU resmi Onduline"), so seeding fabricated SKUs under a real
 // family name would be worse than seeding none.
 async function seedProductCatalog() {
-  const category = await prisma.productCategory.upsert({
-    where: { code: 'ATAP' },
-    update: { name: 'Atap' },
-    create: { code: 'ATAP', name: 'Atap' },
-  });
+  // 5 kategori sekaligus sekarang: Atap (Bab 16, dari plan doc) + 4
+  // kategori lain yang user minta ditambahkan untuk demo (Waterproofing,
+  // Photovoltaic, Green Roof, Aksesoris) — datanya dari riset situs
+  // resmi Onduline, belum divalidasi tim produk. Lihat komentar di
+  // prisma/seedData/productCatalog.ts untuk detail & disclaimer per
+  // kategori.
+  const codeToId = new Map<string, string>();
+  for (const cat of productCategorySeeds) {
+    const category = await prisma.productCategory.upsert({
+      where: { code: cat.code },
+      update: { name: cat.name },
+      create: { code: cat.code, name: cat.name },
+    });
+    codeToId.set(cat.code, category.id);
+  }
 
   for (const fam of productFamilySeeds) {
+    const categoryId = codeToId.get(fam.categoryCode);
+    if (!categoryId) {
+      throw new Error(`seedProductCatalog: unknown categoryCode "${fam.categoryCode}" on family "${fam.code}"`);
+    }
     await prisma.productFamily.upsert({
       where: { code: fam.code },
-      update: { name: fam.name, type: fam.type, categoryId: category.id },
-      create: { code: fam.code, name: fam.name, type: fam.type, categoryId: category.id },
+      update: { name: fam.name, type: fam.type, categoryId },
+      create: { code: fam.code, name: fam.name, type: fam.type, categoryId },
     });
   }
-  console.log(`Seeded ProductCategory "Atap" + ${productFamilySeeds.length} product families (Bab 16)`);
+  console.log(`Seeded ${productCategorySeeds.length} product categories + ${productFamilySeeds.length} product families (Bab 16 Atap + demo research untuk 4 kategori lain)`);
+}
+
+async function seedProductInstances() {
+  // Satu Product (SKU) contoh per Family, supaya katalog Onduline
+  // benar-benar terlihat di halaman Products, bukan cuma ada di tabel
+  // ProductCategory/ProductFamily yang belum punya UI sendiri. Lihat
+  // komentar di prisma/seedData/productCatalog.ts untuk detail per item
+  // dan disclaimer soal sumber datanya.
+  let created = 0;
+  for (const p of productInstanceSeeds) {
+    const family = await prisma.productFamily.findUnique({ where: { code: p.familyCode } });
+    if (!family) {
+      throw new Error(`seedProductInstances: family code "${p.familyCode}" not found for SKU "${p.sku}" -- run seedProductCatalog() first`);
+    }
+    await prisma.product.upsert({
+      where: { sku: p.sku },
+      update: {
+        name: p.name,
+        category: p.category,
+        price: p.price,
+        description: p.description,
+        features: p.features,
+        familyId: family.id,
+        variantLabel: p.variantLabel ?? null,
+        skuLifecycle: 'ACTIVE',
+        physicalAttrs: {
+          upsert: {
+            create: { unitOfMeasure: p.unitOfMeasure, weightKg: p.weightKg ?? null, specification: p.description },
+            update: { unitOfMeasure: p.unitOfMeasure, weightKg: p.weightKg ?? null, specification: p.description },
+          },
+        },
+      },
+      create: {
+        sku: p.sku,
+        name: p.name,
+        category: p.category,
+        price: p.price,
+        currency: 'IDR',
+        description: p.description,
+        status: 'ACTIVE',
+        productType: 'PHYSICAL',
+        stock: 200,
+        sold: 5,
+        features: p.features,
+        familyId: family.id,
+        variantLabel: p.variantLabel ?? null,
+        skuLifecycle: 'ACTIVE',
+        physicalAttrs: {
+          create: { unitOfMeasure: p.unitOfMeasure, weightKg: p.weightKg ?? null, specification: p.description },
+        },
+      },
+    });
+    created += 1;
+  }
+  console.log(`Seeded ${created} product SKUs across ${productCategorySeeds.length} categories (demo katalog Onduline)`);
 }
 
 async function main() {
@@ -108,6 +177,7 @@ async function main() {
 
   await seedDistributorsAndStores();
   await seedProductCatalog();
+  await seedProductInstances();
 }
 
 main()
