@@ -1,0 +1,23 @@
+name: Notify Portainer (redeploy)
+
+# Portainer already builds this app's image directly from this repo on
+# the VPS (see docker-compose.yml + DEPLOY.md) — this workflow's only job
+# is to make that happen on every push instead of waiting for Portainer's
+# polling interval, by calling the stack's webhook URL. No Docker
+# registry, no build step, no secrets beyond the one webhook URL.
+on:
+  push:
+    branches:
+      - feature/unified-product-model
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Portainer stack webhook
+        run: |
+          if [ -z "${{ secrets.PORTAINER_WEBHOOK_URL }}" ]; then
+            echo "PORTAINER_WEBHOOK_URL secret is not set — add it under Settings > Secrets and variables > Actions." >&2
+            exit 1
+          fi
+          curl -fsS -X POST "${{ secrets.PORTAINER_WEBHOOK_URL }}"
