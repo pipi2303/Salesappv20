@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/app/components/ui/textarea';
 import type { Lead } from '@/types/lead';
 import { toast } from 'sonner';
-import { leadsApi } from '@/services/api';
+import { leadsRepository } from '@/services/leadsRepository';
 import { formatCurrency } from '@/utils/formatters';
 
 interface Company {
@@ -61,7 +61,7 @@ export function LeadManagement() {
   const fetchLeads = async () => {
     try {
       setLoading(true);
-      const result = await leadsApi.getAll();
+      const result = await leadsRepository.getAll();
       
       if (result.success && result.data) {
         setLeads(result.data);
@@ -135,7 +135,7 @@ export function LeadManagement() {
 
       if (selectedLead) {
         // Update existing lead
-        const result = await leadsApi.update(selectedLead.id, formData);
+        const result = await leadsRepository.update(selectedLead.id, formData);
         
         if (result.success && result.data) {
           setLeads(leads.map(l => l.id === selectedLead.id ? result.data : l));
@@ -146,7 +146,7 @@ export function LeadManagement() {
       } else {
         // Create new lead
         // Defensive default: pastikan status tidak pernah kosong walau form belum disentuh
-        const result = await leadsApi.create({ status: 'new', ...formData });
+        const result = await leadsRepository.create({ status: 'new', ...formData });
         
         if (result.success && result.data) {
           setLeads([...leads, result.data]);
@@ -173,7 +173,7 @@ export function LeadManagement() {
     }
 
     try {
-      const result = await leadsApi.delete(leadId);
+      const result = await leadsRepository.remove(leadId);
       
       if (result.success) {
         setLeads(leads.filter(l => l.id !== leadId));
@@ -193,7 +193,7 @@ export function LeadManagement() {
     }
 
     try {
-      const result = await leadsApi.clearAll();
+      const result = await leadsRepository.clearAll();
       
       if (result.success) {
         setLeads([]);

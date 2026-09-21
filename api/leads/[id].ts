@@ -56,6 +56,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
           ...(body.assignedTo !== undefined && { assignedTo: body.assignedTo as string }),
           ...(body.notes !== undefined && { notes: body.notes as string }),
           ...(body.lastContact !== undefined && { lastContact: new Date(body.lastContact as string) }),
+          ...(body.extra !== undefined && { extra: body.extra as object }),
         },
       });
       res.status(200).json({ success: true, data: lead });
@@ -73,6 +74,10 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
   } catch (err) {
     if (err instanceof UnauthorizedError || err instanceof ForbiddenError) {
       res.status(err.status).json({ success: false, error: err.message });
+      return;
+    }
+    if (typeof err === 'object' && err !== null && (err as { code?: string }).code === 'P2025') {
+      res.status(404).json({ success: false, error: 'Lead not found' });
       return;
     }
     console.error('[api/leads/[id]] unexpected error:', err);

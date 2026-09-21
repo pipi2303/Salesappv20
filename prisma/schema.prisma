@@ -265,7 +265,15 @@ model Lead {
   assignedTo  String?    @map("assigned_to")
   lastContact DateTime?  @map("last_contact")
   notes       String?
-  createdAt   DateTime   @default(now()) @map("created_at")
+
+  // Same rationale as Opportunity.extra below: LeadManagement.tsx's
+  // multi-contact editor (`companies[]`, singular `position`) has no
+  // dedicated columns here, matching today's localStorage behavior
+  // (whatever shape the UI hands it gets stored as-is). Discovered when
+  // wiring this module to the real API — see git history.
+  extra Json?
+
+  createdAt DateTime @default(now()) @map("created_at")
 
   opportunities Opportunity[]
 

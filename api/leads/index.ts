@@ -8,7 +8,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { prisma } from '../../lib/prisma.js';
 import { getUserFromToken, extractBearerToken } from '../../lib/auth.js';
-import { requireAuth, ForbiddenError, UnauthorizedError } from '../../lib/rbac.js';
+import { requireAuth, requireRole, ForbiddenError, UnauthorizedError } from '../../lib/rbac.js';
 
 interface ApiRequest extends IncomingMessage {
   method?: string;
@@ -48,9 +48,22 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
           source: (body.source as string) ?? null,
           assignedTo: (body.assignedTo as string) ?? user.id,
           notes: (body.notes as string) ?? null,
+          // Long-tail UI-only fields (companies[]/position from
+          // LeadManagement.tsx) with no dedicated column — same pattern
+          // as Opportunity.extra.
+          extra: (body.extra as object) ?? undefined,
         },
       });
       res.status(201).json({ success: true, data: lead });
+      return;
+    }
+
+    if (req.method === 'DELETE') {
+      // Bulk clear — LeadManagement.tsx's "Hapus Semua Lead" action.
+      // Same restriction as single-record delete in api/leads/[id].ts.
+      requireRole(user, ['SUPER_ADMIN', 'SALES_MANAGER']);
+      await prisma.lead.deleteMany({});
+      res.status(200).json({ success: true });
       return;
     }
 

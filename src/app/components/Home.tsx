@@ -8,7 +8,8 @@ import {
   CHART_TOOLTIP_STYLE, BAR_RADIUS_UP, AREA_GRADIENT_STOPS,
 } from '@/styles/chartTheme';
 import { salesData, leadSourceData, performanceData } from '@/app/data/dummyData';
-import { leadsApi, demosApi, contractsApi, salesTeamApi } from '@/services/api';
+import { demosApi, contractsApi, salesTeamApi } from '@/services/api';
+import { leadsRepository } from '@/services/leadsRepository';
 import { toast } from 'sonner';
 import { formatCurrency, formatNumber } from '@/utils/formatters';
 import { initializeDemosData } from '@/utils/initializeDemos';
@@ -40,7 +41,7 @@ export function Home() {
 
       // Fetch all data in parallel
       const [leadsResult, demosResult, contractsResult, teamResult] = await Promise.all([
-        leadsApi.getAll(),
+        leadsRepository.getAll(),
         demosApi.getAll(),
         contractsApi.getAll(),
         salesTeamApi.getAll(),
