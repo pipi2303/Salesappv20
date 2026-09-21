@@ -17,6 +17,21 @@ interface ApiResponse extends ServerResponse {
   json(body: unknown): void;
 }
 
+interface ProductItemInput {
+  productId?: string;
+  productName: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+}
+
+interface ActivityInput {
+  type: string;
+  description: string;
+  createdBy?: string;
+  createdAt?: string;
+}
+
 function getId(req: ApiRequest): string | undefined {
   const raw = req.query?.id;
   return Array.isArray(raw) ? raw[0] : raw;
@@ -74,6 +89,34 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
           ...(body.closeDetail !== undefined && { closeDetail: body.closeDetail as string }),
           ...(body.notes !== undefined && { notes: body.notes as string }),
           ...(body.extra !== undefined && { extra: body.extra as object }),
+          // The UI always sends the complete current products/activities
+          // array on every save (never a delta), so a full delete+recreate
+          // is the simplest correct sync — see opportunitiesRepository.ts's
+          // file header for why this is needed here at all (the pilot
+          // route originally only handled scalar columns).
+          ...(body.products !== undefined && {
+            products: {
+              deleteMany: {},
+              create: (body.products as ProductItemInput[]).map((p) => ({
+                productId: p.productId || null,
+                productName: p.productName,
+                quantity: p.quantity,
+                unitPrice: p.unitPrice,
+                totalPrice: p.totalPrice,
+              })),
+            },
+          }),
+          ...(body.activities !== undefined && {
+            activities: {
+              deleteMany: {},
+              create: (body.activities as ActivityInput[]).map((a) => ({
+                type: a.type,
+                description: a.description,
+                createdBy: a.createdBy ?? user!.id,
+                createdAt: a.createdAt ? new Date(a.createdAt) : new Date(),
+              })),
+            },
+          }),
         },
         include: { products: true, activities: true },
       });

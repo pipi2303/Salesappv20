@@ -21,7 +21,7 @@ import {
   User
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { opportunitiesApi } from '@/services/api';
+import { opportunitiesRepository } from '@/services/opportunitiesRepository';
 import { productsRepository } from '@/services/productsRepository';
 import { OpportunityPipeline } from './OpportunityPipeline';
 import { OpportunityList } from './OpportunityList';
@@ -74,7 +74,7 @@ export function OpportunityManagement() {
       setLoading(true);
       
       const [oppResult, prodResult] = await Promise.all([
-        opportunitiesApi.getAll(),
+        opportunitiesRepository.getAll(),
         productsRepository.getAll(),
       ]);
       
@@ -97,7 +97,7 @@ export function OpportunityManagement() {
 
   const fetchReminders = async () => {
     try {
-      const result = await opportunitiesApi.getReminders();
+      const result = await opportunitiesRepository.getReminders();
       if (result.success && result.data) {
         setReminders(result.data);
         
@@ -135,7 +135,7 @@ export function OpportunityManagement() {
     try {
       if (selectedOpportunity) {
         // Update
-        const result = await opportunitiesApi.update(selectedOpportunity.id, opportunityData);
+        const result = await opportunitiesRepository.update(selectedOpportunity.id, opportunityData);
         if (result.success && result.data) {
           setOpportunities(opportunities.map(o => 
             o.id === selectedOpportunity.id ? result.data : o
@@ -146,7 +146,7 @@ export function OpportunityManagement() {
         }
       } else {
         // Create
-        const result = await opportunitiesApi.create(opportunityData);
+        const result = await opportunitiesRepository.create(opportunityData);
         if (result.success && result.data) {
           setOpportunities([...opportunities, result.data]);
           toast.success('Opportunity created successfully!');
@@ -169,7 +169,7 @@ export function OpportunityManagement() {
     }
     
     try {
-      const result = await opportunitiesApi.delete(id);
+      const result = await opportunitiesRepository.remove(id);
       if (result.success) {
         setOpportunities(opportunities.filter(o => o.id !== id));
         toast.success('Opportunity deleted successfully!');
@@ -225,7 +225,7 @@ export function OpportunityManagement() {
     };
 
     try {
-      const result = await opportunitiesApi.update(opportunity.id, updatedData);
+      const result = await opportunitiesRepository.update(opportunity.id, updatedData);
       if (result.success && result.data) {
         setOpportunities(prev => prev.map(o =>
           o.id === opportunity.id ? result.data : o
