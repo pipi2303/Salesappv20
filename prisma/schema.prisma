@@ -433,6 +433,77 @@ enum DeploymentType {
   HYBRID     @map("hybrid")
 }
 
+// ---------------------------------------------------------------------
+// Product catalog hierarchy for the physical (Onduline) line — Bab 8/16
+// gap 3: "Product Catalog belum mencerminkan 5 kategori produk nyata
+// dengan variasi teknis per kategori." Bab 16's full hierarchy is
+// Category -> Family -> Product -> Variant -> SKU -> Packaging/UOM;
+// implemented here at the depth the source document actually has real
+// content for, not speculatively beyond it:
+// - ProductCategory / ProductFamily are real tables (Bab 16 explicitly
+//   asks for product_categories/product_families) so the 4 categories
+//   Bab 16 itself says have no catalog yet (waterproofing, photovoltaic,
+//   green roof, aksesoris) can be added later without a migration.
+// - Product stays the SKU-level row (it already carries price/stock/
+//   sold, which covers what Bab 16 calls product_prices/product_stocks)
+//   rather than splitting those into their own tables with no real data
+//   to seed them with yet.
+// - Variant is a label on Product (variantLabel), not its own table —
+//   Bab 16's own SKU example (ONDV-SR) only ever combines Family+Variant
+//   as a code, never shows a Variant with independent attributes of its
+//   own.
+// - Deliberately NOT built: sku_uoms, sku_packagings,
+//   sku_packaging_conversions, sku_barcodes, product_logistics,
+//   product_accessories. Bab 16 names these but the document has no
+//   concrete example data for any of them, and it explicitly flags its
+//   own SKU codes as unverified ("bukan SKU resmi Onduline"). Adding six
+//   empty tables now would be modeling ahead of any real requirement —
+//   revisit once there's an actual UOM/packaging/barcode need.
+// - Software products (ProductSoftwareAttrs) are untouched, per explicit
+//   instruction — this hierarchy only ever gets used via the new
+//   optional familyId, which software rows simply never set.
+// ---------------------------------------------------------------------
+
+model ProductCategory {
+  id   String @id @default(uuid())
+  code String @unique // "ATAP", "WATERPROOFING", "PHOTOVOLTAIC", "GREEN_ROOF", "ACCESSORIES"
+  name String
+
+  families ProductFamily[]
+
+  @@map("product_categories")
+}
+
+model ProductFamily {
+  id         String          @id @default(uuid())
+  categoryId String          @map("category_id")
+  category   ProductCategory @relation(fields: [categoryId], references: [id])
+  code       String          @unique // "ONDV", "ONDC", "ONDT", "ONDUC", "BARD"
+  name       String // "ONDUVILLA"
+  type       String // "Genteng Bitumen" — descriptive type, Bab 16's table
+
+  products Product[]
+
+  @@map("product_families")
+}
+
+// Bab 16: "SKU Lifecycle: Draft -> Pending Approval -> Active ->
+// Temporarily Unavailable -> Discontinued -> Archived" — a second,
+// SKU-specific approval gate alongside Bab 9's distributor/store one.
+// Deliberately separate from ProductStatus (which stays ACTIVE/
+// DISCONTINUED and untouched for the software line): this only applies
+// to physical/family-linked products, so widening the shared enum to
+// six values that software products would never use isn't worth the
+// coupling.
+enum SkuLifecycleStatus {
+  DRAFT
+  PENDING_APPROVAL
+  ACTIVE
+  TEMPORARILY_UNAVAILABLE
+  DISCONTINUED
+  ARCHIVED
+}
+
 model Product {
   id          String        @id @default(uuid())
   sku         String        @unique
@@ -446,8 +517,16 @@ model Product {
   stock       Int           @default(0)
   features    String[]      @default([])
   sold        Int           @default(0)
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  // Bab 16 hierarchy — only ever set for physical/Onduline-family
+  // products; null for the software line.
+  familyId     String?             @map("family_id")
+  family       ProductFamily?      @relation(fields: [familyId], references: [id])
+  variantLabel String?             @map("variant_label") // e.g. "Shaded Red"
+  skuLifecycle SkuLifecycleStatus? @map("sku_lifecycle")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   softwareAttrs      ProductSoftwareAttrs?
   physicalAttrs      ProductPhysicalAttrs?
@@ -458,6 +537,7 @@ model Product {
   @@index([category])
   @@index([productType])
   @@index([status])
+  @@index([familyId])
 }
 
 model ProductSoftwareAttrs {
