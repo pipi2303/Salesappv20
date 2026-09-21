@@ -46,6 +46,10 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       // day-to-day sales action — restrict it accordingly.
       requireRole(user, ['SUPER_ADMIN', 'SALES_MANAGER', 'MASTER_DATA_ADMIN']);
       const body = (req.body ?? {}) as Record<string, unknown>;
+      const productType = body.productType as 'SOFTWARE' | 'PHYSICAL';
+      const softwareAttrs = body.softwareAttrs as Record<string, unknown> | undefined;
+      const physicalAttrs = body.physicalAttrs as Record<string, unknown> | undefined;
+
       const product = await prisma.product.create({
         data: {
           sku: body.sku as string,
@@ -53,11 +57,50 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
           category: body.category as string,
           price: body.price as number,
           currency: (body.currency as string) ?? 'IDR',
-          description: (body.description as string) ?? null,
-          productType: body.productType as 'SOFTWARE' | 'PHYSICAL',
+          description: (body.description as string | undefined) ?? null,
+          status: (body.status as 'ACTIVE' | 'DISCONTINUED') ?? 'ACTIVE',
+          productType,
           stock: (body.stock as number) ?? 0,
+          sold: (body.sold as number) ?? 0,
           features: (body.features as string[]) ?? [],
+          // Fase 1 item 5: same create call, exclusive-arc subtype row —
+          // src/services/productsRepository.ts sends exactly one of
+          // these depending on productType.
+          ...(productType === 'SOFTWARE' && softwareAttrs
+            ? {
+                softwareAttrs: {
+                  create: {
+                    licenseTier: softwareAttrs.licenseTier as string | undefined,
+                    billingCycle: softwareAttrs.billingCycle as
+                      | 'MONTHLY'
+                      | 'YEARLY'
+                      | 'ONE_TIME'
+                      | undefined,
+                    modules: (softwareAttrs.modules as string[]) ?? [],
+                    seatLimit: softwareAttrs.seatLimit as number | undefined,
+                    deploymentType: softwareAttrs.deploymentType as
+                      | 'CLOUD'
+                      | 'ON_PREMISE'
+                      | 'HYBRID'
+                      | undefined,
+                  },
+                },
+              }
+            : {}),
+          ...(productType === 'PHYSICAL' && physicalAttrs
+            ? {
+                physicalAttrs: {
+                  create: {
+                    unitOfMeasure: physicalAttrs.unitOfMeasure as string,
+                    color: physicalAttrs.color as string | undefined,
+                    specification: physicalAttrs.specification as string | undefined,
+                    weightKg: physicalAttrs.weightKg as number | undefined,
+                  },
+                },
+              }
+            : {}),
         },
+        include: { softwareAttrs: true, physicalAttrs: true },
       });
       res.status(201).json({ success: true, data: product });
       return;
@@ -67,6 +110,11 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
   } catch (err) {
     if (err instanceof UnauthorizedError || err instanceof ForbiddenError) {
       res.status(err.status).json({ success: false, error: err.message });
+      return;
+    }
+    // Prisma P2002 = unique constraint violation — here, always the sku.
+    if (typeof err === 'object' && err !== null && (err as { code?: string }).code === 'P2002') {
+      res.status(409).json({ success: false, error: 'SKU sudah dipakai produk lain' });
       return;
     }
     console.error('[api/products] unexpected error:', err);
