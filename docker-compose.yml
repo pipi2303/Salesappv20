@@ -1,0 +1,27 @@
+# Portainer stack "sales-crm-onduline" -- deployed via Portainer's
+# "Repository" stack method (build straight from this Git repo on the
+# VPS itself, no separate image registry). See DEPLOY.md for the full
+# setup walkthrough and which environment variables to fill in under
+# Portainer's "Environment variables" section when creating the stack.
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sales-crm-onduline:latest
+    container_name: sales-crm-onduline
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      # Neon Postgres -- pooled (runtime queries) and direct (migrations)
+      # connection strings. Same values as this repo's .env.local.
+      DATABASE_URL: ${DATABASE_URL}
+      DIRECT_URL: ${DIRECT_URL}
+      # Vercel Blob storage token for check-in photos (lib/blob.ts).
+      # Create a Blob store on the Vercel project (Storage -> Create
+      # Database -> Blob) to get this -- see the ACTION NEEDED note in
+      # commit 0b8044ac.
+      BLOB_READ_WRITE_TOKEN: ${BLOB_READ_WRITE_TOKEN}

@@ -1,0 +1,13 @@
+.git
+node_modules
+dist
+.vercel
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+
+# Historical dev-notes markdown files at the repo root (not needed to
+# build or run the app) -- keeps the build context small.
+*.md
+!README.md
