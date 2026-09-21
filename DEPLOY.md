@@ -44,14 +44,17 @@ Jangan commit nilai-nilai ini ke Git — isi hanya lewat Portainer UI
      Access Token (scope read-only ke repo ini)
 4. Isi Environment variables (tabel di atas)
 5. **GitOps updates** → aktifkan, pilih salah satu:
-   - **Webhook** (direkomendasikan, instan) — Portainer akan
-     menampilkan URL webhook setelah stack dibuat. Tambahkan URL itu
-     sebagai secret `PORTAINER_WEBHOOK_URL` di GitHub repo (Settings →
-     Secrets and variables → Actions), supaya `.github/workflows/
-     notify-portainer.yml` bisa memanggilnya setiap push.
-   - **Polling interval** — alternatif tanpa GitHub Actions sama
-     sekali; Portainer cek repo tiap interval (misal 5 menit) dan
-     redeploy sendiri kalau ada commit baru.
+   - **Polling interval** (dipakai sekarang) — Portainer cek repo tiap
+     interval (misal 5 menit) dan redeploy sendiri kalau ada commit
+     baru. Tidak butuh GitHub Actions atau token dengan scope
+     tambahan.
+   - **Webhook** (opsional, instan) — kalau nanti mau redeploy langsung
+     begitu push (bukan menunggu polling), buat ulang GitHub token
+     dengan scope `workflow` ditambahkan, lalu file
+     `.github/workflows/notify-portainer.yml` (sudah disiapkan, ada di
+     riwayat git commit sebelumnya -- tinggal `git checkout` dari commit
+     itu) bisa ditambahkan kembali dan disambungkan ke webhook URL yang
+     Portainer tampilkan setelah stack dibuat.
 6. **Deploy the stack**
 
 ## 4. Setelah deploy
