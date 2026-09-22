@@ -1,14 +1,22 @@
-# Portainer stack "sales-crm-onduline" -- deployed via Portainer's
-# "Repository" stack method (build straight from this Git repo on the
-# VPS itself, no separate image registry). See DEPLOY.md for the full
-# setup walkthrough and which environment variables to fill in under
-# Portainer's "Environment variables" section when creating the stack.
+# Portainer stack "sales-crm-onduline" -- deployed via
+# .github/workflows/deploy.yml: GitHub Actions builds this repo's
+# Dockerfile, pushes the image to GHCR, then PUTs this file's content
+# straight to Portainer's Stacks API with RepullImageAndRedeploy=true.
+# That means Portainer PULLS the image below on every deploy -- it does
+# NOT build from a git checkout -- so `image:` must point at the tag
+# Actions actually pushes (ghcr.io/pipi2303/salesappv20:latest), and
+# there must be no `build:` block here (a bare local tag like
+# "sales-crm-onduline:latest" with RepullImageAndRedeploy=true fails
+# with "pull access denied ... repository does not exist", since Docker
+# tries to pull that name from Docker Hub instead of building it).
+#
+# NOTE: ghcr.io/pipi2303/salesappv20 must be a public package, or the
+# VPS's Docker daemon needs `docker login ghcr.io` credentials -- GitHub
+# Actions logging in on the runner (see deploy.yml) does not carry over
+# to the VPS pulling the image.
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: sales-crm-onduline:latest
+    image: ghcr.io/pipi2303/salesappv20:latest
     container_name: sales-crm-onduline
     restart: unless-stopped
     ports:
@@ -16,9 +24,9 @@ services:
     volumes:
       # Check-in photos (Bab 8 gap 2), when lib/blob.ts's local-disk
       # backend is active (default here -- no BLOB_READ_WRITE_TOKEN set).
-      # Named volume so photos survive `docker compose build && up`
-      # (a plain container recreation, which a fresh COPY in the image
-      # would otherwise wipe) across every redeploy.
+      # Named volume so photos survive a redeploy (a fresh pulled image
+      # would otherwise not have them -- they never lived in the image
+      # to begin with).
       - checkin_photos:/app/uploads/checkin-photos
     environment:
       NODE_ENV: production

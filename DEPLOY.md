@@ -1,8 +1,15 @@
 # Deploy ke VPS via Portainer — Sales CRM Onduline
 
-Stack ini dibangun langsung di VPS dari repo Git ini (tidak perlu Docker
-registry terpisah). Portainer melakukan `git clone` + `docker compose
-build && up` setiap kali stack di-deploy atau di-redeploy.
+Stack ini dideploy lewat `.github/workflows/deploy.yml`: setiap push ke
+`main`, GitHub Actions build image dari `Dockerfile` di repo ini, push
+image itu ke GHCR (`ghcr.io/pipi2303/salesappv20:latest`), lalu PUT isi
+`docker-compose.yml` langsung ke Portainer Stacks API dengan
+`RepullImageAndRedeploy: true`. Karena itu Portainer **menarik (pull)**
+image dari GHCR di setiap deploy — dia TIDAK `git clone` + build sendiri
+dari repo ini. `docker-compose.yml` harus mengacu ke image GHCR itu
+(bukan punya blok `build:`), kalau tidak Portainer akan mencoba pull
+nama image apa adanya dari Docker Hub dan gagal dengan error semacam
+`pull access denied ... repository does not exist`.
 
 ## 1. File yang relevan
 
@@ -36,30 +43,31 @@ Jangan commit nilai-nilai ini ke Git — isi hanya lewat Portainer UI
 ## 3. Bikin stack di Portainer
 
 1. **Stacks → Add stack**
-2. Nama: `sales-crm-onduline`
-3. Build method: **Repository**
-   - Repository URL: `https://github.com/pipi2303/Salesappv20.git`
-   - Repository reference: `refs/heads/feature/unified-product-model`
-   - Compose path: `docker-compose.yml`
-   - Kalau repo private: isi **Authentication** dengan GitHub Personal
-     Access Token (scope read-only ke repo ini)
+2. Nama: `sales-crm-onduline` (harus sama persis — dipakai sebagai
+   `PORTAINER_STACK_ID`/nama container)
+3. Build method: **Web editor** (bukan Repository) — cukup tempel isi
+   `docker-compose.yml` dari repo ini apa adanya, karena kontennya
+   di-PUT ulang otomatis oleh `deploy.yml` setiap push ke `main`.
 4. Isi Environment variables (tabel di atas)
-5. **GitOps updates** → aktifkan, pilih salah satu:
-   - **Webhook** (direkomendasikan, instan) — Portainer akan
-     menampilkan URL webhook setelah stack dibuat. Tambahkan URL itu
-     sebagai secret `PORTAINER_WEBHOOK_URL` di GitHub repo (Settings →
-     Secrets and variables → Actions), supaya `.github/workflows/
-     notify-portainer.yml` bisa memanggilnya setiap push.
-   - **Polling interval** — alternatif tanpa GitHub Actions sama
-     sekali; Portainer cek repo tiap interval (misal 5 menit) dan
-     redeploy sendiri kalau ada commit baru.
+5. Kalau image GHCR-nya **private**, tambahkan registry credential di
+   Portainer (**Registries → Add registry**, isi GitHub username +
+   Personal Access Token scope `read:packages`) supaya Portainer bisa
+   `docker login ghcr.io` saat pull. Alternatif lebih simpel: ubah
+   visibility package `salesappv20` di GitHub (Packages → Package
+   settings → Change visibility) jadi **Public**.
 6. **Deploy the stack**
+7. Di GitHub repo, isi secrets **Settings → Secrets and variables →
+   Actions**: `PORTAINER_URL`, `PORTAINER_TOKEN` (API key Portainer),
+   `PORTAINER_STACK_ID`, `PORTAINER_ENDPOINT_ID` — dipakai oleh
+   `deploy.yml` untuk redeploy stack ini di setiap push.
 
 ## 4. Setelah deploy
 
+- Cek tab **Actions** di GitHub repo ini untuk lihat apakah workflow
+  `Sales CRM CI/CD` sukses (build + push GHCR + panggil Portainer API).
 - Cek log container di Portainer (`sales-crm-onduline` → Logs) untuk
-  memastikan `prisma migrate deploy` sukses dan server listen di port
-  3000.
+  memastikan image ke-pull, `prisma migrate deploy` sukses, dan server
+  listen di port 3000.
 - Akses lewat `http://<ip-vps>:3000` (atau domain, kalau sudah
   dikonfigurasi lewat reverse proxy Traefik/Nginx Proxy Manager yang
   sudah ada di Portainer — belum diatur di sini, tambahkan label/host
