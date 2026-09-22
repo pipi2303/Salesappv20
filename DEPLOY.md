@@ -16,7 +16,8 @@ build && up` setiap kali stack di-deploy atau di-redeploy.
   (menerapkan migration yang sudah ada di `prisma/migrations/`, aman
   untuk production), baru start server.
 - `docker-compose.yml` — definisi stack `sales-crm-onduline`, satu
-  service (`app`), port `3000` di-mapping ke host.
+  service (`app`), port `3000` di-mapping ke host, plus volume
+  `checkin_photos` untuk foto check-in (lihat bagian 5).
 
 ## 2. Environment variables yang harus diisi di Portainer
 
@@ -26,7 +27,7 @@ Saat membuat stack, isi bagian **Environment variables** dengan:
 | --- | --- |
 | `DATABASE_URL` | Connection string Neon (pooled) — sama seperti di `.env.local` repo ini |
 | `DIRECT_URL` | Connection string Neon (direct/unpooled) — untuk `prisma migrate deploy` |
-| `BLOB_READ_WRITE_TOKEN` | Token dari Vercel Blob store (Vercel project → Storage → Create Database → Blob). **Belum dibuat** — lihat catatan di bawah. |
+| `BLOB_READ_WRITE_TOKEN` (opsional) | Kosongkan untuk pakai storage lokal di VPS (default, lihat bagian 5). Isi hanya kalau memang mau foto check-in disimpan di Vercel Blob. |
 | `APP_PORT` (opsional) | Port di host VPS yang di-map ke container (default `3000`) |
 
 Jangan commit nilai-nilai ini ke Git — isi hanya lewat Portainer UI
@@ -44,17 +45,14 @@ Jangan commit nilai-nilai ini ke Git — isi hanya lewat Portainer UI
      Access Token (scope read-only ke repo ini)
 4. Isi Environment variables (tabel di atas)
 5. **GitOps updates** → aktifkan, pilih salah satu:
-   - **Polling interval** (dipakai sekarang) — Portainer cek repo tiap
-     interval (misal 5 menit) dan redeploy sendiri kalau ada commit
-     baru. Tidak butuh GitHub Actions atau token dengan scope
-     tambahan.
-   - **Webhook** (opsional, instan) — kalau nanti mau redeploy langsung
-     begitu push (bukan menunggu polling), buat ulang GitHub token
-     dengan scope `workflow` ditambahkan, lalu file
-     `.github/workflows/notify-portainer.yml` (sudah disiapkan, ada di
-     riwayat git commit sebelumnya -- tinggal `git checkout` dari commit
-     itu) bisa ditambahkan kembali dan disambungkan ke webhook URL yang
-     Portainer tampilkan setelah stack dibuat.
+   - **Webhook** (direkomendasikan, instan) — Portainer akan
+     menampilkan URL webhook setelah stack dibuat. Tambahkan URL itu
+     sebagai secret `PORTAINER_WEBHOOK_URL` di GitHub repo (Settings →
+     Secrets and variables → Actions), supaya `.github/workflows/
+     notify-portainer.yml` bisa memanggilnya setiap push.
+   - **Polling interval** — alternatif tanpa GitHub Actions sama
+     sekali; Portainer cek repo tiap interval (misal 5 menit) dan
+     redeploy sendiri kalau ada commit baru.
 6. **Deploy the stack**
 
 ## 4. Setelah deploy
@@ -67,10 +65,21 @@ Jangan commit nilai-nilai ini ke Git — isi hanya lewat Portainer UI
   sudah ada di Portainer — belum diatur di sini, tambahkan label/host
   rule terpisah sesuai reverse proxy yang dipakai).
 
-## 5. ACTION NEEDED sebelum data check-in foto berfungsi
+## 5. Foto check-in toko (Bab 8 gap 2)
 
-`BLOB_READ_WRITE_TOKEN` belum ada sama sekali (dicek: tidak ada di
-`.env.local` maupun `.env`). Tanpa ini, endpoint check-in foto akan
-gagal saat ada `photoDataUrl` di body request. Buat Blob store dulu di
-project Vercel yang sama (Storage → Create Database → Blob), lalu
-salin token-nya ke Portainer.
+Defaultnya (tanpa `BLOB_READ_WRITE_TOKEN`) foto check-in disimpan di
+disk VPS sendiri, lewat volume Docker `checkin_photos` yang di-mount ke
+`/app/uploads/checkin-photos` di dalam container — sudah otomatis
+dibuat oleh `docker-compose.yml`, tidak perlu setup tambahan. Foto tetap
+ada meskipun stack di-redeploy (`docker compose build && up`), karena
+volume-nya terpisah dari container image. Kalau container-nya dihapus
+total (bukan sekadar redeploy) dan tidak ada volume itu lagi, foto lama
+ikut hilang — untuk backup, cukup backup volume `checkin_photos` di
+VPS seperti volume Docker lainnya.
+
+Kalau sebaliknya ingin pakai Vercel Blob (misal aplikasi ini juga masih
+dideploy ke Vercel dan ingin satu tempat penyimpanan foto yang sama),
+isi `BLOB_READ_WRITE_TOKEN` di Environment variables Portainer — buat
+tokennya di project Vercel (Storage → Create Database → Blob). Kalau
+variabel ini diisi, `lib/blob.ts` otomatis pakai Vercel Blob dan
+mengabaikan storage lokal.

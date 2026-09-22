@@ -13,6 +13,13 @@ services:
     restart: unless-stopped
     ports:
       - "${APP_PORT:-3000}:3000"
+    volumes:
+      # Check-in photos (Bab 8 gap 2), when lib/blob.ts's local-disk
+      # backend is active (default here -- no BLOB_READ_WRITE_TOKEN set).
+      # Named volume so photos survive `docker compose build && up`
+      # (a plain container recreation, which a fresh COPY in the image
+      # would otherwise wipe) across every redeploy.
+      - checkin_photos:/app/uploads/checkin-photos
     environment:
       NODE_ENV: production
       PORT: "3000"
@@ -20,8 +27,13 @@ services:
       # connection strings. Same values as this repo's .env.local.
       DATABASE_URL: ${DATABASE_URL}
       DIRECT_URL: ${DIRECT_URL}
-      # Vercel Blob storage token for check-in photos (lib/blob.ts).
-      # Create a Blob store on the Vercel project (Storage -> Create
-      # Database -> Blob) to get this -- see the ACTION NEEDED note in
-      # commit 0b8044ac.
-      BLOB_READ_WRITE_TOKEN: ${BLOB_READ_WRITE_TOKEN}
+      # Optional: Vercel Blob storage token for check-in photos
+      # (lib/blob.ts). Leave unset to use local disk storage (the
+      # `checkin_photos` volume above) instead -- no external account
+      # needed. Set this only if you specifically want photos to live in
+      # Vercel Blob (e.g. this app is also deployed on Vercel and you
+      # want one shared photo store).
+      BLOB_READ_WRITE_TOKEN: ${BLOB_READ_WRITE_TOKEN:-}
+
+volumes:
+  checkin_photos:

@@ -32,6 +32,7 @@ import distributorsIndex from './api/distributors/index.js';
 import distributorsById from './api/distributors/[id].js';
 import storesIndex from './api/stores/index.js';
 import storesById from './api/stores/[id].js';
+import { LOCAL_UPLOAD_DIR } from './lib/blob.js';
 
 type VercelStyleHandler = (req: any, res: any) => Promise<void> | void;
 
@@ -74,6 +75,14 @@ app.all('/api/distributors', toHandler(distributorsIndex));
 app.all('/api/distributors/:id', toHandler(distributorsById));
 app.all('/api/stores', toHandler(storesIndex));
 app.all('/api/stores/:id', toHandler(storesById));
+
+// Bab 8 gap 2 check-in photos, when lib/blob.ts's local-disk backend is
+// active (no BLOB_READ_WRITE_TOKEN set — the default for this VPS
+// deployment). Mounted on the exact directory lib/blob.ts writes to, so
+// a photo saved there is immediately servable at the URL it returned.
+// The `checkin_photos` volume in docker-compose.yml is what makes this
+// survive container recreation/redeploys.
+app.use('/uploads/checkin-photos', express.static(LOCAL_UPLOAD_DIR));
 
 // Everything else: the built Vite frontend (dist/), with an SPA fallback
 // so client-side-routed URLs (if any are added later) don't 404 on
