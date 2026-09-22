@@ -7,15 +7,17 @@
 // GIS nyata). Tidak mengubah TerritoryMap.tsx sama sekali; menu itu tetap
 // ada terpisah.
 //
-// Layer yang sudah didapat "gratis" dari data yang ada, tanpa kerja
-// tambahan di backend:
-// - Status approval per titik (Bab 9: pending/approved/rejected) ->
-//   warna marker + ringkasan "Antrean Approval".
+// Fase 2: layer "Kunjungan Toko" — recency-of-visit & status kepatuhan,
+// dari data check-in Task yang sudah ada (Bab 8 gap 2: checkInAt,
+// checkInPhotoUrl, storeId). Toggle "Mode Peta" memilih pewarnaan marker
+// Toko: status approval (Fase 1, default) atau recency kunjungan. Marker
+// Distributor selalu pakai warna status approval -- Task tidak punya
+// relasi ke Distributor, hanya ke Store.
+//
 // Layer lain dari insight doc (heatmap performa/coverage gap terhadap
-// Territory, recency-of-visit & status-kepatuhan dari Task check-in,
-// penetrasi kategori produk) sengaja DITUNDA ke fase berikutnya -- masing
-// -masing butuh agregasi lintas-tabel (Territory, Task, Opportunity/
-// Product) yang lebih berat daripada menampilkan titik GPS yang sudah ada.
+// Territory, penetrasi kategori produk) sengaja DITUNDA -- butuh
+// agregasi lintas-tabel (Territory, Opportunity/Product) yang lebih
+// berat daripada menampilkan titik GPS + check-in yang sudah ada.
 //
 // Default tampilan hanya menampilkan titik berstatus "approved" (perilaku
 // operasional yang sebenarnya). Untuk role approver (Super Admin/Sales
@@ -27,7 +29,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { MapPin, Store as StoreIcon, Truck, Clock, CheckCircle2, XCircle } from 'lucide-react';
+import { MapPin, Store as StoreIcon, Truck, Clock, CheckCircle2, XCircle, Camera, CameraOff } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/app/components/ui/card';
 import { Badge } from '@/app/components/ui/badge';
 import { Switch } from '@/app/components/ui/switch';
@@ -38,10 +40,12 @@ import { toast } from 'sonner';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { distributorsRepository } from '@/services/distributorsRepository';
 import { storesRepository } from '@/services/storesRepository';
+import { tasksRepository } from '@/services/tasksRepository';
 import { formatDate } from '@/utils/formatters';
 import type { Distributor } from '@/types/distributor';
 import type { Store } from '@/types/store';
 import type { ApprovalStatus } from '@/types/distributor';
+import type { Task } from '@/types/task';
 
 const APPROVER_ROLES = new Set(['Super Admin', 'Sales Manager', 'Master Data Admin']);
 
@@ -62,6 +66,70 @@ const STATUS_LABEL: Record<ApprovalStatus, string> = {
   rejected: 'Rejected',
 };
 
+// Fase 2: ambang recency kunjungan (SLA sederhana, bisa disesuaikan nanti).
+const RECENT_DAYS = 7;
+const DUE_DAYS = 30;
+
+type VisitBucket = 'recent' | 'due' | 'overdue' | 'never';
+
+const VISIT_COLOR: Record<VisitBucket, string> = {
+  recent: '#10b981', // emerald-500 -- dikunjungi <=7 hari
+  due: '#f59e0b', // amber-500 -- 8-30 hari, perlu kunjungan ulang
+  overdue: '#ef4444', // red-500 -- >30 hari, terlambat
+  never: '#6b7280', // gray-500 -- belum pernah check-in
+};
+
+const VISIT_LABEL: Record<VisitBucket, string> = {
+  recent: 'Baru Dikunjungi',
+  due: 'Perlu Kunjungan Ulang',
+  overdue: 'Terlambat Kunjungan',
+  never: 'Belum Pernah Dikunjungi',
+};
+
+interface StoreVisitInfo {
+  lastCheckInAt: Date | null;
+  hasPhoto: boolean;
+  daysSince: number | null;
+  bucket: VisitBucket;
+}
+
+function toVisitBucket(daysSince: number | null): VisitBucket {
+  if (daysSince === null) return 'never';
+  if (daysSince <= RECENT_DAYS) return 'recent';
+  if (daysSince <= DUE_DAYS) return 'due';
+  return 'overdue';
+}
+
+// Task.storeId + checkInAt sudah ada dari Bab 8 gap 2 (GPS check-in & foto
+// toko bertanggal) -- ambil check-in terakhir per toko dari seluruh Task,
+// tanpa perlu endpoint baru.
+function computeStoreVisits(tasks: Task[]): Map<string, StoreVisitInfo> {
+  const latestByStore = new Map<string, Task>();
+  for (const t of tasks) {
+    const storeId = t.storeId;
+    if (!storeId || !t.checkInAt) continue;
+    const existing = latestByStore.get(storeId);
+    if (!existing || !existing.checkInAt || new Date(t.checkInAt) > new Date(existing.checkInAt)) {
+      latestByStore.set(storeId, t);
+    }
+  }
+
+  const now = Date.now();
+  const result = new Map<string, StoreVisitInfo>();
+  for (const [storeId, t] of latestByStore) {
+    const lastCheckInAt = new Date(t.checkInAt as string);
+    const daysSince = Math.floor((now - lastCheckInAt.getTime()) / (1000 * 60 * 60 * 24));
+    result.set(storeId, {
+      lastCheckInAt,
+      hasPhoto: !!t.checkInPhotoUrl,
+      daysSince,
+      bucket: toVisitBucket(daysSince),
+    });
+  }
+  return result;
+}
+
+type MapMode = 'approval' | 'visit';
 type PointKind = 'distributor' | 'store';
 
 interface MapPoint {
@@ -79,8 +147,7 @@ interface MapPoint {
   rejectionNote: string;
 }
 
-function divIcon(kind: PointKind, status: ApprovalStatus): L.DivIcon {
-  const color = STATUS_COLOR[status];
+function divIcon(kind: PointKind, color: string): L.DivIcon {
   const size = kind === 'distributor' ? 26 : 20;
   const shape =
     kind === 'distributor'
@@ -139,19 +206,22 @@ export function DistributorStoreMap() {
 
   const [distributors, setDistributors] = useState<Distributor[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [typeFilter, setTypeFilter] = useState<'all' | PointKind>('all');
   const [searchText, setSearchText] = useState('');
   const [showPending, setShowPending] = useState(false); // approver-only, default off
+  const [mapMode, setMapMode] = useState<MapMode>('approval');
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const [distRes, storeRes] = await Promise.all([
+      const [distRes, storeRes, taskRes] = await Promise.all([
         distributorsRepository.getAll(),
         storesRepository.getAll(),
+        tasksRepository.getAll(),
       ]);
       if (cancelled) return;
       if (distRes.success && distRes.data) {
@@ -164,6 +234,13 @@ export function DistributorStoreMap() {
       } else {
         toast.error(storeRes.success ? 'Gagal memuat data toko' : storeRes.error);
       }
+      if (taskRes.success && taskRes.data) {
+        setTasks(taskRes.data);
+      } else {
+        // Non-fatal: layer kunjungan (Fase 2) tetap bisa dilewati kalau ini gagal,
+        // peta tetap jalan dengan mode "Status Approval" saja.
+        console.warn('DistributorStoreMap: gagal memuat data task untuk layer kunjungan', taskRes.success ? undefined : taskRes.error);
+      }
       setLoading(false);
     })();
     return () => {
@@ -172,6 +249,8 @@ export function DistributorStoreMap() {
   }, []);
 
   const allPoints = useMemo(() => toPoints(distributors, stores), [distributors, stores]);
+
+  const storeVisits = useMemo(() => computeStoreVisits(tasks), [tasks]);
 
   const visiblePoints = useMemo(() => {
     return allPoints.filter((p) => {
@@ -201,15 +280,41 @@ export function DistributorStoreMap() {
     const totalStore = stores.length;
     const pendingCount = allPoints.filter((p) => p.status === 'pending').length;
     const approvedCount = allPoints.filter((p) => p.status === 'approved').length;
-    return { totalDistributor, totalStore, pendingCount, approvedCount };
-  }, [distributors, stores, allPoints]);
+
+    // Fase 2: dihitung dari toko yang approved saja (sesuai dengan yang
+    // tampil di peta secara default) -- toko tanpa data GPS tidak dihitung
+    // karena memang tidak muncul di peta ini sama sekali.
+    const approvedStoreIds = stores.filter((s) => s.status === 'approved' && s.gpsLat !== null && s.gpsLng !== null).map((s) => s.id);
+    let neverVisited = 0;
+    let overdue = 0;
+    let noPhotoRecent = 0; // dikunjungi, tapi check-in terakhir tanpa foto
+    for (const id of approvedStoreIds) {
+      const visit = storeVisits.get(id);
+      if (!visit) {
+        neverVisited += 1;
+      } else {
+        if (visit.bucket === 'overdue') overdue += 1;
+        if (!visit.hasPhoto) noPhotoRecent += 1;
+      }
+    }
+
+    return { totalDistributor, totalStore, pendingCount, approvedCount, neverVisited, overdue, noPhotoRecent };
+  }, [distributors, stores, allPoints, storeVisits]);
+
+  function colorFor(p: MapPoint): string {
+    if (mapMode === 'visit' && p.kind === 'store') {
+      const visit = storeVisits.get(p.id);
+      return VISIT_COLOR[visit ? visit.bucket : 'never'];
+    }
+    return STATUS_COLOR[p.status];
+  }
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div>
         <h1 className="text-2xl font-bold text-[#013E37]">Peta Distributor & Toko</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Sebaran lokasi Distributor dan Toko berdasarkan koordinat GPS, beserta status approval (Bab 9).
+          Sebaran lokasi Distributor dan Toko berdasarkan koordinat GPS, beserta status approval (Bab 9) dan riwayat kunjungan (Bab 8).
         </p>
       </div>
 
@@ -268,16 +373,70 @@ export function DistributorStoreMap() {
         </Card>
       </div>
 
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <Card className={summary.neverVisited > 0 ? 'border-gray-300 bg-gray-50/50' : ''}>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                <MapPin className="w-5 h-5 text-gray-600" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{summary.neverVisited}</p>
+                <p className="text-xs text-muted-foreground">Toko Belum Pernah Dikunjungi</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className={summary.overdue > 0 ? 'border-red-300 bg-red-50/50' : ''}>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
+                <Clock className="w-5 h-5 text-red-600" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{summary.overdue}</p>
+                <p className="text-xs text-muted-foreground">Terlambat Kunjungan (&gt;{DUE_DAYS} hari)</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-[#013E37]/10 flex items-center justify-center">
+                <CameraOff className="w-5 h-5 text-[#013E37]" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{summary.noPhotoRecent}</p>
+                <p className="text-xs text-muted-foreground">Kunjungan Terakhir Tanpa Foto</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       <Card>
         <CardHeader>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <CardTitle className="text-base">Peta Sebaran</CardTitle>
               <CardDescription>
-                Kotak = Distributor, lingkaran = Toko. Hijau = approved, kuning = pending.
+                Kotak = Distributor, lingkaran = Toko.{' '}
+                {mapMode === 'approval'
+                  ? 'Hijau = approved, kuning = pending.'
+                  : 'Warna Toko mengikuti kapan terakhir dikunjungi (hijau = baru, kuning = perlu kunjungan ulang, merah = terlambat, abu-abu = belum pernah). Distributor tetap warna status approval.'}
               </CardDescription>
             </div>
             <div className="flex flex-wrap items-center gap-3">
+              <Select value={mapMode} onValueChange={(v) => setMapMode(v as MapMode)}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="Mode Peta" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="approval">Mode: Status Approval</SelectItem>
+                  <SelectItem value="visit">Mode: Kunjungan Toko</SelectItem>
+                </SelectContent>
+              </Select>
               <Input
                 placeholder="Cari nama, kode, atau alamat..."
                 value={searchText}
@@ -317,50 +476,82 @@ export function DistributorStoreMap() {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {visiblePoints.map((p) => (
-                  <Marker key={`${p.kind}-${p.id}`} position={[p.lat, p.lng]} icon={divIcon(p.kind, p.status)}>
-                    <Popup>
-                      <div className="space-y-1 min-w-[200px]">
-                        <div className="flex items-center gap-2">
-                          {p.kind === 'distributor' ? (
-                            <Truck className="w-4 h-4 text-[#013E37]" />
-                          ) : (
-                            <StoreIcon className="w-4 h-4 text-[#013E37]" />
+                {visiblePoints.map((p) => {
+                  const visit = p.kind === 'store' ? storeVisits.get(p.id) : undefined;
+                  return (
+                    <Marker key={`${p.kind}-${p.id}`} position={[p.lat, p.lng]} icon={divIcon(p.kind, colorFor(p))}>
+                      <Popup>
+                        <div className="space-y-1 min-w-[200px]">
+                          <div className="flex items-center gap-2">
+                            {p.kind === 'distributor' ? (
+                              <Truck className="w-4 h-4 text-[#013E37]" />
+                            ) : (
+                              <StoreIcon className="w-4 h-4 text-[#013E37]" />
+                            )}
+                            <span className="font-semibold">{p.name}</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">Kode: {p.code}</p>
+                          {p.address && <p className="text-xs text-muted-foreground">{p.address}</p>}
+                          {p.distributorName && (
+                            <p className="text-xs text-muted-foreground">Distributor: {p.distributorName}</p>
                           )}
-                          <span className="font-semibold">{p.name}</span>
+                          <div className="flex items-center gap-1 pt-1">
+                            {p.status === 'approved' && <CheckCircle2 className="w-3 h-3 text-emerald-600" />}
+                            {p.status === 'pending' && <Clock className="w-3 h-3 text-amber-600" />}
+                            {p.status === 'rejected' && <XCircle className="w-3 h-3 text-red-600" />}
+                            <Badge
+                              variant="outline"
+                              className={
+                                p.status === 'approved'
+                                  ? 'text-emerald-700 border-emerald-300'
+                                  : p.status === 'pending'
+                                  ? 'text-amber-700 border-amber-300'
+                                  : 'text-red-700 border-red-300'
+                              }
+                            >
+                              {STATUS_LABEL[p.status]}
+                            </Badge>
+                          </div>
+                          {p.status === 'pending' && p.submittedAt && (
+                            <p className="text-xs text-muted-foreground">Diajukan: {formatDate(p.submittedAt)}</p>
+                          )}
+                          {p.status === 'rejected' && p.rejectionNote && (
+                            <p className="text-xs text-red-600">Alasan ditolak: {p.rejectionNote}</p>
+                          )}
+                          {p.kind === 'store' && (
+                            <div className="pt-1 border-t border-gray-100 mt-1">
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" style={{ color: VISIT_COLOR[visit ? visit.bucket : 'never'] }} />
+                                <span className="text-xs">
+                                  {visit
+                                    ? `${VISIT_LABEL[visit.bucket]} (${visit.daysSince} hari lalu)`
+                                    : VISIT_LABEL.never}
+                                </span>
+                              </div>
+                              {visit?.lastCheckInAt && (
+                                <p className="text-xs text-muted-foreground">
+                                  Check-in terakhir: {formatDate(visit.lastCheckInAt)}
+                                </p>
+                              )}
+                              {visit && (
+                                <div className="flex items-center gap-1">
+                                  {visit.hasPhoto ? (
+                                    <Camera className="w-3 h-3 text-emerald-600" />
+                                  ) : (
+                                    <CameraOff className="w-3 h-3 text-red-600" />
+                                  )}
+                                  <span className="text-xs text-muted-foreground">
+                                    {visit.hasPhoto ? 'Ada foto display toko' : 'Tanpa foto display toko'}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
-                        <p className="text-xs text-muted-foreground">Kode: {p.code}</p>
-                        {p.address && <p className="text-xs text-muted-foreground">{p.address}</p>}
-                        {p.distributorName && (
-                          <p className="text-xs text-muted-foreground">Distributor: {p.distributorName}</p>
-                        )}
-                        <div className="flex items-center gap-1 pt-1">
-                          {p.status === 'approved' && <CheckCircle2 className="w-3 h-3 text-emerald-600" />}
-                          {p.status === 'pending' && <Clock className="w-3 h-3 text-amber-600" />}
-                          {p.status === 'rejected' && <XCircle className="w-3 h-3 text-red-600" />}
-                          <Badge
-                            variant="outline"
-                            className={
-                              p.status === 'approved'
-                                ? 'text-emerald-700 border-emerald-300'
-                                : p.status === 'pending'
-                                ? 'text-amber-700 border-amber-300'
-                                : 'text-red-700 border-red-300'
-                            }
-                          >
-                            {STATUS_LABEL[p.status]}
-                          </Badge>
-                        </div>
-                        {p.status === 'pending' && p.submittedAt && (
-                          <p className="text-xs text-muted-foreground">Diajukan: {formatDate(p.submittedAt)}</p>
-                        )}
-                        {p.status === 'rejected' && p.rejectionNote && (
-                          <p className="text-xs text-red-600">Alasan ditolak: {p.rejectionNote}</p>
-                        )}
-                      </div>
-                    </Popup>
-                  </Marker>
-                ))}
+                      </Popup>
+                    </Marker>
+                  );
+                })}
               </MapContainer>
             </div>
           )}

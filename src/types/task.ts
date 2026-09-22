@@ -41,4 +41,9 @@ export interface Task {
   // when a photo was uploaded; undefined for a check-in with no photo.
   checkInPhotoUrl?: string;
   locationValidated?: boolean;
+  // Which Store this task's check-in belongs to (prisma/schema.prisma's
+  // Task.storeId) — was already on the API response but never surfaced
+  // client-side until DistributorStoreMap.tsx's Fase 2 visit layer needed
+  // to group check-ins by store.
+  storeId?: string;
 }

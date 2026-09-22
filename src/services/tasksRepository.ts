@@ -157,6 +157,7 @@ function fromApiTask(row: any): Task {
     checkInAccuracy: row.checkInAccuracy ?? undefined,
     checkInPhotoUrl: row.checkInPhotoUrl ?? undefined,
     locationValidated: row.locationValidated ?? undefined,
+    storeId: row.storeId ?? undefined,
 
     tags: [],
 
