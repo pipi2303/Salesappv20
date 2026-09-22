@@ -4,7 +4,7 @@
 // depends on component state, so it's safe to live at module scope.
 import { lazy } from 'react';
 import {
-  Home as HomeIcon, Users, Package, Calendar, FileText, BarChart3, Settings,
+  Home as HomeIcon, Users, Package, FileText, BarChart3, Settings,
   Target, TrendingUp, Percent, CheckSquare, Book, Clipboard, UserPlus,
   MapPin, Mail, Plug, DollarSign,
 } from 'lucide-react';
@@ -16,7 +16,6 @@ const OpportunityManagement = lazy(() => import('@/app/components/OpportunityMan
 const SalesTeam = lazy(() => import('@/app/components/SalesTeam').then(m => ({ default: m.SalesTeam })));
 const SalesRepresentative = lazy(() => import('@/app/components/SalesRepresentative').then(m => ({ default: m.default })));
 const ProductCatalog = lazy(() => import('@/app/components/ProductCatalog'));
-const DemoScheduler = lazy(() => import('@/app/components/DemoScheduler').then(m => ({ default: m.DemoScheduler })));
 const Contract = lazy(() => import('@/app/components/Contract').then(m => ({ default: m.Contract })));
 const SalesReports = lazy(() => import('@/app/components/SalesReports').then(m => ({ default: m.SalesReports })));
 const AdminSystem = lazy(() => import('@/app/components/AdminSystem').then(m => ({ default: m.AdminSystem })));
@@ -58,7 +57,6 @@ export const menuGroups: MenuGroup[] = [
       { id: 'quotations', name: 'Quotation Management', icon: FileText, component: QuotationManagement },
       { id: 'discount-approval', name: 'Discount Approval', icon: Percent, component: DiscountApprovalSystem },
       { id: 'contracts', name: 'Contract', icon: FileText, component: Contract },
-      { id: 'demos', name: 'Demo Scheduler', icon: Calendar, component: DemoScheduler },
     ],
   },
   {
