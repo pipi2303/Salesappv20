@@ -1,0 +1,35 @@
+services:
+  sales-crm:
+    image: ghcr.io/pipi2303/salesappv20:latest
+
+    container_name: sales-crm
+
+    restart: unless-stopped
+
+    ports:
+      - "3010:80"
+
+    environment:
+      TZ: Asia/Jakarta
+
+    networks:
+      - proxy-network
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://127.0.0.1/"
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  proxy-network:
+    external: true
