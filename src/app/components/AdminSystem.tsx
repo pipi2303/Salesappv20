@@ -148,7 +148,7 @@ export function AdminSystem() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">{stat.label}</p>
-                  <p className="text-3xl font-black text-gray-800">{stat.value}</p>
+                  <p className="text-2xl font-black text-gray-800">{stat.value}</p>
                 </div>
                 <div className={`h-12 w-12 rounded-2xl ${stat.bg} flex items-center justify-center`}>
                   <stat.icon className={`h-6 w-6 ${stat.color}`} />

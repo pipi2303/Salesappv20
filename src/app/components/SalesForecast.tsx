@@ -12,7 +12,8 @@ import {
   Activity
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart as RePieChart, Pie, Cell, LineChart, Line } from 'recharts';
-import { Opportunity } from './OpportunityManagement';
+import { CHART_PRIMARY, CHART_COLORS, CHART_GRID, CHART_STATUS } from '@/styles/chartTheme';
+import type { Opportunity } from '@/types/opportunity';
 
 interface SalesForecastProps {
   opportunities: Opportunity[];
@@ -76,9 +77,9 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
 
   // Win/Loss Distribution
   const pieData = [
-    { name: 'Won', value: wonOpportunities.length, color: '#10b981' },
-    { name: 'Lost', value: lostOpportunities.length, color: '#ef4444' },
-    { name: 'Open', value: openOpportunities.length, color: '#6366f1' },
+    { name: 'Won', value: wonOpportunities.length, color: CHART_STATUS.good },
+    { name: 'Lost', value: lostOpportunities.length, color: CHART_STATUS.critical },
+    { name: 'Open', value: openOpportunities.length, color: CHART_PRIMARY },
   ].filter(d => d.value > 0);
 
   // Source Distribution
@@ -218,10 +219,10 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={stageData}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                 <XAxis dataKey="stage" angle={-45} textAnchor="end" height={80} fontSize={12} />
-                <YAxis yAxisId="left" orientation="left" stroke="#6366f1" />
-                <YAxis yAxisId="right" orientation="right" stroke="#10b981" />
+                <YAxis yAxisId="left" orientation="left" stroke={CHART_COLORS[0]} />
+                <YAxis yAxisId="right" orientation="right" stroke={CHART_COLORS[1]} />
                 <Tooltip 
                   formatter={(value: any, name: string) => {
                     if (name === 'Value') return formatCurrency(value);
@@ -229,8 +230,8 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
                   }}
                 />
                 <Legend />
-                <Bar yAxisId="left" dataKey="count" fill="#6366f1" name="Count" />
-                <Bar yAxisId="right" dataKey="value" fill="#10b981" name="Value" />
+                <Bar yAxisId="left" dataKey="count" fill={CHART_COLORS[0]} name="Count" />
+                <Bar yAxisId="right" dataKey="value" fill={CHART_COLORS[1]} name="Value" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -256,7 +257,7 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
                     `${name}: ${value} (${(percent * 100).toFixed(0)}%)`
                   }
                   outerRadius={80}
-                  fill="#8884d8"
+                  fill={CHART_PRIMARY}
                   dataKey="value"
                 >
                   {pieData.map((entry, index) => (
@@ -280,7 +281,7 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={forecastData}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip 
@@ -290,14 +291,14 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
                 <Line 
                   type="monotone" 
                   dataKey="expected" 
-                  stroke="#6366f1" 
+                  stroke={CHART_COLORS[0]} 
                   strokeWidth={2}
                   name="Expected (M)" 
                 />
                 <Line 
                   type="monotone" 
                   dataKey="potential" 
-                  stroke="#10b981" 
+                  stroke={CHART_COLORS[1]} 
                   strokeWidth={2}
                   strokeDasharray="5 5"
                   name="Potential (M)" 
@@ -318,11 +319,11 @@ export function SalesForecast({ opportunities }: SalesForecastProps) {
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={sourceData} layout="horizontal">
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                 <XAxis type="number" />
                 <YAxis dataKey="source" type="category" width={100} fontSize={12} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#8b5cf6" name="Opportunities" />
+                <Bar dataKey="count" fill={CHART_PRIMARY} name="Opportunities" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

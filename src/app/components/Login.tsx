@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Lock, Mail, Eye, EyeOff, Mic, User, Shield, Users, LogIn, Database } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, Mic, User, Shield, Users, LogIn } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { VoiceInput } from '@/app/components/VoiceInput';
-import { initializeDatabase, isDataInitialized } from '@/utils/initializeDatabase';
 import { toast } from 'sonner';
 
 interface LoginProps {
-  onLogin: (email: string, role: string, name: string) => void;
+  onLogin: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
 }
 
 // Demo accounts matching the user management data
@@ -92,50 +91,31 @@ export function Login({ onLogin }: LoginProps) {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Fase 1 item 3: real server-side check via POST /api/auth/login
+  // (see AuthContext.loginWithCredentials) instead of matching against
+  // the client-side demoAccounts list below. demoAccounts is left as-is
+  // for now — the Login.tsx / demo-credentials cleanup is tracked
+  // separately as Fase 0, deliberately deferred.
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      const account = demoAccounts.find(
-        acc => acc.email.toLowerCase() === email.toLowerCase() && acc.password === password
-      );
-
-      if (account) {
-        onLogin(account.email, account.role, account.name);
-      } else {
-        setError('Email atau password salah. Gunakan demo account yang tersedia.');
-        setIsLoading(false);
-      }
-    }, 800);
+    const result = await onLogin(email, password);
+    if (!result.success) {
+      setError(result.error ?? 'Email atau password salah.');
+      setIsLoading(false);
+    }
   };
 
-  const handleQuickLogin = (account: typeof demoAccounts[0]) => {
+  const handleQuickLogin = async (account: typeof demoAccounts[0]) => {
     setIsLoading(true);
     setError('');
-    
-    // Simulate login
-    setTimeout(() => {
-      onLogin(account.email, account.role, account.name);
-    }, 500);
-  };
 
-  const handleInitializeDatabase = async () => {
-    if (isDataInitialized()) {
-      toast.info('Database sudah diinisialisasi sebelumnya.');
-      return;
-    }
-    
-    setIsLoading(true);
-    const result = await initializeDatabase();
-    setIsLoading(false);
-    
-    if (result.success) {
-      toast.success('✅ Database berhasil diinisialisasi!');
-    } else {
-      toast.error('❌ Gagal menginisialisasi database: ' + result.error);
+    const result = await onLogin(account.email, account.password);
+    if (!result.success) {
+      setError(result.error ?? 'Email atau password salah.');
+      setIsLoading(false);
     }
   };
 
@@ -180,7 +160,7 @@ export function Login({ onLogin }: LoginProps) {
               <div className="inline-block lg:hidden p-3 bg-[#013E37] rounded-2xl shadow-xl mb-4">
                 <BarChart className="h-10 w-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Selamat Datang</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Selamat Datang</h2>
               <p className="text-gray-600">Masuk ke akun Anda untuk melanjutkan</p>
             </div>
 

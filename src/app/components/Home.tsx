@@ -3,8 +3,13 @@ import { TrendingUp, Users, Target, DollarSign, Calendar, FileText, Award, Activ
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
 import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  CHART_COLORS, CHART_PRIMARY, CHART_GRID, CHART_MUTED_TEXT,
+  CHART_TOOLTIP_STYLE, BAR_RADIUS_UP, AREA_GRADIENT_STOPS,
+} from '@/styles/chartTheme';
 import { salesData, leadSourceData, performanceData } from '@/app/data/dummyData';
-import { leadsApi, demosApi, contractsApi, salesTeamApi } from '@/services/api';
+import { demosApi, contractsApi, salesTeamApi } from '@/services/api';
+import { leadsRepository } from '@/services/leadsRepository';
 import { toast } from 'sonner';
 import { formatCurrency, formatNumber } from '@/utils/formatters';
 import { initializeDemosData } from '@/utils/initializeDemos';
@@ -36,7 +41,7 @@ export function Home() {
 
       // Fetch all data in parallel
       const [leadsResult, demosResult, contractsResult, teamResult] = await Promise.all([
-        leadsApi.getAll(),
+        leadsRepository.getAll(),
         demosApi.getAll(),
         contractsApi.getAll(),
         salesTeamApi.getAll(),
@@ -188,7 +193,7 @@ export function Home() {
     },
   ];
 
-  const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
+  const COLORS = CHART_COLORS;
 
   if (loading) {
     return (
@@ -203,7 +208,7 @@ export function Home() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">
+          <h1 className="text-2xl font-bold text-[#013E37]">
             Dashboard Sales Monitoring
           </h1>
           <p className="text-gray-600 mt-1">Selamat datang kembali! Berikut ringkasan aktivitas sales Anda hari ini.</p>
@@ -224,12 +229,14 @@ export function Home() {
           <Card key={index} className="hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
-                <div className={`h-12 w-12 rounded-full bg-gradient-to-br ${stat.color} flex items-center justify-center flex-shrink-0`}>
-                  <stat.icon className="h-6 w-6 text-white" />
+                <div className={`h-10 w-10 rounded-full bg-gradient-to-br ${stat.color} flex items-center justify-center flex-shrink-0`}>
+                  <stat.icon className="h-5 w-5 text-white" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs text-gray-500 uppercase tracking-wide truncate">{stat.title}</p>
-                  <p className="text-2xl font-bold mt-1 truncate">{stat.value}</p>
+                  {/* No truncate here - uppercase + tracking-wide labels like "Total Revenue"
+                      need to wrap to 2 lines rather than get cut off ("TOTAL REV..."). */}
+                  <p className="text-xs text-gray-500 uppercase tracking-wide leading-snug">{stat.title}</p>
+                  <p className="text-xl font-bold mt-1 truncate">{stat.value}</p>
                   <p className={`text-xs ${stat.textColor} mt-0.5 truncate`}>{stat.change}</p>
                 </div>
               </div>
@@ -253,22 +260,15 @@ export function Home() {
               <AreaChart data={salesData}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#013E37" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
+                    <stop offset="5%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.from} />
+                    <stop offset="95%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.to} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="month" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-                  }}
-                />
-                <Area type="monotone" dataKey="value" stroke="#013E37" fillOpacity={1} fill="url(#colorValue)" />
+                <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} vertical={false} />
+                <XAxis dataKey="month" stroke={CHART_MUTED_TEXT} tick={{ fontSize: 12, fill: CHART_MUTED_TEXT }} axisLine={false} tickLine={false} />
+                <YAxis stroke={CHART_MUTED_TEXT} tick={{ fontSize: 12, fill: CHART_MUTED_TEXT }} axisLine={false} tickLine={false} />
+                <Tooltip contentStyle={CHART_TOOLTIP_STYLE} />
+                <Area type="monotone" dataKey="value" stroke={CHART_PRIMARY} strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -317,20 +317,13 @@ export function Home() {
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={performanceData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="name" stroke="#94a3b8" />
-              <YAxis stroke="#94a3b8" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'white', 
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-                }}
-              />
+              <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} vertical={false} />
+              <XAxis dataKey="name" stroke={CHART_MUTED_TEXT} tick={{ fontSize: 12, fill: CHART_MUTED_TEXT }} axisLine={false} tickLine={false} />
+              <YAxis stroke={CHART_MUTED_TEXT} tick={{ fontSize: 12, fill: CHART_MUTED_TEXT }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={CHART_TOOLTIP_STYLE} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
               <Legend />
-              <Bar dataKey="target" fill="#94a3b8" name="Target" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="achievement" fill="#013E37" name="Achievement" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="target" fill="var(--border)" name="Target" radius={BAR_RADIUS_UP} />
+              <Bar dataKey="achievement" fill={CHART_PRIMARY} name="Achievement" radius={BAR_RADIUS_UP} />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>

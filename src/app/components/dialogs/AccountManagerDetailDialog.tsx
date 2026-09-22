@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/ta
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Badge } from '@/app/components/ui/badge';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { CHART_PRIMARY, CHART_COLORS, CHART_GRID, CHART_STATUS } from '@/styles/chartTheme';
 import { TrendingUp, Target, DollarSign, Award, Users, Calendar, Clock, Trash2, Mail, Phone, MapPin, Briefcase, BarChart3, Brain, Lightbulb, TrendingDown, AlertCircle, CheckCircle, Zap, Star } from 'lucide-react';
 import { TeamMember, Note, calculateGap, formatGap, formatTimestamp } from './sales-dialog-types';
 import { formatCurrency, formatNumber } from '@/utils/formatters';
@@ -55,9 +56,9 @@ export function AccountManagerDetailDialog({
   ];
 
   const dealBreakdown = [
-    { type: 'Closed Won', count: selectedAccountManager.totalDeals, value: selectedAccountManager.achievement, color: '#10b981' },
-    { type: 'In Progress', count: 8, value: 450000000, color: '#f59e0b' },
-    { type: 'Proposal Sent', count: 5, value: 280000000, color: '#6366f1' }
+    { type: 'Closed Won', count: selectedAccountManager.totalDeals, value: selectedAccountManager.achievement, color: CHART_STATUS.good },
+    { type: 'In Progress', count: 8, value: 450000000, color: CHART_STATUS.warning },
+    { type: 'Proposal Sent', count: 5, value: 280000000, color: CHART_PRIMARY }
   ];
 
   const clientSegments = [
@@ -202,15 +203,15 @@ export function AccountManagerDetailDialog({
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={performanceTrend}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="month" />
                     <YAxis yAxisId="left" />
                     <YAxis yAxisId="right" orientation="right" />
                     <Tooltip />
                     <Legend />
-                    <Line yAxisId="left" type="monotone" dataKey="achievement" stroke="#10b981" strokeWidth={2} name="Achievement (M)" />
-                    <Line yAxisId="left" type="monotone" dataKey="target" stroke="#6366f1" strokeWidth={2} strokeDasharray="5 5" name="Target (M)" />
-                    <Line yAxisId="right" type="monotone" dataKey="performance" stroke="#f59e0b" strokeWidth={2} name="Performance %" />
+                    <Line yAxisId="left" type="monotone" dataKey="achievement" stroke={CHART_PRIMARY} strokeWidth={2} name="Achievement (M)" />
+                    <Line yAxisId="left" type="monotone" dataKey="target" stroke="var(--border)" strokeWidth={2} strokeDasharray="5 5" name="Target (M)" />
+                    <Line yAxisId="right" type="monotone" dataKey="performance" stroke={CHART_COLORS[1]} strokeWidth={2} name="Performance %" />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>

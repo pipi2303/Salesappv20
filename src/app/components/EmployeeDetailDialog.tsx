@@ -2,38 +2,11 @@ import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/app/components/ui/dialog';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
+import type { Karyawan } from '@/types/karyawan';
 import {
   X, Check, Mail, Phone, MapPin, Calendar, Briefcase, 
   Shield, CreditCard, Award, User, Building2, FileText
 } from 'lucide-react';
-
-interface Karyawan {
-  id: string;
-  nama_lengkap: string;
-  nik: string;
-  tempat_lahir: string;
-  tanggal_lahir: string;
-  jenis_kelamin: string;
-  alamat: string;
-  nomor_wa: string;
-  email_pribadi: string;
-  divisi: string;
-  jabatan: string;
-  level_jabatan: string;
-  status_karyawan: string;
-  tanggal_bergabung: string;
-  nama_atasan: string;
-  npwp: string;
-  nomor_rekening: string;
-  nama_bank: string;
-  bpjs_ketenagakerjaan: string;
-  bpjs_kesehatan: string;
-  email_kantor: string;
-  nda_signed: boolean;
-  tanggal_nda: string;
-  level_akses: string;
-  aset_perusahaan: string;
-}
 
 interface EmployeeDetailDialogProps {
   open: boolean;

@@ -24,6 +24,7 @@ import {
   ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line,
   AreaChart, Area
 } from 'recharts';
+import { CHART_PRIMARY, CHART_GRID, AREA_GRADIENT_STOPS, CHART_TOOLTIP_STYLE, CHART_STATUS } from '@/styles/chartTheme';
 
 // Mock Data
 const QUOTATIONS = [
@@ -98,7 +99,7 @@ export function QuotationManagement() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-[#013E37] tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl font-black text-[#013E37] tracking-tight flex items-center gap-3">
             <FileText className="h-8 w-8" />
             Quotation Management
           </h1>
@@ -277,18 +278,18 @@ export function QuotationManagement() {
                     <AreaChart data={ANALYTICS_DATA}>
                       <defs>
                         <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#013E37" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
+                          <stop offset="5%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.from}/>
+                          <stop offset="95%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.to}/>
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                       <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold'}} />
                       <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold'}} tickFormatter={(value) => `Rp${value/1000000}jt`} />
                       <Tooltip 
-                        contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}} 
+                        contentStyle={CHART_TOOLTIP_STYLE} 
                         formatter={(value: any) => [formatCurrency(value), 'Value']}
                       />
-                      <Area type="monotone" dataKey="value" stroke="#013E37" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
+                      <Area type="monotone" dataKey="value" stroke={CHART_PRIMARY} strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
@@ -306,10 +307,10 @@ export function QuotationManagement() {
                     <PieChart>
                       <Pie
                         data={[
-                          { name: 'Approved', value: 45, color: '#10b981' },
-                          { name: 'Pending', value: 30, color: '#f59e0b' },
-                          { name: 'Expired', value: 15, color: '#ef4444' },
-                          { name: 'Draft', value: 10, color: '#94a3b8' },
+                          { name: 'Approved', value: 45, color: CHART_STATUS.good },
+                          { name: 'Pending', value: 30, color: CHART_STATUS.warning },
+                          { name: 'Expired', value: 15, color: CHART_STATUS.critical },
+                          { name: 'Draft', value: 10, color: 'var(--muted-foreground)' },
                         ]}
                         innerRadius={60}
                         outerRadius={80}
@@ -317,7 +318,7 @@ export function QuotationManagement() {
                         dataKey="value"
                       >
                         {[0, 1, 2, 3].map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={['#10b981', '#f59e0b', '#ef4444', '#94a3b8'][index]} />
+                          <Cell key={`cell-${index}`} fill={[CHART_STATUS.good, CHART_STATUS.warning, CHART_STATUS.critical, 'var(--muted-foreground)'][index]} />
                         ))}
                       </Pie>
                       <Tooltip />
@@ -398,7 +399,7 @@ export function QuotationManagement() {
             <div className="relative z-10 flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-white/20 px-3 py-1 rounded-full">New Submission</span>
-                <h2 className="text-3xl font-black mt-4 uppercase tracking-tighter">Draft Quotation</h2>
+                <h2 className="text-2xl font-black mt-4 uppercase tracking-tighter">Draft Quotation</h2>
                 <p className="text-white/70 text-sm mt-1">Lengkapi detail untuk membuat penawaran harga baru.</p>
               </div>
               <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">

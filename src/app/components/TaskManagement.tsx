@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, Plus, CheckCircle, Circle, Clock, AlertCircle, Calendar, User, Tag, Filter, Trash2, Edit, Flag, Star, Eye, MapPin, CornerDownRight, Navigation } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { useConfirm } from '@/app/components/ui/confirm-dialog';
@@ -13,43 +13,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { toast } from 'sonner';
 import { formatDate } from '@/utils/formatters';
-import { tasksApi } from '@/services/api';
+import { tasksRepository } from '@/services/tasksRepository';
+import type { Task, TaskType } from '@/types/task';
 import { useAuth } from '@/app/contexts/AuthContext';
-
-// FR-03/FR-07: Task type drives whether GPS Check-in is available ('visit' only).
-export type TaskType = 'visit' | 'call' | 'email' | 'other';
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  status: 'todo' | 'in-progress' | 'completed';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  type: TaskType;
-  dueDate: string;
-  assignedTo: string;
-  createdBy: string;
-  createdDate: string;
-  category: string;
-  relatedTo?: string;
-  tags: string[];
-  subtasks?: SubTask[];
-  completedDate?: string;
-  // FR-07: link a follow-up task back to the task it was created from
-  parentTaskId?: string;
-  // FR-03: GPS check-in evidence for Visit-type tasks. Read-only once set (no manual input field anywhere in the UI).
-  checkInAt?: string;
-  checkInLat?: number;
-  checkInLng?: number;
-  checkInAccuracy?: number;
-  locationValidated?: boolean;
-}
-
-interface SubTask {
-  id: string;
-  title: string;
-  completed: boolean;
-}
 
 const TASK_TYPE_LABEL: Record<TaskType, string> = {
   visit: 'Visit',
@@ -182,6 +148,40 @@ const SEED_TASKS: Task[] = [
     },
 ];
 
+// Bab 8 gap 2: downsizes+recompresses a picked/captured photo client-side
+// before it's base64-encoded and sent to the server — keeps the payload
+// well under lib/blob.ts's 5MB decoded-size limit and Vercel's serverless
+// body-size limit, since a modern phone camera photo straight out of
+// <input capture="environment"> can be several times that.
+async function resizeImageToDataUrl(file: File, maxDimension = 1280, quality = 0.7): Promise<string> {
+  const rawDataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error ?? new Error('Gagal membaca file foto.'));
+    reader.readAsDataURL(file);
+  });
+
+  const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Gagal memuat gambar. Coba foto lain.'));
+    img.src = rawDataUrl;
+  });
+
+  const scale = Math.min(1, maxDimension / Math.max(image.width, image.height));
+  const width = Math.round(image.width * scale) || 1;
+  const height = Math.round(image.height * scale) || 1;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Canvas tidak didukung di perangkat/browser ini.');
+  ctx.drawImage(image, 0, 0, width, height);
+
+  return canvas.toDataURL('image/jpeg', quality);
+}
+
 interface TaskFormState {
   title: string;
   description: string;
@@ -219,8 +219,7 @@ export function TaskManagement() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'board'>('list');
 
-  // Tasks are persisted via tasksApi (localStorage-backed for now — see api.ts LS_KEYS.TASKS).
-  // Previously this component held tasks in plain useState with no persistence at all (page refresh wiped all data).
+  // Tasks are persisted via tasksRepository (real API, prisma/schema.prisma's Task model — see the file's header).
   const [tasks, setTasks] = useState<Task[]>([]);
   const [tasksLoaded, setTasksLoaded] = useState(false);
 
@@ -228,12 +227,17 @@ export function TaskManagement() {
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [parentTaskId, setParentTaskId] = useState<string | null>(null);
   const [checkInBusy, setCheckInBusy] = useState(false);
+  // Bab 8 gap 2: which task the hidden file input's next photo belongs to
+  // (set right before checkInFileInputRef.current?.click(), consumed by
+  // onCheckInPhotoSelected).
+  const [checkInTargetTaskId, setCheckInTargetTaskId] = useState<string | null>(null);
+  const checkInFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const result = await tasksApi.getAll();
+        const result = await tasksRepository.getAll();
         if (cancelled) return;
         if (result.success && result.data && result.data.length > 0) {
           setTasks(result.data as Task[]);
@@ -241,7 +245,7 @@ export function TaskManagement() {
           // First run on this browser: bootstrap with demo data and persist it.
           setTasks(SEED_TASKS);
           for (const seedTask of SEED_TASKS) {
-            await tasksApi.create(seedTask);
+            await tasksRepository.create(seedTask);
           }
         }
       } catch (error) {
@@ -343,7 +347,7 @@ export function TaskManagement() {
     };
 
     try {
-      const result = await tasksApi.update(taskId, updatedTask);
+      const result = await tasksRepository.update(taskId, updatedTask);
       if (result.success) {
         setTasks(prev => prev.map(t => (t.id === taskId ? (result.data as Task) : t)));
         toast.success('Status task diperbarui');
@@ -370,7 +374,7 @@ export function TaskManagement() {
 
   const handleDeleteTask = async (taskId: string) => {
     try {
-      const result = await tasksApi.delete(taskId);
+      const result = await tasksRepository.remove(taskId);
       if (result.success) {
         setTasks(prev => prev.filter(task => task.id !== taskId));
         toast.success('Task deleted successfully');
@@ -383,16 +387,25 @@ export function TaskManagement() {
     }
   };
 
-  // FR-03: GPS check-in for Visit-type tasks. check_in_at uses the device clock as a stand-in for a
-  // server timestamp — there's no backend clock available yet in the localStorage-only architecture,
-  // which is a known limitation worth flagging (see business rule: server time, not device time).
-  const handleCheckIn = async (taskId: string) => {
+  // FR-03/Bab 8 gap 2: GPS check-in + "foto toko bertanggal" for Visit-type
+  // tasks. Now server-backed (tasksRepository.checkIn -> POST /api/tasks/:id)
+  // instead of the old plain tasksApi.update() against localStorage, which
+  // also means check_in_at is now a real server timestamp (Date.now() on
+  // the API route), not a device-clock stand-in.
+  //
+  // Photo capture is a separate user gesture (the hidden file input below)
+  // from geolocation, so the flow is: "Check In" button opens the file
+  // picker/camera -> onCheckInPhotoSelected resizes it client-side -> then
+  // performCheckIn() asks for geolocation and sends both together in one
+  // request. A location-permission denial still saves the check-in (photo +
+  // locationValidated: false), matching the previous location-only behavior.
+  const performCheckIn = async (taskId: string, photoDataUrl?: string) => {
     const task = tasks.find(t => t.id === taskId);
     if (!task) return;
 
     if (task.checkInAt) {
       const overwrite = await confirm(
-        'Task ini sudah memiliki data check-in sebelumnya. Timpa dengan lokasi baru?'
+        'Task ini sudah memiliki data check-in sebelumnya. Timpa dengan data baru?'
       );
       if (!overwrite) return;
     }
@@ -406,17 +419,15 @@ export function TaskManagement() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude, accuracy } = position.coords;
-        const updatedTask: Task = {
-          ...task,
-          checkInAt: new Date().toISOString(),
-          checkInLat: latitude,
-          checkInLng: longitude,
-          checkInAccuracy: accuracy,
-          locationValidated: true,
-        };
         try {
-          const result = await tasksApi.update(taskId, updatedTask);
-          if (result.success) {
+          const result = await tasksRepository.checkIn(taskId, {
+            lat: latitude,
+            lng: longitude,
+            accuracy,
+            locationValidated: true,
+            photoDataUrl,
+          });
+          if (result.success && result.data) {
             setTasks(prev => prev.map(t => (t.id === taskId ? (result.data as Task) : t)));
             setSelectedTask(prev => (prev && prev.id === taskId ? (result.data as Task) : prev));
             toast.success(`Check-in berhasil (± ${Math.round(accuracy)}m)`);
@@ -431,25 +442,53 @@ export function TaskManagement() {
         }
       },
       async (error) => {
-        setCheckInBusy(false);
         if (error.code === error.PERMISSION_DENIED) {
-          toast.error('Izin lokasi diperlukan untuk validasi kunjungan. Task tetap disimpan tanpa data check-in.');
-          const updatedTask: Task = { ...task, locationValidated: false };
+          toast.error('Izin lokasi diperlukan untuk validasi kunjungan. Foto tetap disimpan tanpa data lokasi.');
           try {
-            const result = await tasksApi.update(taskId, updatedTask);
-            if (result.success) {
+            const result = await tasksRepository.checkIn(taskId, {
+              locationValidated: false,
+              photoDataUrl,
+            });
+            if (result.success && result.data) {
               setTasks(prev => prev.map(t => (t.id === taskId ? (result.data as Task) : t)));
               setSelectedTask(prev => (prev && prev.id === taskId ? (result.data as Task) : prev));
             }
           } catch (e) {
             console.error('Failed to mark location unvalidated:', e);
+          } finally {
+            setCheckInBusy(false);
           }
         } else {
+          setCheckInBusy(false);
           toast.error('Gagal mengambil lokasi (sinyal lemah / timeout). Coba lagi.');
         }
       },
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
+  };
+
+  // Triggered by the "Check In" button — opens the hidden file input
+  // (camera on mobile, via capture="environment") rather than doing
+  // anything itself; onCheckInPhotoSelected picks up from there.
+  const handleCheckIn = (taskId: string) => {
+    setCheckInTargetTaskId(taskId);
+    checkInFileInputRef.current?.click();
+  };
+
+  const onCheckInPhotoSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow re-selecting the same file next time
+    const taskId = checkInTargetTaskId;
+    setCheckInTargetTaskId(null);
+    if (!file || !taskId) return;
+
+    try {
+      const photoDataUrl = await resizeImageToDataUrl(file);
+      await performCheckIn(taskId, photoDataUrl);
+    } catch (error) {
+      console.error('Failed to process check-in photo:', error);
+      toast.error('Gagal memproses foto. Coba lagi.');
+    }
   };
 
   const handleOpenNewTask = () => {
@@ -527,7 +566,7 @@ export function TaskManagement() {
         relatedTo: taskForm.relatedTo.trim() || undefined,
       };
       try {
-        const result = await tasksApi.update(editingTaskId, updatedTask);
+        const result = await tasksRepository.update(editingTaskId, updatedTask);
         if (result.success) {
           setTasks(prev => prev.map(t => (t.id === editingTaskId ? (result.data as Task) : t)));
           toast.success('Task updated successfully!');
@@ -560,7 +599,7 @@ export function TaskManagement() {
     };
 
     try {
-      const result = await tasksApi.create(newTask);
+      const result = await tasksRepository.create(newTask);
       if (result.success && result.data) {
         setTasks(prev => [...prev, result.data as Task]);
         toast.success('Task created successfully!');
@@ -592,7 +631,7 @@ export function TaskManagement() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight uppercase text-[#013E37]">
+        <h1 className="text-2xl font-bold tracking-tight uppercase text-[#013E37]">
           Task & Activity Management
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -1069,11 +1108,11 @@ export function TaskManagement() {
                 </Button>
               </div>
 
-              {/* FR-03: GPS Check-in, only for Visit-type tasks not yet completed */}
+              {/* FR-03/Bab 8 gap 2: GPS + foto check-in, only for Visit-type tasks not yet completed */}
               {selectedTask.type === 'visit' && (
                 <div className="p-3 border rounded-lg space-y-2">
                   <Label className="text-muted-foreground flex items-center gap-1">
-                    <MapPin className="h-3 w-3" /> GPS Check-in
+                    <MapPin className="h-3 w-3" /> GPS Check-in & Foto Toko
                   </Label>
                   {selectedTask.checkInAt ? (
                     <div className="text-sm">
@@ -1089,6 +1128,15 @@ export function TaskManagement() {
                       {selectedTask.locationValidated === false && (
                         <p className="text-orange-600">Belum Tervalidasi Lokasi (izin lokasi ditolak saat disimpan)</p>
                       )}
+                      {selectedTask.checkInPhotoUrl ? (
+                        <img
+                          src={selectedTask.checkInPhotoUrl}
+                          alt="Foto display toko saat check-in"
+                          className="mt-2 rounded-md border max-h-40 object-cover"
+                        />
+                      ) : (
+                        <p className="text-muted-foreground mt-1">Tidak ada foto tersimpan untuk check-in ini.</p>
+                      )}
                     </div>
                   ) : (
                     <p className="text-sm text-muted-foreground">Belum Check In</p>
@@ -1101,9 +1149,20 @@ export function TaskManagement() {
                       onClick={() => handleCheckIn(selectedTask.id)}
                     >
                       <Navigation className="h-3 w-3 mr-1" />
-                      {checkInBusy ? 'Mengambil lokasi...' : 'Check In'}
+                      {checkInBusy ? 'Menyimpan check-in...' : 'Ambil Foto & Check In'}
                     </Button>
                   )}
+                  {/* Hidden -- triggered programmatically by handleCheckIn(); capture="environment"
+                      opens the rear camera directly on mobile, falls back to a normal file picker
+                      on desktop. */}
+                  <input
+                    ref={checkInFileInputRef}
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                    onChange={onCheckInPhotoSelected}
+                  />
                 </div>
               )}
 

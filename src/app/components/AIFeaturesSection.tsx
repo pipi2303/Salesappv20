@@ -389,7 +389,7 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600">Hot Leads</p>
-                    <p className="text-3xl font-bold text-green-600">23</p>
+                    <p className="text-2xl font-bold text-green-600">23</p>
                   </div>
                   <div className="h-12 w-12 rounded-full bg-green-500 flex items-center justify-center">
                     <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -404,7 +404,7 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600">Warm Leads</p>
-                    <p className="text-3xl font-bold text-yellow-600">47</p>
+                    <p className="text-2xl font-bold text-yellow-600">47</p>
                   </div>
                   <div className="h-12 w-12 rounded-full bg-yellow-500 flex items-center justify-center">
                     <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -419,7 +419,7 @@ export function AIFeaturesSection({ personName, personRole }: AIFeaturesSectionP
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600">Cold Leads</p>
-                    <p className="text-3xl font-bold text-blue-600">68</p>
+                    <p className="text-2xl font-bold text-blue-600">68</p>
                   </div>
                   <div className="h-12 w-12 rounded-full bg-blue-500 flex items-center justify-center">
                     <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 20 20">

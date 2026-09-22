@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { useAuth } from '@/app/contexts/AuthContext';
 import { X, Package, DollarSign, Box, Save } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/app/components/ui/dialog';
 import { Label } from '@/app/components/ui/label';
@@ -8,107 +7,158 @@ import { Input } from '@/app/components/ui/input';
 import { Badge } from '@/app/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Button } from '@/app/components/ui/button';
+import { productsRepository } from '@/services/productsRepository';
+import type { Product, NewProduct, ProductType, BillingCycle } from '@/types/product';
 
-// Mock API URL - using localStorage only
-const API_URL = 'https://mock-project-id.supabase.co/functions/v1/make-server-67367fc1';
-const publicAnonKey = 'mock-anon-key';
+// FIXED (was broken): this form used to call `fetch()` against a dead mock
+// Supabase Edge Function URL (https://mock-project-id.supabase.co/...), so
+// Tambah/Edit Product always silently failed in the deployed app — there was
+// no real backend behind that endpoint. It now goes through productsRepository
+// (localStorage-backed, unified Product model) like the rest of ProductCatalog.
+//
+// Also added: SKU field (required + unique, enforced by the repository) and
+// a Tipe Produk selector — the previous form had no concept of productType at
+// all, but the unified Product model requires it to know which type-specific
+// fields (license tier vs unit of measure, etc.) apply.
 
 interface ProductFormProps {
-  product: any;
+  product: Product | null;
   onClose: () => void;
   onSuccess: () => void;
 }
 
+interface FormState {
+  sku: string;
+  name: string;
+  category: string;
+  description: string;
+  price: string;
+  stock: string;
+  sold: string;
+  features: string; // newline-separated in the textarea, split to string[] on submit
+  status: 'active' | 'discontinued';
+  productType: ProductType;
+  // Software-only
+  licenseTier: string;
+  billingCycle: BillingCycle;
+  seatLimit: string;
+  // Physical-only
+  unitOfMeasure: string;
+  color: string;
+  specification: string;
+  weightKg: string;
+}
+
+const emptyForm: FormState = {
+  sku: '', name: '', category: '', description: '', price: '', stock: '', sold: '0',
+  features: '', status: 'active', productType: 'software',
+  licenseTier: '', billingCycle: 'yearly', seatLimit: '',
+  unitOfMeasure: '', color: '', specification: '', weightKg: '',
+};
+
 export function ProductFormModal({ product, onClose, onSuccess }: ProductFormProps) {
-  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  
-  const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    description: '',
-    price: '',
-    stock: '',
-    features: '',
-    sold: '',
-  });
+  const [formData, setFormData] = useState<FormState>(emptyForm);
 
   useEffect(() => {
     if (product) {
       setFormData({
+        sku: product.sku || '',
         name: product.name || '',
         category: product.category || '',
         description: product.description || '',
         price: product.price?.toString() || '',
-        stock: product.stock?.toString() || '',
-        features: Array.isArray(product.features) ? product.features.join('\n') : '',
+        stock: product.stock?.toString() || '0',
         sold: product.sold?.toString() || '0',
+        features: Array.isArray(product.features) ? product.features.join('\n') : '',
+        status: product.status || 'active',
+        productType: product.productType || 'software',
+        licenseTier: product.productType === 'software' ? product.licenseTier || '' : '',
+        billingCycle: product.productType === 'software' ? (product.billingCycle || 'yearly') : 'yearly',
+        seatLimit: product.productType === 'software' && product.seatLimit ? product.seatLimit.toString() : '',
+        unitOfMeasure: product.productType === 'physical' ? product.unitOfMeasure || '' : '',
+        color: product.productType === 'physical' ? product.color || '' : '',
+        specification: product.productType === 'physical' ? product.specification || '' : '',
+        weightKg: product.productType === 'physical' && product.weightKg ? product.weightKg.toString() : '',
       });
+    } else {
+      setFormData(emptyForm);
     }
   }, [product]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.name || !formData.category || !formData.price) {
-      toast.error('Harap isi semua field yang wajib!');
+
+    if (!formData.sku || !formData.name || !formData.category || !formData.price) {
+      toast.error('Harap isi semua field yang wajib (SKU, Nama, Kategori, Harga)!');
+      return;
+    }
+    if (formData.productType === 'software' && !formData.licenseTier) {
+      toast.error('License Tier wajib diisi untuk produk software!');
+      return;
+    }
+    if (formData.productType === 'physical' && (!formData.unitOfMeasure || !formData.specification)) {
+      toast.error('Unit of Measure dan Spesifikasi wajib diisi untuk produk fisik!');
       return;
     }
 
     try {
       setLoading(true);
-      
-      // Convert features from string to array
+
       const featuresArray = formData.features
         .split('\n')
         .map(f => f.trim())
         .filter(f => f.length > 0);
-      
-      const productData = {
+
+      const basePayload = {
+        sku: formData.sku,
         name: formData.name,
         category: formData.category,
         description: formData.description,
-        price: parseInt(formData.price),
+        price: parseInt(formData.price) || 0,
+        currency: 'IDR',
+        status: formData.status,
         stock: parseInt(formData.stock) || 0,
-        features: featuresArray,
         sold: parseInt(formData.sold) || 0,
+        features: featuresArray,
       };
-      
-      const url = product 
-        ? `${API_URL}/products/${product.id}`
-        : `${API_URL}/products`;
-      
-      const method = product ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.accessToken || publicAnonKey}`,
-          'apikey': publicAnonKey,
-        },
-        body: JSON.stringify(productData),
-      });
 
-      const result = await response.json();
-      
+      const payload: NewProduct = formData.productType === 'software'
+        ? {
+            ...basePayload,
+            productType: 'software',
+            licenseTier: formData.licenseTier,
+            billingCycle: formData.billingCycle,
+            modules: featuresArray,
+            seatLimit: formData.seatLimit ? parseInt(formData.seatLimit) : undefined,
+          }
+        : {
+            ...basePayload,
+            productType: 'physical',
+            unitOfMeasure: formData.unitOfMeasure,
+            color: formData.color || undefined,
+            specification: formData.specification,
+            weightKg: formData.weightKg ? parseFloat(formData.weightKg) : undefined,
+          };
+
+      const result = product
+        ? await productsRepository.update(product.id, payload)
+        : await productsRepository.create(payload);
+
       if (result.success) {
         toast.success(product ? 'Product berhasil diupdate!' : 'Product berhasil ditambahkan!');
         onSuccess();
       } else {
         toast.error(result.error || 'Gagal menyimpan data');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving product:', error);
-      toast.error('Terjadi kesalahan saat menyimpan data');
+      toast.error(`Terjadi kesalahan saat menyimpan data: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -214,6 +264,40 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
               </div>
 
               <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-gray-700">
+                    SKU <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    name="sku"
+                    value={formData.sku}
+                    onChange={handleChange}
+                    required
+                    disabled={!!product}
+                    placeholder="HMS-ENT-001"
+                    className="bg-white border-gray-300 font-mono"
+                  />
+                  {product && <p className="text-xs text-gray-500">SKU tidak bisa diubah setelah dibuat</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-gray-700">
+                    Tipe Produk <span className="text-red-500">*</span>
+                  </Label>
+                  <Select
+                    value={formData.productType}
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, productType: value as 'software' | 'physical' }))}
+                  >
+                    <SelectTrigger className="bg-white border-gray-300">
+                      <SelectValue placeholder="Pilih tipe produk" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="software">Software / Sistem</SelectItem>
+                      <SelectItem value="physical">Produk Fisik</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <div className="space-y-2 col-span-2">
                   <Label className="text-sm font-semibold text-gray-700">
                     Nama Produk <span className="text-red-500">*</span>
@@ -251,6 +335,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                       <SelectItem value="Mobile Application">Mobile Application</SelectItem>
                       <SelectItem value="Nursing Management">Nursing Management</SelectItem>
                       <SelectItem value="Inventory & Supply Chain">Inventory & Supply Chain</SelectItem>
+                      <SelectItem value="Building Material">Building Material</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -271,7 +356,9 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm font-semibold text-gray-700">Stock</Label>
+                  <Label className="text-sm font-semibold text-gray-700">
+                    Stock {formData.productType === 'software' ? '(Kuota Lisensi)' : '(Gudang)'}
+                  </Label>
                   <Input
                     type="number"
                     name="stock"
@@ -293,6 +380,99 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                     className="bg-white border-gray-300 focus:border-[#EEF7F5]0 focus:ring-[#EEF7F5]0"
                   />
                 </div>
+
+                {formData.productType === 'software' ? (
+                  <>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700">
+                        License Tier <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        name="licenseTier"
+                        value={formData.licenseTier}
+                        onChange={handleChange}
+                        placeholder="Standard / Professional / Enterprise"
+                        className="bg-white border-gray-300"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700">Billing Cycle</Label>
+                      <Select
+                        value={formData.billingCycle}
+                        onValueChange={(value) => setFormData(prev => ({ ...prev, billingCycle: value as FormState['billingCycle'] }))}
+                      >
+                        <SelectTrigger className="bg-white border-gray-300">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="monthly">Bulanan</SelectItem>
+                          <SelectItem value="yearly">Tahunan</SelectItem>
+                          <SelectItem value="one-time">Sekali Bayar</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700">Seat Limit (opsional)</Label>
+                      <Input
+                        type="number"
+                        name="seatLimit"
+                        value={formData.seatLimit}
+                        onChange={handleChange}
+                        placeholder="Kosongkan jika unlimited"
+                        className="bg-white border-gray-300"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700">
+                        Unit of Measure <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        name="unitOfMeasure"
+                        value={formData.unitOfMeasure}
+                        onChange={handleChange}
+                        placeholder="m2, pcs, roll"
+                        className="bg-white border-gray-300"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700">Warna (opsional)</Label>
+                      <Input
+                        name="color"
+                        value={formData.color}
+                        onChange={handleChange}
+                        placeholder="Merah Bata"
+                        className="bg-white border-gray-300"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-gray-700">Berat (kg, opsional)</Label>
+                      <Input
+                        type="number"
+                        name="weightKg"
+                        value={formData.weightKg}
+                        onChange={handleChange}
+                        placeholder="12.5"
+                        className="bg-white border-gray-300"
+                      />
+                    </div>
+                    <div className="space-y-2 col-span-2">
+                      <Label className="text-sm font-semibold text-gray-700">
+                        Spesifikasi <span className="text-red-500">*</span>
+                      </Label>
+                      <textarea
+                        name="specification"
+                        value={formData.specification}
+                        onChange={handleChange}
+                        rows={2}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EEF7F5]0 focus:border-[#EEF7F5]0 text-sm bg-white"
+                        placeholder="Ukuran 80x180cm, ketebalan 5mm..."
+                      />
+                    </div>
+                  </>
+                )}
 
                 <div className="space-y-2 col-span-2">
                   <Label className="text-sm font-semibold text-gray-700">Deskripsi</Label>
@@ -320,6 +500,7 @@ export function ProductFormModal({ product, onClose, onSuccess }: ProductFormPro
                   />
                   <p className="text-xs text-gray-500">
                     Masukkan setiap fitur di baris baru. Contoh di atas akan menjadi 5 fitur terpisah.
+                    {formData.productType === 'software' && ' Untuk produk software, daftar ini juga dipakai sebagai daftar modul.'}
                   </p>
                 </div>
               </div>

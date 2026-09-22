@@ -7,37 +7,10 @@ import { toast } from 'sonner';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { KaryawanFormModal } from '@/app/components/forms/KaryawanForm';
 import { EmployeeDetailDialog } from '@/app/components/EmployeeDetailDialog';
+import type { Karyawan } from '@/types/karyawan';
 import { ExportButton } from '@/app/components/ExportButton';
 import { employeesApi } from '@/services/api';
 import { populateCRMToLocalStorage } from '@/utils/initializeAllData';
-
-interface Karyawan {
-  id: string;
-  nama_lengkap: string;
-  nik: string;
-  tempat_lahir: string;
-  tanggal_lahir: string;
-  jenis_kelamin: string;
-  alamat: string;
-  nomor_wa: string;
-  email_pribadi: string;
-  divisi: string;
-  jabatan: string;
-  level_jabatan: string;
-  status_karyawan: string;
-  tanggal_bergabung: string;
-  nama_atasan: string;
-  npwp: string;
-  nomor_rekening: string;
-  nama_bank: string;
-  bpjs_ketenagakerjaan: string;
-  bpjs_kesehatan: string;
-  email_kantor: string;
-  nda_signed: boolean;
-  tanggal_nda: string;
-  level_akses: string;
-  aset_perusahaan: string;
-}
 
 export function SalesRepresentative() {
   const confirm = useConfirm();
@@ -125,7 +98,7 @@ export function SalesRepresentative() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">Sales Representative</h1>
+          <h1 className="text-2xl font-bold text-[#013E37]">Sales Representative</h1>
           <p className="text-gray-500 mt-1">Kelola data tim sales internal</p>
         </div>
         

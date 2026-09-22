@@ -96,7 +96,7 @@ export function KnowledgeBase() {
             <Book className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-gray-900">{articles.length}</div>
+            <div className="text-2xl font-black text-gray-900">{articles.length}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Items available</p>
           </CardContent>
         </Card>
@@ -106,7 +106,7 @@ export function KnowledgeBase() {
             <Eye className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-[#013E37]">{articles.reduce((sum, a) => sum + a.views, 0)}</div>
+            <div className="text-2xl font-black text-[#013E37]">{articles.reduce((sum, a) => sum + a.views, 0)}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">All time reach</p>
           </CardContent>
         </Card>
@@ -116,7 +116,7 @@ export function KnowledgeBase() {
             <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-amber-600">{(articles.reduce((sum, a) => sum + a.rating, 0) / articles.length).toFixed(1)}</div>
+            <div className="text-2xl font-black text-amber-600">{(articles.reduce((sum, a) => sum + a.rating, 0) / articles.length).toFixed(1)}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Sales satisfaction</p>
           </CardContent>
         </Card>
@@ -126,7 +126,7 @@ export function KnowledgeBase() {
             <FileText className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-gray-900">6</div>
+            <div className="text-2xl font-black text-gray-900">6</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Categorized domains</p>
           </CardContent>
         </Card>

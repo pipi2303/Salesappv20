@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, DollarSign, TrendingUp, Award, Calendar, User, Download, Calculator, Eye, CheckCircle, Target, Clock, ChevronRight, BarChart3, PieChart as PieChartIcon, ArrowUpRight, Percent, Zap, Wallet } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
@@ -11,8 +11,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app
 import { toast } from 'sonner';
 import { formatCurrency, formatDate } from '@/utils/formatters';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Legend, AreaChart, Area } from 'recharts';
+import { CHART_PRIMARY, CHART_COLORS, CHART_GRID, CHART_TOOLTIP_STYLE, AREA_GRADIENT_STOPS, chartColor } from '@/styles/chartTheme';
+import { salesRepsRepository } from '@/services/salesRepsRepository';
+import { commissionsRepository } from '@/services/commissionsRepository';
+import { performanceTargetsRepository } from '@/services/performanceTargetsRepository';
+import { computeAchievementPct } from '@/types/performanceTarget';
+import type { PerformanceTarget } from '@/types/performanceTarget';
+import type { SalesRep } from '@/types/salesRep';
+import type { CommissionRecord as CommissionRecordEntity, CommissionStatus } from '@/types/commission';
 
-interface CommissionRecord {
+// Data source: salesRepsRepository (identity) + performanceTargetsRepository
+// (target/actual per rep per period, shared with Territory Management and
+// the unified Product model) + commissionsRepository (payout bookkeeping
+// only — status/baseCommission/bonuses/deals/paymentDate). Replaces the
+// previous hardcoded `useState<CommissionRecord[]>([...])`, which never
+// persisted anything and stored `achievementRate` as an independent number
+// that could drift from totalSales/target. achievementRate is now always
+// computeAchievementPct(target, actual) from performanceTargetsRepository —
+// never a separately stored figure.
+
+interface CommissionRecordView {
   id: string;
   salesPerson: string;
   period: string;
@@ -20,7 +38,7 @@ interface CommissionRecord {
   baseCommission: number;
   bonuses: number;
   totalCommission: number;
-  status: 'pending' | 'approved' | 'paid';
+  status: CommissionStatus;
   deals: number;
   achievementRate: number;
   paymentDate?: string;
@@ -42,18 +60,45 @@ interface Bonus {
   icon: React.ElementType;
 }
 
+// Fixed set of periods this screen offers — maps the dropdown value to the
+// ISO date performance_targets/commissions store, and to the display label.
+const PERIOD_OPTIONS = [
+  { value: 'feb-2024', iso: '2024-02-01', label: 'Feb 2024' },
+  { value: 'jan-2024', iso: '2024-01-01', label: 'Jan 2024' },
+  { value: 'dec-2023', iso: '2023-12-01', label: 'Dec 2023' },
+];
+
+const SEED_REPS: Array<Omit<SalesRep, 'id' | 'createdAt'>> = [
+  { name: 'Budi Santoso', email: 'budi.santoso@intramedika.co.id', role: 'Sales Executive' },
+  { name: 'Ani Wijaya', email: 'ani.wijaya@intramedika.co.id', role: 'Sales Executive' },
+  { name: 'Dewi Kartika', email: 'dewi.kartika@intramedika.co.id', role: 'Senior Sales Executive' },
+  { name: 'Eko Prasetyo', email: 'eko.prasetyo@intramedika.co.id', role: 'Sales Executive' },
+];
+
+// Same 5 commission records this screen has always shipped with as sample
+// data — quota of Rp300jt/bulan is consistent across all of them (back-
+// derived from totalSales/achievementRate in the original hardcoded data).
+const SEED_COMMISSIONS = [
+  { salesPersonName: 'Budi Santoso', periodIso: '2024-02-01', target: 300000000, totalSales: 350000000, baseCommission: 13125000, bonuses: 10000000, totalCommission: 23125000, status: 'pending' as CommissionStatus, deals: 3 },
+  { salesPersonName: 'Ani Wijaya', periodIso: '2024-02-01', target: 300000000, totalSales: 280000000, baseCommission: 10800000, bonuses: 7800000, totalCommission: 18600000, status: 'approved' as CommissionStatus, deals: 4 },
+  { salesPersonName: 'Dewi Kartika', periodIso: '2024-02-01', target: 300000000, totalSales: 520000000, baseCommission: 29400000, bonuses: 25000000, totalCommission: 54400000, status: 'approved' as CommissionStatus, deals: 5 },
+  { salesPersonName: 'Eko Prasetyo', periodIso: '2024-02-01', target: 300000000, totalSales: 185000000, baseCommission: 6437500, bonuses: 0, totalCommission: 6437500, status: 'pending' as CommissionStatus, deals: 2 },
+  { salesPersonName: 'Budi Santoso', periodIso: '2024-01-01', target: 300000000, totalSales: 420000000, baseCommission: 19600000, bonuses: 15000000, totalCommission: 34600000, status: 'paid' as CommissionStatus, deals: 6, paymentDate: '2024-02-05' },
+];
+
 export function CommissionCalculator() {
   const [activeTab, setActiveTab] = useState('commissions');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPeriod, setSelectedPeriod] = useState('feb-2024');
   const [showDetailDialog, setShowDetailDialog] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<CommissionRecord | null>(null);
-  
+  const [selectedRecord, setSelectedRecord] = useState<CommissionRecordView | null>(null);
+  const [loading, setLoading] = useState(true);
+
   // Simulation states
   const [simAmount, setSimAmount] = useState<string>('500000000');
   const [simResults, setSimResults] = useState<{base: number, tier: number} | null>(null);
 
-  // Commission Tiers
+  // Commission Tiers — rate config, not a target/actual duplication, kept as-is.
   const [tiers] = useState<CommissionTier[]>([
     { id: '1', minAmount: 0, maxAmount: 100000000, rate: 2.5 },
     { id: '2', minAmount: 100000000, maxAmount: 250000000, rate: 3.5 },
@@ -61,7 +106,7 @@ export function CommissionCalculator() {
     { id: '4', minAmount: 500000000, maxAmount: 999999999999, rate: 7.0 },
   ]);
 
-  // Bonuses
+  // Bonuses — rate config, kept as-is.
   const [bonuses] = useState<Bonus[]>([
     { id: '1', name: 'New Client Bonus', type: 'flat', value: 5000000, condition: 'Per perolehan klien baru', icon: User },
     { id: '2', name: 'Target Achievement', type: 'percentage', value: 10, condition: 'Mencapai 100%+ target bulanan', icon: Target },
@@ -69,27 +114,126 @@ export function CommissionCalculator() {
     { id: '4', name: 'Quarterly MVP', type: 'percentage', value: 15, condition: 'Performa terbaik dalam satu kuartal', icon: Award },
   ]);
 
-  // Commission Records
-  const [commissions, setCommissions] = useState<CommissionRecord[]>([
-    { id: '1', salesPerson: 'Budi Santoso', period: 'Feb 2024', totalSales: 350000000, baseCommission: 13125000, bonuses: 10000000, totalCommission: 23125000, status: 'pending', deals: 3, achievementRate: 116.7 },
-    { id: '2', salesPerson: 'Ani Wijaya', period: 'Feb 2024', totalSales: 280000000, baseCommission: 10800000, bonuses: 7800000, totalCommission: 18600000, status: 'approved', deals: 4, achievementRate: 93.3 },
-    { id: '3', salesPerson: 'Dewi Kartika', period: 'Feb 2024', totalSales: 520000000, baseCommission: 29400000, bonuses: 25000000, totalCommission: 54400000, status: 'approved', deals: 5, achievementRate: 173.3 },
-    { id: '4', salesPerson: 'Eko Prasetyo', period: 'Feb 2024', totalSales: 185000000, baseCommission: 6437500, bonuses: 0, totalCommission: 6437500, status: 'pending', deals: 2, achievementRate: 61.7 },
-    { id: '5', salesPerson: 'Budi Santoso', period: 'Jan 2024', totalSales: 420000000, baseCommission: 19600000, bonuses: 15000000, totalCommission: 34600000, status: 'paid', deals: 6, achievementRate: 140.0, paymentDate: '2024-02-05' },
-  ]);
+  const [commissions, setCommissions] = useState<CommissionRecordView[]>([]);
 
-  const handleApproveAll = () => {
-    const pendingCount = commissions.filter(c => c.status === 'pending').length;
-    if (pendingCount === 0) {
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      let repsResult = await salesRepsRepository.getAll();
+      let reps = repsResult.data || [];
+      if (reps.length === 0) {
+        for (const seed of SEED_REPS) {
+          await salesRepsRepository.create(seed);
+        }
+        repsResult = await salesRepsRepository.getAll();
+        reps = repsResult.data || [];
+      }
+      const repByName: Record<string, SalesRep> = {};
+      reps.forEach((r) => { repByName[r.name] = r; });
+
+      let commissionsResult = await commissionsRepository.getAll();
+      let commissionRows = commissionsResult.data || [];
+      if (commissionRows.length === 0) {
+        for (const seed of SEED_COMMISSIONS) {
+          const rep = repByName[seed.salesPersonName];
+          if (!rep) continue;
+
+          const existingTargets = await performanceTargetsRepository.getForEntity({ salesRepId: rep.id } as any);
+          const already = (existingTargets.data || []).find((t) => t.period === seed.periodIso);
+          if (!already) {
+            await performanceTargetsRepository.create({
+              salesRepId: rep.id, period: seed.periodIso, target: seed.target, actual: seed.totalSales,
+            } as any);
+          }
+
+          await commissionsRepository.create({
+            salesRepId: rep.id,
+            period: seed.periodIso,
+            baseCommission: seed.baseCommission,
+            bonuses: seed.bonuses,
+            totalCommission: seed.totalCommission,
+            status: seed.status,
+            deals: seed.deals,
+            paymentDate: seed.paymentDate,
+          });
+        }
+        commissionsResult = await commissionsRepository.getAll();
+        commissionRows = commissionsResult.data || [];
+      }
+
+      const targetsResult = await performanceTargetsRepository.getAll();
+      const targets: PerformanceTarget[] = targetsResult.data || [];
+
+      const merged: CommissionRecordView[] = commissionRows.map((c) => {
+        const rep = reps.find((r) => r.id === c.salesRepId);
+        const pt = targets.find((t) => (t as any).salesRepId === c.salesRepId && t.period === c.period);
+        const target = pt?.target ?? 0;
+        const actual = pt?.actual ?? 0;
+        const periodOpt = PERIOD_OPTIONS.find((p) => p.iso === c.period);
+        return {
+          id: c.id,
+          salesPerson: rep?.name || 'Unknown',
+          period: periodOpt?.label || c.period,
+          totalSales: actual,
+          baseCommission: c.baseCommission,
+          bonuses: c.bonuses,
+          totalCommission: c.totalCommission,
+          status: c.status,
+          deals: c.deals,
+          achievementRate: computeAchievementPct({ target, actual }) ?? 0,
+          paymentDate: c.paymentDate,
+        };
+      });
+
+      setCommissions(merged);
+    } catch (error: any) {
+      console.error('Error loading commissions:', error);
+      toast.error(`Gagal memuat data komisi: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleApproveAll = async () => {
+    const pending = commissions.filter(c => c.status === 'pending');
+    if (pending.length === 0) {
       toast.info('Tidak ada komisi dengan status pending');
       return;
     }
 
-    setCommissions(prev => prev.map(c => 
-      c.status === 'pending' ? { ...c, status: 'approved' } : c
-    ));
-    toast.success(`${pendingCount} komisi berhasil disetujui`);
+    for (const record of pending) {
+      await commissionsRepository.update(record.id, { status: 'approved' });
+    }
+    toast.success(`${pending.length} komisi berhasil disetujui`);
+    await loadData();
   };
+
+  const handleConfirmPayment = async () => {
+    if (!selectedRecord) return;
+    const result = await commissionsRepository.update(selectedRecord.id, {
+      status: 'paid',
+      paymentDate: new Date().toISOString().slice(0, 10),
+    });
+    if (result.success) {
+      toast.success(`Pembayaran untuk ${selectedRecord.salesPerson} berhasil dikonfirmasi`);
+      setShowDetailDialog(false);
+      await loadData();
+    } else {
+      toast.error(result.error || 'Gagal mengonfirmasi pembayaran');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div>
+      </div>
+    );
+  }
 
   const currentPeriodCommissions = commissions.filter(c => c.period.toLowerCase().includes(selectedPeriod.replace('-', ' ')));
   
@@ -355,19 +499,19 @@ export function CommissionCalculator() {
                     ]}>
                       <defs>
                         <linearGradient id="colorComm" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#013E37" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
+                          <stop offset="5%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.from}/>
+                          <stop offset="95%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.to}/>
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f1f1" />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                       <XAxis dataKey="sales" hide />
                       <YAxis hide />
                       <Tooltip 
                         formatter={(val: number) => formatCurrency(val)} 
                         labelFormatter={(label) => `Sales: ${formatCurrency(label)}`}
-                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                        contentStyle={CHART_TOOLTIP_STYLE}
                       />
-                      <Area type="monotone" dataKey="comm" stroke="#013E37" strokeWidth={3} fillOpacity={1} fill="url(#colorComm)" />
+                      <Area type="monotone" dataKey="comm" stroke={CHART_PRIMARY} strokeWidth={3} fillOpacity={1} fill="url(#colorComm)" />
                     </AreaChart>
                   </ResponsiveContainer>
                   <div className="text-center mt-4">
@@ -449,16 +593,16 @@ export function CommissionCalculator() {
               <CardContent className="h-[350px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={commissionByPersonData} layout="vertical" margin={{ left: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f1f1" />
+                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke={CHART_GRID} />
                     <XAxis type="number" hide />
                     <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 700 }} />
                     <Tooltip 
                       formatter={(val: number) => formatCurrency(val)}
-                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                      contentStyle={CHART_TOOLTIP_STYLE}
                     />
                     <Legend iconType="circle" />
-                    <Bar dataKey="base" stackId="a" fill="#013E37" name="Base Commission" radius={[0, 0, 0, 0]} barSize={24} />
-                    <Bar dataKey="bonus" stackId="a" fill="#02847c" name="Total Bonuses" radius={[0, 4, 4, 0]} barSize={24} />
+                    <Bar dataKey="base" stackId="a" fill={CHART_COLORS[0]} name="Base Commission" radius={[0, 0, 0, 0]} barSize={24} />
+                    <Bar dataKey="bonus" stackId="a" fill={CHART_COLORS[1]} name="Total Bonuses" radius={[0, 4, 4, 0]} barSize={24} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -482,17 +626,17 @@ export function CommissionCalculator() {
                       dataKey="value"
                     >
                       {statusDistributionData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={index === 0 ? '#f59e0b' : index === 1 ? '#10b981' : '#3b82f6'} />
+                        <Cell key={`cell-${index}`} fill={index === 0 ? chartColor(0) : index === 1 ? chartColor(1) : chartColor(2)} />
                       ))}
                     </Pie>
-                    <Tooltip contentStyle={{ borderRadius: '12px', border: 'none' }} />
+                    <Tooltip contentStyle={CHART_TOOLTIP_STYLE} />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="grid grid-cols-3 gap-4 w-full mt-4">
                   {statusDistributionData.map((s, i) => (
                     <div key={i} className="text-center">
                       <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{s.name}</p>
-                      <p className="text-lg font-black" style={{ color: i === 0 ? '#f59e0b' : i === 1 ? '#10b981' : '#3b82f6' }}>{s.value}</p>
+                      <p className="text-lg font-black" style={{ color: i === 0 ? chartColor(0) : i === 1 ? chartColor(1) : chartColor(2) }}>{s.value}</p>
                     </div>
                   ))}
                 </div>
@@ -544,8 +688,12 @@ export function CommissionCalculator() {
                   <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1">Total Pencairan Komisi</p>
                   <p className="text-4xl font-black">{formatCurrency(selectedRecord.totalCommission)}</p>
                 </div>
-                <Button className="bg-white text-[#013E37] hover:bg-emerald-50 h-12 px-8 font-bold text-base rounded-xl">
-                  Konfirmasi Pembayaran
+                <Button
+                  className="bg-white text-[#013E37] hover:bg-emerald-50 h-12 px-8 font-bold text-base rounded-xl"
+                  onClick={handleConfirmPayment}
+                  disabled={selectedRecord.status === 'paid'}
+                >
+                  {selectedRecord.status === 'paid' ? 'Sudah Dibayar' : 'Konfirmasi Pembayaran'}
                 </Button>
               </div>
             </div>

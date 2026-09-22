@@ -15,6 +15,7 @@ import { KaryawanFormModal } from '@/app/components/forms/KaryawanForm';
 import { ClientFormModal } from '@/app/components/forms/ClientForm';
 import { PartnerFormModal } from '@/app/components/forms/PartnerForm';
 import { EmployeeDetailDialog } from '@/app/components/EmployeeDetailDialog';
+import type { Karyawan } from '@/types/karyawan';
 import { ClientDetailDialog } from '@/app/components/ClientDetailDialog';
 import { PartnerDetailDialog } from '@/app/components/PartnerDetailDialog';
 import { AIInsightsDashboard } from '@/app/components/ai/AIInsightsDashboard';
@@ -23,34 +24,6 @@ import { employeesApi, clientsApi, partnersApi, communicationsApi } from '@/serv
 import { populateCRMToLocalStorage } from '@/utils/initializeAllData';
 
 const API_URL = 'https://mock-project-id.supabase.co/functions/v1/make-server-67367fc1'; // Disabled - using localStorage
-
-interface Karyawan {
-  id: string;
-  nama_lengkap: string;
-  nik: string;
-  tempat_lahir: string;
-  tanggal_lahir: string;
-  jenis_kelamin: string;
-  alamat: string;
-  nomor_wa: string;
-  email_pribadi: string;
-  divisi: string;
-  jabatan: string;
-  level_jabatan: string;
-  status_karyawan: string;
-  tanggal_bergabung: string;
-  nama_atasan: string;
-  npwp: string;
-  nomor_rekening: string;
-  nama_bank: string;
-  bpjs_ketenagakerjaan: string;
-  bpjs_kesehatan: string;
-  email_kantor: string;
-  nda_signed: boolean;
-  tanggal_nda: string;
-  level_akses: string;
-  aset_perusahaan: string;
-}
 
 export function SalesTeam() {
   const confirm = useConfirm();
@@ -257,7 +230,7 @@ export function SalesTeam() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">CRM Management</h1>
+          <h1 className="text-2xl font-bold text-[#013E37]">CRM Management</h1>
           <p className="text-gray-500 mt-1">Kelola data Sales Representative, Client, dan Partner</p>
         </div>
         

@@ -1,43 +1,42 @@
-# ==========================================
-# Sales CRM - Build Stage
-# ==========================================
-FROM node:24-alpine AS builder
+# Sales CRM Onduline — production image for VPS/Portainer deployment.
+# Built by Portainer directly from this Git repo (no separate registry) --
+# see docker-compose.yml.
+#
+# The API routes (api/*.ts) and server.ts run via `tsx` (already a
+# dependency, used elsewhere in this repo for prisma/seed.ts) rather than
+# a separate tsc/esbuild compile step. tsx strips TS types at runtime;
+# this repo does no type-level validation at build time either way
+# (Vite's own build only transpiles, it doesn't type-check), so this
+# doesn't lower the bar that already exists -- it just avoids maintaining
+# a second build pipeline for the ~15 api/*.ts files on top of Vite's for
+# the frontend.
 
+FROM node:20-bookworm-slim AS builder
 WORKDIR /app
 
-# Copy dependency files first for Docker cache
-COPY package*.json ./
-
+COPY package.json package-lock.json ./
 RUN npm ci
 
-# Copy application source
 COPY . .
-
-# Production build
+# Generates node_modules/@prisma/client from prisma/schema.prisma --
+# needed before the frontend build (some UI code may import enum types)
+# and before the server ever runs.
+RUN npx prisma generate
 RUN npm run build
 
+FROM node:20-bookworm-slim AS runner
+WORKDIR /app
+ENV NODE_ENV=production
 
-# ==========================================
-# Sales CRM - Production Stage
-# ==========================================
-FROM nginx:alpine
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/api ./api
+COPY --from=builder /app/lib ./lib
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/server.ts ./server.ts
+COPY docker-entrypoint.sh ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
 
-# Custom Nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy Vite production build
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# HTTP
-EXPOSE 80
-
-HEALTHCHECK --interval=30s \
-            --timeout=5s \
-            --start-period=10s \
-            --retries=3 \
-            CMD wget --no-verbose \
-                 --tries=1 \
-                 --spider \
-                 http://127.0.0.1/ || exit 1
-
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+ENTRYPOINT ["./docker-entrypoint.sh"]

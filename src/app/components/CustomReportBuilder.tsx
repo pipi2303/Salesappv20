@@ -53,6 +53,7 @@ import {
   Pie, 
   Cell 
 } from 'recharts';
+import { CHART_PRIMARY, CHART_GRID, AREA_GRADIENT_STOPS, BAR_RADIUS_UP } from '@/styles/chartTheme';
 
 interface Report {
   id: string;
@@ -205,7 +206,7 @@ export function CustomReportBuilder() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-black text-gray-900">{stat.value}</div>
+                <div className="text-2xl font-black text-gray-900">{stat.value}</div>
                 <p className="text-xs text-gray-500 font-medium mt-1 uppercase tracking-tighter">{stat.sub}</p>
               </CardContent>
             </Card>
@@ -450,13 +451,13 @@ export function CustomReportBuilder() {
                             <AreaChart data={dummyChartData}>
                               <defs>
                                 <linearGradient id="colorRevBuilder" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="5%" stopColor="#013E37" stopOpacity={0.1}/>
-                                  <stop offset="95%" stopColor="#013E37" stopOpacity={0}/>
+                                  <stop offset="5%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.from}/>
+                                  <stop offset="95%" stopColor={CHART_PRIMARY} stopOpacity={AREA_GRADIENT_STOPS.to}/>
                                 </linearGradient>
                               </defs>
-                              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                               <Tooltip />
-                              <Area type="monotone" dataKey="revenue" stroke="#013E37" fillOpacity={1} fill="url(#colorRevBuilder)" strokeWidth={3} />
+                              <Area type="monotone" dataKey="revenue" stroke={CHART_PRIMARY} fillOpacity={1} fill="url(#colorRevBuilder)" strokeWidth={3} />
                             </AreaChart>
                           </ResponsiveContainer>
                         </div>
@@ -466,9 +467,9 @@ export function CustomReportBuilder() {
                         <div className="h-[200px] w-full">
                           <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={dummyChartData}>
-                              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                               <Tooltip />
-                              <Bar dataKey="sales" fill="#028076" radius={[4, 4, 0, 0]} />
+                              <Bar dataKey="sales" fill={CHART_PRIMARY} radius={BAR_RADIUS_UP} />
                             </BarChart>
                           </ResponsiveContainer>
                         </div>

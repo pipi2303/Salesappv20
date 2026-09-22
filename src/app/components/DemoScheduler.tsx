@@ -368,7 +368,7 @@ export function DemoScheduler() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">
+          <h1 className="text-2xl font-bold text-[#013E37]">
             Demo Scheduler
           </h1>
           <p className="text-gray-600 mt-1">Kelola dan jadwalkan demo produk</p>
@@ -754,7 +754,7 @@ export function DemoScheduler() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-white/80 text-sm">Total Demos</p>
-                    <p className="text-3xl font-bold mt-1">{demos.length}</p>
+                    <p className="text-2xl font-bold mt-1">{demos.length}</p>
                   </div>
                   <Video className="h-10 w-10 text-white/70" />
                 </div>
@@ -767,7 +767,7 @@ export function DemoScheduler() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-white/80 text-sm">Success Rate</p>
-                    <p className="text-3xl font-bold mt-1">{((completedDemos.length / demos.length) * 100).toFixed(0)}%</p>
+                    <p className="text-2xl font-bold mt-1">{((completedDemos.length / demos.length) * 100).toFixed(0)}%</p>
                   </div>
                   <CheckCircle2 className="h-10 w-10 text-white/70" />
                 </div>
@@ -780,7 +780,7 @@ export function DemoScheduler() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-white/80 text-sm">Upcoming</p>
-                    <p className="text-3xl font-bold mt-1">{upcomingDemos.length}</p>
+                    <p className="text-2xl font-bold mt-1">{upcomingDemos.length}</p>
                   </div>
                   <Calendar className="h-10 w-10 text-white/70" />
                 </div>
@@ -793,7 +793,7 @@ export function DemoScheduler() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-white/80 text-sm">Avg Duration</p>
-                    <p className="text-3xl font-bold mt-1">
+                    <p className="text-2xl font-bold mt-1">
                       {Math.round(demos.reduce((acc, d) => acc + (d.duration || 60), 0) / demos.length)} min
                     </p>
                   </div>
@@ -916,7 +916,7 @@ export function DemoScheduler() {
                             <div className="flex items-center gap-4">
                               <div className="text-center min-w-12">
                                 {medal ? (
-                                  <span className="text-3xl">{medal}</span>
+                                  <span className="text-2xl">{medal}</span>
                                 ) : (
                                   <span className="text-2xl font-bold text-gray-400">#{index + 1}</span>
                                 )}
@@ -932,7 +932,7 @@ export function DemoScheduler() {
                             <div className="text-right">
                               <div className="flex items-center gap-2">
                                 <Trophy className="h-5 w-5 text-yellow-400" />
-                                <span className="text-3xl font-bold text-white">{data.successRate.toFixed(0)}%</span>
+                                <span className="text-2xl font-bold text-white">{data.successRate.toFixed(0)}%</span>
                               </div>
                               <p className="text-xs text-gray-300 mt-1">Success Rate</p>
                             </div>

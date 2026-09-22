@@ -19,7 +19,7 @@ import {
   DialogDescription,
 } from '@/app/components/ui/dialog';
 import { X, Plus, Trash2, Package } from 'lucide-react';
-import { Opportunity, ProductItem } from './OpportunityManagement';
+import type { Opportunity, ProductItem } from '@/types/opportunity';
 
 interface OpportunityFormProps {
   opportunity: Opportunity | null;

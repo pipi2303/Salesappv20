@@ -14,11 +14,12 @@ import {
   PolarRadiusAxis, ComposedChart, Scatter, ScatterChart, ZAxis,
   Treemap,
 } from 'recharts';
+import { CHART_COLORS, CHART_PRIMARY, CHART_GRID, CHART_STATUS } from '@/styles/chartTheme';
 
 // ─── Color Palette ────────────────────────────────────────────────
-const BRAND = '#013E37';
-const BRAND_LIGHT = '#EEF7F5';
-const COLORS = ['#013E37', '#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4', '#EC4899'];
+const BRAND = CHART_PRIMARY;
+const BRAND_LIGHT = 'var(--muted)';
+const COLORS = CHART_COLORS;
 
 // ─── Mock Data ────────────────────────────────────────────────────
 const monthlyData = [
@@ -62,11 +63,11 @@ const leadSources = [
 ];
 
 const conversionFunnel = [
-  { stage: 'Total Leads', count: 1418, pct: 100, color: '#3B82F6' },
-  { stage: 'Qualified', count: 892, pct: 63, color: '#6366F1' },
-  { stage: 'Proposal Sent', count: 534, pct: 38, color: '#8B5CF6' },
-  { stage: 'Negotiation', count: 298, pct: 21, color: '#A855F7' },
-  { stage: 'Closed Won', count: 391, pct: 28, color: COLORS[0] },
+  { stage: 'Total Leads', count: 1418, pct: 100, color: CHART_COLORS[0] },
+  { stage: 'Qualified', count: 892, pct: 63, color: CHART_COLORS[1] },
+  { stage: 'Proposal Sent', count: 534, pct: 38, color: CHART_COLORS[2] },
+  { stage: 'Negotiation', count: 298, pct: 21, color: CHART_COLORS[3] },
+  { stage: 'Closed Won', count: 391, pct: 28, color: CHART_COLORS[4] },
 ];
 
 const productData = [
@@ -292,18 +293,18 @@ export function AdvancedAnalytics() {
                         <stop offset="95%" stopColor={BRAND} stopOpacity={0} />
                       </linearGradient>
                       <linearGradient id="gradTarget" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.15} />
-                        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                        <stop offset="5%" stopColor={COLORS[2]} stopOpacity={0.15} />
+                        <stop offset="95%" stopColor={COLORS[2]} stopOpacity={0} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="month" tick={{ fontSize: 11 }} />
                     <YAxis tick={{ fontSize: 11 }} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
                     <Area type="monotone" dataKey="revenue" stroke={BRAND} strokeWidth={2}
                       fill="url(#gradRevenue)" name="Revenue (jt)" />
-                    <Area type="monotone" dataKey="target" stroke="#3B82F6" strokeWidth={2}
+                    <Area type="monotone" dataKey="target" stroke={COLORS[2]} strokeWidth={2}
                       fill="url(#gradTarget)" name="Target (jt)" strokeDasharray="5 4" />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -383,7 +384,7 @@ export function AdvancedAnalytics() {
               <CardContent className="px-2 pb-4">
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={regionData} layout="vertical" margin={{ top: 0, right: 60, left: 10, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} horizontal={false} />
                     <XAxis type="number" tick={{ fontSize: 10 }} />
                     <YAxis dataKey="region" type="category" tick={{ fontSize: 11 }} width={70} />
                     <Tooltip content={<CustomTooltip />} />
@@ -406,15 +407,15 @@ export function AdvancedAnalytics() {
             <CardContent className="px-2 pb-4">
               <ResponsiveContainer width="100%" height={180}>
                 <ComposedChart data={activityTimeline} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                   <XAxis dataKey="day" tick={{ fontSize: 11 }} />
                   <YAxis tick={{ fontSize: 11 }} />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
-                  <Bar dataKey="calls" fill="#3B82F6" name="Calls" radius={[3, 3, 0, 0]} />
-                  <Bar dataKey="emails" fill="#8B5CF6" name="Emails" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="calls" fill={COLORS[2]} name="Calls" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="emails" fill={COLORS[5]} name="Emails" radius={[3, 3, 0, 0]} />
                   <Bar dataKey="meetings" fill={BRAND} name="Meetings" radius={[3, 3, 0, 0]} />
-                  <Line type="monotone" dataKey="demos" stroke="#F59E0B" strokeWidth={2} dot={{ fill: '#F59E0B', r: 4 }} name="Demos" />
+                  <Line type="monotone" dataKey="demos" stroke={COLORS[3]} strokeWidth={2} dot={{ fill: COLORS[3], r: 4 }} name="Demos" />
                 </ComposedChart>
               </ResponsiveContainer>
             </CardContent>
@@ -440,15 +441,15 @@ export function AdvancedAnalytics() {
               <CardContent className="px-2 pb-4">
                 <ResponsiveContainer width="100%" height={250}>
                   <ComposedChart data={quarterlyData} margin={{ top: 5, right: 10, left: -15, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="quarter" tick={{ fontSize: 10 }} />
                     <YAxis tick={{ fontSize: 11 }} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
                     <Bar dataKey="revenue" fill={BRAND} radius={[4, 4, 0, 0]} name="Revenue (jt)" />
-                    <Bar dataKey="target" fill="#CBD5E1" radius={[4, 4, 0, 0]} name="Target (jt)" />
-                    <Line type="monotone" dataKey="growth" stroke="#F59E0B" strokeWidth={2}
-                      yAxisId={undefined} name="Growth %" dot={{ r: 5, fill: '#F59E0B' }} />
+                    <Bar dataKey="target" fill="var(--border)" radius={[4, 4, 0, 0]} name="Target (jt)" />
+                    <Line type="monotone" dataKey="growth" stroke={COLORS[3]} strokeWidth={2}
+                      yAxisId={undefined} name="Growth %" dot={{ r: 5, fill: COLORS[3] }} />
                   </ComposedChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -464,11 +465,11 @@ export function AdvancedAnalytics() {
                   <ComposedChart data={forecastData} margin={{ top: 5, right: 10, left: -15, bottom: 0 }}>
                     <defs>
                       <linearGradient id="gradForecast" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.2} />
-                        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                        <stop offset="5%" stopColor={COLORS[2]} stopOpacity={0.2} />
+                        <stop offset="95%" stopColor={COLORS[2]} stopOpacity={0} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="month" tick={{ fontSize: 11 }} />
                     <YAxis tick={{ fontSize: 11 }} domain={[1200, 2000]} />
                     <Tooltip content={<CustomTooltip />} />
@@ -477,9 +478,9 @@ export function AdvancedAnalytics() {
                       dot={{ fill: BRAND, r: 4 }} name="Aktual (jt)" connectNulls />
                     <Area type="monotone" dataKey="upper" fill="url(#gradForecast)"
                       stroke="transparent" name="Upper Bound" />
-                    <Line type="monotone" dataKey="forecast" stroke="#3B82F6" strokeWidth={2.5}
-                      strokeDasharray="6 3" dot={{ fill: '#3B82F6', r: 4 }} name="Forecast (jt)" connectNulls />
-                    <Line type="monotone" dataKey="lower" stroke="#93C5FD" strokeWidth={1}
+                    <Line type="monotone" dataKey="forecast" stroke={COLORS[2]} strokeWidth={2.5}
+                      strokeDasharray="6 3" dot={{ fill: COLORS[2], r: 4 }} name="Forecast (jt)" connectNulls />
+                    <Line type="monotone" dataKey="lower" stroke="var(--muted-foreground)" strokeWidth={1}
                       strokeDasharray="3 3" dot={false} name="Lower Bound" connectNulls />
                   </ComposedChart>
                 </ResponsiveContainer>
@@ -564,14 +565,14 @@ export function AdvancedAnalytics() {
               <CardContent className="px-2 pb-4">
                 <ResponsiveContainer width="100%" height={260}>
                   <BarChart data={teamPerformance} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="name" tick={{ fontSize: 10 }} />
                     <YAxis tick={{ fontSize: 11 }} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
-                    <Bar dataKey="closed" stackId="a" fill="#10B981" name="Closed Won" radius={[0, 0, 0, 0]} />
-                    <Bar dataKey="inProgress" stackId="a" fill="#F59E0B" name="In Progress" />
-                    <Bar dataKey="lost" stackId="a" fill="#EF4444" name="Lost" radius={[3, 3, 0, 0]} />
+                    <Bar dataKey="closed" stackId="a" fill={CHART_STATUS.good} name="Closed Won" radius={[0, 0, 0, 0]} />
+                    <Bar dataKey="inProgress" stackId="a" fill={CHART_STATUS.warning} name="In Progress" />
+                    <Bar dataKey="lost" stackId="a" fill={CHART_STATUS.critical} name="Lost" radius={[3, 3, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -585,7 +586,7 @@ export function AdvancedAnalytics() {
               <CardContent className="px-2 pb-4">
                 <ResponsiveContainer width="100%" height={260}>
                   <RadarChart data={radarData}>
-                    <PolarGrid stroke="#e5e7eb" />
+                    <PolarGrid stroke={CHART_GRID} />
                     <PolarAngleAxis dataKey="metric" tick={{ fontSize: 11 }} />
                     <PolarRadiusAxis angle={90} domain={[0, 120]} tick={{ fontSize: 9 }} />
                     <Radar name="Ahmad" dataKey="Ahmad" stroke={COLORS[0]} fill={COLORS[0]} fillOpacity={0.15} />
@@ -690,7 +691,7 @@ export function AdvancedAnalytics() {
               <CardContent className="px-2 pb-4">
                 <ResponsiveContainer width="100%" height={280}>
                   <BarChart data={conversionFunnel} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="stage" tick={{ fontSize: 9 }} />
                     <YAxis tick={{ fontSize: 11 }} />
                     <Tooltip content={<CustomTooltip />} />
@@ -782,14 +783,14 @@ export function AdvancedAnalytics() {
               <CardContent className="px-2 pb-4">
                 <ResponsiveContainer width="100%" height={220}>
                   <ComposedChart data={monthlyData} margin={{ top: 5, right: 30, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="month" tick={{ fontSize: 10 }} />
                     <YAxis yAxisId="left" tick={{ fontSize: 11 }} />
                     <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} domain={[20, 30]} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
-                    <Bar yAxisId="left" dataKey="leads" fill="#3B82F6" radius={[3, 3, 0, 0]} name="Leads" opacity={0.8} />
-                    <Line yAxisId="right" type="monotone" dataKey="conversion" stroke="#F59E0B"
+                    <Bar yAxisId="left" dataKey="leads" fill={COLORS[2]} radius={[3, 3, 0, 0]} name="Leads" opacity={0.8} />
+                    <Line yAxisId="right" type="monotone" dataKey="conversion" stroke={COLORS[3]}
                       strokeWidth={2} dot={{ r: 3 }} name="Conv. %" />
                   </ComposedChart>
                 </ResponsiveContainer>
@@ -861,7 +862,7 @@ export function AdvancedAnalytics() {
               <CardContent className="px-2 pb-4">
                 <ResponsiveContainer width="100%" height={250}>
                   <BarChart data={productData} layout="vertical" margin={{ top: 0, right: 50, left: 10, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} horizontal={false} />
                     <XAxis type="number" tick={{ fontSize: 10 }} />
                     <YAxis dataKey="product" type="category" tick={{ fontSize: 10 }} width={110} />
                     <Tooltip content={<CustomTooltip />} />
@@ -880,7 +881,7 @@ export function AdvancedAnalytics() {
               <CardContent className="px-2 pb-4">
                 <ResponsiveContainer width="100%" height={250}>
                   <ScatterChart margin={{ top: 5, right: 20, left: -10, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="growth" name="Growth %" tick={{ fontSize: 10 }} label={{ value: 'Growth %', position: 'insideBottom', offset: -5, fontSize: 10 }} />
                     <YAxis dataKey="margin" name="Margin %" tick={{ fontSize: 10 }} label={{ value: 'Margin %', angle: -90, position: 'insideLeft', fontSize: 10 }} />
                     <ZAxis dataKey="revenue" range={[60, 400]} name="Revenue" />

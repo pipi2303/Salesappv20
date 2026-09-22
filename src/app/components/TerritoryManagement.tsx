@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Users, Target, TrendingUp, Award, Plus, Search, Edit, Eye, ShieldCheck, Briefcase, BarChart3, Map as MapIcon } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
@@ -13,29 +13,46 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { toast } from 'sonner';
 import { formatCurrency } from '@/utils/formatters';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { CHART_PRIMARY, CHART_GRID, CHART_TOOLTIP_STYLE, chartColor } from '@/styles/chartTheme';
 import { TerritoryMap } from './TerritoryMap';
+import { territoriesRepository } from '@/services/territoriesRepository';
+import { performanceTargetsRepository } from '@/services/performanceTargetsRepository';
+import { computeAchievementPct } from '@/types/performanceTarget';
+import type { PerformanceTarget } from '@/types/performanceTarget';
+import type { TerritoryWithPerformance } from '@/types/territory';
 
-interface Territory {
-  id: string;
-  name: string;
-  region: string;
-  assignedTo: string;
-  leads: number;
-  opportunities: number;
-  revenue: number;
-  target: number;
-  achievement: number;
-  coverage: number;
+// Data source: territoriesRepository (profile: name/region/assignedTo/leads/
+// opportunities/coverage) joined with performanceTargetsRepository (target/
+// actual revenue per territory per period) — replaces the previous
+// hardcoded `useState<Territory[]>([...])` which never persisted anything
+// (a page refresh silently reverted every edit). `achievement` is now
+// always computeAchievementPct(target, actual), never a separately stored
+// number that could drift from the two figures it's derived from.
+
+function getCurrentPeriod(): string {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
 }
+
+// Seed data — same 4 territories this screen has always shipped with as
+// sample data, now created through territoriesRepository + a matching
+// performance_targets row instead of being hardcoded into component state.
+const SEED_TERRITORIES = [
+  { name: 'Jakarta Pusat', region: 'DKI Jakarta', assignedTo: 'Budi Santoso', leads: 45, opportunities: 12, coverage: 85, revenue: 350000000, target: 300000000 },
+  { name: 'Jakarta Selatan', region: 'DKI Jakarta', assignedTo: 'Ani Wijaya', leads: 38, opportunities: 10, coverage: 78, revenue: 280000000, target: 300000000 },
+  { name: 'Bandung', region: 'Jawa Barat', assignedTo: 'Dewi Kartika', leads: 52, opportunities: 15, coverage: 92, revenue: 520000000, target: 400000000 },
+  { name: 'Surabaya', region: 'Jawa Timur', assignedTo: 'Eko Prasetyo', leads: 30, opportunities: 8, coverage: 65, revenue: 185000000, target: 250000000 },
+];
 
 export function TerritoryManagement() {
   const [activeTab, setActiveTab] = useState('territories');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTerritory, setSelectedTerritory] = useState<Territory | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedTerritory, setSelectedTerritory] = useState<TerritoryWithPerformance | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [newTerritory, setNewTerritory] = useState<Partial<Territory>>({
+  const [newTerritory, setNewTerritory] = useState<Partial<TerritoryWithPerformance>>({
     name: '',
     region: 'DKI Jakarta',
     assignedTo: '',
@@ -47,46 +64,148 @@ export function TerritoryManagement() {
     coverage: 0
   });
 
-  const [territories, setTerritories] = useState<Territory[]>([
-    { id: '1', name: 'Jakarta Pusat', region: 'DKI Jakarta', assignedTo: 'Budi Santoso', leads: 45, opportunities: 12, revenue: 350000000, target: 300000000, achievement: 116.7, coverage: 85 },
-    { id: '2', name: 'Jakarta Selatan', region: 'DKI Jakarta', assignedTo: 'Ani Wijaya', leads: 38, opportunities: 10, revenue: 280000000, target: 300000000, achievement: 93.3, coverage: 78 },
-    { id: '3', name: 'Bandung', region: 'Jawa Barat', assignedTo: 'Dewi Kartika', leads: 52, opportunities: 15, revenue: 520000000, target: 400000000, achievement: 130.0, coverage: 92 },
-    { id: '4', name: 'Surabaya', region: 'Jawa Timur', assignedTo: 'Eko Prasetyo', leads: 30, opportunities: 8, revenue: 185000000, target: 250000000, achievement: 74.0, coverage: 65 },
-  ]);
+  const [territories, setTerritories] = useState<TerritoryWithPerformance[]>([]);
+  // Maps territoryId -> its performance_targets record id for the current
+  // period, so edits know whether to update an existing target row or
+  // create a new one (a territory can exist with no target set yet).
+  const [targetRecordIds, setTargetRecordIds] = useState<Record<string, string>>({});
 
-  const handleOpenDetail = (territory: Territory) => {
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      let profilesResult = await territoriesRepository.getAll();
+      let profiles = profilesResult.data || [];
+
+      if (profiles.length === 0) {
+        for (const seed of SEED_TERRITORIES) {
+          const created = await territoriesRepository.create({
+            name: seed.name, region: seed.region, assignedTo: seed.assignedTo,
+            leads: seed.leads, opportunities: seed.opportunities, coverage: seed.coverage,
+          });
+          if (created.success && created.data) {
+            await performanceTargetsRepository.create({
+              territoryId: created.data.id,
+              period: getCurrentPeriod(),
+              target: seed.target,
+              actual: seed.revenue,
+            } as any);
+          }
+        }
+        profilesResult = await territoriesRepository.getAll();
+        profiles = profilesResult.data || [];
+      }
+
+      const targetsResult = await performanceTargetsRepository.getAll();
+      const targets: PerformanceTarget[] = targetsResult.data || [];
+      const currentPeriod = getCurrentPeriod();
+
+      const idMap: Record<string, string> = {};
+      const merged: TerritoryWithPerformance[] = profiles.map((p) => {
+        const t = targets.find((x) => (x as any).territoryId === p.id && x.period === currentPeriod);
+        if (t) idMap[p.id] = t.id;
+        const target = t?.target ?? 0;
+        const actual = t?.actual ?? 0;
+        return {
+          id: p.id,
+          name: p.name,
+          region: p.region,
+          assignedTo: p.assignedTo,
+          leads: p.leads,
+          opportunities: p.opportunities,
+          revenue: actual,
+          target,
+          achievement: computeAchievementPct({ target, actual }) ?? 0,
+          coverage: p.coverage,
+        };
+      });
+
+      setTargetRecordIds(idMap);
+      setTerritories(merged);
+    } catch (error: any) {
+      console.error('Error loading territories:', error);
+      toast.error(`Gagal memuat data wilayah: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenDetail = (territory: TerritoryWithPerformance) => {
     setSelectedTerritory(territory);
     setIsDetailOpen(true);
   };
 
-  const handleOpenEdit = (territory: Territory) => {
+  const handleOpenEdit = (territory: TerritoryWithPerformance) => {
     setSelectedTerritory(territory);
     setIsEditOpen(true);
   };
 
-  const handleSaveEdit = (e: React.FormEvent) => {
+  const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedTerritory) return;
-    
-    setTerritories(prev => prev.map(t => t.id === selectedTerritory.id ? selectedTerritory : t));
+
+    const profileResult = await territoriesRepository.update(selectedTerritory.id, {
+      name: selectedTerritory.name,
+      region: selectedTerritory.region,
+      assignedTo: selectedTerritory.assignedTo,
+      leads: selectedTerritory.leads,
+      opportunities: selectedTerritory.opportunities,
+      coverage: selectedTerritory.coverage,
+    });
+    if (!profileResult.success) {
+      toast.error(profileResult.error || 'Gagal memperbarui wilayah');
+      return;
+    }
+
+    const existingTargetId = targetRecordIds[selectedTerritory.id];
+    const targetResult = existingTargetId
+      ? await performanceTargetsRepository.update(existingTargetId, { target: selectedTerritory.target })
+      : await performanceTargetsRepository.create({
+          territoryId: selectedTerritory.id,
+          period: getCurrentPeriod(),
+          target: selectedTerritory.target,
+          actual: selectedTerritory.revenue,
+        } as any);
+    if (!targetResult.success) {
+      toast.error(targetResult.error || 'Gagal memperbarui target wilayah');
+      return;
+    }
+
     setIsEditOpen(false);
     toast.success(`Data wilayah ${selectedTerritory.name} berhasil diperbarui`);
+    await loadData();
   };
 
-  const handleCreateTerritory = (e: React.FormEvent) => {
+  const handleCreateTerritory = async (e: React.FormEvent) => {
     e.preventDefault();
-    const id = (territories.length + 1).toString();
-    const achievement = newTerritory.target && newTerritory.target > 0 
-      ? ((newTerritory.revenue || 0) / newTerritory.target) * 100 
-      : 0;
-    
-    const territoryToAdd = {
-      ...newTerritory,
-      id,
-      achievement,
-    } as Territory;
 
-    setTerritories(prev => [...prev, territoryToAdd]);
+    const profileResult = await territoriesRepository.create({
+      name: newTerritory.name || '',
+      region: newTerritory.region || 'DKI Jakarta',
+      assignedTo: newTerritory.assignedTo || '',
+      leads: newTerritory.leads || 0,
+      opportunities: newTerritory.opportunities || 0,
+      coverage: newTerritory.coverage || 0,
+    });
+    if (!profileResult.success || !profileResult.data) {
+      toast.error(profileResult.error || 'Gagal membuat wilayah');
+      return;
+    }
+
+    const targetResult = await performanceTargetsRepository.create({
+      territoryId: profileResult.data.id,
+      period: getCurrentPeriod(),
+      target: newTerritory.target || 0,
+      actual: newTerritory.revenue || 0,
+    } as any);
+    if (!targetResult.success) {
+      toast.error(targetResult.error || 'Gagal membuat target wilayah');
+      return;
+    }
+
     setIsAddOpen(false);
     setNewTerritory({
       name: '',
@@ -99,22 +218,33 @@ export function TerritoryManagement() {
       achievement: 0,
       coverage: 0
     });
-    toast.success(`Wilayah ${territoryToAdd.name} berhasil ditambahkan`);
+    toast.success(`Wilayah ${profileResult.data.name} berhasil ditambahkan`);
+    await loadData();
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#013E37]"></div>
+      </div>
+    );
+  }
 
   const stats = {
     total: territories.length,
     totalRevenue: territories.reduce((sum, t) => sum + t.revenue, 0),
     totalTarget: territories.reduce((sum, t) => sum + t.target, 0),
-    avgCoverage: territories.reduce((sum, t) => sum + t.coverage, 0) / territories.length,
-    topPerformer: territories.reduce((max, t) => t.achievement > max.achievement ? t : max, territories[0])
+    avgCoverage: territories.length > 0 ? territories.reduce((sum, t) => sum + t.coverage, 0) / territories.length : 0,
+    topPerformer: territories.length > 0
+      ? territories.reduce((max, t) => t.achievement > max.achievement ? t : max, territories[0])
+      : { id: '', name: '-', region: '', assignedTo: '', leads: 0, opportunities: 0, revenue: 0, target: 0, achievement: 0, coverage: 0 }
   };
 
-  const regionData = [
-    { name: 'DKI Jakarta', value: 2, color: '#6366f1' },
-    { name: 'Jawa Barat', value: 1, color: '#8b5cf6' },
-    { name: 'Jawa Timur', value: 1, color: '#ec4899' },
-  ];
+  const regionData = Array.from(new Set(territories.map(t => t.region))).map((region, idx) => ({
+    name: region,
+    value: territories.filter(t => t.region === region).length,
+    color: chartColor(idx),
+  }));
 
   return (
     <div className="space-y-8 pb-10 animate-in fade-in duration-500">
@@ -149,7 +279,7 @@ export function TerritoryManagement() {
             <MapPin className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-gray-900">{stats.total}</div>
+            <div className="text-2xl font-black text-gray-900">{stats.total}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Active regions</p>
           </CardContent>
         </Card>
@@ -160,7 +290,7 @@ export function TerritoryManagement() {
             <TrendingUp className="h-4 w-4 text-[#013E37]" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-[#013E37]">{formatCurrency(stats.totalRevenue)}</div>
+            <div className="text-2xl font-black text-[#013E37]">{formatCurrency(stats.totalRevenue)}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">YTD performance</p>
           </CardContent>
         </Card>
@@ -171,8 +301,8 @@ export function TerritoryManagement() {
             <Target className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-emerald-600">
-              {((stats.totalRevenue / stats.totalTarget) * 100).toFixed(1)}%
+            <div className="text-2xl font-black text-emerald-600">
+              {stats.totalTarget > 0 ? ((stats.totalRevenue / stats.totalTarget) * 100).toFixed(1) : '0.0'}%
             </div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Average attainment</p>
           </CardContent>
@@ -184,7 +314,7 @@ export function TerritoryManagement() {
             <MapPin className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-amber-600">{stats.avgCoverage.toFixed(1)}%</div>
+            <div className="text-2xl font-black text-amber-600">{stats.avgCoverage.toFixed(1)}%</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Market share</p>
           </CardContent>
         </Card>
@@ -195,7 +325,7 @@ export function TerritoryManagement() {
             <Award className="h-4 w-4 text-[#EEF7F5]0" />
           </CardHeader>
           <CardContent className="pt-4">
-            <div className="text-3xl font-black text-[#013E37] truncate">{stats.topPerformer.name}</div>
+            <div className="text-2xl font-black text-[#013E37] truncate">{stats.topPerformer.name}</div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">{stats.topPerformer.achievement.toFixed(1)}% Attainment</p>
           </CardContent>
         </Card>
@@ -343,15 +473,15 @@ export function TerritoryManagement() {
                 <div className="h-80 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={territories} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={CHART_GRID} />
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold'}} />
                       <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold'}} tickFormatter={(value) => `Rp${value/1000000}jt`} />
                       <Tooltip 
-                        contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                        contentStyle={CHART_TOOLTIP_STYLE}
                         formatter={(value: any) => [formatCurrency(value), 'Value']}
                       />
-                      <Bar dataKey="revenue" fill="#013E37" radius={[4, 4, 0, 0]} name="Actual Revenue" />
-                      <Bar dataKey="target" fill="#e2e8f0" radius={[4, 4, 0, 0]} name="Quota Target" />
+                      <Bar dataKey="revenue" fill={CHART_PRIMARY} radius={[4, 4, 0, 0]} name="Actual Revenue" />
+                      <Bar dataKey="target" fill="var(--border)" radius={[4, 4, 0, 0]} name="Quota Target" />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -377,11 +507,11 @@ export function TerritoryManagement() {
                         dataKey="value"
                       >
                         {regionData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={index === 0 ? '#013E37' : index === 1 ? '#028076' : '#04ac9e'} />
+                          <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
                       <Tooltip 
-                        contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                        contentStyle={CHART_TOOLTIP_STYLE}
                       />
                       <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase'}} />
                     </PieChart>
@@ -427,7 +557,7 @@ export function TerritoryManagement() {
                 <Badge className="bg-white/20 hover:bg-white/30 text-white border-none font-black text-[10px] uppercase tracking-widest mb-4">
                   Territory ID: #{selectedTerritory?.id}
                 </Badge>
-                <h2 className="text-3xl font-black uppercase tracking-tight leading-none mb-2">
+                <h2 className="text-2xl font-black uppercase tracking-tight leading-none mb-2">
                   {selectedTerritory?.name}
                 </h2>
                 <p className="text-emerald-100/70 font-bold uppercase tracking-widest text-xs flex items-center gap-2">
@@ -587,7 +717,7 @@ export function TerritoryManagement() {
                     value={selectedTerritory?.target || 0} 
                     onChange={(e) => {
                       const val = parseInt(e.target.value);
-                      setSelectedTerritory(prev => prev ? {...prev, target: val, achievement: (prev.revenue / val) * 100} : null);
+                      setSelectedTerritory(prev => prev ? {...prev, target: val, achievement: val > 0 ? (prev.revenue / val) * 100 : 0} : null);
                     }}
                     className="h-11 font-bold"
                   />

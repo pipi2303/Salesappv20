@@ -608,7 +608,7 @@ export const AppNotifications = React.memo(function AppNotifications({ className
           variant="ghost"
           size="icon"
           onClick={() => setIsOpen(true)}
-          className="relative hover:bg-gray-100 transition-all"
+          className="relative hover:bg-white/10 transition-all"
         >
           <Bell className="w-5 h-5" />
           {unreadCount > 0 && (

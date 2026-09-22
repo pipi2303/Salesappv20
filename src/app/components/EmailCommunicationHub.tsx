@@ -13,6 +13,7 @@ import { Separator } from '@/app/components/ui/separator';
 import { toast } from 'sonner';
 import { formatDate } from '@/utils/formatters';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { CHART_COLORS, CHART_GRID, CHART_TOOLTIP_STYLE } from '@/styles/chartTheme';
 
 interface Email {
   id: string;
@@ -286,7 +287,7 @@ export function EmailCommunicationHub() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight uppercase text-[#013E37]">
+        <h1 className="text-2xl font-bold tracking-tight uppercase text-[#013E37]">
           Email & Communication Hub
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -680,13 +681,13 @@ export function EmailCommunicationHub() {
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={campaignPerformanceData}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
                     <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="opened" fill="#10b981" name="Open %" />
-                    <Bar dataKey="clicked" fill="#3b82f6" name="Click %" />
-                    <Bar dataKey="replied" fill="#8b5cf6" name="Reply %" />
+                    <Tooltip contentStyle={CHART_TOOLTIP_STYLE} />
+                    <Bar dataKey="opened" fill={CHART_COLORS[0]} name="Open %" />
+                    <Bar dataKey="clicked" fill={CHART_COLORS[1]} name="Click %" />
+                    <Bar dataKey="replied" fill={CHART_COLORS[2]} name="Reply %" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -700,12 +701,12 @@ export function EmailCommunicationHub() {
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={emailVolumeData}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} />
                     <XAxis dataKey="month" />
                     <YAxis />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="sent" stroke="#6366f1" strokeWidth={2} name="Sent" />
-                    <Line type="monotone" dataKey="received" stroke="#10b981" strokeWidth={2} name="Received" />
+                    <Tooltip contentStyle={CHART_TOOLTIP_STYLE} />
+                    <Line type="monotone" dataKey="sent" stroke={CHART_COLORS[0]} strokeWidth={2} name="Sent" />
+                    <Line type="monotone" dataKey="received" stroke={CHART_COLORS[1]} strokeWidth={2} name="Received" />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>

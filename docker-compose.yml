@@ -1,35 +1,39 @@
+# Portainer stack "sales-crm-onduline" -- deployed via Portainer's
+# "Repository" stack method (build straight from this Git repo on the
+# VPS itself, no separate image registry). See DEPLOY.md for the full
+# setup walkthrough and which environment variables to fill in under
+# Portainer's "Environment variables" section when creating the stack.
 services:
-  sales-crm:
-    image: ghcr.io/pipi2303/salesappv20:latest
-
-    container_name: sales-crm
-
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sales-crm-onduline:latest
+    container_name: sales-crm-onduline
     restart: unless-stopped
-
     ports:
-      - "3010:80"
-
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      # Check-in photos (Bab 8 gap 2), when lib/blob.ts's local-disk
+      # backend is active (default here -- no BLOB_READ_WRITE_TOKEN set).
+      # Named volume so photos survive `docker compose build && up`
+      # (a plain container recreation, which a fresh COPY in the image
+      # would otherwise wipe) across every redeploy.
+      - checkin_photos:/app/uploads/checkin-photos
     environment:
-      TZ: Asia/Jakarta
+      NODE_ENV: production
+      PORT: "3000"
+      # Neon Postgres -- pooled (runtime queries) and direct (migrations)
+      # connection strings. Same values as this repo's .env.local.
+      DATABASE_URL: ${DATABASE_URL}
+      DIRECT_URL: ${DIRECT_URL}
+      # Optional: Vercel Blob storage token for check-in photos
+      # (lib/blob.ts). Leave unset to use local disk storage (the
+      # `checkin_photos` volume above) instead -- no external account
+      # needed. Set this only if you specifically want photos to live in
+      # Vercel Blob (e.g. this app is also deployed on Vercel and you
+      # want one shared photo store).
+      BLOB_READ_WRITE_TOKEN: ${BLOB_READ_WRITE_TOKEN:-}
 
-    networks:
-      - proxy-network
-
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://127.0.0.1/"
-        ]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-
-networks:
-  proxy-network:
-    external: true
+volumes:
+  checkin_photos:

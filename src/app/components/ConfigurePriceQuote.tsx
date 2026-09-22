@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Settings, FileText, DollarSign, Plus, Search, Filter, Download, Eye, Pencil, Trash2, Copy, CheckCircle, XCircle, Clock, Package, Users, Calendar, Tag } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
@@ -13,16 +13,8 @@ import { Checkbox } from '@/app/components/ui/checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/app/components/ui/table';
 import { toast } from 'sonner';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-
-type Product = {
-  id: string;
-  name: string;
-  sku: string;
-  basePrice: number;
-  category: string;
-  stock: number;
-  features: string[];
-};
+import type { Product } from '@/types/product';
+import { productsRepository } from '@/services/productsRepository';
 
 type ConfigurationItem = {
   productId: string;
@@ -44,45 +36,6 @@ type Quote = {
   createdDate: string;
   notes: string;
 };
-
-const dummyProducts: Product[] = [
-  {
-    id: 'p1',
-    name: 'Enterprise CRM Suite',
-    sku: 'CRM-ENT-001',
-    basePrice: 50000000,
-    category: 'Software',
-    stock: 100,
-    features: ['Multi-user', 'Cloud Hosting', 'API Access', '24/7 Support']
-  },
-  {
-    id: 'p2',
-    name: 'Sales Analytics Pro',
-    sku: 'SAL-PRO-002',
-    basePrice: 25000000,
-    category: 'Analytics',
-    stock: 150,
-    features: ['Real-time Dashboard', 'Custom Reports', 'AI Insights']
-  },
-  {
-    id: 'p3',
-    name: 'Marketing Automation',
-    sku: 'MKT-AUT-003',
-    basePrice: 35000000,
-    category: 'Marketing',
-    stock: 80,
-    features: ['Email Campaigns', 'Lead Scoring', 'Social Media Integration']
-  },
-  {
-    id: 'p4',
-    name: 'Customer Service Platform',
-    sku: 'CS-PLT-004',
-    basePrice: 30000000,
-    category: 'Service',
-    stock: 120,
-    features: ['Ticketing System', 'Live Chat', 'Knowledge Base']
-  }
-];
 
 const dummyQuotes: Quote[] = [
   {
@@ -134,8 +87,25 @@ export function ConfigurePriceQuote() {
   const [isCreateQuoteOpen, setIsCreateQuoteOpen] = useState(false);
   const [isViewQuoteOpen, setIsViewQuoteOpen] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
+  // Data source: productsRepository (localStorage-backed, unified Product model) --
+  // the same catalog ProductCatalog.tsx reads/writes, so a quote always prices
+  // against real stock/SKU data instead of this component's own disconnected mock list.
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const filteredProducts = dummyProducts.filter(product =>
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    const result = await productsRepository.getAll();
+    if (result.success && result.data) {
+      setProducts(result.data);
+    } else {
+      toast.error(result.error || 'Failed to load products');
+    }
+  };
+
+  const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.category.toLowerCase().includes(searchTerm.toLowerCase())
@@ -174,9 +144,9 @@ export function ConfigurePriceQuote() {
 
   const calculateTotal = () => {
     return selectedProducts.reduce((total, item) => {
-      const product = dummyProducts.find(p => p.id === item.productId);
+      const product = products.find(p => p.id === item.productId);
       if (product) {
-        const itemTotal = product.basePrice * item.quantity;
+        const itemTotal = product.price * item.quantity;
         const discountAmount = (itemTotal * item.discount) / 100;
         return total + (itemTotal - discountAmount);
       }
@@ -273,7 +243,7 @@ export function ConfigurePriceQuote() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Configure, Propose & Quote</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Configure, Propose & Quote</h1>
           <p className="text-gray-600 mt-1">Kelola konfigurasi produk, buat proposal, dan kirim quotation</p>
         </div>
         <Dialog open={isCreateQuoteOpen} onOpenChange={setIsCreateQuoteOpen}>
@@ -321,15 +291,15 @@ export function ConfigurePriceQuote() {
                   ) : (
                     <div className="space-y-2">
                       {selectedProducts.map(item => {
-                        const product = dummyProducts.find(p => p.id === item.productId);
+                        const product = products.find(p => p.id === item.productId);
                         if (!product) return null;
-                        const itemTotal = product.basePrice * item.quantity;
+                        const itemTotal = product.price * item.quantity;
                         const discountAmount = (itemTotal * item.discount) / 100;
                         return (
                           <div key={item.productId} className="flex items-center justify-between p-2 bg-white rounded border">
                             <div>
                               <p className="font-medium">{product.name}</p>
-                              <p className="text-sm text-gray-600">Qty: {item.quantity} × {formatCurrency(product.basePrice)}</p>
+                              <p className="text-sm text-gray-600">Qty: {item.quantity} × {formatCurrency(product.price)}</p>
                             </div>
                             <div className="text-right">
                               <p className="font-semibold">{formatCurrency(itemTotal - discountAmount)}</p>
@@ -424,7 +394,7 @@ export function ConfigurePriceQuote() {
                     </div>
                     <div className="space-y-2">
                       {selectedProducts.map(item => {
-                        const product = dummyProducts.find(p => p.id === item.productId);
+                        const product = products.find(p => p.id === item.productId);
                         if (!product) return null;
                         return (
                           <div key={item.productId} className="flex items-center justify-between p-3 bg-white rounded-lg">
@@ -439,7 +409,7 @@ export function ConfigurePriceQuote() {
                               </div>
                               <div className="text-right">
                                 <p className="text-sm text-gray-600">Price</p>
-                                <p className="font-semibold">{formatCurrency(product.basePrice * item.quantity)}</p>
+                                <p className="font-semibold">{formatCurrency(product.price * item.quantity)}</p>
                               </div>
                               <Button
                                 variant="ghost"
@@ -478,7 +448,7 @@ export function ConfigurePriceQuote() {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Base Price</p>
-                            <p className="text-2xl font-bold text-[#013E37]">{formatCurrency(product.basePrice)}</p>
+                            <p className="text-2xl font-bold text-[#013E37]">{formatCurrency(product.price)}</p>
                           </div>
                           <div className="text-right">
                             <p className="text-sm text-gray-600">Stock</p>

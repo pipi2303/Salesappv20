@@ -10,32 +10,25 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/app/
 import { toast } from 'sonner';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { formatCurrency } from '@/utils/formatters';
-import { productsApi } from '@/services/api';
+import { productsRepository } from '@/services/productsRepository';
+import type { Product, NewProduct } from '@/types/product';
 import { ProductFormModal } from '@/app/components/forms/ProductForm';
 import { ProposalBuilder, ProposalFloatingButton } from '@/app/components/ProposalBuilder';
+import type { ProposalItem } from '@/types/proposal';
 
-// API disabled - app runs 100% in browser with localStorage
-
-interface ProposalItem {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  quantity: number;
-  description: string;
-  features: string[];
-  proposalType?: 'teknis'; // Add proposal type for technical proposals
-}
+// Data source: productsRepository (localStorage-backed, unified Product model).
+// Migrated from the legacy productsApi/`sales_monitoring_products` key — see
+// src/services/productsRepository.ts for why this uses a different storage key.
 
 export function ProductCatalog() {
   const confirm = useConfirm();
   const { user } = useAuth();
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showForm, setShowForm] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   
   // Proposal state
@@ -49,15 +42,15 @@ export function ProductCatalog() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      console.log('🔄 Fetching products from API...');
+      console.log('🔄 Fetching products from productsRepository...');
       
-      const result = await productsApi.getAll();
+      const result = await productsRepository.getAll();
       
       if (result.success && result.data) {
         console.log(`✅ Loaded ${result.data.length} products`);
         setProducts(result.data);
       } else {
-        console.error('❌ API Error:', result.error);
+        console.error('❌ Error:', result.error);
         toast.error(result.error || 'Failed to load products');
       }
     } catch (error: any) {
@@ -73,137 +66,140 @@ export function ProductCatalog() {
     try {
       setLoading(true);
       toast.info('Memuat data dummy...');
-      
-      // Populate dummy products data directly to localStorage
-      const dummyProducts = [
+
+      // Dummy catalog data — all software products (Hospital Management System
+      // and related modules), matching what this catalog has always shipped
+      // with as sample/demo data. Now goes through productsRepository so each
+      // row is validated and given a real productType/sku instead of a loose
+      // untyped object written straight to localStorage.
+      const dummyProducts: NewProduct[] = [
         {
-          id: crypto.randomUUID(),
-          name: 'HMS Enterprise',
-          category: 'Hospital Management System',
+          sku: 'HMS-ENT-001', name: 'HMS Enterprise', category: 'Hospital Management System',
           description: 'Sistem manajemen rumah sakit komprehensif dengan fitur telemedicine, EMR, radiologi, dan laboratorium.',
-          price: 500000000,
-          stock: 100,
-          sold: 15,
+          price: 500000000, currency: 'IDR', status: 'active',
+          stock: 100, sold: 15,
           features: ['Telemedicine', 'EMR', 'Radiologi', 'Laboratorium', 'PACS', 'LIS', 'Billing System', 'Pharmacy System'],
+          productType: 'software', licenseTier: 'Enterprise', billingCycle: 'yearly',
+          modules: ['Telemedicine', 'EMR', 'Radiologi', 'Laboratorium', 'PACS', 'LIS', 'Billing System', 'Pharmacy System'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'HMS Professional',
-          category: 'Hospital Management System',
+          sku: 'HMS-PRO-002', name: 'HMS Professional', category: 'Hospital Management System',
           description: 'Sistem manajemen rumah sakit profesional dengan fitur EMR, PACS, dan LIS untuk RS tipe B dan C.',
-          price: 300000000,
-          stock: 150,
-          sold: 23,
+          price: 300000000, currency: 'IDR', status: 'active',
+          stock: 150, sold: 23,
           features: ['EMR', 'PACS', 'LIS', 'Billing System', 'Inventory Management', 'Reporting Dashboard'],
+          productType: 'software', licenseTier: 'Professional', billingCycle: 'yearly',
+          modules: ['EMR', 'PACS', 'LIS', 'Billing System', 'Inventory Management', 'Reporting Dashboard'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'Intradoc Pro',
-          category: 'Document Management',
+          sku: 'DOC-PRO-003', name: 'Intradoc Pro', category: 'Document Management',
           description: 'Sistem manajemen dokumen profesional untuk manajemen dokumen medis dan administrasi rumah sakit.',
-          price: 100000000,
-          stock: 200,
-          sold: 34,
+          price: 100000000, currency: 'IDR', status: 'active',
+          stock: 200, sold: 34,
           features: ['Manajemen Dokumen Medis', 'Manajemen Dokumen Administrasi', 'E-Signature', 'Audit Trail', 'Version Control'],
+          productType: 'software', licenseTier: 'Professional', billingCycle: 'yearly',
+          modules: ['Manajemen Dokumen Medis', 'Manajemen Dokumen Administrasi', 'E-Signature', 'Audit Trail', 'Version Control'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'Telemedicine Module',
-          category: 'Telemedicine',
+          sku: 'TLM-MOD-004', name: 'Telemedicine Module', category: 'Telemedicine',
           description: 'Sistem telemedicine untuk konsultasi jarak jauh antara dokter dan pasien dengan video call HD.',
-          price: 50000000,
-          stock: 250,
-          sold: 42,
+          price: 50000000, currency: 'IDR', status: 'active',
+          stock: 250, sold: 42,
           features: ['Video Call HD', 'Chat Dokter-Pasien', 'Resep Digital', 'Monitoring Pasien', 'Payment Gateway'],
+          productType: 'software', licenseTier: 'Standard', billingCycle: 'monthly',
+          modules: ['Video Call HD', 'Chat Dokter-Pasien', 'Resep Digital', 'Monitoring Pasien', 'Payment Gateway'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'EMR Standalone',
-          category: 'Electronic Medical Record',
+          sku: 'EMR-STD-005', name: 'EMR Standalone', category: 'Electronic Medical Record',
           description: 'Sistem catatan medis elektronik standalone untuk manajemen data pasien dan rekam medis.',
-          price: 150000000,
-          stock: 180,
-          sold: 28,
+          price: 150000000, currency: 'IDR', status: 'active',
+          stock: 180, sold: 28,
           features: ['Manajemen Data Pasien', 'Rekam Medis Digital', 'SOAP Notes', 'ICD-10 Integration', 'CPPT'],
+          productType: 'software', licenseTier: 'Standard', billingCycle: 'yearly',
+          modules: ['Manajemen Data Pasien', 'Rekam Medis Digital', 'SOAP Notes', 'ICD-10 Integration', 'CPPT'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'Radiologi PACS',
-          category: 'Radiology',
+          sku: 'RAD-PACS-006', name: 'Radiologi PACS', category: 'Radiology',
           description: 'Sistem PACS untuk manajemen dan analisis gambar radiologi dengan DICOM viewer.',
-          price: 200000000,
-          stock: 120,
-          sold: 18,
+          price: 200000000, currency: 'IDR', status: 'active',
+          stock: 120, sold: 18,
           features: ['DICOM Viewer', 'Image Storage', 'Worklist Management', '3D Reconstruction', 'Teleradiology'],
+          productType: 'software', licenseTier: 'Professional', billingCycle: 'yearly',
+          modules: ['DICOM Viewer', 'Image Storage', 'Worklist Management', '3D Reconstruction', 'Teleradiology'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'Laboratory LIS',
-          category: 'Laboratory',
+          sku: 'LAB-LIS-007', name: 'Laboratory LIS', category: 'Laboratory',
           description: 'Sistem informasi laboratorium untuk manajemen pemeriksaan dan hasil lab dengan auto-interface.',
-          price: 100000000,
-          stock: 160,
-          sold: 31,
+          price: 100000000, currency: 'IDR', status: 'active',
+          stock: 160, sold: 31,
           features: ['Order Management', 'Result Entry', 'Auto-Interface', 'Quality Control', 'Report Generation'],
+          productType: 'software', licenseTier: 'Standard', billingCycle: 'yearly',
+          modules: ['Order Management', 'Result Entry', 'Auto-Interface', 'Quality Control', 'Report Generation'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'Pharmacy Module',
-          category: 'Pharmacy Management',
+          sku: 'PHM-MOD-008', name: 'Pharmacy Module', category: 'Pharmacy Management',
           description: 'Sistem manajemen farmasi untuk inventory obat, dispensing, dan interaksi obat.',
-          price: 80000000,
-          stock: 190,
-          sold: 26,
+          price: 80000000, currency: 'IDR', status: 'active',
+          stock: 190, sold: 26,
           features: ['Inventory Management', 'Dispensing', 'Drug Interaction Check', 'Expired Date Alert', 'Stock Opname'],
+          productType: 'software', licenseTier: 'Standard', billingCycle: 'yearly',
+          modules: ['Inventory Management', 'Dispensing', 'Drug Interaction Check', 'Expired Date Alert', 'Stock Opname'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'Billing System',
-          category: 'Finance & Billing',
+          sku: 'BIL-SYS-009', name: 'Billing System', category: 'Finance & Billing',
           description: 'Sistem billing komprehensif dengan integrasi BPJS, asuransi, dan payment gateway.',
-          price: 120000000,
-          stock: 140,
-          sold: 37,
+          price: 120000000, currency: 'IDR', status: 'active',
+          stock: 140, sold: 37,
           features: ['BPJS Integration', 'Insurance Claims', 'Payment Gateway', 'Invoice Generation', 'Financial Reports'],
+          productType: 'software', licenseTier: 'Professional', billingCycle: 'yearly',
+          modules: ['BPJS Integration', 'Insurance Claims', 'Payment Gateway', 'Invoice Generation', 'Financial Reports'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'Mobile App HMS',
-          category: 'Mobile Application',
+          sku: 'MOB-HMS-010', name: 'Mobile App HMS', category: 'Mobile Application',
           description: 'Aplikasi mobile untuk pasien: jadwal dokter, booking appointment, dan telemedicine.',
-          price: 75000000,
-          stock: 220,
-          sold: 45,
+          price: 75000000, currency: 'IDR', status: 'active',
+          stock: 220, sold: 45,
           features: ['Jadwal Dokter', 'Online Booking', 'Telemedicine', 'Medical Records', 'Push Notifications'],
+          productType: 'software', licenseTier: 'Standard', billingCycle: 'yearly',
+          modules: ['Jadwal Dokter', 'Online Booking', 'Telemedicine', 'Medical Records', 'Push Notifications'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'Nurse Station Module',
-          category: 'Nursing Management',
+          sku: 'NUR-STA-011', name: 'Nurse Station Module', category: 'Nursing Management',
           description: 'Sistem untuk nurse station: vital signs monitoring, medication administration, dan care plan.',
-          price: 90000000,
-          stock: 170,
-          sold: 22,
+          price: 90000000, currency: 'IDR', status: 'active',
+          stock: 170, sold: 22,
           features: ['Vital Signs Entry', 'Medication Administration', 'Care Plan', 'Nursing Notes', 'Handover Report'],
+          productType: 'software', licenseTier: 'Standard', billingCycle: 'yearly',
+          modules: ['Vital Signs Entry', 'Medication Administration', 'Care Plan', 'Nursing Notes', 'Handover Report'],
         },
         {
-          id: crypto.randomUUID(),
-          name: 'Inventory Management',
-          category: 'Inventory & Supply Chain',
+          sku: 'INV-MGT-012', name: 'Inventory Management', category: 'Inventory & Supply Chain',
           description: 'Sistem manajemen inventory untuk medical supplies, alkes, dan asset management.',
-          price: 85000000,
-          stock: 130,
-          sold: 19,
+          price: 85000000, currency: 'IDR', status: 'active',
+          stock: 130, sold: 19,
           features: ['Stock Management', 'Purchase Order', 'Vendor Management', 'Asset Tracking', 'Reorder Point Alert'],
+          productType: 'software', licenseTier: 'Standard', billingCycle: 'yearly',
+          modules: ['Stock Management', 'Purchase Order', 'Vendor Management', 'Asset Tracking', 'Reorder Point Alert'],
         },
       ];
-      
-      // Save to localStorage
-      localStorage.setItem('sales_monitoring_products', JSON.stringify(dummyProducts));
-      
-      console.log(`✅ Populated ${dummyProducts.length} products to localStorage`);
-      toast.success(`Berhasil populate ${dummyProducts.length} produk healthcare!`);
-      
+
+      let createdCount = 0;
+      for (const p of dummyProducts) {
+        const result = await productsRepository.create(p);
+        if (result.success) {
+          createdCount++;
+        } else {
+          console.error(`❌ Gagal membuat produk ${p.name}:`, result.error);
+        }
+      }
+
+      console.log(`✅ Populated ${createdCount}/${dummyProducts.length} products via productsRepository`);
+      if (createdCount > 0) {
+        toast.success(`Berhasil populate ${createdCount} produk healthcare!`);
+      } else {
+        toast.error('Gagal populate data (mungkin SKU sudah ada). Cek console untuk detail.');
+      }
+
       // Refresh products list
       await fetchProducts();
     } catch (error: any) {
@@ -219,12 +215,12 @@ export function ProductCatalog() {
     setShowForm(true);
   };
 
-  const handleEdit = (product: any) => {
+  const handleEdit = (product: Product) => {
     setSelectedProduct(product);
     setShowForm(true);
   };
 
-  const handleDelete = async (product: any) => {
+  const handleDelete = async (product: Product) => {
     if (!(await confirm(`Apakah Anda yakin ingin menghapus produk "${product.name}"?`, { variant: 'destructive', confirmText: 'Hapus' }))) {
       return;
     }
@@ -232,7 +228,7 @@ export function ProductCatalog() {
     try {
       setDeleteLoading(product.id);
       
-      const result = await productsApi.delete(product.id);
+      const result = await productsRepository.remove(product.id);
       
       if (result.success) {
         toast.success('Product berhasil dihapus!');
@@ -277,7 +273,7 @@ export function ProductCatalog() {
     totalRevenue: products.reduce((sum, p) => sum + (p.price * (p.sold || 0)), 0),
     bestSeller: products.length > 0 
       ? products.reduce((prev, current) => ((current.sold || 0) > (prev.sold || 0)) ? current : prev)
-      : { name: '-', description: '-', sold: 0, price: 0, features: [] }
+      : { name: '-', description: '-', sold: 0, price: 0, features: [] as string[] }
   };
 
   // Format revenue menggunakan utility function standar
@@ -303,7 +299,7 @@ export function ProductCatalog() {
     return mapping[category] || 'KATALOG PRODUK';
   };
 
-  const handleAddToProposal = (product: any) => {
+  const handleAddToProposal = (product: Product) => {
     const existingItem = proposalItems.find(item => item.id === product.id);
     if (existingItem) {
       setProposalItems(proposalItems.map(item => 
@@ -326,7 +322,7 @@ export function ProductCatalog() {
     console.log('Proposal items updated:', proposalItems.length + 1);
   };
 
-  const handleAddToProposalTeknis = (product: any) => {
+  const handleAddToProposalTeknis = (product: Product) => {
     const existingItem = proposalItems.find(item => item.id === product.id);
     if (existingItem) {
       setProposalItems(proposalItems.map(item => 
@@ -342,7 +338,7 @@ export function ProductCatalog() {
         quantity: 1,
         description: product.description,
         features: product.features || [],
-        proposalType: 'teknis', // Mark as technical proposal
+        proposalType: 'teknis' as const, // Mark as technical proposal
       };
       setProposalItems([...proposalItems, newItem]);
       toast.success(`${product.name} ditambahkan ke Proposal Teknis`);
@@ -355,7 +351,7 @@ export function ProductCatalog() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#013E37]">
+          <h1 className="text-2xl font-bold text-[#013E37]">
             Katalog Produk
           </h1>
           <p className="text-gray-600 mt-1">Jelajahi dan kelola semua produk & layanan</p>
@@ -367,7 +363,7 @@ export function ProductCatalog() {
             className="gap-2"
           >
             <RefreshCw className="h-4 w-4" />
-            Load 18 Data Baru
+            Load 12 Data Baru
           </Button>
           <Button 
             onClick={handleAdd}
@@ -659,7 +655,7 @@ export function ProductCatalog() {
                 <div className="flex items-center gap-4">
                   <div>
                     <p className="text-sm text-white/80">Total Terjual</p>
-                    <p className="text-3xl font-bold">{stats.bestSeller.sold}</p>
+                    <p className="text-2xl font-bold">{stats.bestSeller.sold}</p>
                   </div>
                   <div>
                     <p className="text-sm text-white/80">Revenue</p>
