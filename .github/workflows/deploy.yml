@@ -21,17 +21,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       # ==========================================
-      # 1. Checkout source code
+      # 1. Checkout
       # ==========================================
       - name: Checkout
         uses: actions/checkout@v5
 
+
       # ==========================================
-      # 2. Setup Docker Buildx
+      # 2. Docker Buildx
       # ==========================================
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
 
       # ==========================================
       # 3. Login to GHCR
@@ -43,8 +46,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+
       # ==========================================
-      # 4. Generate Docker image metadata
+      # 4. Docker Metadata
       # ==========================================
       - name: Docker metadata
         id: meta
@@ -55,47 +59,99 @@ jobs:
             type=raw,value=latest
             type=sha
 
+
       # ==========================================
-      # 5. Build & Push Docker image
+      # 5. Build & Push Docker Image
       # ==========================================
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
+
           platforms: linux/amd64
+
           push: true
+
           tags: ${{ steps.meta.outputs.tags }}
+
           labels: ${{ steps.meta.outputs.labels }}
+
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # ==========================================
-      # 6. Trigger Portainer
-      # ==========================================
-      - name: Deploy to Portainer
-        if: env.PORTAINER_WEBHOOK != ''
-        env:
-          PORTAINER_WEBHOOK: ${{ secrets.PORTAINER_WEBHOOK }}
-        run: |
-          curl --fail --silent --show-error \
-            -X POST \
-            "$PORTAINER_WEBHOOK"
 
       # ==========================================
-      # 7. Deployment information
+      # 6. Deploy to Portainer
+      # ==========================================
+      - name: Deploy to Portainer
+        env:
+          PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
+          PORTAINER_TOKEN: ${{ secrets.PORTAINER_TOKEN }}
+          PORTAINER_STACK_ID: ${{ secrets.PORTAINER_STACK_ID }}
+          PORTAINER_ENDPOINT_ID: ${{ secrets.PORTAINER_ENDPOINT_ID }}
+
+        run: |
+
+          echo "=========================================="
+          echo "Deploying Sales CRM to Portainer"
+          echo "=========================================="
+
+          echo "Stack ID: ${PORTAINER_STACK_ID}"
+          echo "Endpoint ID: ${PORTAINER_ENDPOINT_ID}"
+
+          # Convert docker-compose.yml into JSON string
+          COMPOSE_JSON=$(jq -Rs . < docker-compose.yml)
+
+          # Update Portainer stack
+          curl --fail-with-body \
+            --silent \
+            --show-error \
+            --insecure \
+            -X PUT \
+            -H "X-API-Key: ${PORTAINER_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data "{
+              \"StackFileContent\": ${COMPOSE_JSON},
+              \"Env\": [],
+              \"Prune\": false,
+              \"RepullImageAndRedeploy\": true
+            }" \
+            "${PORTAINER_URL}/api/stacks/${PORTAINER_STACK_ID}?endpointId=${PORTAINER_ENDPOINT_ID}"
+
+          echo ""
+          echo "=========================================="
+          echo "Portainer deployment completed"
+          echo "=========================================="
+
+
+      # ==========================================
+      # 7. Deployment Summary
       # ==========================================
       - name: Deployment Summary
         run: |
+
           echo "=========================================="
           echo "Sales CRM deployment completed"
           echo "=========================================="
+
           echo "Image:"
           echo "ghcr.io/pipi2303/salesappv20:latest"
+
           echo ""
+
           echo "Platform:"
           echo "linux/amd64"
+
           echo ""
+
+          echo "Portainer:"
+          echo "Stack ID: ${{ secrets.PORTAINER_STACK_ID }}"
+          echo "Endpoint ID: ${{ secrets.PORTAINER_ENDPOINT_ID }}"
+
+          echo ""
+
           echo "Commit:"
           echo "${GITHUB_SHA}"
+
           echo "=========================================="
