@@ -1,6 +1,6 @@
 // Unified product model — single source of truth for both product lines
 // Salesappv20 sells: software packages (hospital systems) and physical
-// building-material goods (inherited from the original Onduline FSD).
+// goods.
 //
 // Design rationale (agreed with product owner, see chat discussion):
 // - One shared identity (ProductBase fields) so Opportunity/Quotation/

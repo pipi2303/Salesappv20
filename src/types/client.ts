@@ -1,7 +1,7 @@
 // Client model -- moved out of ClientDetailDialog.tsx (Fase 1 item 5: one
 // consistent definition in src/types instead of scattered across component
 // files). Hospital/distributor-specific fields (koordinat_gps, id_satusehat,
-// id_faskes_bpjs, etc.) per the Onduline FSD schema discussion (Bab 5).
+// id_faskes_bpjs, etc.) per the FSD schema.
 // No field changes -- straight move, now exported for reuse.
 
 export interface Client {

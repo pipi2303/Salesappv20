@@ -96,5 +96,5 @@ app.get('*', (req, res) => {
 
 const port = Number(process.env.PORT) || 3000;
 app.listen(port, () => {
-  console.log(`Sales CRM Onduline server listening on port ${port}`);
+  console.log(`Sales CRM server listening on port ${port}`);
 });

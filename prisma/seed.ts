@@ -73,18 +73,7 @@ async function seedDistributorsAndStores() {
   console.log(`Seeded ${storeSeeds.length} stores (Bab 12 dummy data)`);
 }
 
-// Bab 16: ProductCategory "ATAP" + its 5 Product Families. No SKUs are
-// seeded here — the families are catalog scaffolding (Bab 16 gives no
-// real SKU/price/stock data, and its own SKU examples are explicitly
-// "bukan SKU resmi Onduline"), so seeding fabricated SKUs under a real
-// family name would be worse than seeding none.
 async function seedProductCatalog() {
-  // 5 kategori sekaligus sekarang: Atap (Bab 16, dari plan doc) + 4
-  // kategori lain yang user minta ditambahkan untuk demo (Waterproofing,
-  // Photovoltaic, Green Roof, Aksesoris) — datanya dari riset situs
-  // resmi Onduline, belum divalidasi tim produk. Lihat komentar di
-  // prisma/seedData/productCatalog.ts untuk detail & disclaimer per
-  // kategori.
   const codeToId = new Map<string, string>();
   for (const cat of productCategorySeeds) {
     const category = await prisma.productCategory.upsert({
@@ -106,15 +95,10 @@ async function seedProductCatalog() {
       create: { code: fam.code, name: fam.name, type: fam.type, categoryId },
     });
   }
-  console.log(`Seeded ${productCategorySeeds.length} product categories + ${productFamilySeeds.length} product families (Bab 16 Atap + demo research untuk 4 kategori lain)`);
+  console.log(`Seeded ${productCategorySeeds.length} product categories + ${productFamilySeeds.length} product families`);
 }
 
 async function seedProductInstances() {
-  // Satu Product (SKU) contoh per Family, supaya katalog Onduline
-  // benar-benar terlihat di halaman Products, bukan cuma ada di tabel
-  // ProductCategory/ProductFamily yang belum punya UI sendiri. Lihat
-  // komentar di prisma/seedData/productCatalog.ts untuk detail per item
-  // dan disclaimer soal sumber datanya.
   let created = 0;
   for (const p of productInstanceSeeds) {
     const family = await prisma.productFamily.findUnique({ where: { code: p.familyCode } });
@@ -161,7 +145,7 @@ async function seedProductInstances() {
     });
     created += 1;
   }
-  console.log(`Seeded ${created} product SKUs across ${productCategorySeeds.length} categories (demo katalog Onduline)`);
+  console.log(`Seeded ${created} product SKUs across ${productCategorySeeds.length} categories`);
 }
 
 async function main() {

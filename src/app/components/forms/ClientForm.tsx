@@ -52,8 +52,7 @@ export function ClientFormModal({ client, onClose, onSuccess }: ClientFormProps)
     nama_entitas: '',
     kategori_client: '',
     // FR-05: Sektor kepemilikan faskes (Type/Sub Type/Sector dari FSD, diadaptasi ke konteks
-    // faskes kesehatan — bukan Distributor/Installer/Kontraktor ala Onduline yang ada di FSD asli,
-    // karena Salesappv20 memang mengelola Rumah Sakit/Puskesmas/Klinik, bukan proyek atap/bangunan).
+    // faskes kesehatan — Salesappv20 mengelola Rumah Sakit/Puskesmas/Klinik).
     sektor_client: '',
     owner: '',
     alamat_lengkap: '', // deprecated: dipertahankan untuk kompatibilitas data lama, lihat alamat_penagihan/alamat_pengiriman

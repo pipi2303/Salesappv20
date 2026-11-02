@@ -31,8 +31,7 @@ import { OpportunityDetailDialog } from './OpportunityDetailDialog';
 import type { ProductItem, Activity, Opportunity } from '@/types/opportunity';
 
 
-// FR-04: Close Reason options differ for Won vs Lost. Mirrors the pattern found in the Salesforce
-// Onduline implementation reviewed during the FSD work — the Sales Manager should review/confirm this
+// FR-04: Close Reason options differ for Won vs Lost. The Sales Manager should review/confirm this
 // list before it's treated as final.
 const WON_CLOSE_REASONS = [
   'Product Quality', 'Delivery Time', 'Term of Payment', 'Brand Awareness', 'Commitment Service',
