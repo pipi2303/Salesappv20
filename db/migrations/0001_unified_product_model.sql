@@ -3,7 +3,7 @@
 -- =====================================================================
 -- Context: Salesappv20 sells TWO product lines through one sales pipeline
 -- (software packages for hospital systems, and physical building-material
--- goods inherited from the original Onduline FSD). This migration gives
+-- goods). This migration gives
 -- both a single shared identity (`products`) so that Opportunity/Quotation/
 -- Discount Approval/Commission modules can reference "a product" generically,
 -- while keeping each line's type-specific attributes in separate extension
@@ -76,7 +76,7 @@ create table if not exists product_software_attrs (
 
 -- ---------------------------------------------------------------------
 -- 3. product_physical_attrs — 1:1 extension, only populated when
---    product_type = 'physical'. Carries the Onduline-style attributes
+--    product_type = 'physical'. Carries the physical-product attributes
 --    (m2, warna, spesifikasi) without polluting the shared products table.
 --    NOTE: stock moved OUT of this table into products (see above) —
 --    it is not physical-only.

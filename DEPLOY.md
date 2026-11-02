@@ -1,4 +1,4 @@
-# Deploy ke VPS via Portainer — Sales CRM Onduline
+# Deploy ke VPS via Portainer — Sales CRM
 
 Stack ini dideploy lewat `.github/workflows/deploy.yml`: setiap push ke
 `main`, GitHub Actions build image dari `Dockerfile` di repo ini, push
@@ -22,7 +22,7 @@ nama image apa adanya dari Docker Hub dan gagal dengan error semacam
 - `docker-entrypoint.sh` — jalankan `npx prisma migrate deploy` dulu
   (menerapkan migration yang sudah ada di `prisma/migrations/`, aman
   untuk production), baru start server.
-- `docker-compose.yml` — definisi stack `sales-crm-onduline`, satu
+- `docker-compose.yml` — definisi stack `sales-crm`, satu
   service (`app`), port `3000` di-mapping ke host, plus volume
   `checkin_photos` untuk foto check-in (lihat bagian 5).
 
@@ -43,7 +43,7 @@ Jangan commit nilai-nilai ini ke Git — isi hanya lewat Portainer UI
 ## 3. Bikin stack di Portainer
 
 1. **Stacks → Add stack**
-2. Nama: `sales-crm-onduline` (harus sama persis — dipakai sebagai
+2. Nama: `sales-crm` (harus sama persis — dipakai sebagai
    `PORTAINER_STACK_ID`/nama container)
 3. Build method: **Web editor** (bukan Repository) — cukup tempel isi
    `docker-compose.yml` dari repo ini apa adanya, karena kontennya
@@ -65,7 +65,7 @@ Jangan commit nilai-nilai ini ke Git — isi hanya lewat Portainer UI
 
 - Cek tab **Actions** di GitHub repo ini untuk lihat apakah workflow
   `Sales CRM CI/CD` sukses (build + push GHCR + panggil Portainer API).
-- Cek log container di Portainer (`sales-crm-onduline` → Logs) untuk
+- Cek log container di Portainer (`sales-crm` → Logs) untuk
   memastikan image ke-pull, `prisma migrate deploy` sukses, dan server
   listen di port 3000.
 - Akses lewat `http://<ip-vps>:3000` (atau domain, kalau sudah

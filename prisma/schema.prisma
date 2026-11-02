@@ -489,7 +489,7 @@ enum DeploymentType {
 }
 
 // ---------------------------------------------------------------------
-// Product catalog hierarchy for the physical (Onduline) line — Bab 8/16
+// Product catalog hierarchy for the physical product line — Bab 8/16
 // gap 3: "Product Catalog belum mencerminkan 5 kategori produk nyata
 // dengan variasi teknis per kategori." Bab 16's full hierarchy is
 // Category -> Family -> Product -> Variant -> SKU -> Packaging/UOM;
@@ -511,7 +511,7 @@ enum DeploymentType {
 //   sku_packaging_conversions, sku_barcodes, product_logistics,
 //   product_accessories. Bab 16 names these but the document has no
 //   concrete example data for any of them, and it explicitly flags its
-//   own SKU codes as unverified ("bukan SKU resmi Onduline"). Adding six
+//   own SKU codes as unverified. Adding six
 //   empty tables now would be modeling ahead of any real requirement —
 //   revisit once there's an actual UOM/packaging/barcode need.
 // - Software products (ProductSoftwareAttrs) are untouched, per explicit
@@ -573,8 +573,7 @@ model Product {
   features    String[]      @default([])
   sold        Int           @default(0)
 
-  // Bab 16 hierarchy — only ever set for physical/Onduline-family
-  // products; null for the software line.
+  // Bab 16 hierarchy — only ever set for physical products; null for the software line.
   familyId     String?             @map("family_id")
   family       ProductFamily?      @relation(fields: [familyId], references: [id])
   variantLabel String?             @map("variant_label") // e.g. "Shaded Red"
