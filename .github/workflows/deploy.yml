@@ -107,13 +107,18 @@ jobs:
 
           if [ -n "$STACK_ID" ]; then
             echo "Stack ditemukan (ID: ${STACK_ID}), update..."
+            # Preserve env vars yang sudah di-set di Portainer UI
+            CURRENT_ENV=$(curl -s --insecure \
+              -H "X-API-Key: ${PORTAINER_TOKEN}" \
+              "${PORTAINER_URL}/api/stacks/${STACK_ID}?endpointId=${PORTAINER_ENDPOINT_ID}" \
+              | jq '.Env // []')
             curl --fail-with-body --silent --show-error --insecure \
               -X PUT \
               -H "X-API-Key: ${PORTAINER_TOKEN}" \
               -H "Content-Type: application/json" \
               --data "{
                 \"StackFileContent\": ${COMPOSE_JSON},
-                \"Env\": [],
+                \"Env\": ${CURRENT_ENV},
                 \"Prune\": false,
                 \"RepullImageAndRedeploy\": true
               }" \
