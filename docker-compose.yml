@@ -1,4 +1,4 @@
-# Portainer stack "sales-crm-onduline" -- deployed via
+# Portainer stack "sales-crm" -- deployed via
 # .github/workflows/deploy.yml: GitHub Actions builds this repo's
 # Dockerfile, pushes the image to GHCR, then PUTs this file's content
 # straight to Portainer's Stacks API with RepullImageAndRedeploy=true.
@@ -6,7 +6,7 @@
 # NOT build from a git checkout -- so `image:` must point at the tag
 # Actions actually pushes (ghcr.io/pipi2303/salesappv20:latest), and
 # there must be no `build:` block here (a bare local tag like
-# "sales-crm-onduline:latest" with RepullImageAndRedeploy=true fails
+# "sales-crm:latest" with RepullImageAndRedeploy=true fails
 # with "pull access denied ... repository does not exist", since Docker
 # tries to pull that name from Docker Hub instead of building it).
 #
@@ -17,7 +17,7 @@
 services:
   app:
     image: ghcr.io/pipi2303/salesappv20:latest
-    container_name: sales-crm-onduline
+    container_name: sales-crm
     restart: unless-stopped
     ports:
       - "${APP_PORT:-3000}:3000"
