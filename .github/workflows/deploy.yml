@@ -88,8 +88,8 @@ jobs:
         env:
           PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
           PORTAINER_TOKEN: ${{ secrets.PORTAINER_TOKEN }}
-          PORTAINER_STACK_ID: ${{ secrets.PORTAINER_STACK_ID }}
           PORTAINER_ENDPOINT_ID: ${{ secrets.PORTAINER_ENDPOINT_ID }}
+          STACK_NAME: sales-crm
 
         run: |
 
@@ -97,27 +97,40 @@ jobs:
           echo "Deploying Sales CRM to Portainer"
           echo "=========================================="
 
-          echo "Stack ID: ${PORTAINER_STACK_ID}"
-          echo "Endpoint ID: ${PORTAINER_ENDPOINT_ID}"
-
-          # Convert docker-compose.yml into JSON string
           COMPOSE_JSON=$(jq -Rs . < docker-compose.yml)
 
-          # Update Portainer stack
-          curl --fail-with-body \
-            --silent \
-            --show-error \
-            --insecure \
-            -X PUT \
+          # Cari stack berdasarkan nama
+          STACK_ID=$(curl -s --insecure \
             -H "X-API-Key: ${PORTAINER_TOKEN}" \
-            -H "Content-Type: application/json" \
-            --data "{
-              \"StackFileContent\": ${COMPOSE_JSON},
-              \"Env\": [],
-              \"Prune\": false,
-              \"RepullImageAndRedeploy\": true
-            }" \
-            "${PORTAINER_URL}/api/stacks/${PORTAINER_STACK_ID}?endpointId=${PORTAINER_ENDPOINT_ID}"
+            "${PORTAINER_URL}/api/stacks?endpointId=${PORTAINER_ENDPOINT_ID}" \
+            | jq -r ".[] | select(.Name == \"${STACK_NAME}\") | .Id")
+
+          if [ -n "$STACK_ID" ]; then
+            echo "Stack ditemukan (ID: ${STACK_ID}), update..."
+            curl --fail-with-body --silent --show-error --insecure \
+              -X PUT \
+              -H "X-API-Key: ${PORTAINER_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data "{
+                \"StackFileContent\": ${COMPOSE_JSON},
+                \"Env\": [],
+                \"Prune\": false,
+                \"RepullImageAndRedeploy\": true
+              }" \
+              "${PORTAINER_URL}/api/stacks/${STACK_ID}?endpointId=${PORTAINER_ENDPOINT_ID}"
+          else
+            echo "Stack belum ada, buat baru..."
+            curl --fail-with-body --silent --show-error --insecure \
+              -X POST \
+              -H "X-API-Key: ${PORTAINER_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data "{
+                \"Name\": \"${STACK_NAME}\",
+                \"StackFileContent\": ${COMPOSE_JSON},
+                \"Env\": []
+              }" \
+              "${PORTAINER_URL}/api/stacks/create/standalone/string?endpointId=${PORTAINER_ENDPOINT_ID}"
+          fi
 
           echo ""
           echo "=========================================="
@@ -146,7 +159,7 @@ jobs:
           echo ""
 
           echo "Portainer:"
-          echo "Stack ID: ${{ secrets.PORTAINER_STACK_ID }}"
+          echo "Stack: sales-crm"
           echo "Endpoint ID: ${{ secrets.PORTAINER_ENDPOINT_ID }}"
 
           echo ""
